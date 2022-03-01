@@ -20,7 +20,7 @@
         public int UserId { get; private set; }
 
         protected ResponseOpinion() : base() { }
-        public ResponseOpinion(ResponseOpinionType responseOpinionType, int userId, int bookOpinionId) : base()
+        public ResponseOpinion(ResponseOpinionType responseOpinionType, int userId, int bookOpinionId, bool isPublic) : base(isPublic)
         {
             ResponseOpinionType = responseOpinionType;
             UserId = userId;

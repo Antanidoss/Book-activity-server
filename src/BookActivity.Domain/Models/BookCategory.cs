@@ -30,7 +30,7 @@ namespace BookActivity.Domain.Models
             Title = title;
             Books = new List<Book>();
         }
-        public BookCategory(string title, params Book[] books) : base()
+        public BookCategory(string title, bool isPublic, params Book[] books) : base(isPublic)
         {
             Title = title;
             Books = books;

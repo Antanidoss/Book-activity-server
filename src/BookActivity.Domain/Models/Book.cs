@@ -53,8 +53,10 @@ namespace BookActivity.Domain.Models
         /// </summary>
         public IList<BookOpinion> BookOpinions { get; set; }
 
+        public bool IsPublic { get; set; }
+
         protected Book() : base() { }
-        public Book(string title, string description, params BookAuthor[] authors) : base()
+        public Book(string title, string description, bool isPublic, params BookAuthor[] authors) : base(isPublic)
         {
             Title = title;
             Description = description;

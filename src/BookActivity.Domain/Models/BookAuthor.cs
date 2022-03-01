@@ -70,7 +70,7 @@ namespace BookActivity.Domain.Models
         public ICollection<Book> Books { get; set; }
 
         protected BookAuthor() : base() { }
-        public BookAuthor(string firstName, string surname, string patronymic, params Book[] books) : base()
+        public BookAuthor(string firstName, string surname, string patronymic, bool isPublic, params Book[] books) : base(isPublic)
         {
             FirstName = firstName;
             Surname = surname;

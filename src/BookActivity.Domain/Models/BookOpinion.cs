@@ -63,7 +63,7 @@ namespace BookActivity.Domain.Models
         public ICollection<ResponseOpinion> ResponseOpinions { get; set; }
 
         protected BookOpinion() : base() { }
-        public BookOpinion(int grade, string description, int userId, int bookId) : base()
+        public BookOpinion(int grade, string description, int userId, int bookId, bool isPublic) : base(isPublic)
         {
             Grade = grade;
             Description = description;

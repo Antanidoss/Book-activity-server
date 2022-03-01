@@ -1,5 +1,6 @@
 ﻿using BookActivity.Domain.Constants;
 using BookActivity.Domain.Helpers;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookActivity.Domain.Models
@@ -54,8 +55,13 @@ namespace BookActivity.Domain.Models
         public AppUser User { get; private set; }
         public int UserId { get; private set; }
 
+        /// <summary>
+        /// Relation of active book with the book notes
+        /// </summary>
+        public ICollection<BookNote> BookNotes { get; set; }
+
         protected ActiveBook() : base() { }
-        public ActiveBook(int totalNumberPages, int numberPagesRead, int bookId, int userId) : base()
+        public ActiveBook(int totalNumberPages, int numberPagesRead, int bookId, int userId, bool isPublic) : base(isPublic)
         {
             TotalNumberPages = totalNumberPages;
             NumberPagesRead = numberPagesRead;
