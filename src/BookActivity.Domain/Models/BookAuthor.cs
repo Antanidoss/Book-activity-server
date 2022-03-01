@@ -1,7 +1,4 @@
-﻿using BookActivity.Domain.Constants;
-using BookActivity.Domain.Helpers;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 
 namespace BookActivity.Domain.Models
 {
@@ -10,59 +7,17 @@ namespace BookActivity.Domain.Models
         /// <summary>
         /// Firstname author
         /// </summary>
-        [Required(ErrorMessage = ValidationErrorMessage.RequiredMessage)]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = ValidationErrorMessage.StrLengthMessage)]
-        public string FirstName
-        {
-            get
-            {
-                return firstName;
-            }
-            set
-            {
-                ValidationModelHelper.ValidateProperty(this, value, nameof(FirstName));
-                firstName = value;
-            }
-        }
-        private string firstName { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Surname author
         /// </summary>
-        [Required(ErrorMessage = ValidationErrorMessage.RequiredMessage)]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = ValidationErrorMessage.StrLengthMessage)]
-        public string Surname
-        {
-            get
-            {
-                return surname;
-            }
-            set
-            {
-                ValidationModelHelper.ValidateProperty(this, value, nameof(Surname));
-                surname = value;
-            }
-        }
-        private string surname { get; set; }
+        public string Surname { get; set; }
 
         /// <summary>
         /// Patronymic author
         /// </summary>
-        [Required(ErrorMessage = ValidationErrorMessage.RequiredMessage)]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = ValidationErrorMessage.StrLengthMessage)]
-        public string Patronymic
-        {
-            get
-            {
-                return patronymic;
-            }
-            set
-            {
-                ValidationModelHelper.ValidateProperty(this, value, nameof(Patronymic));
-                patronymic = value;
-            }
-        }
-        private string patronymic { get; set; }
+        public string Patronymic { get; set; }
 
         /// <summary>
         /// Relation of author with the book authors

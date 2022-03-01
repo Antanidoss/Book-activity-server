@@ -1,4 +1,6 @@
-﻿namespace BookActivity.Domain.Models
+﻿using System;
+
+namespace BookActivity.Domain.Models
 {
     public class ResponseOpinion : BaseEntity
     {
@@ -11,16 +13,16 @@
         /// Relation of response opinion with the book opinion
         /// </summary>
         public BookOpinion BookOpinion { get; private set; }
-        public int BookOpinionId { get; private set; }
+        public Guid BookOpinionId { get; private set; }
 
         /// <summary>
         /// Relation of response opinion with the user
         /// </summary>
         public AppUser User { get; private set; }
-        public int UserId { get; private set; }
+        public Guid UserId { get; private set; }
 
         protected ResponseOpinion() : base() { }
-        public ResponseOpinion(ResponseOpinionType responseOpinionType, int userId, int bookOpinionId, bool isPublic) : base(isPublic)
+        public ResponseOpinion(ResponseOpinionType responseOpinionType, Guid userId, Guid bookOpinionId, bool isPublic) : base(isPublic)
         {
             ResponseOpinionType = responseOpinionType;
             UserId = userId;

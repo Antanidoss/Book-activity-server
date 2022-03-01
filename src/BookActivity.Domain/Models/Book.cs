@@ -10,38 +10,12 @@ namespace BookActivity.Domain.Models
         /// <summary>
         /// Book title
         /// </summary>
-        [Required(ErrorMessage = ValidationErrorMessage.RangeMessage)]
-        public string Title 
-        {
-            get
-            {
-                return title;
-            }
-            set
-            {
-                ValidationModelHelper.ValidateProperty(this, value, nameof(Title));
-                title = value;
-            }
-        }
-        private string title { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Book description
         /// </summary>
-        [Required(ErrorMessage = ValidationErrorMessage.RangeMessage)]
-        public string Description
-        {
-            get
-            {
-                return description;
-            }
-            set
-            {
-                ValidationModelHelper.ValidateProperty(this, value, nameof(Description));
-                description = value;
-            }
-        }
-        private string description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Relation of book with the book authors
@@ -52,8 +26,6 @@ namespace BookActivity.Domain.Models
         /// Relation of book with the book opinion
         /// </summary>
         public IList<BookOpinion> BookOpinions { get; set; }
-
-        public bool IsPublic { get; set; }
 
         protected Book() : base() { }
         public Book(string title, string description, bool isPublic, params BookAuthor[] authors) : base(isPublic)
