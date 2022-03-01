@@ -1,11 +1,10 @@
-﻿using System;
+﻿using NetDevPack.Domain;
+using System;
 
 namespace BookActivity.Domain.Models
 {
-    public class BaseEntity
+    public class BaseEntity : Entity, IAggregateRoot
     {
-        public int Id { get; private set; }
-
         /// <summary>
         /// Time of creation entity
         /// </summary>

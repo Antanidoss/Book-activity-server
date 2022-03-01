@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace BookActivity.Domain.Models
 {
-    public class AppUser : IdentityUser<int>
+    public class AppUser : IdentityUser<Guid>
     {
         /// <summary>
         /// Relation of user with the subscription info

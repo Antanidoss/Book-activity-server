@@ -1,5 +1,6 @@
 ﻿using BookActivity.Domain.Constants;
 using BookActivity.Domain.Helpers;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookActivity.Domain.Models
@@ -34,7 +35,7 @@ namespace BookActivity.Domain.Models
         /// Relation of book note with the active book
         /// </summary>
         public ActiveBook ActiveBook { get; private set; }
-        public int ActiveBookId { get; private set; }
+        public Guid ActiveBookId { get; private set; }
     }
 
     public enum NoteColor

@@ -1,27 +1,17 @@
-﻿using BookActivity.Domain.Constants;
-using BookActivity.Domain.Helpers;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 
 namespace BookActivity.Domain.Models
 {
     public class BookCategory : BaseEntity
     {
-        [Required(ErrorMessage = ValidationErrorMessage.RequiredMessage)]
-        [StringLength(30, MinimumLength = 3, ErrorMessage = ValidationErrorMessage.StrLengthMessage)]
-        public string Title
-        {
-            get
-            {
-                return title;
-            }
-            set
-            {
-                ValidationModelHelper.ValidateProperty(this, value, nameof(Title));
-                title = value;
-            }
-        }
-        private string title { get; set; }
+        /// <summary>
+        /// Title category
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Relation of book category with the book
+        /// </summary>
         public ICollection<Book> Books { get; set; }
 
         protected BookCategory() : base() { }
