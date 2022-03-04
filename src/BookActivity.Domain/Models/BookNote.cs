@@ -1,7 +1,4 @@
-﻿using BookActivity.Domain.Constants;
-using BookActivity.Domain.Helpers;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
 
 namespace BookActivity.Domain.Models
 {
@@ -10,21 +7,7 @@ namespace BookActivity.Domain.Models
         /// <summary>
         /// Text note
         /// </summary>
-        [Required(ErrorMessage = ValidationErrorMessage.RequiredMessage)]
-        [StringLength(2000, MinimumLength = 1, ErrorMessage = ValidationErrorMessage.StrLengthMessage)]
-        public string Note
-        {
-            get
-            {
-                return note;
-            }
-            set
-            {
-                ValidationModelHelper.ValidateProperty(this, value, nameof(Note));
-                note = value;
-            }
-        }
-        private string note { get; set; }
+        public string Note { get; set; }
 
         /// <summary>
         /// Note color
