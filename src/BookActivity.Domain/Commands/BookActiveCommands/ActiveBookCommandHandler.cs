@@ -9,14 +9,14 @@ using NetDevPack.Messaging;
 
 namespace BookActivity.Domain.Commands.BookActiveCommands
 {
-    public class ActiveBookHandler : CommandHandler,
+    public class ActiveBookCommandHandler : CommandHandler,
         IRequestHandler<AddNewBookActiveCommand, ValidationResult>,
         IRequestHandler<UpdateActiveBookCommand, ValidationResult>,
         IRequestHandler<RemoveActiveBookCommand, ValidationResult>
     {
         private readonly IActiveBookRepository _activeBookRepository;
 
-        public ActiveBookHandler(IActiveBookRepository activeBookRepository)
+        public ActiveBookCommandHandler(IActiveBookRepository activeBookRepository)
         {
             _activeBookRepository = activeBookRepository;
         }
