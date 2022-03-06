@@ -1,4 +1,5 @@
 ﻿using BookActivity.Domain.Commands.BookActiveCommands;
+using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Infrastructure.Data.Repositories;
 using BookActivity.Infrastructure.Data.Repositories.EventSourcing;
@@ -18,9 +19,13 @@ namespace BookActivity.Infrastructure.DI
             services.AddScoped<IActiveBookRepository, ActiveBookRepository>();
             services.AddScoped<IEventStoreRepository, EventStoreRepository>();
 
-            services.AddScoped<IRequestHandler<AddNewBookActiveCommand, ValidationResult>, ActiveBookCommandHandler>();
+            services.AddScoped<IRequestHandler<AddBookActiveCommand, ValidationResult>, ActiveBookCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
             services.AddScoped<IRequestHandler<RemoveActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
+
+            services.AddScoped<INotificationHandler<AddActiveBookEvent>, ActiveBookEventHandler>();
+            services.AddScoped<INotificationHandler<UpdateActiveBookEvent>, ActiveBookEventHandler>();
+            services.AddScoped<INotificationHandler<RemoveActiveBookEvent>, ActiveBookEventHandler>();
 
             return services;
         }

@@ -3,9 +3,9 @@ using System;
 
 namespace BookActivity.Domain.Commands.BookActiveCommands
 {
-    public class AddNewBookActiveCommand : ActiveBookCommand
+    public class AddBookActiveCommand : ActiveBookCommand
     {
-        public AddNewBookActiveCommand(int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId, bool isPublic)
+        public AddBookActiveCommand(int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId, bool isPublic)
         {
             TotalNumberPages = totalNumberPages;
             NumberPagesRead = numberPagesRead;

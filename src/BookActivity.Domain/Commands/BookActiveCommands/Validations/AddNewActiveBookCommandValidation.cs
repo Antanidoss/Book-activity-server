@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Commands.BookActiveCommands.Validations
 {
-    public class AddNewActiveBookCommandValidation : ActiveBookValidation<AddNewBookActiveCommand>
+    public class AddNewActiveBookCommandValidation : ActiveBookValidation<AddBookActiveCommand>
     {
         public AddNewActiveBookCommandValidation()
         {
