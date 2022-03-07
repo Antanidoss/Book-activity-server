@@ -21,11 +21,17 @@ namespace BookActivity.Domain.Models
         /// </summary>
         public IList<ResponseOpinion> ResponseOpinions { get; set; }
 
+        /// <summary>
+        /// Relation of user with the notifications
+        /// </summary>
+        public ICollection<UserNotification> UserNotifications { get; set; }
+
         public AppUser() : base()
         {
             FollowedUsers = new List<AppUser>();
             BookOpinions = new List<BookOpinion>();
             FollowedUsers = new List<AppUser>();
+            UserNotifications = new List<UserNotification>();
         }
     }
 }

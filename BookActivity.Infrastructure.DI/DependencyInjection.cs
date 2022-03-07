@@ -1,5 +1,6 @@
 ﻿using BookActivity.Domain.Commands.BookActiveCommands;
 using BookActivity.Domain.Events.ActiveBookEvent;
+using BookActivity.Domain.Events.UserNotificationsEvents;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Infrastructure.Data.Repositories;
 using BookActivity.Infrastructure.Data.Repositories.EventSourcing;
@@ -26,6 +27,8 @@ namespace BookActivity.Infrastructure.DI
             services.AddScoped<INotificationHandler<AddActiveBookEvent>, ActiveBookEventHandler>();
             services.AddScoped<INotificationHandler<UpdateActiveBookEvent>, ActiveBookEventHandler>();
             services.AddScoped<INotificationHandler<RemoveActiveBookEvent>, ActiveBookEventHandler>();
+
+            services.AddScoped<INotificationHandler<AddActiveBookEvent>, UserNotificationsEventHandler>();
 
             return services;
         }
