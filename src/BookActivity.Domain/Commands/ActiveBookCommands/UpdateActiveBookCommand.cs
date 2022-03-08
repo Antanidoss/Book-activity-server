@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BookActivity.Domain.Commands.BookActiveCommands
+namespace BookActivity.Domain.Commands.ActiveBookCommands
 {
     public class UpdateActiveBookCommand : ActiveBookCommand
     {

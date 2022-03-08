@@ -11,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\BookActivity.Data\BookActivity.Infrastructure.Data.csproj" />
-    <ProjectReference Include="..\src\BookActivity.Domain\BookActivity.Domain.csproj" />
-    <ProjectReference Include="..\src\BookActivity.Infrastructure\BookActivity.Infrastructure.csproj" />
+    <ProjectReference Include="..\BookActivity.Data\BookActivity.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\BookActivity.Domain\BookActivity.Domain.csproj" />
+    <ProjectReference Include="..\BookActivity.Infrastructure\BookActivity.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

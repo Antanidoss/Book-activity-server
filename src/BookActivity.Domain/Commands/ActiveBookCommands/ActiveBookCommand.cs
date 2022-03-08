@@ -1,7 +1,7 @@
 ﻿using NetDevPack.Messaging;
 using System;
 
-namespace BookActivity.Domain.Commands.BookActiveCommands
+namespace BookActivity.Domain.Commands.ActiveBookCommands
 {
     public abstract class ActiveBookCommand : Command
     {
