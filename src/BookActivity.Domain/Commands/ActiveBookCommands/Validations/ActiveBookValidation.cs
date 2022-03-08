@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using System;
 
-namespace BookActivity.Domain.Commands.BookActiveCommands.Validations
+namespace BookActivity.Domain.Commands.ActiveBookCommands.Validations
 {
     public abstract class ActiveBookValidation<T> : AbstractValidator<T> where T : ActiveBookCommand
     {

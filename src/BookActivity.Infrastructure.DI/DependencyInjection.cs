@@ -1,4 +1,4 @@
-﻿using BookActivity.Domain.Commands.BookActiveCommands;
+﻿using BookActivity.Domain.Commands.ActiveBookCommands;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.UserNotificationsEvents;
 using BookActivity.Domain.Interfaces.Repositories;

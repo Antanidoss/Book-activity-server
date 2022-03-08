@@ -9,7 +9,7 @@ using FluentValidation.Results;
 using MediatR;
 using NetDevPack.Messaging;
 
-namespace BookActivity.Domain.Commands.BookActiveCommands
+namespace BookActivity.Domain.Commands.ActiveBookCommands
 {
     public class ActiveBookCommandHandler : CommandHandler,
         IRequestHandler<AddBookActiveCommand, ValidationResult>,

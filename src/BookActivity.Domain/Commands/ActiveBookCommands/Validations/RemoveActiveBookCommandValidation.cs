@@ -1,4 +1,4 @@
-﻿namespace BookActivity.Domain.Commands.BookActiveCommands.Validations
+﻿namespace BookActivity.Domain.Commands.ActiveBookCommands.Validations
 {
     public class RemoveActiveBookCommandValidation : ActiveBookValidation<RemoveActiveBookCommand>
     {
