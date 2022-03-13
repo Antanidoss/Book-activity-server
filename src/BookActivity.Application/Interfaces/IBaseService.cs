@@ -1,4 +1,5 @@
 ﻿using BookActivity.Application.Models.DTO;
+using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.Filters;
 using System;
 using System.Collections.Generic;

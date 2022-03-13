@@ -8,4 +8,12 @@
     <ProjectReference Include="..\BookActivity.Domain\BookActivity.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\DTO\Update\" />
+  </ItemGroup>
+
 </Project>
