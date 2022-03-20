@@ -20,7 +20,7 @@ namespace BookActivity.Infrastructure.DI
             services.AddScoped<IActiveBookRepository, ActiveBookRepository>();
             services.AddScoped<IEventStoreRepository, EventStoreRepository>();
 
-            services.AddScoped<IRequestHandler<AddBookActiveCommand, ValidationResult>, ActiveBookCommandHandler>();
+            services.AddScoped<IRequestHandler<AddActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
             services.AddScoped<IRequestHandler<RemoveActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
 

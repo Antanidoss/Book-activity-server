@@ -12,7 +12,7 @@ using NetDevPack.Messaging;
 namespace BookActivity.Domain.Commands.ActiveBookCommands
 {
     public class ActiveBookCommandHandler : CommandHandler,
-        IRequestHandler<AddBookActiveCommand, ValidationResult>,
+        IRequestHandler<AddActiveBookCommand, ValidationResult>,
         IRequestHandler<UpdateActiveBookCommand, ValidationResult>,
         IRequestHandler<RemoveActiveBookCommand, ValidationResult>
     {
@@ -23,7 +23,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
             _activeBookRepository = activeBookRepository;
         }
 
-        public async Task<ValidationResult> Handle(AddBookActiveCommand request, CancellationToken cancellationToken)
+        public async Task<ValidationResult> Handle(AddActiveBookCommand request, CancellationToken cancellationToken)
         {
             if (!request.IsValid()) return request.ValidationResult;
 

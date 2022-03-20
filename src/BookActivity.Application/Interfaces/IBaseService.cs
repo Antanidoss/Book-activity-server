@@ -1,22 +1,15 @@
-﻿using BookActivity.Application.Models.DTO;
+﻿using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
+using BookActivity.Application.Models.DTO.Update;
 using BookActivity.Application.Models.Filters;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 
 namespace BookActivity.Application.Interfaces
 {
-    public interface IBaseService<E, F> 
-        where E : BaseEntityDTO
+    public interface IBaseService<R, C, U, F> : IBaseCommandService<C, U>, IBaseQueryService<R, F>
+        where R : BaseEntityDTO
+        where C : BaseCreateDTO
+        where U : BaseUpdateDTO
         where F : BaseFilterModel
     {
-        Task<ValidationResult> AddActiveBookAsync(E entity);
-        Task<ValidationResult> RemoveActiveBookAsync(Guid entityId);
-        Task<ValidationResult> UpdateActiveBookAsync(E entity);
-
-        Task<IList<E>> GetByFilterAsync(F filterModel);
-        Task<E> GetByIdAsync(Guid entityId);
     }
 }
