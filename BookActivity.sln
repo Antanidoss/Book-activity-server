@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32126.315
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9DFCB304-4323-494B-B407-F391E32B2504}"
 EndProject
@@ -19,9 +19,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookActivity.Infrastructure
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{C03163A1-4DFF-4426-8271-EF31F3FC8AB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookActivity.Application", "src\BookActivity.Application\BookActivity.Application.csproj", "{8CCBD6C9-D73D-450D-A18D-A08FD0353686}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookActivity.Application", "src\BookActivity.Application\BookActivity.Application.csproj", "{8CCBD6C9-D73D-450D-A18D-A08FD0353686}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookActivity.Infrastructure.DI", "src\BookActivity.Infrastructure.DI\BookActivity.Infrastructure.DI.csproj", "{D3626940-5B9F-494F-9EAC-C83724186054}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{FA4D24D3-9507-45A2-994E-A37CB555AA95}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookActivity.Api.Common", "src\BookActivity.Api.Common\BookActivity.Api.Common.csproj", "{27F722DB-9DD3-4D60-8350-85A610E28DA2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookActivity.Application.DI", "src\BookActivity.Application.DI\BookActivity.Application.DI.csproj", "{CCB134ED-291A-46CD-817E-8CAB1E9A3D2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookActivity.Api", "src\BookActivity.Api\BookActivity.Api.csproj", "{A2C278BC-1018-44BB-A51E-F993F7251A0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +61,18 @@ Global
 		{D3626940-5B9F-494F-9EAC-C83724186054}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3626940-5B9F-494F-9EAC-C83724186054}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3626940-5B9F-494F-9EAC-C83724186054}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27F722DB-9DD3-4D60-8350-85A610E28DA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27F722DB-9DD3-4D60-8350-85A610E28DA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27F722DB-9DD3-4D60-8350-85A610E28DA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27F722DB-9DD3-4D60-8350-85A610E28DA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCB134ED-291A-46CD-817E-8CAB1E9A3D2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCB134ED-291A-46CD-817E-8CAB1E9A3D2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCB134ED-291A-46CD-817E-8CAB1E9A3D2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCB134ED-291A-46CD-817E-8CAB1E9A3D2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2C278BC-1018-44BB-A51E-F993F7251A0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2C278BC-1018-44BB-A51E-F993F7251A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2C278BC-1018-44BB-A51E-F993F7251A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2C278BC-1018-44BB-A51E-F993F7251A0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,6 +87,10 @@ Global
 		{C03163A1-4DFF-4426-8271-EF31F3FC8AB4} = {9DFCB304-4323-494B-B407-F391E32B2504}
 		{8CCBD6C9-D73D-450D-A18D-A08FD0353686} = {C03163A1-4DFF-4426-8271-EF31F3FC8AB4}
 		{D3626940-5B9F-494F-9EAC-C83724186054} = {4609E209-99DF-454B-BFAF-1DB23FD8BE5B}
+		{FA4D24D3-9507-45A2-994E-A37CB555AA95} = {9DFCB304-4323-494B-B407-F391E32B2504}
+		{27F722DB-9DD3-4D60-8350-85A610E28DA2} = {FA4D24D3-9507-45A2-994E-A37CB555AA95}
+		{CCB134ED-291A-46CD-817E-8CAB1E9A3D2D} = {C03163A1-4DFF-4426-8271-EF31F3FC8AB4}
+		{A2C278BC-1018-44BB-A51E-F993F7251A0D} = {FA4D24D3-9507-45A2-994E-A37CB555AA95}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A8ECF7E0-8E53-4EE7-B031-A976B3CC6926}

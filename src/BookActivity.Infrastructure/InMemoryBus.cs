@@ -10,6 +10,7 @@ namespace BookActivity.Infrastructure
     public class InMemoryBus : IMediatorHandler
     {
         private readonly IMediator _mediator;
+
         private readonly IEventStore _eventStore;
 
         public InMemoryBus(IMediator mediator, IEventStore eventStore)

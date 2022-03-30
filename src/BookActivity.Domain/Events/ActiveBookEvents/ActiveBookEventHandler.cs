@@ -1,8 +1,4 @@
-﻿using BookActivity.Domain.Models;
-using MediatR;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Linq;
+﻿using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,19 +9,19 @@ namespace BookActivity.Domain.Events.ActiveBookEvent
         INotificationHandler<UpdateActiveBookEvent>,
         INotificationHandler<RemoveActiveBookEvent>
     {
-        public async Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
+        public Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
         {
-            
+            return Task.CompletedTask;
         }
 
         public Task Handle(UpdateActiveBookEvent notification, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task Handle(RemoveActiveBookEvent notification, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }
