@@ -106,9 +106,7 @@ namespace BookActivity.Infrastructure.Data.Context
                 .SelectMany(x => x.Entity.DomainEvents)
                 .ToList();
 
-            domainEntities
-                .ToList()
-                .ForEach(entity => entity.Entity.ClearDomainEvents());
+            domainEntities.ToList().ForEach(entity => entity.Entity.ClearDomainEvents());
 
             var tasks = domainEvents
                 .Select(async (domainEvent) => {

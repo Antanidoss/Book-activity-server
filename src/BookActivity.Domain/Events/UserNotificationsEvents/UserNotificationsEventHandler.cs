@@ -12,25 +12,27 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
         INotificationHandler<AddActiveBookEvent>
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly IBookRepository _bookRepository;
+        //private readonly IBookRepository _bookRepository;
 
-        public UserNotificationsEventHandler(UserManager<AppUser> userManager, IBookRepository bookRepository)
+        public UserNotificationsEventHandler(UserManager<AppUser> userManager/*, IBookRepository bookRepository*/)
         {
             _userManager = userManager;
-            _bookRepository = bookRepository;
+            //_bookRepository = bookRepository;
         }
 
-        public async Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
+        public Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
         {
-            var user = await _userManager.FindByIdAsync(notification.UserId.ToString());
-            var book = await _bookRepository.GetByAsync(b => b.Id == notification.BookId);
+            //var user = await _userManager.FindByIdAsync(notification.UserId.ToString());
+            //var book = await _bookRepository.GetByAsync(b => b.Id == notification.BookId);
 
-            foreach (var followedUser in user.FollowedUsers)
-            {
-                followedUser.UserNotifications.Add(new UserNotification($"Пользователь {followedUser.UserName} сделал книгу \"{book.Title}\" активной", followedUser.Id, notification.IsPublic));
+            //foreach (var followedUser in user.FollowedUsers)
+            //{
+            //    followedUser.UserNotifications.Add(new UserNotification($"Пользователь {followedUser.UserName} сделал книгу \"{book.Title}\" активной", followedUser.Id, notification.IsPublic));
 
-                await _userManager.UpdateAsync(followedUser);
-            }
+            //    await _userManager.UpdateAsync(followedUser);
+            //}
+
+            return Task.CompletedTask;
         }
     }
 }
