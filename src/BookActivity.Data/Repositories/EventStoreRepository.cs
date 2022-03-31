@@ -1,4 +1,5 @@
 ﻿using BookActivity.Domain.Core.Events;
+using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System;

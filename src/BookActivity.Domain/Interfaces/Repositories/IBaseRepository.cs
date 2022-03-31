@@ -9,8 +9,8 @@ namespace BookActivity.Domain.Interfaces.Repositories
 {
     public interface IBaseRepository<T> : IRepository<T> where T : BaseEntity
     {
-        Task<T> GetByAsync(Expression<Func<ActiveBook, bool>> condition);
-        Task<IEnumerable<T>> GetByAsync(Expression<Func<ActiveBook, bool>> condition, int skip, int take);
+        Task<T> GetByAsync(Expression<Func<T, bool>> condition);
+        Task<IEnumerable<T>> GetByAsync(Expression<Func<T, bool>> condition, int skip, int take);
 
         void Add(T entity);
         void Update(T entity);

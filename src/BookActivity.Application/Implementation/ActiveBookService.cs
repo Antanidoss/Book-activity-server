@@ -10,6 +10,7 @@ using FluentValidation.Results;
 using NetDevPack.Mediator;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Application.Implementation
@@ -46,7 +47,9 @@ namespace BookActivity.Application.Implementation
 
         public async Task<IList<ActiveBookDTO>> GetByFilterAsync(ActiveBookFilterModel filterModel)
         {
-            throw new NotImplementedException();
+            var activeBooks = await _activeBookRepository.GetByAsync(filterModel.Condition, filterModel.Skip, filterModel.Take);
+
+            return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
         }
 
         public async Task<ActiveBookDTO> GetByIdAsync(Guid entityId)

@@ -16,4 +16,8 @@
     <ProjectReference Include="..\BookActivity.Domain\BookActivity.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
 </Project>

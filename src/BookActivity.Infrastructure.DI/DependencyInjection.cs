@@ -41,6 +41,7 @@ namespace BookActivity.Infrastructure.DI
             services.AddScoped<IEventStore, EventStore>();
 
             services.AddScoped<IActiveBookRepository, ActiveBookRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IEventStoreRepository, EventStoreRepository>();
 
             services.AddScoped<IRequestHandler<AddActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
@@ -63,7 +64,7 @@ namespace BookActivity.Infrastructure.DI
 
         private static void CreateDatabasesIfNotExist(DbContext context)
         {
-            if ((context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
+            if (!(context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
             {
                 context.Database.EnsureCreated();
             }

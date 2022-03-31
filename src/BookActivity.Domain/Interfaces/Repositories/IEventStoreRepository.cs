@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
+namespace BookActivity.Domain.Interfaces.Repositories
 {
     public interface IEventStoreRepository : IDisposable
     {

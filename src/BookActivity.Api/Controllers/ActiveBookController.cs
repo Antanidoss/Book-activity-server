@@ -1,6 +1,7 @@
 ﻿using BookActivity.Api.Common.Constants;
 using BookActivity.Application.Interfaces;
 using BookActivity.Application.Models.DTO.Read;
+using BookActivity.Application.Models.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,9 +20,14 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetaActiveBooksMethod)]
-        public async Task<IEnumerable<ActiveBookDTO>> GetaActiveBooks(Guid userId)
+        public async Task<IEnumerable<ActiveBookDTO>> GetaActiveBooks(Guid userId, int skip, int take)
         {
-            return await _activeBookService.GetByFilterAsync(new Application.Models.Filters.ActiveBookFilterModel());
+            return await _activeBookService.GetByFilterAsync(new ActiveBookFilterModel
+            {
+                Condition = a => a.UserId == userId,
+                Skip = skip,
+                Take = take
+            });
         }
     }
 }
