@@ -1,5 +1,5 @@
 ﻿using BookActivity.Domain.Core.Events;
-using BookActivity.Infrastructure.Data.Repositories.EventSourcing;
+using BookActivity.Domain.Interfaces.Repositories;
 using NetDevPack.Messaging;
 using Newtonsoft.Json;
 

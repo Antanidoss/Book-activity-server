@@ -14,15 +14,15 @@ namespace BookActivity.Infrastructure.Data.Repositories
     public class ActiveBookRepository : IActiveBookRepository
     {
         protected readonly BookActivityContext Db;
+
         protected readonly DbSet<ActiveBook> DbSet;
+        public IUnitOfWork UnitOfWork => Db;
 
         public ActiveBookRepository(BookActivityContext context)
         {
             Db = context;
             DbSet = Db.Set<ActiveBook>();
         }
-
-        public IUnitOfWork UnitOfWork => Db;
 
         public async Task<ActiveBook> GetByAsync(Expression<Func<ActiveBook, bool>> condition)
         {
