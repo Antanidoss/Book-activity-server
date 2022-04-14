@@ -12,7 +12,7 @@ namespace BookActivity.Application.DI
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             MapperConfigurationExpression mapperConfigureExpression = new();
-            mapperConfigureExpression.AddProfile(new ActiveBookProfile());
+            mapperConfigureExpression.AddProfile(new ActiveBookDTOProfile());
 
             var mappingConfig = new MapperConfiguration(mapperConfigureExpression);
 

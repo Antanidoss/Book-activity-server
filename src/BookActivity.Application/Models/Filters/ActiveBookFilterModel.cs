@@ -6,8 +6,11 @@ namespace BookActivity.Application.Models.Filters
 {
     public class ActiveBookFilterModel : BaseFilterModel
     {
-        public int Skip { get; set; }
-        public int Take { get; set; }
         public Expression<Func<ActiveBook, bool>> Condition { get; set; }
+
+        public ActiveBookFilterModel(int skip, int take, Expression<Func<ActiveBook, bool>> condition) : base(skip, take)
+        {
+            Condition = condition;
+        }
     }
 }
