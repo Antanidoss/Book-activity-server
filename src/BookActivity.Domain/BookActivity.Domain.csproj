@@ -13,4 +13,8 @@
     <ProjectReference Include="..\BookActivity.Domain.Core\BookActivity.Domain.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\BookCommands\Validations\" />
+  </ItemGroup>
+
 </Project>
