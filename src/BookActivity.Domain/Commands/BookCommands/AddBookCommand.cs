@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BookActivity.Domain.Commands.BookCommands
 {
     public class AddBookCommand : BookCommand
     {
-        public AddBookCommand(string title, string description, IEnumerable<int> authorIds)
+        public AddBookCommand() { }
+        public AddBookCommand(string title, string description, IEnumerable<Guid> authorIds)
         {
             Title = title;
             Description = description;

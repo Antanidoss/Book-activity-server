@@ -19,15 +19,10 @@ namespace BookActivity.Api.Controllers
             _activeBookService = activeBookService;
         }
 
-        [HttpGet(ApiConstants.GetaActiveBooksMethod)]
+        [HttpGet(ApiConstants.GetActiveBooksMethod)]
         public async Task<IEnumerable<ActiveBookDTO>> GetaActiveBooks(Guid userId, int skip, int take)
         {
-            return await _activeBookService.GetByFilterAsync(new ActiveBookFilterModel
-            {
-                Condition = a => a.UserId == userId,
-                Skip = skip,
-                Take = take
-            });
+            return await _activeBookService.GetByFilterAsync(new ActiveBookFilterModel(skip, take, a => a.UserId == userId));
         }
     }
 }

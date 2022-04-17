@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Application.Interfaces
 {
-    public interface IBaseQueryService<R, F>
-        where R : BaseEntityDTO
+    public interface IBaseQueryService<E, F>
+        where E : BaseEntityDTO
         where F : BaseFilterModel
     {
-        Task<IList<R>> GetByFilterAsync(F filterModel);
-        Task<R> GetByIdAsync(Guid entityId);
+        Task<IList<E>> GetByFilterAsync(F filterModel);
     }
 }

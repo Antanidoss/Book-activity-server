@@ -8,6 +8,8 @@ namespace BookActivity.Application.Models.DTO.Create
         public string Description { get; set; }
         public IEnumerable<int> AuthorIds { get; private set; }
 
+        public CreateBookDTO() { }
+
         public CreateBookDTO(string title, string description, IEnumerable<int> authorIds) : base()
         {
             Title = title;

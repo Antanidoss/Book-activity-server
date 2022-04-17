@@ -51,10 +51,5 @@ namespace BookActivity.Application.Implementation
 
             return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
         }
-
-        public async Task<ActiveBookDTO> GetByIdAsync(Guid entityId)
-        {
-            return _mapper.Map<ActiveBookDTO>(await _activeBookRepository.GetByAsync(a => a.Id == entityId));
-        }
     }
 }

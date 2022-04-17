@@ -27,7 +27,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            var activeBook = new ActiveBook(Guid.NewGuid() ,request.TotalNumberPages, request.NumberPagesRead, request.BookId, request.UserId, request.IsPublic);
+            var activeBook = new ActiveBook(Guid.NewGuid(), request.TotalNumberPages, request.NumberPagesRead, request.BookId, request.UserId, request.IsPublic);
 
             activeBook.AddDomainEvent(new AddActiveBookEvent(
                 activeBook.Id,
