@@ -1,4 +1,5 @@
 ﻿using BookActivity.Domain.Commands.ActiveBookCommands;
+using BookActivity.Domain.Commands.BookCommands;
 using BookActivity.Domain.Core.Events;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.UserNotificationsEvents;
@@ -40,18 +41,9 @@ namespace BookActivity.Infrastructure.DI
             services.AddScoped<IMediatorHandler, InMemoryBus>();
             services.AddScoped<IEventStore, EventStore>();
 
-            services.AddScoped<IActiveBookRepository, ActiveBookRepository>();
-            services.AddScoped<IBookRepository, BookRepository>();
-            services.AddScoped<IEventStoreRepository, EventStoreRepository>();
-
-            services.AddScoped<IRequestHandler<AddActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
-            services.AddScoped<IRequestHandler<UpdateActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
-            services.AddScoped<IRequestHandler<RemoveActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
-
-            services.AddScoped<INotificationHandler<AddActiveBookEvent>, ActiveBookEventHandler>();
-            services.AddScoped<INotificationHandler<UpdateActiveBookEvent>, ActiveBookEventHandler>();
-            services.AddScoped<INotificationHandler<RemoveActiveBookEvent>, ActiveBookEventHandler>();
-            services.AddScoped<INotificationHandler<AddActiveBookEvent>, UserNotificationsEventHandler>();
+            ConfigureRepositories(services);
+            ConfigureCommandHandlers(services);
+            ConfigureEventHandlers(services);
 
             return services;
         }
@@ -65,9 +57,34 @@ namespace BookActivity.Infrastructure.DI
         private static void CreateDatabasesIfNotExist(DbContext context)
         {
             if (!(context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
-            {
                 context.Database.EnsureCreated();
-            }
+        }
+
+        private static void ConfigureRepositories(IServiceCollection services)
+        {
+            services.AddScoped<IActiveBookRepository, ActiveBookRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IEventStoreRepository, EventStoreRepository>();
+            services.AddScoped<IAuthorRepository, AuthorRepository>();
+        }
+
+        private static void ConfigureCommandHandlers(IServiceCollection services)
+        {
+            services.AddScoped<IRequestHandler<AddActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
+
+            services.AddScoped<IRequestHandler<AddBookCommand, ValidationResult>, BookCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateBookCommand, ValidationResult>, BookCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveBookCommand, ValidationResult>, BookCommandHandler>();
+        }
+
+        private static void ConfigureEventHandlers(IServiceCollection services)
+        {
+            services.AddScoped<INotificationHandler<AddActiveBookEvent>, ActiveBookEventHandler>();
+            services.AddScoped<INotificationHandler<UpdateActiveBookEvent>, ActiveBookEventHandler>();
+            services.AddScoped<INotificationHandler<RemoveActiveBookEvent>, ActiveBookEventHandler>();
+            services.AddScoped<INotificationHandler<AddActiveBookEvent>, UserNotificationsEventHandler>();
         }
     }
 }
