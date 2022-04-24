@@ -3,8 +3,9 @@ using BookActivity.Application.Interfaces;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
-using BookActivity.Application.Models.Filters;
 using BookActivity.Domain.Commands.BookCommands;
+using BookActivity.Domain.Filters.FilterFacades;
+using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using FluentValidation.Results;
 using NetDevPack.Mediator;
@@ -36,16 +37,9 @@ namespace BookActivity.Application.Implementation
 
         public async Task<IList<BookDTO>> GetByFilterAsync(BookFilterModel filterModel)
         {
-            var books = await _bookRepository.GetByAsync(filterModel.Condtion, filterModel.Skip, filterModel.Take);
+            var books = await _bookRepository.GetByFilterAsync(new BookFilter(filterModel));
 
             return _mapper.Map<List<BookDTO>>(books);
-        }
-
-        public async Task<BookDTO> GetByIdAsync(Guid bookId)
-        {
-            var book = await _bookRepository.GetByAsync(b => b.Id == bookId);
-
-            return _mapper.Map<BookDTO>(book);
         }
 
         public async Task<ValidationResult> RemoveActiveBookAsync(Guid bookId)

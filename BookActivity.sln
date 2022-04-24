@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookActivity.Api.Common", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookActivity.Application.DI", "src\BookActivity.Application.DI\BookActivity.Application.DI.csproj", "{CCB134ED-291A-46CD-817E-8CAB1E9A3D2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookActivity.Api", "src\BookActivity.Api\BookActivity.Api.csproj", "{A2C278BC-1018-44BB-A51E-F993F7251A0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookActivity.Api", "src\BookActivity.Api\BookActivity.Api.csproj", "{A2C278BC-1018-44BB-A51E-F993F7251A0D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{16F83582-CD72-4F57-8D3D-497DDC342473}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,7 @@ Global
 		{27F722DB-9DD3-4D60-8350-85A610E28DA2} = {FA4D24D3-9507-45A2-994E-A37CB555AA95}
 		{CCB134ED-291A-46CD-817E-8CAB1E9A3D2D} = {C03163A1-4DFF-4426-8271-EF31F3FC8AB4}
 		{A2C278BC-1018-44BB-A51E-F993F7251A0D} = {FA4D24D3-9507-45A2-994E-A37CB555AA95}
+		{16F83582-CD72-4F57-8D3D-497DDC342473} = {9DFCB304-4323-494B-B407-F391E32B2504}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A8ECF7E0-8E53-4EE7-B031-A976B3CC6926}

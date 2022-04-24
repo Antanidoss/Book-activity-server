@@ -2,8 +2,8 @@
 using BookActivity.Application.Interfaces;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
+using BookActivity.Domain.Filters.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,14 +26,9 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetBookByIdMethod)]
-        public async Task<BookDTO> GetBookByIdAsync(Guid bookId)
+        public async Task<BookDTO> GetBookSAsync(BookFilterModel filterModel)
         {
-            return (await _bookService.GetByFilterAsync(new Application.Models.Filters.BookFilterModel
-            (
-                skip: 0,
-                take: 1,
-                condtion: b => true
-            ))).First();
+            return (await _bookService.GetByFilterAsync(filterModel)).FirstOrDefault();
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Filters.FilterFacades;
+using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -24,6 +24,16 @@ namespace BookActivity.Infrastructure.Data.Repositories
             DbSet = Db.Set<BookAuthor>();
         }
 
+        public async Task<IEnumerable<BookAuthor>> GetByFilterAsync(BookAuthorFilter filter)
+        {
+            return await filter.ApplyFilter(DbSet).ToListAsync();
+        }
+
+        public async Task<int> GetCountByFilterAsync(BookAuthorFilter filter)
+        {
+            return await filter.ApplyFilter(DbSet).CountAsync();
+        }
+
         public void Add(BookAuthor entity)
         {
             DbSet.Add(entity);
@@ -32,15 +42,6 @@ namespace BookActivity.Infrastructure.Data.Repositories
         public async Task<BookAuthor> GetByAsync(Expression<Func<BookAuthor, bool>> condition)
         {
             return await DbSet.FirstOrDefaultAsync(condition);
-        }
-
-        public async Task<IEnumerable<BookAuthor>> GetByAsync(Expression<Func<BookAuthor, bool>> condition, int skip, int take)
-        {
-            return await DbSet
-               .Where(condition)
-               .Skip(skip)
-               .Take(take)
-               .ToListAsync();
         }
 
         public void Remove(BookAuthor entity)

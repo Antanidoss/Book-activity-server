@@ -1,15 +1,15 @@
 ﻿using BookActivity.Application.Models.DTO.Read;
-using BookActivity.Application.Models.Filters;
+using BookActivity.Domain.Filters.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BookActivity.Application.Interfaces
 {
-    public interface IBaseQueryService<E, F>
-        where E : BaseEntityDTO
-        where F : BaseFilterModel
+    public interface IBaseQueryService<TEntity, TFilter>
+        where TEntity : BaseEntityDTO
+        where TFilter : BaseFilterModel
     {
-        Task<IList<E>> GetByFilterAsync(F filterModel);
+        Task<IList<TEntity>> GetByFilterAsync(TFilter filterModel);
     }
 }

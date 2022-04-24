@@ -1,12 +1,12 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Filters.FilterFacades;
+using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using FluentValidation.Results;
 using MediatR;
 using NetDevPack.Messaging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,14 +31,13 @@ namespace BookActivity.Domain.Commands.BookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            List<BookAuthor> authors = new();
-            foreach (var authorId in request.AuthorIds)
-            {
-                authors.Add(await _authorRepository.GetByAsync(a => authorId == a.Id));
-            }
+            BookAuthorFilter authorFilter = new(new BookAuthorFilterModel(request.AuthorIds.ToArray()));
+            var authorCount = await _authorRepository.GetCountByFilterAsync(authorFilter);
 
-            var author = await _authorRepository.GetByAsync(a => request.AuthorIds.Any(i => i == a.Id));
-            var newBook = new Book(request.Title, request.Description, true, authors.ToArray());
+            authorFilter = new(new BookAuthorFilterModel(request.AuthorIds.ToArray(), 0, authorCount));
+            var authors = await _authorRepository.GetByFilterAsync(authorFilter);
+
+            Book newBook = new(request.Title, request.Description, true, authors.ToArray());
 
             _bookRepository.Add(newBook);
 
