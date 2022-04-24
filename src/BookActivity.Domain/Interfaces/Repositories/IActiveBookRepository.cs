@@ -1,8 +1,9 @@
-﻿using BookActivity.Domain.Models;
+﻿using BookActivity.Domain.Filters.FilterFacades;
+using BookActivity.Domain.Models;
 
 namespace BookActivity.Domain.Interfaces.Repositories
 {
-    public interface IActiveBookRepository : IBaseRepository<ActiveBook>
+    public interface IActiveBookRepository : IBaseRepository<ActiveBook, BaseFilter<ActiveBook>>
     {
         
     }

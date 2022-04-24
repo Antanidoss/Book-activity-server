@@ -1,7 +1,7 @@
 ﻿using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
-using BookActivity.Application.Models.Filters;
+using BookActivity.Domain.Filters.Models;
 
 namespace BookActivity.Application.Interfaces
 {

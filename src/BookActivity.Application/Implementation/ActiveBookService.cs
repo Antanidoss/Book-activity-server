@@ -3,14 +3,14 @@ using BookActivity.Application.Interfaces;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
-using BookActivity.Application.Models.Filters;
 using BookActivity.Domain.Commands.ActiveBookCommands;
+using BookActivity.Domain.Filters.FilterFacades;
+using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using FluentValidation.Results;
 using NetDevPack.Mediator;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Application.Implementation
@@ -47,7 +47,7 @@ namespace BookActivity.Application.Implementation
 
         public async Task<IList<ActiveBookDTO>> GetByFilterAsync(ActiveBookFilterModel filterModel)
         {
-            var activeBooks = await _activeBookRepository.GetByAsync(filterModel.Condition, filterModel.Skip, filterModel.Take);
+            var activeBooks = await _activeBookRepository.GetByFilterAsync(new ActiveBookFilter(filterModel));
 
             return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
         }
