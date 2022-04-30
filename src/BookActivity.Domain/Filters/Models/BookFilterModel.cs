@@ -8,7 +8,8 @@ namespace BookActivity.Domain.Filters.Models
 
         public string Title { get; set; }
 
-        protected BookFilterModel() { }
+        public BookFilterModel() { }
+
         public BookFilterModel(Guid bookId, string title ,int skip, int take) : base(skip, take)
         {
             BookId = bookId;

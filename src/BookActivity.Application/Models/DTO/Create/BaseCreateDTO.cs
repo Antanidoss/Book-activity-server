@@ -2,5 +2,6 @@
 {
     public class BaseCreateDTO
     {
+        public virtual bool IsValid() => true;
     }
 }

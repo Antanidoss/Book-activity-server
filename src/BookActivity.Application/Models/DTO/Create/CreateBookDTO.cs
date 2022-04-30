@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BookActivity.Application.Models.DTO.Create
 {
@@ -6,11 +7,11 @@ namespace BookActivity.Application.Models.DTO.Create
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public IEnumerable<int> AuthorIds { get; private set; }
+        public IEnumerable<Guid> AuthorIds { get; private set; }
 
         public CreateBookDTO() { }
 
-        public CreateBookDTO(string title, string description, IEnumerable<int> authorIds) : base()
+        public CreateBookDTO(string title, string description, IEnumerable<Guid> authorIds) : base()
         {
             Title = title;
             Description = description;

@@ -25,7 +25,7 @@ namespace BookActivity.Api.Controllers
             await _bookService.AddActiveBookAsync(createBookModel);
         }
 
-        [HttpGet(ApiConstants.GetBookByIdMethod)]
+        [HttpGet(ApiConstants.GetBooksMethod)]
         public async Task<BookDTO> GetBookSAsync(BookFilterModel filterModel)
         {
             return (await _bookService.GetByFilterAsync(filterModel)).FirstOrDefault();
