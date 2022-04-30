@@ -3,7 +3,7 @@ using System;
 
 namespace BookActivity.Domain.Events.ActiveBookEvent
 {
-    public class RemoveActiveBookEvent : Event
+    public sealed class RemoveActiveBookEvent : Event
     {
         public RemoveActiveBookEvent(Guid activeBookId)
         {

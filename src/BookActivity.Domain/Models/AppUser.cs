@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BookActivity.Domain.Models
 {
-    public class AppUser : IdentityUser<Guid>
+    public sealed class AppUser : IdentityUser<Guid>
     {
         /// <summary>
         /// Relation of user with the subscription info

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Events.UserNotificationsEvents
 {
-    public class UserNotificationsEventHandler : INotificationHandler<AddActiveBookEvent>
+    public sealed class UserNotificationsEventHandler : INotificationHandler<AddActiveBookEvent>
     {
         private readonly UserManager<AppUser> _userManager;
 

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Events.ActiveBookEvent
 {
-    public class ActiveBookEventHandler :
+    public sealed class ActiveBookEventHandler :
         INotificationHandler<AddActiveBookEvent>,
         INotificationHandler<UpdateActiveBookEvent>,
         INotificationHandler<RemoveActiveBookEvent>

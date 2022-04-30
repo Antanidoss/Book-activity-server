@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace BookActivity.Domain.Filters.FilterFacades
 {
-    public class BookAuthorFilter : BaseFilter<BookAuthor>
+    public sealed class BookAuthorFilter : BaseFilter<BookAuthor>
     {
         private readonly BookAuthorFilterModel _authorFilterModel;
         public BookAuthorFilter(BookAuthorFilterModel authorFilterModel) : base(authorFilterModel)

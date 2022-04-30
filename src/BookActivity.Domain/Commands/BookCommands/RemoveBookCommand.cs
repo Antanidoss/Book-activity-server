@@ -2,7 +2,7 @@
 
 namespace BookActivity.Domain.Commands.BookCommands
 {
-    public class RemoveBookCommand : BookCommand
+    public sealed class RemoveBookCommand : BookCommand
     {
         public RemoveBookCommand(Guid bookId)
         {

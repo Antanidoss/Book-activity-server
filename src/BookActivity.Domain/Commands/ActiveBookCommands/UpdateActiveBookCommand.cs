@@ -2,7 +2,7 @@
 
 namespace BookActivity.Domain.Commands.ActiveBookCommands
 {
-    public class UpdateActiveBookCommand : ActiveBookCommand
+    public sealed class UpdateActiveBookCommand : ActiveBookCommand
     {
         public UpdateActiveBookCommand(Guid bookActiveId, int numberPagesRead)
         {

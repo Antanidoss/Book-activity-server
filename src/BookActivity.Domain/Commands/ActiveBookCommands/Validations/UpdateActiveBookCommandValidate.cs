@@ -1,6 +1,6 @@
 ﻿namespace BookActivity.Domain.Commands.ActiveBookCommands.Validations
 {
-    public class UpdateActiveBookCommandValidate : ActiveBookValidation<UpdateActiveBookCommand>
+    public sealed class UpdateActiveBookCommandValidate : ActiveBookValidation<UpdateActiveBookCommand>
     {
         public UpdateActiveBookCommandValidate()
         {

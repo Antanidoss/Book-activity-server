@@ -3,7 +3,7 @@ using System;
 
 namespace BookActivity.Application.Models.DTO.Read
 {
-    public class ResponseOpinionDTO : BaseEntityDTO
+    public sealed class ResponseOpinionDTO : BaseEntityDTO
     {
         public ResponseOpinionType ResponseOpinionType { get; set; }
         public BookOpinionDTO BookOpinion { get; set; }

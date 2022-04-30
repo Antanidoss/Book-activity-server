@@ -2,7 +2,7 @@
 
 namespace BookActivity.Domain.Models
 {
-    public class UserNotification : BaseEntity
+    public sealed class UserNotification : BaseEntity
     {
         /// <summary>
         /// Notification Description
@@ -15,7 +15,7 @@ namespace BookActivity.Domain.Models
         public AppUser User { get; private set; }
         public Guid UserId { get; private set; }
 
-        protected UserNotification() : base() { }
+        private UserNotification() : base() { }
 
         public UserNotification(string description, Guid userId, bool isPublic) : base(isPublic)
         {

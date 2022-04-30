@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace BookActivity.Infrastructure.Data.EventSourcing
 {
-    public class EventStore : IEventStore
+    public sealed class EventStore : IEventStore
     {
         private readonly IEventStoreRepository _eventStoreRepository;
 

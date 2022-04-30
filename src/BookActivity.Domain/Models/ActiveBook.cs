@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BookActivity.Domain.Models
 {
-    public class ActiveBook : BaseEntity
+    public sealed class ActiveBook : BaseEntity
     {
         /// <summary>
         /// Total number of pages
@@ -32,7 +32,7 @@ namespace BookActivity.Domain.Models
         /// </summary>
         public ICollection<BookNote> BookNotes { get; set; }
 
-        protected ActiveBook() : base() { }
+        private ActiveBook() : base() { }
         public ActiveBook(Guid activeBookId, int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId, bool isPublic) : base(isPublic)
         {
             Id = activeBookId;

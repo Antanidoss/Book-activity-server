@@ -2,7 +2,7 @@
 
 namespace BookActivity.Application.Models.DTO.Create
 {
-    public class CreateBookDTO : BaseCreateDTO
+    public sealed class CreateBookDTO : BaseCreateDTO
     {
         public string Title { get; set; }
         public string Description { get; set; }

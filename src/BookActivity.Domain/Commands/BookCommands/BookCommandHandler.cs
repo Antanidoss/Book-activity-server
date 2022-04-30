@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Commands.BookCommands
 {
-    public class BookCommandHandler : CommandHandler,
+    public sealed class BookCommandHandler : CommandHandler,
         IRequestHandler<AddBookCommand, ValidationResult>,
         IRequestHandler<UpdateBookCommand, ValidationResult>,
         IRequestHandler<RemoveBookCommand, ValidationResult>

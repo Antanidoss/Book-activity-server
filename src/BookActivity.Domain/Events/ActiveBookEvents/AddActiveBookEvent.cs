@@ -3,7 +3,7 @@ using System;
 
 namespace BookActivity.Domain.Events.ActiveBookEvent
 {
-    public class AddActiveBookEvent : Event
+    public sealed class AddActiveBookEvent : Event
     {
         public AddActiveBookEvent(Guid activeBookId, int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId, bool isPublic)
         {

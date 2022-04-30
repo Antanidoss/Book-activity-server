@@ -14,7 +14,7 @@ using NetDevPack.Messaging;
 
 namespace BookActivity.Domain.Commands.ActiveBookCommands
 {
-    public class ActiveBookCommandHandler : CommandHandler,
+    public sealed class ActiveBookCommandHandler : CommandHandler,
         IRequestHandler<AddActiveBookCommand, ValidationResult>,
         IRequestHandler<UpdateActiveBookCommand, ValidationResult>,
         IRequestHandler<RemoveActiveBookCommand, ValidationResult>
