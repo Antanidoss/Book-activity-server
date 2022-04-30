@@ -2,7 +2,7 @@
 
 namespace BookActivity.Domain.Models
 {
-    public class BookCategory : BaseEntity
+    public sealed class BookCategory : BaseEntity
     {
         /// <summary>
         /// Title category
@@ -14,7 +14,7 @@ namespace BookActivity.Domain.Models
         /// </summary>
         public ICollection<Book> Books { get; set; }
 
-        protected BookCategory() : base() { }
+        private BookCategory() : base() { }
         public BookCategory(string title) : base()
         {
             Title = title;

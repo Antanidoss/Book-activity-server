@@ -2,7 +2,7 @@
 
 namespace BookActivity.Application.Models.DTO.Update
 {
-    public class UpdateActiveBookDTO : BaseUpdateDTO
+    public sealed class UpdateActiveBookDTO : BaseUpdateDTO
     {
         public int NumberPagesRead { get; set; }
 

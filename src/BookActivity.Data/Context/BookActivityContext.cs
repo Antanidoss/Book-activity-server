@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace BookActivity.Infrastructure.Data.Context
 {
-    public class BookActivityContext : IdentityDbContext<AppUser, AppRole, Guid>, IUnitOfWork
+    public sealed class BookActivityContext : IdentityDbContext<AppUser, AppRole, Guid>, IUnitOfWork
     {
         private readonly IMediatorHandler _mediatorHandler;
 

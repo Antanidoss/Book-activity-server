@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace BookActivity.Models.Filters.Specifications.Book
 {
-    public class BookByTitleSpec : IQueryableSpecification<Domain.Models.Book>
+    public sealed class BookByTitleSpec : IQueryableSpecification<Domain.Models.Book>
     {
         private readonly string _title;
         public BookByTitleSpec(string title)

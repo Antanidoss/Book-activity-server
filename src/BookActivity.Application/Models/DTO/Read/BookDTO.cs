@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BookActivity.Application.Models.DTO.Read
 {
-    public class BookDTO : BaseEntityDTO
+    public sealed class BookDTO : BaseEntityDTO
     {
         public string Title { get; set; }
         public string Description { get; set; }

@@ -2,7 +2,7 @@
 
 namespace BookActivity.Domain.Models
 {
-    public class ResponseOpinion : BaseEntity
+    public sealed class ResponseOpinion : BaseEntity
     {
         /// <summary>
         /// Opinion response type
@@ -21,7 +21,7 @@ namespace BookActivity.Domain.Models
         public AppUser User { get; private set; }
         public Guid UserId { get; private set; }
 
-        protected ResponseOpinion() : base() { }
+        private ResponseOpinion() : base() { }
         public ResponseOpinion(ResponseOpinionType responseOpinionType, Guid userId, Guid bookOpinionId, bool isPublic) : base(isPublic)
         {
             ResponseOpinionType = responseOpinionType;

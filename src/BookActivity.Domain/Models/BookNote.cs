@@ -2,7 +2,7 @@
 
 namespace BookActivity.Domain.Models
 {
-    public class BookNote : BaseEntity
+    public sealed class BookNote : BaseEntity
     {
         /// <summary>
         /// Text note

@@ -1,6 +1,6 @@
 ﻿namespace BookActivity.Api.Common.Constants
 {
-    public class ApiConstants
+    public sealed class ApiConstants
     {
         public const string ActiveBookService = "activeBook";
 

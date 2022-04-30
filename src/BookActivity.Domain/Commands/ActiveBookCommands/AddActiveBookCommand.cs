@@ -3,7 +3,7 @@ using System;
 
 namespace BookActivity.Domain.Commands.ActiveBookCommands
 {
-    public class AddActiveBookCommand : ActiveBookCommand
+    public sealed class AddActiveBookCommand : ActiveBookCommand
     {
         public AddActiveBookCommand(int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId, bool isPublic)
         {

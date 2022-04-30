@@ -2,7 +2,7 @@
 
 namespace BookActivity.Domain.Filters.Models
 {
-    public class BookFilterModel : BaseFilterModel
+    public sealed class BookFilterModel : BaseFilterModel
     {
         public Guid BookId { get; set; }
 

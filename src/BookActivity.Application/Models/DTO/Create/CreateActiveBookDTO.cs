@@ -2,7 +2,7 @@
 
 namespace BookActivity.Application.Models.DTO.Create
 {
-    public class CreateActiveBookDTO : BaseCreateDTO
+    public sealed class CreateActiveBookDTO : BaseCreateDTO
     {
         public int TotalNumberPages { get; set; }
         public int NumberPagesRead { get; set; }

@@ -2,7 +2,7 @@
 
 namespace BookActivity.Application.Models.DTO.Read
 {
-    public class AppUserDTO
+    public sealed class AppUserDTO
     {
         public ICollection<AppUserDTO> FollowedUsers { get; set; }
         public IEnumerable<BookOpinionDTO> BookOpinions { get; set; }

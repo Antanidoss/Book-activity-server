@@ -2,7 +2,7 @@
 
 namespace BookActivity.Domain.Models
 {
-    public class Book : BaseEntity
+    public sealed class Book : BaseEntity
     {
         /// <summary>
         /// Book title
@@ -24,7 +24,7 @@ namespace BookActivity.Domain.Models
         /// </summary>
         public IList<BookOpinion> BookOpinions { get; set; }
 
-        protected Book() : base() { }
+        private Book() : base() { }
         public Book(string title, string description, bool isPublic, params BookAuthor[] authors) : base(isPublic)
         {
             Title = title;

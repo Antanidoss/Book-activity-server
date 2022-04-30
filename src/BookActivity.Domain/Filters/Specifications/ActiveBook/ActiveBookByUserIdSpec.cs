@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace BookActivity.Domain.Filters.Specifications.ActiveBook
 {
-    public class ActiveBookByUserIdSpec : IQueryableSpecification<Domain.Models.ActiveBook>
+    public sealed class ActiveBookByUserIdSpec : IQueryableSpecification<Domain.Models.ActiveBook>
     {
         private readonly Guid _userId;
 

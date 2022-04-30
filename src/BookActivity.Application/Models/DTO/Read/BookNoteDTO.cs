@@ -3,7 +3,7 @@ using System;
 
 namespace BookActivity.Application.Models.DTO.Read
 {
-    public class BookNoteDTO : BaseEntityDTO
+    public sealed class BookNoteDTO : BaseEntityDTO
     {
         public string Note { get; set; }
         public NoteColor NoteColor { get; set; }

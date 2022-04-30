@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace BookActivity.Domain.Filters.Specifications.Author
 {
-    public class BookAuthorByIdSpec : IQueryableSpecification<BookAuthor>
+    public sealed class BookAuthorByIdSpec : IQueryableSpecification<BookAuthor>
     {
         private readonly Guid _authorId;
 

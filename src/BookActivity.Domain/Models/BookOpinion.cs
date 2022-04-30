@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BookActivity.Domain.Models
 {
-    public class BookOpinion : BaseEntity
+    public sealed class BookOpinion : BaseEntity
     {
         /// <summary>
         /// User rating of the book
@@ -32,7 +32,7 @@ namespace BookActivity.Domain.Models
         /// </summary>
         public ICollection<ResponseOpinion> ResponseOpinions { get; set; }
 
-        protected BookOpinion() : base() { }
+        private BookOpinion() : base() { }
         public BookOpinion(int grade, string description, Guid userId, Guid bookId, bool isPublic) : base(isPublic)
         {
             Grade = grade;

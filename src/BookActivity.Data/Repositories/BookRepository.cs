@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
-    public class BookRepository : IBookRepository
+    public sealed class BookRepository : IBookRepository
     {
-        protected readonly BookActivityContext Db;
+        private readonly BookActivityContext Db;
 
-        protected readonly DbSet<Book> DbSet;
+        private readonly DbSet<Book> DbSet;
         public IUnitOfWork UnitOfWork => Db;
 
         public BookRepository(BookActivityContext context)

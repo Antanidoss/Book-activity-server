@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace BookActivity.Application.Models.DTO.Update
 {
-    public class UpdateBookDTO : BaseUpdateDTO
+    public sealed class UpdateBookDTO : BaseUpdateDTO
     {
         public string Title { get; set; }
         public string Description { get; set; }

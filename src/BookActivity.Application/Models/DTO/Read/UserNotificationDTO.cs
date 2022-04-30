@@ -2,7 +2,7 @@
 
 namespace BookActivity.Application.Models.DTO.Read
 {
-    public class UserNotificationDTO : BaseEntityDTO
+    public sealed class UserNotificationDTO : BaseEntityDTO
     {
         public string Description { get; set; }
         public AppUserDTO User { get; set; }

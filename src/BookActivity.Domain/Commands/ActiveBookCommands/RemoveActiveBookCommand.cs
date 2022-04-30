@@ -3,7 +3,7 @@ using System;
 
 namespace BookActivity.Domain.Commands.ActiveBookCommands
 {
-    public class RemoveActiveBookCommand : ActiveBookCommand
+    public sealed class RemoveActiveBookCommand : ActiveBookCommand
     {
         public RemoveActiveBookCommand(Guid activeBookId)
         {

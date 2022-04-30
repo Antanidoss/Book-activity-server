@@ -2,7 +2,7 @@
 
 namespace BookActivity.Domain.Filters.Models
 {
-    public class BookAuthorFilterModel : BaseFilterModel
+    public sealed class BookAuthorFilterModel : BaseFilterModel
     {
         public readonly Guid[] AuthorIds;
 
