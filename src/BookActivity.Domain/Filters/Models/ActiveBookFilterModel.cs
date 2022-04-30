@@ -4,9 +4,9 @@ namespace BookActivity.Domain.Filters.Models
 {
     public sealed class ActiveBookFilterModel : BaseFilterModel
     {
-        public readonly Guid ActiveBookId;
+        public Guid ActiveBookId { get; set; }
 
-        public readonly Guid UserId;
+        public Guid UserId { get; set; }
 
         public ActiveBookFilterModel(Guid activeBookId, Guid userId, int skip, int take) : base(skip, take)
         {

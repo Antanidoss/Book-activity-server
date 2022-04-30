@@ -2,9 +2,9 @@
 {
     public class BaseFilterModel
     {
-        public readonly int Skip;
+        public int Skip { get; set; }
 
-        public readonly int Take;
+        public int Take { get; set; }
 
         public BaseFilterModel(int skip = 0, int take = 0)
         {
