@@ -30,19 +30,25 @@ namespace BookActivity.Application.Implementation
             _mapper = mapper;
         }
 
-        public async Task<ValidationResult> AddActiveBookAsync(CreateActiveBookDTO entity)
+        public async Task<ValidationResult> AddActiveBookAsync(CreateActiveBookDTO createEntity)
         {
-            return await _mediatorHandler.SendCommand(_mapper.Map<AddActiveBookCommand>(entity));
+            var addActiveBookCommand = _mapper.Map<AddActiveBookCommand>(createEntity);
+
+            return await _mediatorHandler.SendCommand(addActiveBookCommand);
         }
 
         public async Task<ValidationResult> RemoveActiveBookAsync(Guid entityId)
         {
-            return await _mediatorHandler.SendCommand(new RemoveActiveBookCommand(entityId));
+            RemoveActiveBookCommand removeActiveBookCommand = new(entityId);
+
+            return await _mediatorHandler.SendCommand(removeActiveBookCommand);
         }
 
         public async Task<ValidationResult> UpdateActiveBookAsync(UpdateActiveBookDTO entity)
         {
-            return await _mediatorHandler.SendCommand(_mapper.Map<UpdateActiveBookCommand>(entity));
+            var updateActiveBookCommand = _mapper.Map<UpdateActiveBookCommand>(entity);
+
+            return await _mediatorHandler.SendCommand(updateActiveBookCommand);
         }
 
         public async Task<IList<ActiveBookDTO>> GetByFilterAsync(ActiveBookFilterModel filterModel)
