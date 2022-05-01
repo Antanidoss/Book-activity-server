@@ -25,7 +25,10 @@ namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
 
         public async Task<IList<StoredEvent>> GetAllAsync(Guid aggregateId)
         {
-            return await DB.StoredEvent.Where(e => e.AggregateId == aggregateId).ToListAsync();
+            return await DB.StoredEvent
+                .AsNoTracking()
+                .Where(e => e.AggregateId == aggregateId)
+                .ToListAsync();
         }
 
         public void Save(StoredEvent @event)

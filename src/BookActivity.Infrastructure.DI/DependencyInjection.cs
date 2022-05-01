@@ -25,9 +25,11 @@ namespace BookActivity.Infrastructure.DI
     {
         public static IServiceCollection AddInfastructure(this IServiceCollection services, IConfiguration Configuration)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<BookActivityContext>(option => option.UseSqlServer(connection));
-            services.AddDbContext<BookActivityEventStoreContext>(option => option.UseSqlServer(connection));
+            string deffaultConnection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<BookActivityContext>(option => option.UseSqlServer(deffaultConnection));
+
+            string eventStoreConnection = Configuration.GetConnectionString("EventStoreConnection");
+            services.AddDbContext<BookActivityEventStoreContext>(option => option.UseSqlServer(eventStoreConnection));
 
             services.AddIdentity<AppUser, AppRole>(option =>
             {

@@ -16,13 +16,6 @@ namespace BookActivity.Infrastructure.Data.Context
 {
     public sealed class BookActivityContext : IdentityDbContext<AppUser, AppRole, Guid>, IUnitOfWork
     {
-        private readonly IMediatorHandler _mediatorHandler;
-
-        public BookActivityContext(DbContextOptions<BookActivityContext> options, IMediatorHandler mediatorHandler) : base(options)
-        {
-            _mediatorHandler = mediatorHandler;
-        }
-
         public DbSet<Book> Books { get; set; }
         public DbSet<ActiveBook> ActiveBooks { get; set; }
         public DbSet<ResponseOpinion> ResponseOpinions { get; set; }
@@ -30,6 +23,13 @@ namespace BookActivity.Infrastructure.Data.Context
         public DbSet<BookAuthor> BookAuthors { get; set; }
         public DbSet<BookOpinion> BookOpinions { get; set; }
         public DbSet<BookNote> BookNotes { get; set; }
+
+        private readonly IMediatorHandler _mediatorHandler;
+
+        public BookActivityContext(DbContextOptions<BookActivityContext> options, IMediatorHandler mediatorHandler) : base(options)
+        {
+            _mediatorHandler = mediatorHandler;
+        }
 
         public async Task<bool> Commit()
         {
@@ -51,42 +51,42 @@ namespace BookActivity.Infrastructure.Data.Context
 
         public override int SaveChanges()
         {
-            DbSaveChanges();
+            UpdateCreationAndUpdateTime();
 
             return base.SaveChanges();
         }
 
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
-            DbSaveChanges();
+            UpdateCreationAndUpdateTime();
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
-        private void DbSaveChanges()
+        private void UpdateCreationAndUpdateTime()
         {
-            var addedEntities = ChangeTracker.Entries().Where(e => e.State == EntityState.Added && e.Entity is BaseEntity);
+            var addedEntities = ChangeTracker
+                .Entries()
+                .Where(e => e.State == EntityState.Added && e.Entity is BaseEntity);
 
             foreach (var entry in addedEntities)
             {
                 var timeOfCreate = entry.Property(nameof(BaseEntity.TimeOfCreation)).CurrentValue;
 
-                if (timeOfCreate == null || DateTime.Parse(timeOfCreate.ToString()).Year < 2021)
-                {
+                if (timeOfCreate == null || DateTime.Parse(timeOfCreate.ToString()).Year < DateTime.UtcNow.Year)
                     entry.Property(nameof(BaseEntity.TimeOfCreation)).CurrentValue = DateTime.UtcNow;
-                }
             }
 
-            var updateEntities = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified && e.Entity is BaseEntity);
+            var updateEntities = ChangeTracker
+                .Entries()
+                .Where(e => e.State == EntityState.Modified && e.Entity is BaseEntity);
 
             foreach (var entry in updateEntities)
             {
                 var timeOfUpdate = entry.Property(nameof(BaseEntity.TimeOfUpdate)).CurrentValue;
 
-                if (timeOfUpdate == null || DateTime.Parse(timeOfUpdate.ToString()).Year < 2021)
-                {
+                if (timeOfUpdate == null || DateTime.Parse(timeOfUpdate.ToString()).Year < DateTime.UtcNow.Year)
                     entry.Property(nameof(BaseEntity.TimeOfUpdate)).CurrentValue = DateTime.UtcNow;
-                }
             }
         }
     }

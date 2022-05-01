@@ -30,7 +30,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            var activeBook = new ActiveBook(Guid.NewGuid(), request.TotalNumberPages, request.NumberPagesRead, request.BookId, request.UserId, request.IsPublic);
+            ActiveBook activeBook = new(Guid.NewGuid(), request.TotalNumberPages, request.NumberPagesRead, request.BookId, request.UserId, request.IsPublic);
 
             activeBook.AddDomainEvent(new AddActiveBookEvent(
                 activeBook.Id,
@@ -49,7 +49,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            var activeBookFilter = new Filters.FilterFacades.ActiveBookFilter(new Filters.Models.ActiveBookFilterModel(request.Id, Guid.Empty, 0, 1));
+            ActiveBookFilter activeBookFilter = new(new ActiveBookFilterModel(request.Id, Guid.Empty, 0, 1));
             var activeBook = (await _activeBookRepository.GetByFilterAsync(activeBookFilter)).FirstOrDefault();
 
             if (activeBook is null) AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
@@ -68,6 +68,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
 
             ActiveBookFilter activeBookFilter = new(new ActiveBookFilterModel(request.Id, Guid.Empty, 0, 1));
             var activeBook = (await _activeBookRepository.GetByFilterAsync(activeBookFilter)).FirstOrDefault();
+
             if (activeBook is null) AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
 
             activeBook.AddDomainEvent(new RemoveActiveBookEvent(activeBook.Id));

@@ -10,8 +10,8 @@ namespace BookActivity.Application.Interfaces
         where TCreateEntity : BaseCreateDTO
         where TUpdateEntity : BaseUpdateDTO
     {
-        Task<ValidationResult> AddActiveBookAsync(TCreateEntity entity);
+        Task<ValidationResult> AddActiveBookAsync(TCreateEntity createEntity);
         Task<ValidationResult> RemoveActiveBookAsync(Guid entityId);
-        Task<ValidationResult> UpdateActiveBookAsync(TUpdateEntity entity);
+        Task<ValidationResult> UpdateActiveBookAsync(TUpdateEntity updateEntity);
     }
 }

@@ -34,10 +34,10 @@ namespace BookActivity.Domain.Commands.BookCommands
             BookAuthorFilter authorFilter = new(new BookAuthorFilterModel(request.AuthorIds.ToArray()));
             var authorCount = await _authorRepository.GetCountByFilterAsync(authorFilter);
 
-            authorFilter = new(new BookAuthorFilterModel(request.AuthorIds.ToArray(), 0, authorCount));
+            authorFilter = new(new BookAuthorFilterModel(request.AuthorIds.ToArray(), skip: 0, take: authorCount));
             var authors = await _authorRepository.GetByFilterAsync(authorFilter);
 
-            Book newBook = new(request.Title, request.Description, true, authors.ToArray());
+            Book newBook = new(request.Title, request.Description, isPublic: true, authors.ToArray());
 
             _bookRepository.Add(newBook);
 

@@ -22,14 +22,18 @@ namespace BookActivity.Infrastructure.Data.Repositories
             DbSet = Db.Set<ActiveBook>();
         }
 
-        public async Task<IEnumerable<ActiveBook>> GetByFilterAsync(BaseFilter<ActiveBook> filter)
+        public async Task<IEnumerable<ActiveBook>> GetByFilterAsync(ActiveBookFilter filter)
         {
-            return await filter.ApplyFilter(DbSet).ToListAsync();
+            return await filter
+                .ApplyFilter(DbSet.AsNoTracking())
+                .ToListAsync();
         }
 
-        public async Task<int> GetCountByFilterAsync(BaseFilter<ActiveBook> filter)
+        public async Task<int> GetCountByFilterAsync(ActiveBookFilter filter)
         {
-            return await filter.ApplyFilter(DbSet).CountAsync();
+            return await filter
+                .ApplyFilter(DbSet.AsNoTracking())
+                .CountAsync();
         }
 
         public void Add(ActiveBook entity)
