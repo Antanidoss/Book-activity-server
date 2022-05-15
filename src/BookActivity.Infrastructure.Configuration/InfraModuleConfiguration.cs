@@ -9,6 +9,7 @@ using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.EventSourcing;
 using BookActivity.Infrastructure.Data.Repositories;
 using BookActivity.Infrastructure.Data.Repositories.EventSourcing;
+using BookActivity.Shared.Interfaces;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -19,11 +20,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetDevPack.Mediator;
 
-namespace BookActivity.Infrastructure.DI
+namespace BookActivity.Infrastructure.Configuration
 {
-    public static class DependencyInjection
+    public sealed class InfraModuleConfiguration : IModuleConfiguration
     {
-        public static IServiceCollection AddInfastructure(this IServiceCollection services, IConfiguration Configuration)
+        public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration Configuration)
         {
             string deffaultConnection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<BookActivityContext>(option => option.UseSqlServer(deffaultConnection));
@@ -50,19 +51,19 @@ namespace BookActivity.Infrastructure.DI
             return services;
         }
 
-        public static void CreateDatabasesIfNotExist(IServiceScope serviceScope)
+        public void CreateDatabasesIfNotExist(IServiceScope serviceScope)
         {
             CreateDatabasesIfNotExist(serviceScope.ServiceProvider.GetRequiredService<BookActivityContext>());
             CreateDatabasesIfNotExist(serviceScope.ServiceProvider.GetRequiredService<BookActivityEventStoreContext>());
         }
 
-        private static void CreateDatabasesIfNotExist(DbContext context)
+        private void CreateDatabasesIfNotExist(DbContext context)
         {
             if (!(context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
                 context.Database.EnsureCreated();
         }
 
-        private static void ConfigureRepositories(IServiceCollection services)
+        private void ConfigureRepositories(IServiceCollection services)
         {
             services.AddScoped<IActiveBookRepository, ActiveBookRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
@@ -70,7 +71,7 @@ namespace BookActivity.Infrastructure.DI
             services.AddScoped<IAuthorRepository, AuthorRepository>();
         }
 
-        private static void ConfigureCommandHandlers(IServiceCollection services)
+        private void ConfigureCommandHandlers(IServiceCollection services)
         {
             services.AddScoped<IRequestHandler<AddActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
@@ -81,7 +82,7 @@ namespace BookActivity.Infrastructure.DI
             services.AddScoped<IRequestHandler<RemoveBookCommand, ValidationResult>, BookCommandHandler>();
         }
 
-        private static void ConfigureEventHandlers(IServiceCollection services)
+        private void ConfigureEventHandlers(IServiceCollection services)
         {
             services.AddScoped<INotificationHandler<AddActiveBookEvent>, ActiveBookEventHandler>();
             services.AddScoped<INotificationHandler<UpdateActiveBookEvent>, ActiveBookEventHandler>();

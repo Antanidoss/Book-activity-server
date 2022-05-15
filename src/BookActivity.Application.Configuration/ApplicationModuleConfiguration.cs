@@ -6,13 +6,15 @@ using BookActivity.Application.Interfaces;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Filters;
 using BookActivity.Domain.Models;
+using BookActivity.Shared.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BookActivity.Application.DI
+namespace BookActivity.Application.Configuration
 {
-    public static class DependencyInjection
+    public sealed class ApplicationModuleConfiguration : IModuleConfiguration
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration Configuration)
         {
             MapperConfigurationExpression mapperConfigureExpression = new();
             mapperConfigureExpression.AddProfile(new ActiveBookDTOProfile());
@@ -29,14 +31,14 @@ namespace BookActivity.Application.DI
             return services;
         }
 
-        public static void AddFilterHandlers(IServiceCollection services)
+        private static void AddFilterHandlers(IServiceCollection services)
         {
             services.AddSingleton<IFilterHandler<ActiveBook, ActiveBookFilterModel>, ActiveBookFilterHandler>();
             services.AddSingleton<IFilterHandler<Book, BookFilterModel>, BookFilterHandler>();
             services.AddSingleton<IFilterHandler<BookAuthor, BookAuthorFilterModel>, BookAuthorFilterHandler>();
         }
 
-        public static void AddServices(IServiceCollection services)
+        private static void AddServices(IServiceCollection services)
         {
             services.AddScoped<IActiveBookService, ActiveBookService>();
             services.AddScoped<IBookService, BookService>();
