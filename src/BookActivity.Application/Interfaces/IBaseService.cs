@@ -1,7 +1,7 @@
 ﻿using BookActivity.Application.Models.DTO.Create;
+using BookActivity.Application.Models.DTO.Filters;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
-using BookActivity.Domain.Filters.Models;
 
 namespace BookActivity.Application.Interfaces
 {
@@ -9,7 +9,7 @@ namespace BookActivity.Application.Interfaces
         where TEntity : BaseEntityDTO
         where TCreateEntity : BaseCreateDTO
         where TUpdateEntity : BaseUpdateDTO
-        where TFilter : BaseFilterModel
+        where TFilter : BaseDTOFilterModel
     {
     }
 }

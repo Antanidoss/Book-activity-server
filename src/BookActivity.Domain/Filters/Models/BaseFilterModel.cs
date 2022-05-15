@@ -6,7 +6,10 @@
 
         public int Take { get; set; }
 
-        public BaseFilterModel(int skip = 0, int take = 0)
+        protected const int _skip = 0;
+        protected const int _take = 1;
+
+        public BaseFilterModel(int skip = _skip, int take = _take)
         {
             Skip = skip;
             Take = take;

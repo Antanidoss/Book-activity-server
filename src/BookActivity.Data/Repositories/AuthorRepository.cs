@@ -1,4 +1,5 @@
-﻿using BookActivity.Domain.Filters.FilterFacades;
+﻿using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Interfaces.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
@@ -14,24 +15,30 @@ namespace BookActivity.Infrastructure.Data.Repositories
     public sealed class AuthorRepository : IAuthorRepository
     {
         private readonly BookActivityContext Db;
-
         private readonly DbSet<BookAuthor> DbSet;
+        private readonly IFilterHandler<BookAuthor, BookAuthorFilterModel> _authorFilterHandler;
+
         public IUnitOfWork UnitOfWork => Db;
 
-        public AuthorRepository(BookActivityContext context)
+        public AuthorRepository(BookActivityContext context, IFilterHandler<BookAuthor, BookAuthorFilterModel> authorFilterHandler)
         {
             Db = context;
             DbSet = Db.Set<BookAuthor>();
+            _authorFilterHandler = authorFilterHandler;
         }
 
-        public async Task<IEnumerable<BookAuthor>> GetByFilterAsync(BookAuthorFilter filter)
+        public async Task<IEnumerable<BookAuthor>> GetByFilterAsync(BookAuthorFilterModel filterModel)
         {
-            return await filter.ApplyFilter(DbSet.AsNoTracking()).ToListAsync();
+            return await _authorFilterHandler
+                .Handle(filterModel, DbSet.AsNoTracking())
+                .ToListAsync();
         }
 
-        public async Task<int> GetCountByFilterAsync(BookAuthorFilter filter)
+        public async Task<int> GetCountByFilterAsync(BookAuthorFilterModel filterModel)
         {
-            return await filter.ApplyFilter(DbSet.AsNoTracking()).CountAsync();
+            return await _authorFilterHandler
+                .Handle(filterModel, DbSet.AsNoTracking())
+                .CountAsync();
         }
 
         public void Add(BookAuthor entity)
