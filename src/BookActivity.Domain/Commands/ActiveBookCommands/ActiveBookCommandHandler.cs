@@ -4,8 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using BookActivity.Domain.Constants;
 using BookActivity.Domain.Events.ActiveBookEvent;
-using BookActivity.Domain.Filters.FilterFacades;
 using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Filters.Specifications.ActiveBookSpecs;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using FluentValidation.Results;
@@ -49,8 +49,8 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            ActiveBookFilter activeBookFilter = new(new ActiveBookFilterModel(request.Id, Guid.Empty, 0, 1));
-            var activeBook = (await _activeBookRepository.GetByFilterAsync(activeBookFilter)).FirstOrDefault();
+            var activeBookFilterModel = new ActiveBookFilterModel(new FilterModelProp<ActiveBook, Guid>(request.Id, new ActiveBookByIdSpec()), null);
+            var activeBook = (await _activeBookRepository.GetByFilterAsync(activeBookFilterModel)).FirstOrDefault();
 
             if (activeBook is null) AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
 
@@ -66,8 +66,8 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            ActiveBookFilter activeBookFilter = new(new ActiveBookFilterModel(request.Id, Guid.Empty, 0, 1));
-            var activeBook = (await _activeBookRepository.GetByFilterAsync(activeBookFilter)).FirstOrDefault();
+            var activeBookFilterModel = new ActiveBookFilterModel(new FilterModelProp<ActiveBook, Guid>(request.Id, new ActiveBookByIdSpec()), null);
+            var activeBook = (await _activeBookRepository.GetByFilterAsync(activeBookFilterModel)).FirstOrDefault();
 
             if (activeBook is null) AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
 

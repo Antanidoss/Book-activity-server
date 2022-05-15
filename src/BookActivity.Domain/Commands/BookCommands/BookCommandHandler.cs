@@ -1,5 +1,5 @@
-﻿using BookActivity.Domain.Filters.FilterFacades;
-using BookActivity.Domain.Filters.Models;
+﻿using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Filters.Specifications.AuthorSpecs;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using FluentValidation.Results;
@@ -31,11 +31,11 @@ namespace BookActivity.Domain.Commands.BookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            BookAuthorFilter authorFilter = new(new BookAuthorFilterModel(request.AuthorIds.ToArray()));
-            var authorCount = await _authorRepository.GetCountByFilterAsync(authorFilter);
+            var authorFilterModel = new BookAuthorFilterModel(new FilterModelProp<BookAuthor, Guid[]>(request.AuthorIds.ToArray(), new BookAuthorByIdSpec()));
+            var authorCount = await _authorRepository.GetCountByFilterAsync(authorFilterModel);
 
-            authorFilter = new(new BookAuthorFilterModel(request.AuthorIds.ToArray(), skip: 0, take: authorCount));
-            var authors = await _authorRepository.GetByFilterAsync(authorFilter);
+            authorFilterModel = new BookAuthorFilterModel(new FilterModelProp<BookAuthor, Guid[]>(request.AuthorIds.ToArray(), new BookAuthorByIdSpec()), 0, authorCount);
+            var authors = await _authorRepository.GetByFilterAsync(authorFilterModel);
 
             Book newBook = new(request.Title, request.Description, isPublic: true, authors.ToArray());
 

@@ -1,19 +1,21 @@
 ﻿using AutoMapper;
 using BookActivity.Application.Interfaces;
 using BookActivity.Application.Models.DTO.Create;
+using BookActivity.Application.Models.DTO.Filters;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
 using BookActivity.Domain.Commands.BookCommands;
-using BookActivity.Domain.Filters.FilterFacades;
 using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Filters.Specifications.BookSpecs;
 using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Models;
 using FluentValidation.Results;
 using NetDevPack.Mediator;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BookActivity.Application.Implementation
+namespace BookActivity.Application.Implementation.Services
 {
     public sealed class BookService : IBookService
     {
@@ -30,9 +32,9 @@ namespace BookActivity.Application.Implementation
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<ValidationResult> AddActiveBookAsync(CreateBookDTO createBookEntity)
+        public async Task<ValidationResult> AddActiveBookAsync(CreateBookDTO createBookModel)
         {
-            var addBookCommand = _mapper.Map<AddBookCommand>(createBookEntity);
+            var addBookCommand = _mapper.Map<AddBookCommand>(createBookModel);
 
             return await _mediatorHandler.SendCommand(addBookCommand);
         }
@@ -44,16 +46,20 @@ namespace BookActivity.Application.Implementation
             return await _mediatorHandler.SendCommand(removeBookCommand);
         }
 
-        public async Task<ValidationResult> UpdateActiveBookAsync(UpdateBookDTO updateBookEntity)
+        public async Task<ValidationResult> UpdateActiveBookAsync(UpdateBookDTO updateBookModel)
         {
-            var updateBookCommand = _mapper.Map<UpdateBookCommand>(updateBookEntity);
+            var updateBookCommand = _mapper.Map<UpdateBookCommand>(updateBookModel);
 
             return await _mediatorHandler.SendCommand(updateBookCommand);
         }
 
-        public async Task<IList<BookDTO>> GetByFilterAsync(BookFilterModel filterModel)
+        public async Task<IList<BookDTO>> GetByFilterAsync(BookDTOFilterModel filterModel)
         {
-            var books = await _bookRepository.GetByFilterAsync(new BookFilter(filterModel));
+            var bookFilter = new BookFilterModel(
+                filterModel.BookId == Guid.Empty ? null : new FilterModelProp<Book, Guid>(filterModel.BookId, new BookByBookIdSpec()),
+                string.IsNullOrEmpty(filterModel.Title) ? null : new FilterModelProp<Book, string>(filterModel.Title, new BookByTitleSpec()));
+
+            var books = await _bookRepository.GetByFilterAsync(bookFilter);
 
             return _mapper.Map<List<BookDTO>>(books);
         }
