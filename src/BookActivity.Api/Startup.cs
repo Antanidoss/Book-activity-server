@@ -1,5 +1,5 @@
-using BookActivity.Application.DI;
-using BookActivity.Infrastructure.DI;
+using BookActivity.Application.Configuration;
+using BookActivity.Infrastructure.Configuration;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,8 +29,8 @@ namespace BookActivity.Api
             });
 
             services.AddMediatR(typeof(Startup));
-            services.AddInfastructure(Configuration);
-            services.AddApplication();
+            AddInfastructure(services);
+            AddApplication(services);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,10 +42,7 @@ namespace BookActivity.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookActivity.Api v1"));
             }
 
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                Infrastructure.DI.DependencyInjection.CreateDatabasesIfNotExist(serviceScope);
-            }
+            CreateDatabasesIfNotExist(app);
 
             app.UseHttpsRedirection();
 
@@ -57,6 +54,25 @@ namespace BookActivity.Api
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void AddInfastructure(IServiceCollection services)
+        {
+            var infraModuleConfiguration = new InfraModuleConfiguration();
+            infraModuleConfiguration.ConfigureDI(services, Configuration);
+        }
+
+        private void AddApplication(IServiceCollection services)
+        {
+            var appModuleConfiguration = new ApplicationModuleConfiguration();
+            appModuleConfiguration.ConfigureDI(services, Configuration);
+        }
+
+        private void CreateDatabasesIfNotExist(IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
+            var infraModuleConfiguration = new InfraModuleConfiguration();
+            infraModuleConfiguration.CreateDatabasesIfNotExist(serviceScope);
         }
     }
 }
