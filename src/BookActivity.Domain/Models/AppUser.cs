@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using NetDevPack.Domain;
 using System;
 using System.Collections.Generic;
 
 namespace BookActivity.Domain.Models
 {
-    public sealed class AppUser : IdentityUser<Guid>
+    public sealed class AppUser : IdentityUser<Guid>, IAggregateRoot
     {
         /// <summary>
         /// Relation of user with the subscription info

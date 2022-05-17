@@ -11,21 +11,21 @@ namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
 {
     public sealed class EventStoreRepository : IEventStoreRepository
     {
-        private readonly BookActivityEventStoreContext DB;
+        private readonly BookActivityEventStoreContext _dB;
 
         public EventStoreRepository(BookActivityEventStoreContext db)
         {
-            DB = db;
+            _dB = db;
         }
 
         public void Dispose()
         {
-            DB.Dispose();
+            _dB.Dispose();
         }
 
         public async Task<IList<StoredEvent>> GetAllAsync(Guid aggregateId)
         {
-            return await DB.StoredEvent
+            return await _dB.StoredEvent
                 .AsNoTracking()
                 .Where(e => e.AggregateId == aggregateId)
                 .ToListAsync();
@@ -33,8 +33,8 @@ namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
 
         public void Save(StoredEvent @event)
         {
-            DB.StoredEvent.Add(@event);
-            DB.SaveChanges();
+            _dB.StoredEvent.Add(@event);
+            _dB.SaveChanges();
         }
     }
 }

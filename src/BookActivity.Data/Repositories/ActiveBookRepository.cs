@@ -12,51 +12,51 @@ namespace BookActivity.Infrastructure.Data.Repositories
 {
     public sealed class ActiveBookRepository : IActiveBookRepository
     {
-        private readonly BookActivityContext Db;
-        private readonly DbSet<ActiveBook> DbSet;
+        private readonly BookActivityContext _db;
+        private readonly DbSet<ActiveBook> _dbSet;
         private readonly IFilterHandler<ActiveBook, ActiveBookFilterModel> _activeBookFilterHandler;
 
-        public IUnitOfWork UnitOfWork => Db;
+        public IUnitOfWork UnitOfWork => _db;
 
         public ActiveBookRepository(BookActivityContext context, IFilterHandler<ActiveBook, ActiveBookFilterModel> activeBookFilterHandler)
         {
-            Db = context;
-            DbSet = Db.Set<ActiveBook>();
+            _db = context;
+            _dbSet = _db.Set<ActiveBook>();
             _activeBookFilterHandler = activeBookFilterHandler;
         }
 
         public async Task<IEnumerable<ActiveBook>> GetByFilterAsync(ActiveBookFilterModel filterModel)
         {
             return await _activeBookFilterHandler
-                .Handle(filterModel, DbSet.AsNoTracking())
+                .Handle(filterModel, _dbSet.AsNoTracking())
                 .ToListAsync();
         }
 
         public async Task<int> GetCountByFilterAsync(ActiveBookFilterModel filterModel)
         {
             return await _activeBookFilterHandler
-                .Handle(filterModel, DbSet.AsNoTracking())
+                .Handle(filterModel, _dbSet.AsNoTracking())
                 .CountAsync();
         }
 
         public void Add(ActiveBook entity)
         {
-            DbSet.Add(entity);
+            _dbSet.Add(entity);
         }
 
         public void Remove(ActiveBook entity)
         {
-            DbSet.Remove(entity);
+            _dbSet.Remove(entity);
         }
 
         public void Update(ActiveBook entity)
         {
-            DbSet.Update(entity);
+            _dbSet.Update(entity);
         }
 
         public void Dispose()
         {
-            Db.Dispose();
+            _db.Dispose();
         }
     }
 }

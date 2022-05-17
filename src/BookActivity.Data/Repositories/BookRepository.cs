@@ -12,50 +12,50 @@ namespace BookActivity.Infrastructure.Data.Repositories
 {
     public sealed class BookRepository : IBookRepository
     {
-        private readonly BookActivityContext Db;
-        private readonly DbSet<Book> DbSet;
+        private readonly BookActivityContext _db;
+        private readonly DbSet<Book> _dbSet;
         private readonly IFilterHandler<Book, BookFilterModel> _bookFilterHandler;
 
-        public IUnitOfWork UnitOfWork => Db;
+        public IUnitOfWork UnitOfWork => _db;
 
         public BookRepository(BookActivityContext context, IFilterHandler<Book, BookFilterModel> bookFilterHandler)
         {
-            Db = context;
-            DbSet = Db.Books;
+            _db = context;
+            _dbSet = _db.Books;
             _bookFilterHandler = bookFilterHandler;
         }
 
         public async Task<IEnumerable<Book>> GetByFilterAsync(BookFilterModel filterModel)
         {
             return await _bookFilterHandler
-                .Handle(filterModel, DbSet.AsNoTracking())
+                .Handle(filterModel, _dbSet.AsNoTracking())
                 .ToListAsync();
         }
 
         public async Task<int> GetCountByFilterAsync(BookFilterModel filterModel)
         {
             return await _bookFilterHandler
-                .Handle(filterModel, DbSet.AsNoTracking())
+                .Handle(filterModel, _dbSet.AsNoTracking())
                 .CountAsync();
         }
 
         public void Add(Book entity)
         {
-            DbSet.Add(entity);
+            _dbSet.Add(entity);
         }
 
         public void Remove(Book entity)
         {
-            DbSet.Remove(entity);
+            _dbSet.Remove(entity);
         }
 
         public void Update(Book entity)
         {
-            DbSet.Update(entity);
+            _dbSet.Update(entity);
         }
         public void Dispose()
         {
-            Db.Dispose();
+            _db.Dispose();
         }
     }
 }
