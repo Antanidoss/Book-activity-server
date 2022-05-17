@@ -14,56 +14,56 @@ namespace BookActivity.Infrastructure.Data.Repositories
 {
     public sealed class AuthorRepository : IAuthorRepository
     {
-        private readonly BookActivityContext Db;
-        private readonly DbSet<BookAuthor> DbSet;
+        private readonly BookActivityContext _db;
+        private readonly DbSet<BookAuthor> _dbSet;
         private readonly IFilterHandler<BookAuthor, BookAuthorFilterModel> _authorFilterHandler;
 
-        public IUnitOfWork UnitOfWork => Db;
+        public IUnitOfWork UnitOfWork => _db;
 
         public AuthorRepository(BookActivityContext context, IFilterHandler<BookAuthor, BookAuthorFilterModel> authorFilterHandler)
         {
-            Db = context;
-            DbSet = Db.Set<BookAuthor>();
+            _db = context;
+            _dbSet = _db.Set<BookAuthor>();
             _authorFilterHandler = authorFilterHandler;
         }
 
         public async Task<IEnumerable<BookAuthor>> GetByFilterAsync(BookAuthorFilterModel filterModel)
         {
             return await _authorFilterHandler
-                .Handle(filterModel, DbSet.AsNoTracking())
+                .Handle(filterModel, _dbSet.AsNoTracking())
                 .ToListAsync();
         }
 
         public async Task<int> GetCountByFilterAsync(BookAuthorFilterModel filterModel)
         {
             return await _authorFilterHandler
-                .Handle(filterModel, DbSet.AsNoTracking())
+                .Handle(filterModel, _dbSet.AsNoTracking())
                 .CountAsync();
         }
 
         public void Add(BookAuthor entity)
         {
-            DbSet.Add(entity);
+            _dbSet.Add(entity);
         }
 
         public async Task<BookAuthor> GetByAsync(Expression<Func<BookAuthor, bool>> condition)
         {
-            return await DbSet.FirstOrDefaultAsync(condition);
+            return await _dbSet.FirstOrDefaultAsync(condition);
         }
 
         public void Remove(BookAuthor entity)
         {
-            DbSet.Remove(entity);
+            _dbSet.Remove(entity);
         }
 
         public void Update(BookAuthor entity)
         {
-            DbSet.Update(entity);
+            _dbSet.Update(entity);
         }
 
         public void Dispose()
         {
-            Db.Dispose();
+            _db.Dispose();
         }
     }
 }

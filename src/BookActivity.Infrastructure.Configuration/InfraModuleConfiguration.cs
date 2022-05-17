@@ -1,4 +1,5 @@
 ﻿using BookActivity.Domain.Commands.ActiveBookCommands;
+using BookActivity.Domain.Commands.AppUserCommands;
 using BookActivity.Domain.Commands.BookCommands;
 using BookActivity.Domain.Core.Events;
 using BookActivity.Domain.Events.ActiveBookEvent;
@@ -69,6 +70,7 @@ namespace BookActivity.Infrastructure.Configuration
             services.AddScoped<IBookRepository, BookRepository>();
             services.AddScoped<IEventStoreRepository, EventStoreRepository>();
             services.AddScoped<IAuthorRepository, AuthorRepository>();
+            services.AddScoped<IAppUserRepository, AppUserRepository>();
         }
 
         private void ConfigureCommandHandlers(IServiceCollection services)
@@ -80,6 +82,8 @@ namespace BookActivity.Infrastructure.Configuration
             services.AddScoped<IRequestHandler<AddBookCommand, ValidationResult>, BookCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateBookCommand, ValidationResult>, BookCommandHandler>();
             services.AddScoped<IRequestHandler<RemoveBookCommand, ValidationResult>, BookCommandHandler>();
+
+            services.AddScoped<IRequestHandler<AddAppUserCommand, ValidationResult>, AppUserCommandHandler>();
         }
 
         private void ConfigureEventHandlers(IServiceCollection services)
