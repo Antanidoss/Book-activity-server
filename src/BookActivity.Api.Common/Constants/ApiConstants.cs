@@ -5,6 +5,7 @@
         //Services
         public const string ActiveBookService = "activeBook";
         public const string BookService = "book";
+        public const string AppUserService = "user";
 
         //ActiveBook methods
         public const string AddActiveBookMethod = "addActiveBook";
@@ -15,5 +16,9 @@
         //Book methods
         public const string AddBookMethod = "addBook";
         public const string GetBooksMethod = "getBooks";
+
+        //AppUser methods
+        public const string AddUser = "addUser";
+        public const string GetUserById = "getUserById";
     }
 }

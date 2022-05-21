@@ -16,32 +16,39 @@ namespace BookActivity.Application.Configuration
     {
         public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration Configuration)
         {
-            MapperConfigurationExpression mapperConfigureExpression = new();
-            mapperConfigureExpression.AddProfile(new ActiveBookDTOProfile());
-            mapperConfigureExpression.AddProfile(new BookDTOProfile());
-
-            var mappingConfig = new MapperConfiguration(mapperConfigureExpression);
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
-
+            AddAutoMapper(services);
             AddFilterHandlers(services);
             AddServices(services);
 
             return services;
         }
 
-        private static void AddFilterHandlers(IServiceCollection services)
+        private void AddAutoMapper(IServiceCollection services)
+        {
+            MapperConfigurationExpression mapperConfigureExpression = new();
+
+            mapperConfigureExpression.AddProfile(new ActiveBookDTOProfile());
+            mapperConfigureExpression.AddProfile(new BookDTOProfile());
+            mapperConfigureExpression.AddProfile(new AppUserDTOProfile());
+
+            MapperConfiguration mappingConfig = new(mapperConfigureExpression);
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+        }
+
+        private void AddFilterHandlers(IServiceCollection services)
         {
             services.AddSingleton<IFilterHandler<ActiveBook, ActiveBookFilterModel>, ActiveBookFilterHandler>();
             services.AddSingleton<IFilterHandler<Book, BookFilterModel>, BookFilterHandler>();
             services.AddSingleton<IFilterHandler<BookAuthor, BookAuthorFilterModel>, BookAuthorFilterHandler>();
         }
 
-        private static void AddServices(IServiceCollection services)
+        private void AddServices(IServiceCollection services)
         {
             services.AddScoped<IActiveBookService, ActiveBookService>();
             services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IAppUserService, AppUserService>();
         }
     }
 }
