@@ -1,4 +1,6 @@
-﻿using BookActivity.Application.Models.DTO.Create;
+﻿using Ardalis.Result;
+using BookActivity.Application.Models;
+using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using FluentValidation.Results;
 using System;
@@ -10,5 +12,6 @@ namespace BookActivity.Application.Interfaces
     {
         Task<ValidationResult> AddAsync(AppUserCreateDTO appUserCreateDTO);
         Task<AppUserDTO> FindByIdAsync(Guid appUserId);
+        Task<Result<(AppUserDTO AppUser, string Token)>> PasswordSignInAsync(AuthenticationModel authenticationModel);
     }
 }

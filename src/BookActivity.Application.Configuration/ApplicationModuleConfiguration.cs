@@ -42,6 +42,7 @@ namespace BookActivity.Application.Configuration
             services.AddSingleton<IFilterHandler<ActiveBook, ActiveBookFilterModel>, ActiveBookFilterHandler>();
             services.AddSingleton<IFilterHandler<Book, BookFilterModel>, BookFilterHandler>();
             services.AddSingleton<IFilterHandler<BookAuthor, BookAuthorFilterModel>, BookAuthorFilterHandler>();
+            services.AddSingleton<IFilterHandler<AppUser, AppUserFilterModel>, AppUserFilterHandler>();
         }
 
         private void AddServices(IServiceCollection services)
