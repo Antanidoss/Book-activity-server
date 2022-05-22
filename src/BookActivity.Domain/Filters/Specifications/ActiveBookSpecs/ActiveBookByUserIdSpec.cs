@@ -7,9 +7,9 @@ namespace BookActivity.Domain.Filters.Specifications.ActiveBookSpecs
 {
     public sealed class ActiveBookByUserIdSpec : IQueryableFilterSpec<ActiveBook, Guid>
     {
-        public IQueryable<ActiveBook> ApplyFilter(IQueryable<ActiveBook> entities, Guid userId)
+        public IQueryable<ActiveBook> ApplyFilter(IQueryable<ActiveBook> activeBooks, Guid userId)
         {
-            return entities.Where(a => a.UserId == userId);
+            return activeBooks.Where(a => a.UserId == userId);
         }
     }
 }

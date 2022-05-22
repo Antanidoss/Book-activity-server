@@ -1,11 +1,10 @@
 ﻿using BookActivity.Domain.Interfaces.Filters;
-using BookActivity.Domain.Models;
-using System.Linq;
+using NetDevPack.Domain;
 
 namespace BookActivity.Domain.Filters.Models
 {
     public class FilterModelProp<TEntityType, TPropType>
-        where TEntityType : BaseEntity
+        where TEntityType : IAggregateRoot
     {
         public TPropType Value { get; private set; }
         public IQueryableFilterSpec<TEntityType, TPropType> FilterSpec { get; private set; }

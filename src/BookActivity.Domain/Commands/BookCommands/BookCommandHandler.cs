@@ -31,10 +31,10 @@ namespace BookActivity.Domain.Commands.BookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            var authorFilterModel = new BookAuthorFilterModel(new FilterModelProp<BookAuthor, Guid[]>(request.AuthorIds.ToArray(), new BookAuthorByIdSpec()));
+            var authorFilterModel = new BookAuthorFilterModel() { AuthorIds = new FilterModelProp<BookAuthor, Guid[]>(request.AuthorIds.ToArray(), new BookAuthorByIdSpec()) };
             var authorCount = await _authorRepository.GetCountByFilterAsync(authorFilterModel);
 
-            authorFilterModel = new BookAuthorFilterModel(new FilterModelProp<BookAuthor, Guid[]>(request.AuthorIds.ToArray(), new BookAuthorByIdSpec()), 0, authorCount);
+            authorFilterModel = new BookAuthorFilterModel(0, authorCount) { AuthorIds = new FilterModelProp<BookAuthor, Guid[]>(request.AuthorIds.ToArray(), new BookAuthorByIdSpec()) };
             var authors = await _authorRepository.GetByFilterAsync(authorFilterModel);
 
             Book newBook = new(request.Title, request.Description, isPublic: true, authors.ToArray());

@@ -1,6 +1,7 @@
 ﻿using BookActivity.Api.Common.Constants;
 using BookActivity.Api.Common.Extension;
 using BookActivity.Application.Interfaces;
+using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,12 @@ namespace BookActivity.Api.Controllers
         public async Task<AppUserDTO> GetAppUserById(Guid appUserId)
         {
             return await _appUserService.FindByIdAsync(appUserId);
+        }
+
+        [HttpGet(ApiConstants.Authentication)]
+        public async Task<(AppUserDTO AppUser, string Token)> Authentication([FromBody] AuthenticationModel authenticationModel)
+        {
+            return await _appUserService.PasswordSignInAsync(authenticationModel);
         }
     }
 }

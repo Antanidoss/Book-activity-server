@@ -7,9 +7,9 @@ namespace BookActivity.Domain.Filters.Specifications.AuthorSpecs
 {
     public sealed class BookAuthorByIdSpec : IQueryableFilterSpec<BookAuthor, Guid[]>
     {
-        public IQueryable<BookAuthor> ApplyFilter(IQueryable<BookAuthor> query, Guid[] authorIds)
+        public IQueryable<BookAuthor> ApplyFilter(IQueryable<BookAuthor> authors, Guid[] authorIds)
         {
-            return query.Where(a => authorIds.Contains(a.Id));
+            return authors.Where(a => authorIds.Contains(a.Id));
         }
 
     }
