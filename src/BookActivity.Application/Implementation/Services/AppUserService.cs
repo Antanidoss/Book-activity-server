@@ -16,7 +16,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NetDevPack.Mediator;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -70,25 +69,25 @@ namespace BookActivity.Application.Implementation.Services
             return _mapper.Map<AppUserDTO>(appUser);
         }
 
-        public async Task<Result<(AppUserDTO AppUser, string Token)>> PasswordSignInAsync(AuthenticationModel authenticationModel)
+        public async Task<Result<AuthenticationResult>> PasswordSignInAsync(AuthenticationModel authenticationModel)
         {
             AppUserFilterModel filterModel = new() { Email = new FilterModelProp<AppUser, string>(authenticationModel.Email, new AppUserByEmailSpec()) };
             var appUser = (await _appUserRepository.GetByFilterAsync(filterModel))?.FirstOrDefault();
 
             if (appUser == null)
-                return Result<(AppUserDTO AppUser, string Token)>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.IncorrectEmail } });
+                return Result<AuthenticationResult>.Error(new string[] { ValidationErrorConstants.IncorrectEmail });
 
             var isCorrectPassword = await _userManager.CheckPasswordAsync(appUser, authenticationModel.Password);
             if (!isCorrectPassword)
-                return Result<(AppUserDTO AppUser, string Token)>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.IncorrectPassword } });
+                return Result<AuthenticationResult>.Error(new string[] { ValidationErrorConstants.IncorrectPassword });
 
             var signResult = await _signInManager.PasswordSignInAsync(appUser, authenticationModel.Password, authenticationModel.RememberMe, lockoutOnFailure: false);
             if (!signResult.Succeeded)
-                return Result<(AppUserDTO AppUser, string Token)>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.FailedSign } });
+                return Result<AuthenticationResult>.Error(new string[] { ValidationErrorConstants.FailedSign });
 
-            var appUserDTO = _mapper.Map<AppUserDTO>(appUser);
+            string token = GenerateJwtToken(appUser.Id.ToString());
 
-            return new Result<(AppUserDTO AppUser, string Token)>(new (appUserDTO, GenerateJwtToken(appUser.Id.ToString())));
+            return new Result<AuthenticationResult>(new AuthenticationResult() { Email = appUser.Email, UserName = appUser.UserName, Token = token });
         }
 
         private string GenerateJwtToken(string userId)

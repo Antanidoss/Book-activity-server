@@ -12,6 +12,6 @@ namespace BookActivity.Application.Interfaces
     {
         Task<ValidationResult> AddAsync(AppUserCreateDTO appUserCreateDTO);
         Task<AppUserDTO> FindByIdAsync(Guid appUserId);
-        Task<Result<(AppUserDTO AppUser, string Token)>> PasswordSignInAsync(AuthenticationModel authenticationModel);
+        Task<Result<AuthenticationResult>> PasswordSignInAsync(AuthenticationModel authenticationModel);
     }
 }

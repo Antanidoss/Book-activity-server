@@ -14,7 +14,7 @@ namespace BookActivity.Application.Implementation.FilterHandlers
             if (filterModel.AppUserId != null)
                 appUsers = filterModel.AppUserId.FilterSpec.ApplyFilter(appUsers, filterModel.AppUserId.Value);
 
-            if (filterModel.AppUserId != null)
+            if (filterModel.Email != null)
                 appUsers = filterModel.Email.FilterSpec.ApplyFilter(appUsers, filterModel.Email.Value);
 
             return appUsers.OrderBy(u => u.Id).Skip(filterModel.Skip).Take(filterModel.Take);
