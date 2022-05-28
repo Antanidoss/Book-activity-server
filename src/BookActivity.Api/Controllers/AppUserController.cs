@@ -1,5 +1,8 @@
-﻿using BookActivity.Api.Common.Constants;
+﻿using Ardalis.Result;
+using BookActivity.Api.Common.Constants;
 using BookActivity.Api.Common.Extension;
+using BookActivity.Api.Extansions;
+using BookActivity.Api.Models;
 using BookActivity.Application.Interfaces;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
@@ -32,10 +35,10 @@ namespace BookActivity.Api.Controllers
             return await _appUserService.FindByIdAsync(appUserId);
         }
 
-        [HttpGet(ApiConstants.Authentication)]
-        public async Task<(AppUserDTO AppUser, string Token)> Authentication([FromBody] AuthenticationModel authenticationModel)
+        [HttpPost(ApiConstants.Authentication)]
+        public async Task<ApiResult<AuthenticationResult>> Authentication([FromBody] AuthenticationModel authenticationModel)
         {
-            return await _appUserService.PasswordSignInAsync(authenticationModel);
+            return (await _appUserService.PasswordSignInAsync(authenticationModel)).ToApiResult();
         }
     }
 }
