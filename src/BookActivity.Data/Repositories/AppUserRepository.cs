@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
-    public sealed class AppUserRepository : IAppUserRepository
+    internal sealed class AppUserRepository : IAppUserRepository
     {
         private readonly BookActivityContext _db;
 

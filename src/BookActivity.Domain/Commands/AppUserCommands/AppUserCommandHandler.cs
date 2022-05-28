@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Commands.AppUserCommands
 {
-    public sealed class AppUserCommandHandler : CommandHandler,
+    internal sealed class AppUserCommandHandler : CommandHandler,
         IRequestHandler<AddAppUserCommand, ValidationResult>
     {
         private readonly IAppUserRepository _appUserRepository;

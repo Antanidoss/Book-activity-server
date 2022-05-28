@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Application.Implementation.Services
 {
-    public class AppUserService : IAppUserService
+    internal class AppUserService : IAppUserService
     {
         private readonly IMapper _mapper;
 

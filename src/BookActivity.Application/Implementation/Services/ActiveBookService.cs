@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Application.Implementation.Services
 {
-    public sealed class ActiveBookService : IActiveBookService
+    internal sealed class ActiveBookService : IActiveBookService
     {
         private readonly IMapper _mapper;
 

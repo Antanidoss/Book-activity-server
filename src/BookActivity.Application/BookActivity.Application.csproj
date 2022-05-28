@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookActivity.Domain\BookActivity.Domain.csproj" />
+    <ProjectReference Include="..\BookActivity.Shared\BookActivity.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

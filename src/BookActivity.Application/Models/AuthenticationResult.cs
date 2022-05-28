@@ -1,6 +1,6 @@
 ﻿namespace BookActivity.Application.Models
 {
-    public class AuthenticationResult
+    public sealed class AuthenticationResult
     {
         public string UserName { get; set; }
         public string Email { get; set; }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookActivity.Infrastructure.Data.Context
 {
-    public sealed class BookActivityEventStoreContext : DbContext
+    internal sealed class BookActivityEventStoreContext : DbContext
     {
         public BookActivityEventStoreContext(DbContextOptions<BookActivityEventStoreContext> options) : base(options) { }
 

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
-    public sealed class BookRepository : IBookRepository
+    internal sealed class BookRepository : IBookRepository
     {
         private readonly BookActivityContext _db;
         private readonly DbSet<Book> _dbSet;

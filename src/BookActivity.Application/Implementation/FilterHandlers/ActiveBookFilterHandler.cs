@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace BookActivity.Application.Implementation.FilterHandlers
 {
-    public sealed class ActiveBookFilterHandler : IFilterHandler<ActiveBook, ActiveBookFilterModel>
+    internal sealed class ActiveBookFilterHandler : IFilterHandler<ActiveBook, ActiveBookFilterModel>
     {
         public IQueryable<ActiveBook> Handle(ActiveBookFilterModel activeBookFilterModel, IQueryable<ActiveBook> query)
         {
