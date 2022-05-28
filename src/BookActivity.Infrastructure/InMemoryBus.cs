@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure
 {
-    public class InMemoryBus : IMediatorHandler
+    internal class InMemoryBus : IMediatorHandler
     {
         private readonly IMediator _mediator;
 

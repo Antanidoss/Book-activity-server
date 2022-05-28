@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
 {
-    public sealed class EventStoreRepository : IEventStoreRepository
+    internal sealed class EventStoreRepository : IEventStoreRepository
     {
         private readonly BookActivityEventStoreContext _dB;
 

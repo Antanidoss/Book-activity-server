@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace BookActivity.Infrastructure.Data.Context
 {
-    public sealed class BookActivityContext : IdentityDbContext<AppUser, AppRole, Guid>, IUnitOfWork
+    internal sealed class BookActivityContext : IdentityDbContext<AppUser, AppRole, Guid>, IUnitOfWork
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<ActiveBook> ActiveBooks { get; set; }
