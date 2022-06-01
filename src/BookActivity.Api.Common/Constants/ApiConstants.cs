@@ -21,5 +21,6 @@
         public const string AddUser = "addUser";
         public const string GetUserById = "getUserById";
         public const string Authentication = "authentication";
+        public const string SubscribeAppUser = "subscribeUser";
     }
 }

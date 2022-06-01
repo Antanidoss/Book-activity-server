@@ -32,6 +32,7 @@ namespace BookActivity.Domain
             services.AddScoped<IRequestHandler<RemoveBookCommand, ValidationResult>, BookCommandHandler>();
 
             services.AddScoped<IRequestHandler<AddAppUserCommand, ValidationResult>, AppUserCommandHandler>();
+            services.AddScoped<IRequestHandler<SubscribeAppUserCommand, ValidationResult>, AppUserCommandHandler>();
         }
 
         private void ConfigureEventHandlers(IServiceCollection services)

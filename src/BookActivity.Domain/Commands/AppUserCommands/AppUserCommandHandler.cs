@@ -1,9 +1,12 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Filters.Specifications.AppUserSpecs;
+using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using NetDevPack.Messaging;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,7 +14,8 @@ using System.Threading.Tasks;
 namespace BookActivity.Domain.Commands.AppUserCommands
 {
     internal sealed class AppUserCommandHandler : CommandHandler,
-        IRequestHandler<AddAppUserCommand, ValidationResult>
+        IRequestHandler<AddAppUserCommand, ValidationResult>,
+        IRequestHandler<SubscribeAppUserCommand, ValidationResult>
     {
         private readonly IAppUserRepository _appUserRepository;
 
@@ -24,9 +28,36 @@ namespace BookActivity.Domain.Commands.AppUserCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            var createUserResult = await _appUserRepository.Addasync(new AppUser() { Email = request.Email, UserName = request.Name }, request.Password);
+            var createUserResult = await _appUserRepository.Addasync(new AppUser()
+            {
+                Email = request.Email,
+                UserName = request.Name 
+            }, request.Password);
 
             return ToValidationResult(createUserResult);
+        }
+
+        public async Task<ValidationResult> Handle(SubscribeAppUserCommand request, CancellationToken cancellationToken)
+        {
+            if (!request.IsValid()) return request.ValidationResult;
+
+            var filterModel = new AppUserFilterModel()
+            {
+                AppUserId = new FilterModelProp<AppUser, Guid>(request.AppUserId, new AppUserByIdSpec())
+            };
+
+            var currentUser = (await _appUserRepository.GetByFilterAsync(filterModel)).FirstOrDefault();
+
+            filterModel = new AppUserFilterModel()
+            {
+                AppUserId = new FilterModelProp<AppUser, Guid>(request.SubscribedUserId, new AppUserByIdSpec())
+            };
+
+            var subscribedUser = (await _appUserRepository.GetByFilterAsync(filterModel)).FirstOrDefault();
+            subscribedUser.FollowedUsers.Add(currentUser);
+            var updateUserResult = await _appUserRepository.Updateasync(currentUser);
+
+            return ToValidationResult(updateUserResult);
         }
 
         private ValidationResult ToValidationResult(IdentityResult identityResult)
