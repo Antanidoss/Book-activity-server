@@ -3,6 +3,7 @@ using BookActivity.Application.Interfaces;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Filters;
 using BookActivity.Application.Models.DTO.Read;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,11 +11,11 @@ using System.Threading.Tasks;
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.BookService)]
-    public sealed class BookController : Controller
+    public sealed class BookController : BaseController
     {
         private readonly IBookService _bookService;
 
-        public BookController(IBookService bookService)
+        public BookController(IBookService bookService, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
         {
             _bookService = bookService;
         }

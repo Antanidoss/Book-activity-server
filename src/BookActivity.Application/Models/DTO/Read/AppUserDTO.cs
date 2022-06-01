@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BookActivity.Application.Models.DTO.Read
 {
     public sealed class AppUserDTO
     {
+        public Guid Id { get; set; }
         public string Email { get; set; }
         public string UserName { get; set; }
         public string Token { get; set; }

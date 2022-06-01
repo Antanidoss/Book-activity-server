@@ -33,6 +33,11 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await _userManager.CreateAsync(user, password);
         }
 
+        public async Task<IdentityResult> Updateasync(AppUser user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
+
         public async Task<IEnumerable<AppUser>> GetByFilterAsync(AppUserFilterModel filterModel)
         {
             return await _filterHandler.Handle(filterModel, _db.Users).ToListAsync();

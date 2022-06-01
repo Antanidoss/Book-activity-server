@@ -11,7 +11,8 @@ namespace BookActivity.Application.Interfaces
     public interface IAppUserService
     {
         Task<ValidationResult> AddAsync(AppUserCreateDTO appUserCreateDTO);
-        Task<AppUserDTO> FindByIdAsync(Guid appUserId);
+        Task<ValidationResult> SubscribeAppUserCommand(Guid currentUserId, Guid subscribedUserId);
         Task<Result<AuthenticationResult>> PasswordSignInAsync(AuthenticationModel authenticationModel);
+        Task<AppUserDTO> FindByIdAsync(Guid appUserId);
     }
 }
