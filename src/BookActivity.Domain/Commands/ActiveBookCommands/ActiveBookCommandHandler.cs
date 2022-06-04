@@ -49,7 +49,10 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            var activeBookFilterModel = new ActiveBookFilterModel(new FilterModelProp<ActiveBook, Guid>(request.Id, new ActiveBookByIdSpec()), null);
+            var activeBookFilterModel = new ActiveBookFilterModel(
+                activeBookIds: new FilterModelProp<ActiveBook, Guid[]>(new Guid[] { request.Id }, new ActiveBookByIdSpec()),
+                userId: null);
+
             var activeBook = (await _activeBookRepository.GetByFilterAsync(activeBookFilterModel)).FirstOrDefault();
 
             if (activeBook is null) AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
@@ -66,7 +69,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            var activeBookFilterModel = new ActiveBookFilterModel(new FilterModelProp<ActiveBook, Guid>(request.Id, new ActiveBookByIdSpec()), null);
+            var activeBookFilterModel = new ActiveBookFilterModel(new FilterModelProp<ActiveBook, Guid[]>(new Guid[] { request.Id }, new ActiveBookByIdSpec()), null);
             var activeBook = (await _activeBookRepository.GetByFilterAsync(activeBookFilterModel)).FirstOrDefault();
 
             if (activeBook is null) AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));

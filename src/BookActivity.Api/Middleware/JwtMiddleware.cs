@@ -27,12 +27,12 @@ namespace BookActivity.Api.Middleware
         {
             var token = context.Request.Headers["Authorization"].FirstOrDefault();
             if (token != null)
-                await AttachUserToContext(context, userService, token);
+                await AttachUserToContextAsync(context, userService, token);
 
             await _next(context);
         }
 
-        private async Task AttachUserToContext(HttpContext context, IAppUserService userService, string token)
+        private async Task AttachUserToContextAsync(HttpContext context, IAppUserService userService, string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_tokenInfo.SecretKey);

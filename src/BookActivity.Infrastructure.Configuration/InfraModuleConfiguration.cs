@@ -8,11 +8,14 @@ namespace BookActivity.Infrastructure.Configuration
     {
         public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration Configuration)
         {
-            var infraModeuleConfigure = new ModuleConfiguration();
+            ModuleConfiguration infraModeuleConfigure = new();
             infraModeuleConfigure.ConfigureDI(services, Configuration);
 
-            var infraDataModuleConfigure = new Data.ModuleConfiguration();
+            Data.ModuleConfiguration infraDataModuleConfigure = new();
             infraDataModuleConfigure.ConfigureDI(services, Configuration);
+
+            Domain.ModuleConfiguration domainModuleConfigure = new();
+            domainModuleConfigure.ConfigureDI(services, Configuration);
 
             return services;
         }

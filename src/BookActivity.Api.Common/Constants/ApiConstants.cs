@@ -11,7 +11,8 @@
         public const string AddActiveBookMethod = "addActiveBook";
         public const string RemoveActiveBookMethod = "removeActiveBook";
         public const string UpdateActiveBookMethod = "updateActiveBook";
-        public const string GetActiveBooksMethod = "getActiveBook";
+        public const string GetActiveBooksByIdsMethod = "getActiveBookByIds";
+        public const string GetActiveBooksByUserIdMethod = "getActiveBooksByUserId";
 
         //Book methods
         public const string AddBookMethod = "addBook";
