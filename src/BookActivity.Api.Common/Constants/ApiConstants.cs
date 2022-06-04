@@ -15,13 +15,14 @@
         public const string GetActiveBooksByUserIdMethod = "getActiveBooksByUserId";
 
         //Book methods
-        public const string AddBookMethod = "addBook";
-        public const string GetBooksMethod = "getBooks";
+        public const string AddBookMethodMethod = "addBook";
+        public const string GetBooksByIdsMethod = "getBooksByIds";
+        public const string GetBooksByTitleContainsMethod = "getBooksByTitleContains";
 
         //AppUser methods
-        public const string AddUser = "addUser";
-        public const string GetUserById = "getUserById";
-        public const string Authentication = "authentication";
-        public const string SubscribeAppUser = "subscribeUser";
+        public const string AddUserMethod = "addUser";
+        public const string GetUserByIdMethod = "getUserById";
+        public const string AuthenticationMethod = "authentication";
+        public const string SubscribeAppUserMethod = "subscribeUser";
     }
 }

@@ -12,12 +12,12 @@ namespace BookActivity.Domain.Filters.Models
         public ActiveBookFilterModel(
             FilterModelProp<ActiveBook, Guid[]> activeBookIds,
             FilterModelProp<ActiveBook, Guid> userId,
-            int skip = _skip,
-            int take = _take) : base(skip, take)
+            int skip = SkipDefault,
+            int take = TakeDefault) : base(skip, take)
         {
             ActiveBookIds = activeBookIds;
             UserId = userId;
         }
-        public ActiveBookFilterModel(int skip = _skip, int take = _take) : base(skip, take) { }
+        public ActiveBookFilterModel(int skip = SkipDefault, int take = TakeDefault) : base(skip, take) { }
     }
 }

@@ -55,9 +55,11 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<IList<BookDTO>> GetByFilterAsync(BookDTOFilterModel filterModel)
         {
-            var bookFilter = new BookFilterModel(
-                filterModel.BookId == Guid.Empty ? null : new FilterModelProp<Book, Guid>(filterModel.BookId, new BookByBookIdSpec()),
-                string.IsNullOrEmpty(filterModel.Title) ? null : new FilterModelProp<Book, string>(filterModel.Title, new BookByTitleSpec()));
+            BookFilterModel bookFilter = new(
+                skip: filterModel.Skip == null ? BaseFilterModel.SkipDefault : filterModel.Skip.Value,
+                take: filterModel.Take == null ? BaseFilterModel.TakeDefault : filterModel.Take.Value,
+                bookIds: filterModel.BookIds == null ? null : new FilterModelProp<Book, Guid[]>(filterModel.BookIds, new BookByBookIdSpec()),
+                title: string.IsNullOrEmpty(filterModel.Title) ? null : new FilterModelProp<Book, string>(filterModel.Title, new BookByTitleSpec()));
 
             var books = await _bookRepository.GetByFilterAsync(bookFilter);
 

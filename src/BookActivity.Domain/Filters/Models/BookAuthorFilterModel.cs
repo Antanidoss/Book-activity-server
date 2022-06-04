@@ -7,6 +7,6 @@ namespace BookActivity.Domain.Filters.Models
     {
         public FilterModelProp<BookAuthor, Guid[]> AuthorIds { get; set; }
 
-        public BookAuthorFilterModel(int skip = _skip, int take = _take) : base(skip, take) { }
+        public BookAuthorFilterModel(int skip = SkipDefault, int take = TakeDefault) : base(skip, take) { }
     }
 }
