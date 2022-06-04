@@ -57,6 +57,11 @@ namespace BookActivity.Api
 
             app.UseHttpsRedirection();
 
+            app.UseCors(x =>
+                x.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -70,20 +75,20 @@ namespace BookActivity.Api
 
         private void AddInfastructure(IServiceCollection services)
         {
-            var infraModuleConfiguration = new InfraModuleConfiguration();
+            InfraModuleConfiguration infraModuleConfiguration = new();
             infraModuleConfiguration.ConfigureDI(services, Configuration);
         }
 
         private void AddApplication(IServiceCollection services)
         {
-            var appModuleConfiguration = new ApplicationModuleConfiguration();
+            ApplicationModuleConfiguration appModuleConfiguration = new();
             appModuleConfiguration.ConfigureDI(services, Configuration);
         }
 
         private void CreateDatabasesIfNotExist(IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
-            var infraModuleConfiguration = new InfraModuleConfiguration();
+            InfraModuleConfiguration infraModuleConfiguration = new();
             infraModuleConfiguration.CreateDatabasesIfNotExist(serviceScope);
         }
 

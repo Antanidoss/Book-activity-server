@@ -7,7 +7,6 @@ namespace BookActivity.Domain.Core.Events
     {
         public StoredEvent(Event theEvent, string data, string user)
         {
-            Id = Guid.NewGuid();
             AggregateId = theEvent.AggregateId;
             MessageType = theEvent.MessageType;
             Data = data;

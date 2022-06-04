@@ -7,7 +7,10 @@ namespace BookActivity.Api.Extansions
     {
         public static ApiResult<T> ToApiResult<T>(this Result<T> result)
         {
-            return new ApiResult<T>(result, result.IsSuccess) { ErrorMessage = result.Errors == null ? null : string.Join(",", result.Errors) };
+            return new ApiResult<T>(result, result.IsSuccess)
+            {
+                ErrorMessage = result.Errors == null ? null : string.Join(",", result.Errors)
+            };
         }
     }
 }

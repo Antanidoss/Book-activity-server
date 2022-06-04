@@ -56,7 +56,7 @@ namespace BookActivity.Application.Implementation.Services
         public async Task<IList<ActiveBookDTO>> GetByFilterAsync(ActiveBookDTOFilterModel filterModel)
         {
             var activeBookFilterModel = new ActiveBookFilterModel(
-                filterModel.ActiveBookId == Guid.Empty ? null : new FilterModelProp<ActiveBook, Guid>(filterModel.ActiveBookId, new ActiveBookByIdSpec()),
+                filterModel.ActiveBookIds == null ? null : new FilterModelProp<ActiveBook, Guid[]>(filterModel.ActiveBookIds, new ActiveBookByIdSpec()),
                 filterModel.UserId == Guid.Empty ? null : new FilterModelProp<ActiveBook, Guid>(filterModel.UserId, new ActiveBookByUserIdSpec()));
 
             var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel);

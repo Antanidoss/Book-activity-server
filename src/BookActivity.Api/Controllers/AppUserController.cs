@@ -24,25 +24,27 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPost(ApiConstants.AddUser)]
-        public async Task<IActionResult> AddAppUser([FromBody] AppUserCreateDTO appUserCreateDTO)
+        public async Task<IActionResult> AddAppUserAsync([FromBody] AppUserCreateDTO appUserCreateDTO)
         {
             return (await _appUserService.AddAsync(appUserCreateDTO)).ToActionResult();
         }
 
         [HttpGet(ApiConstants.GetUserById)]
-        public async Task<AppUserDTO> GetAppUserById(Guid appUserId)
+        public async Task<AppUserDTO> GetAppUserByIdAsync(Guid appUserId)
         {
             return await _appUserService.FindByIdAsync(appUserId);
         }
 
         [HttpPost(ApiConstants.Authentication)]
-        public async Task<ApiResult<AuthenticationResult>> Authentication([FromBody] AuthenticationModel authenticationModel)
+        public async Task<ApiResult<AuthenticationResult>> AuthenticationAsync([FromBody] AuthenticationModel authenticationModel)
         {
-            return (await _appUserService.PasswordSignInAsync(authenticationModel)).ToApiResult();
+            var result =  (await _appUserService.PasswordSignInAsync(authenticationModel));
+
+            return result.ToApiResult();
         }
 
         [HttpPut(ApiConstants.SubscribeAppUser)]
-        public async Task<ActionResult> SubscribeAppUser(Guid subscribedUserId)
+        public async Task<ActionResult> SubscribeAppUserAsync(Guid subscribedUserId)
         {
             var currentUser = GetCurrentUser();
 
