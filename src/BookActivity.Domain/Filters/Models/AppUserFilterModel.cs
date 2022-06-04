@@ -8,6 +8,6 @@ namespace BookActivity.Domain.Filters.Models
         public FilterModelProp<AppUser, Guid> AppUserId { get; set; }
         public FilterModelProp<AppUser, string> Email { get; set; }
 
-        public AppUserFilterModel(int skip = _skip, int take = _take) : base(skip, take) { }
+        public AppUserFilterModel(int skip = SkipDefault, int take = TakeDefault) : base(skip, take) { }
     }
 }

@@ -11,8 +11,8 @@ namespace BookActivity.Application.Implementation.FilterHandlers
         {
             if (query == null) return null;
 
-            if (bookFilterModel.BookId != null)
-                query = bookFilterModel.BookId.FilterSpec.ApplyFilter(query, bookFilterModel.BookId.Value);
+            if (bookFilterModel.BookIds != null)
+                query = bookFilterModel.BookIds.FilterSpec.ApplyFilter(query, bookFilterModel.BookIds.Value);
 
             if (bookFilterModel.Title != null)
                 query = bookFilterModel.Title.FilterSpec.ApplyFilter(query, bookFilterModel.Title.Value);

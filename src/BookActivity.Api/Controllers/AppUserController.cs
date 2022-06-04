@@ -23,19 +23,19 @@ namespace BookActivity.Api.Controllers
             _appUserService = appUserService;
         }
 
-        [HttpPost(ApiConstants.AddUser)]
+        [HttpPost(ApiConstants.AddUserMethod)]
         public async Task<IActionResult> AddAppUserAsync([FromBody] AppUserCreateDTO appUserCreateDTO)
         {
             return (await _appUserService.AddAsync(appUserCreateDTO)).ToActionResult();
         }
 
-        [HttpGet(ApiConstants.GetUserById)]
+        [HttpGet(ApiConstants.GetUserByIdMethod)]
         public async Task<AppUserDTO> GetAppUserByIdAsync(Guid appUserId)
         {
             return await _appUserService.FindByIdAsync(appUserId);
         }
 
-        [HttpPost(ApiConstants.Authentication)]
+        [HttpPost(ApiConstants.AuthenticationMethod)]
         public async Task<ApiResult<AuthenticationResult>> AuthenticationAsync([FromBody] AuthenticationModel authenticationModel)
         {
             var result =  (await _appUserService.PasswordSignInAsync(authenticationModel));
@@ -43,7 +43,7 @@ namespace BookActivity.Api.Controllers
             return result.ToApiResult();
         }
 
-        [HttpPut(ApiConstants.SubscribeAppUser)]
+        [HttpPut(ApiConstants.SubscribeAppUserMethod)]
         public async Task<ActionResult> SubscribeAppUserAsync(Guid subscribedUserId)
         {
             var currentUser = GetCurrentUser();

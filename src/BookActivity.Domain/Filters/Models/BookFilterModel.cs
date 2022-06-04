@@ -5,19 +5,19 @@ namespace BookActivity.Domain.Filters.Models
 {
     public sealed class BookFilterModel : BaseFilterModel
     {
-        public FilterModelProp<Book, Guid> BookId { get; set; }
+        public FilterModelProp<Book, Guid[]> BookIds { get; set; }
 
         public FilterModelProp<Book, string> Title { get; set; }
 
-        public BookFilterModel(int skip = _skip, int take = _take) : base(skip, take) { }
+        public BookFilterModel(int skip = SkipDefault, int take = TakeDefault) : base(skip, take) { }
 
         public BookFilterModel(
-            FilterModelProp<Book, Guid> bookId,
+            FilterModelProp<Book, Guid[]> bookIds,
             FilterModelProp<Book, string> title,
-            int skip = _skip,
-            int take = _take) : base(skip, take)
+            int skip = SkipDefault,
+            int take = TakeDefault) : base(skip, take)
         {
-            BookId = bookId;
+            BookIds = bookIds;
             Title = title;
         }
     }
