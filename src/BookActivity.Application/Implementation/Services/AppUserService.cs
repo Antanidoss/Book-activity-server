@@ -61,9 +61,13 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendCommand(addAppUserCommand);
         }
 
-        public async Task<AppUserDTO> FindByIdAsync(Guid appUserId)
+        public async Task<Result<AppUserDTO>> FindByIdAsync(Guid appUserId)
         {
-            AppUserFilterModel filterModel = new() { AppUserId = new FilterModelProp<AppUser, Guid>(appUserId, new AppUserByIdSpec()) };
+            AppUserFilterModel filterModel = new() 
+            {
+                AppUserId = new FilterModelProp<AppUser, Guid>(appUserId, new AppUserByIdSpec())
+            };
+
             var appUser = (await _appUserRepository.GetByFilterAsync(filterModel))?.FirstOrDefault();
 
             return _mapper.Map<AppUserDTO>(appUser);

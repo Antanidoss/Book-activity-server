@@ -1,4 +1,4 @@
-﻿namespace BookActivity.Api.Models
+﻿namespace BookActivity.Api.Common.Models
 {
     public class ApiResult<T>
     {
