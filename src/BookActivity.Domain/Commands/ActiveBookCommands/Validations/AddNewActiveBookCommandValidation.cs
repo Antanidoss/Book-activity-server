@@ -6,7 +6,6 @@
         {
             ValidateNumberPagesRead();
             ValidateTotalNumberPages();
-            ValidateActiveBookId();
             ValidateUserId();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace BookActivity.Application.Models.DTO.Create
 {
@@ -10,12 +11,11 @@ namespace BookActivity.Application.Models.DTO.Create
         public Guid UserId { get; set; } 
         public bool IsPublic { get; set; }
         public CreateActiveBookDTO() { }
-        public CreateActiveBookDTO(int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId, bool isPublic)
+        public CreateActiveBookDTO(int totalNumberPages, int numberPagesRead, Guid bookId, bool isPublic)
         {
             TotalNumberPages = totalNumberPages;
             NumberPagesRead = numberPagesRead;
             BookId = bookId;
-            UserId = userId;
             IsPublic = isPublic;
         }
     }
