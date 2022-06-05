@@ -1,7 +1,7 @@
 ﻿using BookActivity.Api.Common.Constants;
+using BookActivity.Api.Common.Extansions;
 using BookActivity.Api.Common.Extension;
-using BookActivity.Api.Extansions;
-using BookActivity.Api.Models;
+using BookActivity.Api.Common.Models;
 using BookActivity.Application.Interfaces;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
@@ -30,17 +30,15 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetUserByIdMethod)]
-        public async Task<AppUserDTO> GetAppUserByIdAsync(Guid appUserId)
+        public async Task<ApiResult<AppUserDTO>> GetAppUserByIdAsync(Guid appUserId)
         {
-            return await _appUserService.FindByIdAsync(appUserId);
+            return (await _appUserService.FindByIdAsync(appUserId)).ToApiResult();
         }
 
         [HttpPost(ApiConstants.AuthenticationMethod)]
         public async Task<ApiResult<AuthenticationResult>> AuthenticationAsync([FromBody] AuthenticationModel authenticationModel)
         {
-            var result =  (await _appUserService.PasswordSignInAsync(authenticationModel));
-
-            return result.ToApiResult();
+            return (await _appUserService.PasswordSignInAsync(authenticationModel)).ToApiResult();
         }
 
         [HttpPut(ApiConstants.SubscribeAppUserMethod)]

@@ -13,6 +13,6 @@ namespace BookActivity.Application.Interfaces
         Task<ValidationResult> AddAsync(AppUserCreateDTO appUserCreateDTO);
         Task<ValidationResult> SubscribeAppUserCommand(Guid currentUserId, Guid subscribedUserId);
         Task<Result<AuthenticationResult>> PasswordSignInAsync(AuthenticationModel authenticationModel);
-        Task<AppUserDTO> FindByIdAsync(Guid appUserId);
+        Task<Result<AppUserDTO>> FindByIdAsync(Guid appUserId);
     }
 }

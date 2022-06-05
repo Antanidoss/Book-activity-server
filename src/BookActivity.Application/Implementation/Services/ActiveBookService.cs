@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Ardalis.Result;
+using AutoMapper;
+using BookActivity.Application.Constants;
 using BookActivity.Application.Interfaces;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Filters;
@@ -53,8 +55,11 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendCommand(updateActiveBookCommand);
         }
 
-        public async Task<IList<ActiveBookDTO>> GetByFilterAsync(ActiveBookDTOFilterModel filterModel)
+        public async Task<Result<IEnumerable<ActiveBookDTO>>> GetByFilterAsync(ActiveBookDTOFilterModel filterModel)
         {
+            if (filterModel == null)
+                return Result<IEnumerable<ActiveBookDTO>>.Invalid(new List<ValidationError> { new ValidationError() { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
+
             ActiveBookFilterModel activeBookFilterModel = new(
                 skip: filterModel.Skip == null ? BaseFilterModel.SkipDefault : filterModel.Skip.Value,
                 take: filterModel.Take == null ? BaseFilterModel.TakeDefault : filterModel.Take.Value,

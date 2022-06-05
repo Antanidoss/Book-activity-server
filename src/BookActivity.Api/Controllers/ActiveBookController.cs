@@ -1,5 +1,6 @@
 ﻿using BookActivity.Api.Common.Constants;
-using BookActivity.Api.Common.Extension;
+using BookActivity.Api.Common.Extansions;
+using BookActivity.Api.Common.Models;
 using BookActivity.Application.Interfaces;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Filters;
@@ -44,24 +45,24 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetActiveBooksByIdsMethod)]
-        public async Task<IEnumerable<ActiveBookDTO>> GetaActiveBooksByIdsAsync(Guid[] activeBookIds)
+        public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetaActiveBooksByIdsAsync(Guid[] activeBookIds)
         {
-            return await _activeBookService.GetByFilterAsync(new ActiveBookDTOFilterModel
+            return (await _activeBookService.GetByFilterAsync(new ActiveBookDTOFilterModel
             {
                 ActiveBookIds = activeBookIds,
                 Take = activeBookIds.Length
-            });
+            })).ToApiResult();
         }
 
         [HttpGet(ApiConstants.GetActiveBooksByUserIdMethod)]
-        public async Task<IEnumerable<ActiveBookDTO>> GetaActiveBooksByIdsAsync(Guid userId, int? skip = 0, int? take = 1)
+        public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetaActiveBooksByIdsAsync(Guid userId, int? skip = 0, int? take = 1)
         {
-            return await _activeBookService.GetByFilterAsync(new ActiveBookDTOFilterModel 
+            return (await _activeBookService.GetByFilterAsync(new ActiveBookDTOFilterModel 
             {
                 UserId = userId,
                 Skip = skip,
                 Take = take
-            });
+            })).ToApiResult();
         }
     }
 }
