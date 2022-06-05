@@ -1,7 +1,6 @@
 ﻿using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Filters;
 using BookActivity.Domain.Models;
-using System;
 using System.Linq;
 
 namespace BookActivity.Application.Implementation.FilterHandlers
@@ -15,7 +14,7 @@ namespace BookActivity.Application.Implementation.FilterHandlers
             if (activeBookFilterModel.ActiveBookIds != null)
                 query = activeBookFilterModel.ActiveBookIds.FilterSpec.ApplyFilter(query, activeBookFilterModel.ActiveBookIds.Value);
 
-            if (activeBookFilterModel.UserId.Value == Guid.Empty)
+            if (activeBookFilterModel.UserId != null)
                 query = activeBookFilterModel.UserId.FilterSpec.ApplyFilter(query, activeBookFilterModel.UserId.Value);
 
             return query.Skip(activeBookFilterModel.Skip).Take(activeBookFilterModel.Take);

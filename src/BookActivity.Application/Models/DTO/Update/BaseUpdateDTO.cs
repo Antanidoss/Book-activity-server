@@ -6,6 +6,7 @@ namespace BookActivity.Application.Models.DTO.Update
     {
         public Guid Id { get; set; }
 
+        public BaseUpdateDTO() { }
         public BaseUpdateDTO(Guid id)
         {
             Id = id;
