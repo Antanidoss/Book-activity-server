@@ -63,11 +63,7 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<AppUserDTO>> FindByIdAsync(Guid appUserId)
         {
-            AppUserFilterModel filterModel = new() 
-            {
-                AppUserId = new FilterModelProp<AppUser, Guid>(appUserId, new AppUserByIdSpec())
-            };
-
+            AppUserFilterModel filterModel = new(new AppUserByIdSpec(appUserId));
             var appUser = (await _appUserRepository.GetByFilterAsync(filterModel))?.FirstOrDefault();
 
             return _mapper.Map<AppUserDTO>(appUser);
@@ -75,7 +71,7 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<AuthenticationResult>> PasswordSignInAsync(AuthenticationModel authenticationModel)
         {
-            AppUserFilterModel filterModel = new() { Email = new FilterModelProp<AppUser, string>(authenticationModel.Email, new AppUserByEmailSpec()) };
+            AppUserFilterModel filterModel = new(new AppUserByEmailSpec(authenticationModel.Email));
             var appUser = (await _appUserRepository.GetByFilterAsync(filterModel))?.FirstOrDefault();
 
             if (appUser == null)

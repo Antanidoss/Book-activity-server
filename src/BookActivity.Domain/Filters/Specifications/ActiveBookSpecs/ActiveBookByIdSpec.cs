@@ -2,14 +2,27 @@
 using BookActivity.Domain.Models;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Filters.Specifications.ActiveBookSpecs
 {
-    public sealed class ActiveBookByIdSpec : IQueryableFilterSpec<ActiveBook, Guid[]>
+    public sealed class ActiveBookByIdSpec : IQueryableFilterSpec<ActiveBook>
     {
-        public IQueryable<ActiveBook> ApplyFilter(IQueryable<ActiveBook> activeBooks, Guid[] activeBookIds)
+        private readonly Guid[] _activeBookIds;
+
+        public ActiveBookByIdSpec(params Guid[] activeBookIds)
         {
-            return activeBooks.Where(a => activeBookIds.Contains(a.Id));
+            _activeBookIds = activeBookIds;
+        }
+
+        public IQueryable<ActiveBook> ApplyFilter(IQueryable<ActiveBook> activeBooks)
+        {
+            return activeBooks.Where(ToExpression());
+        }
+
+        public Expression<Func<ActiveBook, bool>> ToExpression()
+        {
+            return a => _activeBookIds.Contains(a.Id);
         }
     }
 }

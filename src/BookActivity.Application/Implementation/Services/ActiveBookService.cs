@@ -7,8 +7,10 @@ using BookActivity.Application.Models.DTO.Filters;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
 using BookActivity.Domain.Commands.ActiveBookCommands;
+using BookActivity.Domain.Filters;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Filters.Specifications.ActiveBookSpecs;
+using BookActivity.Domain.Interfaces.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using FluentValidation.Results;
@@ -63,12 +65,18 @@ namespace BookActivity.Application.Implementation.Services
             ActiveBookFilterModel activeBookFilterModel = new(
                 skip: filterModel.Skip == null ? BaseFilterModel.SkipDefault : filterModel.Skip.Value,
                 take: filterModel.Take == null ? BaseFilterModel.TakeDefault : filterModel.Take.Value,
-                activeBookIds: filterModel.ActiveBookIds == null ? null : new FilterModelProp<ActiveBook, Guid[]>(filterModel.ActiveBookIds, new ActiveBookByIdSpec()),
-                userId: filterModel.UserId == Guid.Empty ? null : new FilterModelProp<ActiveBook, Guid>(filterModel.UserId, new ActiveBookByUserIdSpec()));
+                filter: BuildFilter(filterModel));
 
             var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel);
 
             return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
+        }
+
+        private IQueryableFilterSpec<ActiveBook> BuildFilter(ActiveBookDTOFilterModel filterModel)
+        {
+            return new OrIQueryableFilterSpec<ActiveBook>(
+                filterModel.ActiveBookIds == null ? null : new ActiveBookByIdSpec(filterModel.ActiveBookIds),
+                filterModel.UserId == Guid.Empty ? null : new ActiveBookByUserIdSpec(filterModel.UserId));
         }
     }
 }
