@@ -41,19 +41,12 @@ namespace BookActivity.Domain.Commands.AppUserCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            var filterModel = new AppUserFilterModel()
-            {
-                AppUserId = new FilterModelProp<AppUser, Guid>(request.AppUserId, new AppUserByIdSpec())
-            };
-
+            var filterModel = new AppUserFilterModel(new AppUserByIdSpec(request.AppUserId));
             var currentUser = (await _appUserRepository.GetByFilterAsync(filterModel)).FirstOrDefault();
 
-            filterModel = new AppUserFilterModel()
-            {
-                AppUserId = new FilterModelProp<AppUser, Guid>(request.SubscribedUserId, new AppUserByIdSpec())
-            };
-
+            filterModel = new AppUserFilterModel(new AppUserByIdSpec(request.SubscribedUserId));
             var subscribedUser = (await _appUserRepository.GetByFilterAsync(filterModel)).FirstOrDefault();
+
             subscribedUser.FollowedUsers.Add(currentUser);
             var updateUserResult = await _appUserRepository.Updateasync(currentUser);
 

@@ -1,22 +1,15 @@
-﻿using BookActivity.Domain.Models;
-using System;
+﻿using BookActivity.Domain.Interfaces.Filters;
+using BookActivity.Domain.Models;
 
 namespace BookActivity.Domain.Filters.Models
 {
     public sealed class ActiveBookFilterModel : BaseFilterModel
     {
-        public readonly FilterModelProp<ActiveBook, Guid[]> ActiveBookIds;
+        public IQueryableFilterSpec<ActiveBook> Filter { get; set; }
 
-        public readonly FilterModelProp<ActiveBook, Guid> UserId;
-
-        public ActiveBookFilterModel(
-            FilterModelProp<ActiveBook, Guid[]> activeBookIds,
-            FilterModelProp<ActiveBook, Guid> userId,
-            int skip = SkipDefault,
-            int take = TakeDefault) : base(skip, take)
+        public ActiveBookFilterModel(IQueryableFilterSpec<ActiveBook> filter, int skip = SkipDefault,int take = TakeDefault) : base(skip, take)
         {
-            ActiveBookIds = activeBookIds;
-            UserId = userId;
+            Filter = filter;
         }
         public ActiveBookFilterModel(int skip = SkipDefault, int take = TakeDefault) : base(skip, take) { }
     }

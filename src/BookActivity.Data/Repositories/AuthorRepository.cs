@@ -1,5 +1,4 @@
 ﻿using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Interfaces.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
@@ -7,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -16,28 +16,27 @@ namespace BookActivity.Infrastructure.Data.Repositories
     {
         private readonly BookActivityContext _db;
         private readonly DbSet<BookAuthor> _dbSet;
-        private readonly IFilterHandler<BookAuthor, BookAuthorFilterModel> _authorFilterHandler;
 
         public IUnitOfWork UnitOfWork => _db;
 
-        public AuthorRepository(BookActivityContext context, IFilterHandler<BookAuthor, BookAuthorFilterModel> authorFilterHandler)
+        public AuthorRepository(BookActivityContext context)
         {
             _db = context;
             _dbSet = _db.Set<BookAuthor>();
-            _authorFilterHandler = authorFilterHandler;
         }
 
         public async Task<IEnumerable<BookAuthor>> GetByFilterAsync(BookAuthorFilterModel filterModel)
         {
-            return await _authorFilterHandler
-                .Handle(filterModel, _dbSet.AsNoTracking())
+            return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
+                .Skip(filterModel.Skip)
+                .Take(filterModel.Take)
                 .ToListAsync();
         }
 
         public async Task<int> GetCountByFilterAsync(BookAuthorFilterModel filterModel)
         {
-            return await _authorFilterHandler
-                .Handle(filterModel, _dbSet.AsNoTracking())
+            return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
+                .Skip(filterModel.Skip)
                 .CountAsync();
         }
 

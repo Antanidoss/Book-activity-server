@@ -1,14 +1,28 @@
 ﻿using BookActivity.Domain.Interfaces.Filters;
 using BookActivity.Domain.Models;
+using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Filters.Specifications.AppUserSpecs
 {
-    public sealed class AppUserByEmailSpec : IQueryableFilterSpec<AppUser, string>
+    public sealed class AppUserByEmailSpec : IQueryableFilterSpec<AppUser>
     {
-        public IQueryable<AppUser> ApplyFilter(IQueryable<AppUser> appUsers, string email)
+        private readonly string _email;
+
+        public AppUserByEmailSpec(string email)
         {
-            return appUsers.Where(x => x.Email == email);
+            _email = email;
+        }
+
+        public IQueryable<AppUser> ApplyFilter(IQueryable<AppUser> appUsers)
+        {
+            return appUsers.Where(ToExpression());
+        }
+
+        public Expression<Func<AppUser, bool>> ToExpression()
+        {
+            return x => x.Email == _email;
         }
     }
 }

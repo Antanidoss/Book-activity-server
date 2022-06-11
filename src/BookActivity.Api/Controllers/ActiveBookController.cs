@@ -55,7 +55,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetActiveBooksByUserIdMethod)]
-        public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetaActiveBooksByIdsAsync(Guid userId, int? skip = 0, int? take = 1)
+        public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetaActiveBooksByUserIdsAsync(Guid userId, int? skip = 0, int? take = 1)
         {
             return (await _activeBookService.GetByFilterAsync(new ActiveBookDTOFilterModel 
             {

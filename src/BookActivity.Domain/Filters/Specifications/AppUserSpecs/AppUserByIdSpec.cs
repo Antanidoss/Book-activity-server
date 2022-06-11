@@ -2,14 +2,27 @@
 using BookActivity.Domain.Models;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Filters.Specifications.AppUserSpecs
 {
-    public sealed class AppUserByIdSpec : IQueryableFilterSpec<AppUser, Guid>
+    public sealed class AppUserByIdSpec : IQueryableFilterSpec<AppUser>
     {
-        public IQueryable<AppUser> ApplyFilter(IQueryable<AppUser> appUsers, Guid appUserId)
+        private readonly Guid _appUserId;
+
+        public AppUserByIdSpec(Guid appUserId)
         {
-            return appUsers.Where(a => a.Id == appUserId);
+            _appUserId = appUserId;
+        }
+
+        public IQueryable<AppUser> ApplyFilter(IQueryable<AppUser> appUsers)
+        {
+            return appUsers.Where(ToExpression());
+        }
+
+        public Expression<Func<AppUser, bool>> ToExpression()
+        {
+            return a => a.Id == _appUserId;
         }
     }
 }

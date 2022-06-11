@@ -6,23 +6,23 @@ using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Filters.Specifications.BookSpecs
 {
-    public sealed class BookByBookIdSpec : IQueryableFilterSpec<Book>
+    public sealed class BookByTitleContainsSpec : IQueryableFilterSpec<Book>
     {
-        private readonly Guid[] _bookIds;
+        private readonly string _title;
 
-        public BookByBookIdSpec(params Guid[] bookIds)
+        public BookByTitleContainsSpec(string title)
         {
-            _bookIds = bookIds;
+            _title = title;
         }
 
-        public IQueryable<Book> ApplyFilter(IQueryable<Book> books) 
+        public IQueryable<Book> ApplyFilter(IQueryable<Book> books)
         {
             return books.Where(ToExpression());
         }
 
         public Expression<Func<Book, bool>> ToExpression()
         {
-            return b => _bookIds.Contains(b.Id);
+            return b => b.Title.Contains(_title);
         }
     }
 }

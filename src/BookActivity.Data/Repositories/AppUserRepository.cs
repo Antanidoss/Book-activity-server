@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
@@ -15,14 +16,11 @@ namespace BookActivity.Infrastructure.Data.Repositories
     {
         private readonly BookActivityContext _db;
 
-        private readonly IFilterHandler<AppUser, AppUserFilterModel> _filterHandler;
-
         private readonly UserManager<AppUser> _userManager;
 
-        public AppUserRepository(BookActivityContext db, IFilterHandler<AppUser, AppUserFilterModel> filterHandler, UserManager<AppUser> userManager)
+        public AppUserRepository(BookActivityContext db, UserManager<AppUser> userManager)
         {
             _db = db;
-            _filterHandler = filterHandler;
             _userManager = userManager;
         }
 
@@ -40,7 +38,10 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<AppUser>> GetByFilterAsync(AppUserFilterModel filterModel)
         {
-            return await _filterHandler.Handle(filterModel, _db.Users).ToListAsync();
+            return await filterModel.Filter.ApplyFilter(_db.Users.AsNoTracking())
+                .Skip(filterModel.Skip)
+                .Take(filterModel.Take)
+                .ToListAsync();
         }
 
         public void Dispose()

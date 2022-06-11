@@ -6,6 +6,7 @@ using BookActivity.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
@@ -13,29 +14,29 @@ namespace BookActivity.Infrastructure.Data.Repositories
     internal sealed class ActiveBookRepository : IActiveBookRepository
     {
         private readonly BookActivityContext _db;
+
         private readonly DbSet<ActiveBook> _dbSet;
-        private readonly IFilterHandler<ActiveBook, ActiveBookFilterModel> _activeBookFilterHandler;
 
         public IUnitOfWork UnitOfWork => _db;
 
-        public ActiveBookRepository(BookActivityContext context, IFilterHandler<ActiveBook, ActiveBookFilterModel> activeBookFilterHandler)
+        public ActiveBookRepository(BookActivityContext context)
         {
             _db = context;
             _dbSet = _db.Set<ActiveBook>();
-            _activeBookFilterHandler = activeBookFilterHandler;
         }
 
         public async Task<IEnumerable<ActiveBook>> GetByFilterAsync(ActiveBookFilterModel filterModel)
         {
-            return await _activeBookFilterHandler
-                .Handle(filterModel, _dbSet.AsNoTracking())
+            return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
+                .Skip(filterModel.Skip)
+                .Take(filterModel.Take)
                 .ToListAsync();
         }
 
         public async Task<int> GetCountByFilterAsync(ActiveBookFilterModel filterModel)
         {
-            return await _activeBookFilterHandler
-                .Handle(filterModel, _dbSet.AsNoTracking())
+            return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
+                .Skip(filterModel.Skip)
                 .CountAsync();
         }
 
