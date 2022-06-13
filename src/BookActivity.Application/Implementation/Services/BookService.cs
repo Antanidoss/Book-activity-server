@@ -7,6 +7,7 @@ using BookActivity.Application.Models.DTO.Filters;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
 using BookActivity.Domain.Commands.BookCommands;
+using BookActivity.Domain.Extensions;
 using BookActivity.Domain.Filters;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Filters.Specifications.BookSpecs;
@@ -74,9 +75,7 @@ namespace BookActivity.Application.Implementation.Services
 
         public IQueryableFilterSpec<Book> BuildFilter(BookDTOFilterModel filterModel)
         {
-            return new OrIQueryableFilterSpec<Book>(
-                filterModel.BookIds == null ? null : new BookByBookIdSpec(filterModel.BookIds),
-                string.IsNullOrEmpty(filterModel.Title) ? null : new BookByTitleContainsSpec(filterModel.Title));
+            return new BookByBookIdSpec(filterModel.BookIds).And(new BookByTitleContainsSpec(filterModel.Title));
         }
     }
 }
