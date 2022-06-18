@@ -2,18 +2,14 @@
 using AutoMapper;
 using BookActivity.Application.Constants;
 using BookActivity.Application.Interfaces;
+using BookActivity.Application.Models.DTO;
 using BookActivity.Application.Models.DTO.Create;
-using BookActivity.Application.Models.DTO.Filters;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
 using BookActivity.Domain.Commands.BookCommands;
-using BookActivity.Domain.Extensions;
-using BookActivity.Domain.Filters;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Filters.Specifications.BookSpecs;
-using BookActivity.Domain.Interfaces.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
 using FluentValidation.Results;
 using NetDevPack.Mediator;
 using System;
@@ -58,24 +54,34 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendCommand(updateBookCommand);
         }
 
-        public async Task<Result<IEnumerable<BookDTO>>> GetByFilterAsync(BookDTOFilterModel filterModel)
+        public async Task<Result<IEnumerable<BookDTO>>> GetByBookIdsFilterAsync(PaginationModel paginationModel, Guid[] bookIds)
         {
-            if (filterModel == null)
+            if (paginationModel == null)
                 return Result<IEnumerable<BookDTO>>.Invalid(new List<ValidationError> { new ValidationError() { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
 
             BookFilterModel bookFilter = new(
-                skip: filterModel.Skip == null ? BaseFilterModel.SkipDefault : filterModel.Skip.Value,
-                take: filterModel.Take == null ? BaseFilterModel.TakeDefault : filterModel.Take.Value,
-                filter: BuildFilter(filterModel));
+                skip: paginationModel.Skip,
+                take: paginationModel.Take,
+                filter: new BookByBookIdSpec(bookIds));
 
             var books = await _bookRepository.GetByFilterAsync(bookFilter);
 
             return _mapper.Map<List<BookDTO>>(books);
         }
 
-        public IQueryableFilterSpec<Book> BuildFilter(BookDTOFilterModel filterModel)
+        public async Task<Result<IEnumerable<BookDTO>>> GetByTitleContainsFilterAsync(PaginationModel paginationModel, string title)
         {
-            return new BookByBookIdSpec(filterModel.BookIds).And(new BookByTitleContainsSpec(filterModel.Title));
+            if (paginationModel == null)
+                return Result<IEnumerable<BookDTO>>.Invalid(new List<ValidationError> { new ValidationError() { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
+
+            BookFilterModel bookFilter = new(
+                skip: paginationModel.Skip,
+                take: paginationModel.Take,
+                filter: new BookByTitleContainsSpec(title));
+
+            var books = await _bookRepository.GetByFilterAsync(bookFilter);
+
+            return _mapper.Map<List<BookDTO>>(books);
         }
     }
 }

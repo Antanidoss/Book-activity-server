@@ -1,6 +1,6 @@
 ﻿using Ardalis.Result;
+using BookActivity.Application.Models.DTO;
 using BookActivity.Application.Models.DTO.Create;
-using BookActivity.Application.Models.DTO.Filters;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
 using FluentValidation.Results;
@@ -15,6 +15,7 @@ namespace BookActivity.Application.Interfaces
         Task<ValidationResult> AddActiveBookAsync(CreateActiveBookDTO createActiveBookModel);
         Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId);
         Task<ValidationResult> UpdateActiveBookAsync(UpdateActiveBookDTO updateActiveBookModel);
-        Task<Result<IEnumerable<ActiveBookDTO>>> GetByFilterAsync(ActiveBookDTOFilterModel filterModel);
+        Task<Result<IEnumerable<ActiveBookDTO>>> GetByActiveBookIdFilterAsync(PaginationModel paginationModel, Guid[] activeBookIds);
+        Task<Result<IEnumerable<ActiveBookDTO>>> GetByUserIdFilterAsync(PaginationModel paginationModel, Guid userId);
     }
 }

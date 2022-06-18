@@ -7,10 +7,11 @@ namespace BookActivity.Domain.Filters.Models
     {
         public IQueryableFilterSpec<ActiveBook> Filter { get; set; }
 
-        public ActiveBookFilterModel(IQueryableFilterSpec<ActiveBook> filter, int skip = SkipDefault,int take = TakeDefault) : base(skip, take)
+        public ActiveBookFilterModel(IQueryableFilterSpec<ActiveBook> filter, int? skip = SkipDefault,int? take = TakeDefault) : base(skip, take)
         {
             Filter = filter;
         }
+
         public ActiveBookFilterModel(int skip = SkipDefault, int take = TakeDefault) : base(skip, take) { }
     }
 }

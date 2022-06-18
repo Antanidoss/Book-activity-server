@@ -28,15 +28,15 @@ namespace BookActivity.Infrastructure.Data.Repositories
         public async Task<IEnumerable<ActiveBook>> GetByFilterAsync(ActiveBookFilterModel filterModel)
         {
             return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
-                .Skip(filterModel.Skip)
-                .Take(filterModel.Take)
+                .Skip(filterModel.Skip.Value)
+                .Take(filterModel.Take.Value)
                 .ToListAsync();
         }
 
         public async Task<int> GetCountByFilterAsync(ActiveBookFilterModel filterModel)
         {
             return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
-                .Skip(filterModel.Skip)
+                .Skip(filterModel.Skip.Value)
                 .CountAsync();
         }
 
