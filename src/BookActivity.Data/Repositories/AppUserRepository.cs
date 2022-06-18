@@ -39,8 +39,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
         public async Task<IEnumerable<AppUser>> GetByFilterAsync(AppUserFilterModel filterModel)
         {
             return await filterModel.Filter.ApplyFilter(_db.Users.AsNoTracking())
-                .Skip(filterModel.Skip)
-                .Take(filterModel.Take)
+                .Skip(filterModel.Skip.Value)
+                .Take(filterModel.Take.Value)
                 .ToListAsync();
         }
 

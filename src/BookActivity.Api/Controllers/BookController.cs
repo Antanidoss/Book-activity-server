@@ -2,8 +2,8 @@
 using BookActivity.Api.Common.Extansions;
 using BookActivity.Api.Common.Models;
 using BookActivity.Application.Interfaces;
+using BookActivity.Application.Models.DTO;
 using BookActivity.Application.Models.DTO.Create;
-using BookActivity.Application.Models.DTO.Filters;
 using BookActivity.Application.Models.DTO.Read;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,21 +32,16 @@ namespace BookActivity.Api.Controllers
         [HttpGet(ApiConstants.GetBooksByIdsMethod)]
         public async Task<ApiResult<IEnumerable<BookDTO>>> GetBooksByIdsAsync(Guid[] bookIds)
         {
-            return (await _bookService.GetByFilterAsync(new BookDTOFilterModel
+            return (await _bookService.GetByBookIdsFilterAsync(new PaginationModel
             {
-                BookIds = bookIds, Take = bookIds.Length
-            })).ToApiResult();
+                Take = bookIds.Length
+            }, bookIds)).ToApiResult();
         }
 
         [HttpGet(ApiConstants.GetBooksByTitleContainsMethod)]
-        public async Task<ApiResult<IEnumerable<BookDTO>>> GetBooksByIdsAsync(string title, int? skip = 0, int? take = 1)
+        public async Task<ApiResult<IEnumerable<BookDTO>>> GetBooksByIdsAsync(PaginationModel paginationModel, string title)
         {
-            return (await _bookService.GetByFilterAsync(new BookDTOFilterModel
-            {
-                Title = title,
-                Skip = skip,
-                Take = take
-            })).ToApiResult();
+            return (await _bookService.GetByTitleContainsFilterAsync(paginationModel, title)).ToApiResult();
         }
     }
 }

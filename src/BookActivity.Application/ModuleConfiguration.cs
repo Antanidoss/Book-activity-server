@@ -18,25 +18,27 @@ namespace BookActivity.Application
             return services;
         }
 
-        private void AddAutoMapper(IServiceCollection services)
-        {
-            MapperConfigurationExpression mapperConfigureExpression = new();
-
-            mapperConfigureExpression.AddProfile(new ActiveBookDTOProfile());
-            mapperConfigureExpression.AddProfile(new BookDTOProfile());
-            mapperConfigureExpression.AddProfile(new AppUserDTOProfile());
-
-            MapperConfiguration mappingConfig = new(mapperConfigureExpression);
-
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
-        }
-
         private void AddServices(IServiceCollection services)
         {
             services.AddScoped<IActiveBookService, ActiveBookService>();
             services.AddScoped<IBookService, BookService>();
             services.AddScoped<IAppUserService, AppUserService>();
+        }
+
+        private void AddAutoMapper(IServiceCollection services)
+        {
+            MapperConfigurationExpression mapperConfigureExpression = new();
+            AddMapperProfiles(mapperConfigureExpression);
+            MapperConfiguration mappingConfig = new(mapperConfigureExpression);
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+        }
+
+        private void AddMapperProfiles(MapperConfigurationExpression mapperConfigureExpression)
+        {
+            mapperConfigureExpression.AddProfile(new ActiveBookDTOProfile());
+            mapperConfigureExpression.AddProfile(new BookDTOProfile());
+            mapperConfigureExpression.AddProfile(new AppUserDTOProfile());
         }
     }
 }
