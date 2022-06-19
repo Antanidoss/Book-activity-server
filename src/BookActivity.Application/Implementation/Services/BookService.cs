@@ -1,8 +1,8 @@
 ﻿using Ardalis.Result;
 using AutoMapper;
 using BookActivity.Application.Constants;
-using BookActivity.Application.Interfaces;
-using BookActivity.Application.Models.DTO;
+using BookActivity.Application.Interfaces.Services;
+using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
@@ -57,13 +57,9 @@ namespace BookActivity.Application.Implementation.Services
         public async Task<Result<IEnumerable<BookDTO>>> GetByBookIdsFilterAsync(PaginationModel paginationModel, Guid[] bookIds)
         {
             if (paginationModel == null)
-                return Result<IEnumerable<BookDTO>>.Invalid(new List<ValidationError> { new ValidationError() { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
+                return Result<IEnumerable<BookDTO>>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
 
-            BookFilterModel bookFilter = new(
-                skip: paginationModel.Skip,
-                take: paginationModel.Take,
-                filter: new BookByBookIdSpec(bookIds));
-
+            BookFilterModel bookFilter = new(new BookByBookIdSpec(bookIds), paginationModel.Skip, paginationModel.Take);
             var books = await _bookRepository.GetByFilterAsync(bookFilter);
 
             return _mapper.Map<List<BookDTO>>(books);
@@ -72,13 +68,9 @@ namespace BookActivity.Application.Implementation.Services
         public async Task<Result<IEnumerable<BookDTO>>> GetByTitleContainsFilterAsync(PaginationModel paginationModel, string title)
         {
             if (paginationModel == null)
-                return Result<IEnumerable<BookDTO>>.Invalid(new List<ValidationError> { new ValidationError() { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
+                return Result<IEnumerable<BookDTO>>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
 
-            BookFilterModel bookFilter = new(
-                skip: paginationModel.Skip,
-                take: paginationModel.Take,
-                filter: new BookByTitleContainsSpec(title));
-
+            BookFilterModel bookFilter = new(new BookByTitleContainsSpec(title), paginationModel.Skip, paginationModel.Take);
             var books = await _bookRepository.GetByFilterAsync(bookFilter);
 
             return _mapper.Map<List<BookDTO>>(books);
