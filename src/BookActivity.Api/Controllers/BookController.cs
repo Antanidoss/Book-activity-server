@@ -1,8 +1,8 @@
 ﻿using BookActivity.Api.Common.Constants;
 using BookActivity.Api.Common.Extansions;
 using BookActivity.Api.Common.Models;
-using BookActivity.Application.Interfaces;
-using BookActivity.Application.Models.DTO;
+using BookActivity.Application.Interfaces.Services;
+using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +39,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetBooksByTitleContainsMethod)]
-        public async Task<ApiResult<IEnumerable<BookDTO>>> GetBooksByIdsAsync(PaginationModel paginationModel, string title)
+        public async Task<ApiResult<IEnumerable<BookDTO>>> GetBooksByTitlesAsync(PaginationModel paginationModel, string title)
         {
             return (await _bookService.GetByTitleContainsFilterAsync(paginationModel, title)).ToApiResult();
         }

@@ -1,4 +1,4 @@
-﻿using BookActivity.Application.Interfaces;
+﻿using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;

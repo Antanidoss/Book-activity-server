@@ -1,7 +1,7 @@
 ﻿using Ardalis.Result;
 using AutoMapper;
 using BookActivity.Application.Constants;
-using BookActivity.Application.Interfaces;
+using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;

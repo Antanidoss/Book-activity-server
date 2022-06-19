@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BookActivity.Application.AutoMapper;
 using BookActivity.Application.Implementation.Services;
-using BookActivity.Application.Interfaces;
+using BookActivity.Application.Interfaces.Services;
 using BookActivity.Shared.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

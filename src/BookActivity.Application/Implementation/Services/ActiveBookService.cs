@@ -1,8 +1,8 @@
 ﻿using Ardalis.Result;
 using AutoMapper;
 using BookActivity.Application.Constants;
-using BookActivity.Application.Interfaces;
-using BookActivity.Application.Models.DTO;
+using BookActivity.Application.Interfaces.Services;
+using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
@@ -59,11 +59,7 @@ namespace BookActivity.Application.Implementation.Services
             if (filterModel == null)
                 return Result<IEnumerable<ActiveBookDTO>>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
 
-            ActiveBookFilterModel activeBookFilterModel = new(
-                skip: filterModel.Skip,
-                take: filterModel.Take,
-                filter: new ActiveBookByIdSpec(activeBookIds));
-
+            ActiveBookFilterModel activeBookFilterModel = new(new ActiveBookByIdSpec(activeBookIds), filterModel.Skip, filterModel.Take);
             var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel);
 
             return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
@@ -74,11 +70,7 @@ namespace BookActivity.Application.Implementation.Services
             if(filterModel == null)
                 return Result<IEnumerable<ActiveBookDTO>>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
 
-            ActiveBookFilterModel activeBookFilterModel = new(
-                skip: filterModel.Skip,
-                take: filterModel.Take,
-                filter: new ActiveBookByUserIdSpec(userId));
-
+            ActiveBookFilterModel activeBookFilterModel = new(new ActiveBookByUserIdSpec(userId), filterModel.Skip, filterModel.Take);
             var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel);
 
             return _mapper.Map<List<ActiveBookDTO>>(activeBooks);

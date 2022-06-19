@@ -1,4 +1,4 @@
-﻿namespace BookActivity.Application.Models.DTO
+﻿namespace BookActivity.Application.Models
 {
     public class PaginationModel
     {

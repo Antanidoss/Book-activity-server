@@ -6,7 +6,7 @@ using FluentValidation.Results;
 using System;
 using System.Threading.Tasks;
 
-namespace BookActivity.Application.Interfaces
+namespace BookActivity.Application.Interfaces.Services
 {
     public interface IAppUserService
     {

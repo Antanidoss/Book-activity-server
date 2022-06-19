@@ -1,5 +1,5 @@
 ﻿using Ardalis.Result;
-using BookActivity.Application.Models.DTO;
+using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BookActivity.Application.Interfaces
+namespace BookActivity.Application.Interfaces.Services
 {
     public interface IBookService
     {

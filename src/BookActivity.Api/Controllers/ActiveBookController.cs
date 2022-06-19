@@ -1,8 +1,8 @@
 ﻿using BookActivity.Api.Common.Constants;
 using BookActivity.Api.Common.Extansions;
 using BookActivity.Api.Common.Models;
-using BookActivity.Application.Interfaces;
-using BookActivity.Application.Models.DTO;
+using BookActivity.Application.Interfaces.Services;
+using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
@@ -27,7 +27,7 @@ namespace BookActivity.Api.Controllers
         [HttpPost(ApiConstants.AddActiveBookMethod)]
         public async Task<ActionResult> AddActiveBookAsync(CreateActiveBookDTO createActiveBookModel)
         {
-            createActiveBookModel.UserId = /*GetCurrentUser().Id;*/ Guid.Parse("B13246FB-402D-4A55-C73B-08DA3B53C767");
+            createActiveBookModel.UserId = GetCurrentUser().Id;;
 
             return (await _activeBookService.AddActiveBookAsync(createActiveBookModel)).ToActionResult();
         }

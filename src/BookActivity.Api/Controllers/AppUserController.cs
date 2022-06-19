@@ -1,8 +1,7 @@
 ﻿using BookActivity.Api.Common.Constants;
 using BookActivity.Api.Common.Extansions;
-using BookActivity.Api.Common.Extension;
 using BookActivity.Api.Common.Models;
-using BookActivity.Application.Interfaces;
+using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
