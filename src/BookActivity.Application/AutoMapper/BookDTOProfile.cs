@@ -7,7 +7,7 @@ using BookActivity.Domain.Models;
 
 namespace BookActivity.Application.AutoMapper
 {
-    public sealed class BookDTOProfile : Profile
+    internal sealed class BookDTOProfile : Profile
     {
         public BookDTOProfile()
         {

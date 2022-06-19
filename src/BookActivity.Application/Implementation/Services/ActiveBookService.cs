@@ -47,7 +47,7 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendCommand(removeActiveBookCommand);
         }
 
-        public async Task<ValidationResult> UpdateActiveBookAsync(UpdateActiveBookDTO updateActiveBookModel)
+        public async Task<ValidationResult> UpdateActiveBookAsync(UpdateNumberPagesReadDTO updateActiveBookModel)
         {
             var updateActiveBookCommand = _mapper.Map<UpdateActiveBookCommand>(updateActiveBookModel);
 

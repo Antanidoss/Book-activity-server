@@ -14,7 +14,7 @@ namespace BookActivity.Application.Interfaces
     {
         Task<ValidationResult> AddActiveBookAsync(CreateActiveBookDTO createActiveBookModel);
         Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId);
-        Task<ValidationResult> UpdateActiveBookAsync(UpdateActiveBookDTO updateActiveBookModel);
+        Task<ValidationResult> UpdateActiveBookAsync(UpdateNumberPagesReadDTO updateActiveBookModel);
         Task<Result<IEnumerable<ActiveBookDTO>>> GetByActiveBookIdFilterAsync(PaginationModel paginationModel, Guid[] activeBookIds);
         Task<Result<IEnumerable<ActiveBookDTO>>> GetByUserIdFilterAsync(PaginationModel paginationModel, Guid userId);
     }

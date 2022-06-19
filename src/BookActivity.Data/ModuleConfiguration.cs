@@ -60,6 +60,7 @@ namespace BookActivity.Infrastructure.Data
             services.AddScoped<IEventStoreRepository, EventStoreRepository>();
             services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<IAppUserRepository, AppUserRepository>();
+            services.AddScoped<IBookNoteRepository, BookNoteRepository>();
         }
     }
 }
