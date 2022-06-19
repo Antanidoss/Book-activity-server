@@ -1,6 +1,7 @@
 ﻿using BookActivity.Domain.Commands.ActiveBookCommands;
 using BookActivity.Domain.Commands.AppUserCommands;
 using BookActivity.Domain.Commands.BookCommands;
+using BookActivity.Domain.Commands.BookNoteCommands;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.UserNotificationsEvents;
 using BookActivity.Shared.Interfaces;
@@ -33,6 +34,8 @@ namespace BookActivity.Domain
 
             services.AddScoped<IRequestHandler<AddAppUserCommand, ValidationResult>, AppUserCommandHandler>();
             services.AddScoped<IRequestHandler<SubscribeAppUserCommand, ValidationResult>, AppUserCommandHandler>();
+
+            services.AddScoped<IRequestHandler<AddBookNoteCommand, ValidationResult>, BookNoteCommandHandler>();
         }
 
         private void ConfigureEventHandlers(IServiceCollection services)

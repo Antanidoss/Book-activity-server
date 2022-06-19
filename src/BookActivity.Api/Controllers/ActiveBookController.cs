@@ -27,13 +27,13 @@ namespace BookActivity.Api.Controllers
         [HttpPost(ApiConstants.AddActiveBookMethod)]
         public async Task<ActionResult> AddActiveBookAsync(CreateActiveBookDTO createActiveBookModel)
         {
-            createActiveBookModel.UserId = GetCurrentUser().Id;
+            createActiveBookModel.UserId = /*GetCurrentUser().Id;*/ Guid.Parse("B13246FB-402D-4A55-C73B-08DA3B53C767");
 
             return (await _activeBookService.AddActiveBookAsync(createActiveBookModel)).ToActionResult();
         }
 
-        [HttpPost(ApiConstants.UpdateActiveBookMethod)]
-        public async Task<ActionResult> UpdateActiveBookAsync(UpdateActiveBookDTO updateActiveBookModel)
+        [HttpPut(ApiConstants.UpdateNumberPagesReadMethod)]
+        public async Task<ActionResult> UpdateNumberPagesReadAsync(UpdateNumberPagesReadDTO updateActiveBookModel)
         {
             return (await _activeBookService.UpdateActiveBookAsync(updateActiveBookModel)).ToActionResult();
         }

@@ -7,7 +7,7 @@ using BookActivity.Domain.Models;
 
 namespace BookActivity.Application.AutoMapper
 {
-    public sealed class ActiveBookDTOProfile : Profile
+    internal sealed class ActiveBookDTOProfile : Profile
     {
         public ActiveBookDTOProfile()
         {
@@ -15,8 +15,8 @@ namespace BookActivity.Application.AutoMapper
             CreateMap<ActiveBook, ActiveBookDTO>();
             CreateMap<CreateActiveBookDTO, AddActiveBookCommand>();
 
-            CreateMap<UpdateActiveBookDTO, UpdateActiveBookCommand>()
-                .ForCtorParam("activeBookId", conf => conf.MapFrom(u => u.Id))
+            CreateMap<UpdateNumberPagesReadDTO, UpdateActiveBookCommand>()
+                .ForCtorParam("activeBookId", conf => conf.MapFrom(u => u.ActiveBookId))
                 .ForCtorParam("numberPagesRead", conf => conf.MapFrom(u => u.NumberPagesRead));
         }
     }

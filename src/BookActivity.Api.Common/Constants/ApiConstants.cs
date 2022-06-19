@@ -4,13 +4,15 @@
     {
         //Services
         public const string ActiveBookService = "activeBook";
+        public const string BookNoteService = "bookNote";
         public const string BookService = "book";
         public const string AppUserService = "user";
 
         //ActiveBook methods
         public const string AddActiveBookMethod = "addActiveBook";
         public const string RemoveActiveBookMethod = "removeActiveBook";
-        public const string UpdateActiveBookMethod = "updateActiveBook";
+        public const string UpdateNumberPagesReadMethod = "updateNumberPagesRead";
+        public const string UpdateBookNoteMethod = "updateBookNote";
         public const string GetActiveBooksByIdsMethod = "getActiveBookByIds";
         public const string GetActiveBooksByUserIdMethod = "getActiveBooksByUserId";
 
@@ -24,5 +26,8 @@
         public const string GetUserByIdMethod = "getUserById";
         public const string AuthenticationMethod = "authentication";
         public const string SubscribeAppUserMethod = "subscribeUser";
+
+        //BookNote methods
+        public const string AddBookNoteMethod = "addBookNote";
     }
 }
