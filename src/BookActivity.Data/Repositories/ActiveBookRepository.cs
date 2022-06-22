@@ -1,5 +1,4 @@
 ﻿using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Interfaces.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;

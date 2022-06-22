@@ -1,5 +1,5 @@
-﻿using BookActivity.Domain.Interfaces.Filters;
-using BookActivity.Domain.Models;
+﻿using BookActivity.Domain.Models;
+using QueryableFilterSpecification.Interfaces;
 
 namespace BookActivity.Domain.Filters.Models
 {
