@@ -1,5 +1,5 @@
-﻿using BookActivity.Domain.Interfaces.Filters;
-using BookActivity.Domain.Models;
+﻿using BookActivity.Domain.Models;
+using QueryableFilterSpecification.Interfaces;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
