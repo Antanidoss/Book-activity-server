@@ -1,4 +1,5 @@
-﻿using BookActivity.Domain.Filters.Models;
+﻿using Antanidoss.Specification.Filters.Interfaces;
+using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
@@ -30,6 +31,11 @@ namespace BookActivity.Infrastructure.Data.Repositories
                 .Skip(filterModel.Skip.Value)
                 .Take(filterModel.Take.Value)
                 .ToListAsync();
+        }
+
+        public Book GetByFilterAsync(IQueryableSingleResultFilter<Book> filter)
+        {
+            return filter.ApplyFilter(_dbSet.AsNoTracking());
         }
 
         public async Task<int> GetCountByFilterAsync(BookFilterModel filterModel)

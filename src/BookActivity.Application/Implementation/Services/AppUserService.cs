@@ -1,4 +1,5 @@
-﻿using Ardalis.Result;
+﻿using Antanidoss.Specification.Filters.Implementation;
+using Ardalis.Result;
 using AutoMapper;
 using BookActivity.Application.Constants;
 using BookActivity.Application.Interfaces.Services;
@@ -6,10 +7,9 @@ using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Domain.Commands.AppUserCommands;
-using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Filters.Specifications.AppUserSpecs;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Specifications.AppUserSpecs;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -17,7 +17,6 @@ using Microsoft.IdentityModel.Tokens;
 using NetDevPack.Mediator;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,16 +62,18 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<AppUserDTO>> FindByIdAsync(Guid appUserId)
         {
-            AppUserFilterModel filterModel = new(new AppUserByIdSpec(appUserId));
-            var appUser = (await _appUserRepository.GetByFilterAsync(filterModel))?.FirstOrDefault();
+            var specification = new AppUserByIdSpec(appUserId);
+            var filter = new FirstOrDefault<AppUser>(specification);
+            var appUser =  _appUserRepository.GetByFilterAsync(filter);
 
             return _mapper.Map<AppUserDTO>(appUser);
         }
 
         public async Task<Result<AuthenticationResult>> PasswordSignInAsync(AuthenticationModel authenticationModel)
         {
-            AppUserFilterModel filterModel = new(new AppUserByEmailSpec(authenticationModel.Email));
-            var appUser = (await _appUserRepository.GetByFilterAsync(filterModel))?.FirstOrDefault();
+            var specification = new AppUserByEmailSpec(authenticationModel.Email);
+            var filter = new FirstOrDefault<AppUser>(specification);
+            var appUser = _appUserRepository.GetByFilterAsync(filter);
 
             if (appUser == null)
                 return Result<AuthenticationResult>.Error(new string[] { ValidationErrorConstants.IncorrectEmail });
