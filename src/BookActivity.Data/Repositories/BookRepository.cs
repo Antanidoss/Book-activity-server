@@ -3,6 +3,7 @@ using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
+using BookActivity.Infrastructure.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System.Collections.Generic;
@@ -28,8 +29,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
         public async Task<IEnumerable<Book>> GetByFilterAsync(BookFilterModel filterModel)
         {
             return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
-                .Skip(filterModel.Skip.Value)
-                .Take(filterModel.Take.Value)
+                .ApplyPaginaton(filterModel.Skip, filterModel.Take)
                 .ToListAsync();
         }
 
@@ -38,10 +38,10 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return filter.ApplyFilter(_dbSet.AsNoTracking());
         }
 
-        public async Task<int> GetCountByFilterAsync(BookFilterModel filterModel)
+        public async Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<Book> filter, int skip)
         {
-            return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
-                .Skip(filterModel.Skip.Value)
+            return await filter.ApplyFilter(_dbSet.AsNoTracking())
+                .ApplyPaginaton(skip)
                 .CountAsync();
         }
 

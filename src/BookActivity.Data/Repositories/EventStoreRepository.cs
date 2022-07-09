@@ -18,11 +18,6 @@ namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
             _dB = db;
         }
 
-        public void Dispose()
-        {
-            _dB.Dispose();
-        }
-
         public async Task<IList<StoredEvent>> GetAllAsync(Guid aggregateId)
         {
             return await _dB.StoredEvent
@@ -35,6 +30,11 @@ namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
         {
             _dB.StoredEvent.Add(@event);
             _dB.SaveChanges();
+        }
+
+        public void Dispose()
+        {
+            _dB.Dispose();
         }
     }
 }
