@@ -48,8 +48,8 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            var specification = new ActiveBookByIdSpec(request.Id);
-            var filter = new FirstOrDefault<ActiveBook>(specification);
+            ActiveBookByIdSpec specification = new(request.Id);
+            FirstOrDefault<ActiveBook> filter = new(specification);
             var activeBook = _activeBookRepository.GetByFilterAsync(filter);
 
             if (activeBook is null) AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
@@ -66,8 +66,8 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            var specification = new ActiveBookByIdSpec(request.Id);
-            var filter = new FirstOrDefault<ActiveBook>(specification);
+            ActiveBookByIdSpec specification = new(request.Id);
+            FirstOrDefault<ActiveBook> filter = new(specification);
             var activeBook = _activeBookRepository.GetByFilterAsync(filter);
 
             if (activeBook is null) AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));

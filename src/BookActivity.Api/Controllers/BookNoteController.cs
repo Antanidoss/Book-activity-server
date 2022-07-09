@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.BookNoteService)]
-    public class BookNoteController : BaseController
+    public sealed class BookNoteController : BaseController
     {
         private readonly IBookNoteService _bookNoteService;
 

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.AppUserService)]
-    public class AppUserController : BaseController
+    public sealed class AppUserController : BaseController
     {
         private readonly IAppUserService _appUserService;
 

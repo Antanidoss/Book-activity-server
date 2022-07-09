@@ -40,12 +40,12 @@ namespace BookActivity.Domain.Commands.AppUserCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            var specification = new AppUserByIdSpec(request.AppUserId);
-            var filter = new FirstOrDefault<AppUser>(specification);
+            AppUserByIdSpec specification = new(request.AppUserId);
+            FirstOrDefault<AppUser> filter = new(specification);
             var currentUser = _appUserRepository.GetByFilterAsync(filter);
 
-            specification = new AppUserByIdSpec(request.SubscribedUserId);
-            filter = new FirstOrDefault<AppUser>(specification);
+            specification = new(request.SubscribedUserId);
+            filter = new(specification);
             var subscribedUser = _appUserRepository.GetByFilterAsync(filter);
 
             subscribedUser.FollowedUsers.Add(currentUser);

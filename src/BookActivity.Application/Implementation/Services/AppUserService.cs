@@ -62,17 +62,17 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<AppUserDTO>> FindByIdAsync(Guid appUserId)
         {
-            var specification = new AppUserByIdSpec(appUserId);
-            var filter = new FirstOrDefault<AppUser>(specification);
-            var appUser =  _appUserRepository.GetByFilterAsync(filter);
+            AppUserByIdSpec specification = new(appUserId);
+            FirstOrDefault<AppUser> filter = new(specification);
+            var appUser = _appUserRepository.GetByFilterAsync(filter);
 
             return _mapper.Map<AppUserDTO>(appUser);
         }
 
         public async Task<Result<AuthenticationResult>> PasswordSignInAsync(AuthenticationModel authenticationModel)
         {
-            var specification = new AppUserByEmailSpec(authenticationModel.Email);
-            var filter = new FirstOrDefault<AppUser>(specification);
+            AppUserByEmailSpec specification = new(authenticationModel.Email);
+            FirstOrDefault<AppUser> filter = new(specification);
             var appUser = _appUserRepository.GetByFilterAsync(filter);
 
             if (appUser == null)
@@ -100,14 +100,15 @@ namespace BookActivity.Application.Implementation.Services
 
         private string GenerateJwtToken(string userId)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
+            JwtSecurityTokenHandler tokenHandler = new();
             var key = Encoding.ASCII.GetBytes(_tokenInfo.SecretKey);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            SecurityTokenDescriptor tokenDescriptor = new()
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", userId.ToString()) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);
