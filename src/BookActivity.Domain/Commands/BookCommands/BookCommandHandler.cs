@@ -1,7 +1,8 @@
-﻿using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Filters.Specifications.AuthorSpecs;
+﻿using Antanidoss.Specification.Filters.Implementation;
+using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Specifications.AuthorSpecs;
 using FluentValidation.Results;
 using MediatR;
 using NetDevPack.Messaging;
@@ -31,9 +32,11 @@ namespace BookActivity.Domain.Commands.BookCommands
         {
             if (!request.IsValid()) return request.ValidationResult;
 
-            BookAuthorFilterModel authorFilterModel = new(new BookAuthorByIdSpec(request.AuthorIds.ToArray()));
-            authorFilterModel.Take = await _authorRepository.GetCountByFilterAsync(authorFilterModel);
+            BookAuthorByIdSpec specification = new(request.AuthorIds.ToArray());
+            Where<BookAuthor> filter = new(specification);
+            var count = await _authorRepository.GetCountByFilterAsync(filter);
 
+            BookAuthorFilterModel authorFilterModel = new(filter, take: count);
             var authors = await _authorRepository.GetByFilterAsync(authorFilterModel);
             Book newBook = new(request.Title, request.Description, isPublic: true, authors.ToArray());
 

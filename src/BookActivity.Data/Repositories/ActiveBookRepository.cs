@@ -1,4 +1,6 @@
-﻿using BookActivity.Domain.Filters.Models;
+﻿using Antanidoss.Specification.Filters.Interfaces;
+using BookActivity.Domain.FilterModels;
+using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
@@ -24,18 +26,23 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = _db.Set<ActiveBook>();
         }
 
-        public async Task<IEnumerable<ActiveBook>> GetByFilterAsync(ActiveBookFilterModel filterModel)
+        public ActiveBook GetByFilterAsync(IQueryableSingleResultFilter<ActiveBook> filter)
         {
-            return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
-                .Skip(filterModel.Skip.Value)
-                .Take(filterModel.Take.Value)
+            return filter.ApplyFilter(_dbSet.AsNoTracking());
+        }
+
+        public async Task<IEnumerable<ActiveBook>> GetByFilterAsync(ActiveBookFilterModel activeBookFilterModel)
+        {
+            return await activeBookFilterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
+                .Skip(activeBookFilterModel.Skip.Value)
+                .Take(activeBookFilterModel.Take.Value)
                 .ToListAsync();
         }
 
-        public async Task<int> GetCountByFilterAsync(ActiveBookFilterModel filterModel)
+        public async Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<ActiveBook> filter, int skip = 0)
         {
-            return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
-                .Skip(filterModel.Skip.Value)
+            return await filter.ApplyFilter(_dbSet)
+                .Skip(skip)
                 .CountAsync();
         }
 

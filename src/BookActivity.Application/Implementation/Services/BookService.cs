@@ -1,4 +1,5 @@
-﻿using Ardalis.Result;
+﻿using Antanidoss.Specification.Filters.Implementation;
+using Ardalis.Result;
 using AutoMapper;
 using BookActivity.Application.Constants;
 using BookActivity.Application.Interfaces.Services;
@@ -8,8 +9,9 @@ using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
 using BookActivity.Domain.Commands.BookCommands;
 using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Filters.Specifications.BookSpecs;
 using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Models;
+using BookActivity.Domain.Specifications.BookSpecs;
 using FluentValidation.Results;
 using NetDevPack.Mediator;
 using System;
@@ -59,7 +61,9 @@ namespace BookActivity.Application.Implementation.Services
             if (paginationModel == null)
                 return Result<IEnumerable<BookDTO>>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
 
-            BookFilterModel bookFilter = new(new BookByBookIdSpec(bookIds), paginationModel.Skip, paginationModel.Take);
+            BookByBookIdSpec specification = new(bookIds);
+            Where<Book> filter = new(specification);
+            BookFilterModel bookFilter = new(filter, paginationModel.Skip, paginationModel.Take);
             var books = await _bookRepository.GetByFilterAsync(bookFilter);
 
             return _mapper.Map<List<BookDTO>>(books);
@@ -70,7 +74,9 @@ namespace BookActivity.Application.Implementation.Services
             if (paginationModel == null)
                 return Result<IEnumerable<BookDTO>>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
 
-            BookFilterModel bookFilter = new(new BookByTitleContainsSpec(title), paginationModel.Skip, paginationModel.Take);
+            BookByTitleContainsSpec specification = new(title);
+            Where<Book> filter = new(specification);
+            BookFilterModel bookFilter = new(filter, paginationModel.Skip, paginationModel.Take);
             var books = await _bookRepository.GetByFilterAsync(bookFilter);
 
             return _mapper.Map<List<BookDTO>>(books);

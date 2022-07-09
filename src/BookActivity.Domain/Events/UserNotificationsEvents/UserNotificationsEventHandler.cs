@@ -1,11 +1,10 @@
-﻿using BookActivity.Domain.Events.ActiveBookEvent;
-using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Filters.Specifications.BookSpecs;
+﻿using Antanidoss.Specification.Filters.Implementation;
+using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Specifications.BookSpecs;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,9 +25,10 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
 
         public async Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
         {
-            BookFilterModel bookFilterModel = new(new BookByBookIdSpec(notification.BookId));
+            var specification = new BookByBookIdSpec(notification.BookId);
+            var filter = new FirstOrDefault<Book>(specification);
 
-            var book = (await _bookRepository.GetByFilterAsync(bookFilterModel)).FirstOrDefault();
+            var book = _bookRepository.GetByFilterAsync(filter);
             var user = await _userManager.FindByIdAsync(notification.UserId.ToString());
 
             foreach (var followedUser in user.FollowedUsers)

@@ -1,13 +1,12 @@
-﻿using BookActivity.Domain.Filters.Models;
+﻿using Antanidoss.Specification.Filters.Interfaces;
+using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
@@ -33,10 +32,10 @@ namespace BookActivity.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<int> GetCountByFilterAsync(BookAuthorFilterModel filterModel)
+        public async Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<BookAuthor> filter, int skip = 0)
         {
-            return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
-                .Skip(filterModel.Skip.Value)
+            return await filter.ApplyFilter(_dbSet)
+                .Skip(skip)
                 .CountAsync();
         }
 
@@ -45,9 +44,9 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet.Add(entity);
         }
 
-        public async Task<BookAuthor> GetByAsync(Expression<Func<BookAuthor, bool>> condition)
+        public BookAuthor GetByFilter(IQueryableSingleResultFilter<BookAuthor> filter)
         {
-            return await _dbSet.FirstOrDefaultAsync(condition);
+            return filter.ToFunc().Invoke(_dbSet);
         }
 
         public void Remove(BookAuthor entity)
