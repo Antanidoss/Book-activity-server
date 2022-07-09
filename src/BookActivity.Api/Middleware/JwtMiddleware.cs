@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Api.Middleware
 {
-    public class JwtMiddleware
+    internal sealed class JwtMiddleware
     {
         private readonly RequestDelegate _next;
 

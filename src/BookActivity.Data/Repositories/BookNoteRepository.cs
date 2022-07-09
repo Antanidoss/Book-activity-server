@@ -6,7 +6,7 @@ using NetDevPack.Data;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
-    internal class BookNoteRepository : IBookNoteRepository
+    internal sealed class BookNoteRepository : IBookNoteRepository
     {
         private readonly BookActivityContext _db;
 
