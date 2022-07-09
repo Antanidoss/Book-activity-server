@@ -3,10 +3,10 @@ using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
+using BookActivity.Infrastructure.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
@@ -14,6 +14,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
     internal sealed class AuthorRepository : IAuthorRepository
     {
         private readonly BookActivityContext _db;
+
         private readonly DbSet<BookAuthor> _dbSet;
 
         public IUnitOfWork UnitOfWork => _db;
@@ -27,15 +28,14 @@ namespace BookActivity.Infrastructure.Data.Repositories
         public async Task<IEnumerable<BookAuthor>> GetByFilterAsync(BookAuthorFilterModel filterModel)
         {
             return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
-                .Skip(filterModel.Skip.Value)
-                .Take(filterModel.Take.Value)
+                .ApplyPaginaton(filterModel.Skip, filterModel.Take)
                 .ToListAsync();
         }
 
         public async Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<BookAuthor> filter, int skip = 0)
         {
             return await filter.ApplyFilter(_dbSet)
-                .Skip(skip)
+                .ApplyPaginaton(skip)
                 .CountAsync();
         }
 

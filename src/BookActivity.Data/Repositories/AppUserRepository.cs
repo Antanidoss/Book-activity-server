@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using BookActivity.Infrastructure.Data.Helpers;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
@@ -26,6 +26,18 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public IUnitOfWork UnitOfWork => _db;
 
+        public async Task<IEnumerable<AppUser>> GetByFilterAsync(AppUserFilterModel filterModel)
+        {
+            return await filterModel.Filter.ApplyFilter(_db.Users.AsNoTracking())
+                .ApplyPaginaton(filterModel.Skip, filterModel.Take)
+                .ToListAsync();
+        }
+
+        public AppUser GetByFilterAsync(IQueryableSingleResultFilter<AppUser> filter)
+        {
+            return filter.ApplyFilter(_db.Users.AsNoTracking());
+        }
+
         public async Task<IdentityResult> Addasync(AppUser user, string password)
         {
             return await _userManager.CreateAsync(user, password);
@@ -34,19 +46,6 @@ namespace BookActivity.Infrastructure.Data.Repositories
         public async Task<IdentityResult> Updateasync(AppUser user)
         {
             return await _userManager.UpdateAsync(user);
-        }
-
-        public async Task<IEnumerable<AppUser>> GetByFilterAsync(AppUserFilterModel filterModel)
-        {
-            return await filterModel.Filter.ApplyFilter(_db.Users.AsNoTracking())
-                .Skip(filterModel.Skip.Value)
-                .Take(filterModel.Take.Value)
-                .ToListAsync();
-        }
-
-        public AppUser GetByFilterAsync(IQueryableSingleResultFilter<AppUser> filter)
-        {
-            return filter.ApplyFilter(_db.Users.AsNoTracking());
         }
 
         public void Dispose()

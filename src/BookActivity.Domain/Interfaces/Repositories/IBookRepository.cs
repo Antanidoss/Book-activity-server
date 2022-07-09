@@ -1,5 +1,4 @@
 ﻿using Antanidoss.Specification.Filters.Interfaces;
-using BookActivity.Domain.FilterModels;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Models;
 using NetDevPack.Data;
@@ -12,7 +11,7 @@ namespace BookActivity.Domain.Interfaces.Repositories
     {
         Task<IEnumerable<Book>> GetByFilterAsync(BookFilterModel filterModel);
         Book GetByFilterAsync(IQueryableSingleResultFilter<Book> filter);
-        Task<int> GetCountByFilterAsync(BookFilterModel filterModel);
+        Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<Book> filter, int skip);
         void Add(Book book);
         void Update(Book book);
         void Remove(Book book);

@@ -1,13 +1,12 @@
 ﻿using Antanidoss.Specification.Filters.Interfaces;
-using BookActivity.Domain.FilterModels;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
+using BookActivity.Infrastructure.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
@@ -34,15 +33,14 @@ namespace BookActivity.Infrastructure.Data.Repositories
         public async Task<IEnumerable<ActiveBook>> GetByFilterAsync(ActiveBookFilterModel activeBookFilterModel)
         {
             return await activeBookFilterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
-                .Skip(activeBookFilterModel.Skip.Value)
-                .Take(activeBookFilterModel.Take.Value)
+                .ApplyPaginaton(activeBookFilterModel.Skip, activeBookFilterModel.Take)
                 .ToListAsync();
         }
 
         public async Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<ActiveBook> filter, int skip = 0)
         {
             return await filter.ApplyFilter(_dbSet)
-                .Skip(skip)
+                .ApplyPaginaton(skip)
                 .CountAsync();
         }
 
