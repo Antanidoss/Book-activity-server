@@ -1,12 +1,12 @@
 ﻿using Antanidoss.Specification.Filters.Implementation;
 using Ardalis.Result;
 using AutoMapper;
-using BookActivity.Application.Constants;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
+using BookActivity.Application.Vidations;
 using BookActivity.Domain.Commands.ActiveBookCommands;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
@@ -58,8 +58,8 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<IEnumerable<ActiveBookDTO>>> GetByActiveBookIdFilterAsync(PaginationModel paginationModel, Guid[] activeBookIds)
         {
-            if (paginationModel == null)
-                return Result<IEnumerable<ActiveBookDTO>>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
+            CommonValidator.ThrowExceptionIfNull(paginationModel);
+            CommonValidator.ThrowExceptionIfNullOrEmpty(activeBookIds, nameof(activeBookIds));
 
             ActiveBookByIdSpec specification = new(activeBookIds);
             Where<ActiveBook> filter = new(specification);
@@ -69,14 +69,14 @@ namespace BookActivity.Application.Implementation.Services
             return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
         }
 
-        public async Task<Result<IEnumerable<ActiveBookDTO>>> GetByUserIdFilterAsync(PaginationModel filterModel, Guid userId)
+        public async Task<Result<IEnumerable<ActiveBookDTO>>> GetByUserIdFilterAsync(PaginationModel paginationModel, Guid userId)
         {
-            if(filterModel == null)
-                return Result<IEnumerable<ActiveBookDTO>>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
+            CommonValidator.ThrowExceptionIfNull(paginationModel);
+            CommonValidator.ThrowExceptionIfEmpty(userId, nameof(userId));
 
             ActiveBookByUserIdSpec specification = new(userId);
             Where<ActiveBook> filter = new(specification);
-            ActiveBookFilterModel activeBookFilterModel = new(filter, filterModel.Skip, filterModel.Take);
+            ActiveBookFilterModel activeBookFilterModel = new(filter, paginationModel.Skip, paginationModel.Take);
             var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel);
 
             return _mapper.Map<List<ActiveBookDTO>>(activeBooks);

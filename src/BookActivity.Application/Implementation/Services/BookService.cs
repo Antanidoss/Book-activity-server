@@ -1,12 +1,12 @@
 ﻿using Antanidoss.Specification.Filters.Implementation;
 using Ardalis.Result;
 using AutoMapper;
-using BookActivity.Application.Constants;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
+using BookActivity.Application.Vidations;
 using BookActivity.Domain.Commands.BookCommands;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
@@ -44,6 +44,8 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<ValidationResult> RemoveActiveBookAsync(Guid bookId)
         {
+            CommonValidator.ThrowExceptionIfEmpty(bookId, nameof(bookId));
+
             RemoveBookCommand removeBookCommand = new(bookId);
 
             return await _mediatorHandler.SendCommand(removeBookCommand);
@@ -58,8 +60,8 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<IEnumerable<BookDTO>>> GetByBookIdsFilterAsync(PaginationModel paginationModel, Guid[] bookIds)
         {
-            if (paginationModel == null)
-                return Result<IEnumerable<BookDTO>>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
+            CommonValidator.ThrowExceptionIfNull(paginationModel);
+            CommonValidator.ThrowExceptionIfNullOrEmpty(bookIds, nameof(bookIds));
 
             BookByBookIdSpec specification = new(bookIds);
             Where<Book> filter = new(specification);
@@ -71,8 +73,7 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<IEnumerable<BookDTO>>> GetByTitleContainsFilterAsync(PaginationModel paginationModel, string title)
         {
-            if (paginationModel == null)
-                return Result<IEnumerable<BookDTO>>.Invalid(new List<ValidationError> { new ValidationError { ErrorMessage = ValidationErrorConstants.FilterModelIsNull } });
+            CommonValidator.ThrowExceptionIfNull(paginationModel);
 
             BookByTitleContainsSpec specification = new(title);
             Where<Book> filter = new(specification);

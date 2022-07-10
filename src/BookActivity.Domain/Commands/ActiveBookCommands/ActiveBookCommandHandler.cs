@@ -27,7 +27,8 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
 
         public async Task<ValidationResult> Handle(AddActiveBookCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid())
+                return request.ValidationResult;
 
             ActiveBook activeBook = new(Guid.NewGuid(), request.TotalNumberPages, request.NumberPagesRead, request.BookId, request.UserId, request.IsPublic);
 
@@ -46,13 +47,15 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
 
         public async Task<ValidationResult> Handle(UpdateActiveBookCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid())
+                return request.ValidationResult;
 
             ActiveBookByIdSpec specification = new(request.Id);
             FirstOrDefault<ActiveBook> filter = new(specification);
             var activeBook = _activeBookRepository.GetByFilterAsync(filter);
 
-            if (activeBook is null) AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
+            if (activeBook is null)
+                AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
 
             activeBook.NumberPagesRead = request.NumberPagesRead;
 
@@ -64,13 +67,15 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
 
         public async Task<ValidationResult> Handle(RemoveActiveBookCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid())
+                return request.ValidationResult;
 
             ActiveBookByIdSpec specification = new(request.Id);
             FirstOrDefault<ActiveBook> filter = new(specification);
             var activeBook = _activeBookRepository.GetByFilterAsync(filter);
 
-            if (activeBook is null) AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
+            if (activeBook is null)
+                AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
 
             activeBook.AddDomainEvent(new RemoveActiveBookEvent(activeBook.Id));
             _activeBookRepository.Remove(activeBook);
