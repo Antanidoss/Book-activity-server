@@ -20,7 +20,8 @@ namespace BookActivity.Domain.Commands.BookNoteCommands
 
         public async Task<ValidationResult> Handle(AddBookNoteCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid())
+                return request.ValidationResult;
 
             BookNote newBookNote = new(request.Note, request.NoteColor, request.ActiveBookId);
 

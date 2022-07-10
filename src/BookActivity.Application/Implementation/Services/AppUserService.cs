@@ -6,6 +6,7 @@ using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
+using BookActivity.Application.Vidations;
 using BookActivity.Domain.Commands.AppUserCommands;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
@@ -62,6 +63,8 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<AppUserDTO>> FindByIdAsync(Guid appUserId)
         {
+            CommonValidator.ThrowExceptionIfEmpty(appUserId, nameof(appUserId));
+
             AppUserByIdSpec specification = new(appUserId);
             FirstOrDefault<AppUser> filter = new(specification);
             var appUser = _appUserRepository.GetByFilterAsync(filter);
@@ -93,6 +96,9 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<ValidationResult> SubscribeAppUserCommand(Guid currentUserId, Guid subscribedUserId)
         {
+            CommonValidator.ThrowExceptionIfEmpty(currentUserId, nameof(currentUserId));
+            CommonValidator.ThrowExceptionIfEmpty(subscribedUserId, nameof(subscribedUserId));
+
             var subscribeAppUserCommand = new SubscribeAppUserCommand(currentUserId, subscribedUserId);
 
             return await _mediatorHandler.SendCommand(subscribeAppUserCommand);

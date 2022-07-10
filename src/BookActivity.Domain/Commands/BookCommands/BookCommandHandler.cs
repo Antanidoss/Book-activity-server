@@ -30,7 +30,8 @@ namespace BookActivity.Domain.Commands.BookCommands
 
         public async Task<ValidationResult> Handle(AddBookCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid())
+                return request.ValidationResult;
 
             BookAuthorByIdSpec specification = new(request.AuthorIds.ToArray());
             Where<BookAuthor> filter = new(specification);

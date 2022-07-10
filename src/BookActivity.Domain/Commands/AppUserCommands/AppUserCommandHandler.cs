@@ -25,12 +25,13 @@ namespace BookActivity.Domain.Commands.AppUserCommands
 
         public async Task<ValidationResult> Handle(AddAppUserCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid())
+                return request.ValidationResult;
 
             var createUserResult = await _appUserRepository.Addasync(new AppUser()
             {
                 Email = request.Email,
-                UserName = request.Name 
+                UserName = request.Name
             }, request.Password);
 
             return ToValidationResult(createUserResult);
@@ -38,7 +39,8 @@ namespace BookActivity.Domain.Commands.AppUserCommands
 
         public async Task<ValidationResult> Handle(SubscribeAppUserCommand request, CancellationToken cancellationToken)
         {
-            if (!request.IsValid()) return request.ValidationResult;
+            if (!request.IsValid())
+                return request.ValidationResult;
 
             AppUserByIdSpec specification = new(request.AppUserId);
             FirstOrDefault<AppUser> filter = new(specification);
