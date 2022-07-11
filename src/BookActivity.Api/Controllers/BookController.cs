@@ -43,5 +43,11 @@ namespace BookActivity.Api.Controllers
         {
             return (await _bookService.GetByTitleContainsFilterAsync(paginationModel, title)).ToApiResult();
         }
+
+        [HttpDelete(ApiConstants.RemoveBookMethod)]
+        public async Task<ActionResult> GetBooksByTitlesAsync(Guid bookId)
+        {
+            return (await _bookService.RemoveActiveBookAsync(bookId)).ToActionResult();
+        }
     }
 }
