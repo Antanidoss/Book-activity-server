@@ -7,7 +7,6 @@ using BookActivity.Domain.Specifications.BookSpecs;
 using FluentValidation.Results;
 using MediatR;
 using NetDevPack.Messaging;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,9 +46,21 @@ namespace BookActivity.Domain.Commands.BookCommands
             return await Commit(_bookRepository.UnitOfWork);
         }
 
-        public Task<ValidationResult> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
+        public async Task<ValidationResult> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (!request.IsValid())
+                return request.ValidationResult;
+
+            BookByIdSpec bookByIdSpec = new(request.BookId);
+            FirstOrDefault<Book> firstOrDefaultFilter = new(bookByIdSpec);
+            var updatedBook = _bookRepository.GetByFilterAsync(firstOrDefaultFilter);
+
+            updatedBook.Title = request.Title;
+            updatedBook.Description = request.Description;
+
+            _bookRepository.Update(updatedBook);
+
+            return await Commit(_bookRepository.UnitOfWork);
         }
 
         public async Task<ValidationResult> Handle(RemoveBookCommand request, CancellationToken cancellationToken)

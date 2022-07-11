@@ -21,6 +21,7 @@
         public const string GetBooksByIdsMethod = "getBooksByIds";
         public const string GetBooksByTitleContainsMethod = "getBooksByTitleContains";
         public const string RemoveBookMethod = "removeBook";
+        public const string UpdateBookMethod = "updateBook";
 
         //AppUser methods
         public const string AddUserMethod = "addUser";
