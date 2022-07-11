@@ -6,11 +6,11 @@ using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Specifications.BookSpecs
 {
-    public sealed class BookByBookIdSpec : ISpecification<Book>
+    public sealed class BookByIdSpec : ISpecification<Book>
     {
         private readonly Guid[] _bookIds;
 
-        public BookByBookIdSpec(params Guid[] bookIds)
+        public BookByIdSpec(params Guid[] bookIds)
         {
             _bookIds = bookIds;
         }

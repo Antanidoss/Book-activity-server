@@ -63,7 +63,7 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfNull(paginationModel);
             CommonValidator.ThrowExceptionIfNullOrEmpty(bookIds, nameof(bookIds));
 
-            BookByBookIdSpec specification = new(bookIds);
+            BookByIdSpec specification = new(bookIds);
             Where<Book> filter = new(specification);
             BookFilterModel bookFilter = new(filter, paginationModel.Skip, paginationModel.Take);
             var books = await _bookRepository.GetByFilterAsync(bookFilter);

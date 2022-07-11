@@ -25,7 +25,7 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
 
         public async Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
         {
-            var specification = new BookByBookIdSpec(notification.BookId);
+            var specification = new BookByIdSpec(notification.BookId);
             var filter = new FirstOrDefault<Book>(specification);
 
             var book = _bookRepository.GetByFilterAsync(filter);
