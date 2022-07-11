@@ -14,7 +14,7 @@ namespace BookActivity.Application.Interfaces.Services
     {
         Task<ValidationResult> AddActiveBookAsync(CreateBookDTO createBookModel);
         Task<ValidationResult> RemoveActiveBookAsync(Guid bookId);
-        Task<ValidationResult> UpdateActiveBookAsync(UpdateBookDTO updateBookModel);
+        Task<ValidationResult> UpdateBookAsync(UpdateBookDTO updateBookModel);
         Task<Result<IEnumerable<BookDTO>>> GetByBookIdsFilterAsync(PaginationModel paginationModel, Guid[] bookIds);
         Task<Result<IEnumerable<BookDTO>>> GetByTitleContainsFilterAsync(PaginationModel paginationModel, string title);
     }

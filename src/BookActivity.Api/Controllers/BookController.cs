@@ -5,6 +5,7 @@ using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
+using BookActivity.Application.Models.DTO.Update;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -45,9 +46,15 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpDelete(ApiConstants.RemoveBookMethod)]
-        public async Task<ActionResult> GetBooksByTitlesAsync(Guid bookId)
+        public async Task<ActionResult> RemoveBookAsync(Guid bookId)
         {
             return (await _bookService.RemoveActiveBookAsync(bookId)).ToActionResult();
+        }
+
+        [HttpPut(ApiConstants.UpdateBookMethod)]
+        public async Task<ActionResult> UpdateBookAsync(UpdateBookDTO updateBookModel)
+        {
+            return (await _bookService.UpdateBookAsync(updateBookModel)).ToActionResult();
         }
     }
 }

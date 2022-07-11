@@ -5,6 +5,7 @@ namespace BookActivity.Domain.Commands.BookCommands
 {
     public sealed class UpdateBookCommand : BookCommand
     {
+        public UpdateBookCommand() { }
         public UpdateBookCommand(string title, string description, IEnumerable<BookOpinion> bookOpinions)
         {
             Title = title;
