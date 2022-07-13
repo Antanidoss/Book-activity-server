@@ -1,4 +1,4 @@
-﻿namespace BookActivity.Application.EventSourcedNormalizers.Models
+﻿namespace BookActivity.Application.Models
 {
     public class BaseHistoryData
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BookActivity.Application.EventSourcedNormalizers.Models
+namespace BookActivity.Application.Models
 {
     public sealed class ActiveBookHistoryData : BaseHistoryData
     {

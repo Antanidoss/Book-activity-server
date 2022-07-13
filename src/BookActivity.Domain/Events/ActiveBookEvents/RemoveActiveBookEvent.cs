@@ -8,6 +8,7 @@ namespace BookActivity.Domain.Events.ActiveBookEvent
         public RemoveActiveBookEvent(Guid activeBookId)
         {
             ActiveBookId = activeBookId;
+            AggregateId = activeBookId;
         }
 
         public Guid ActiveBookId { get; private set; }

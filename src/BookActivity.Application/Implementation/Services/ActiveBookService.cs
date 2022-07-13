@@ -1,7 +1,6 @@
 ﻿using Antanidoss.Specification.Filters.Implementation;
 using Ardalis.Result;
 using AutoMapper;
-using BookActivity.Application.EventSourcedNormalizers.Models;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
