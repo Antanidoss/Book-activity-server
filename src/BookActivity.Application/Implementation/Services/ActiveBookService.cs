@@ -1,6 +1,7 @@
 ﻿using Antanidoss.Specification.Filters.Implementation;
 using Ardalis.Result;
 using AutoMapper;
+using BookActivity.Application.EventSourcedNormalizers.Models;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
@@ -8,6 +9,7 @@ using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
 using BookActivity.Application.Vidations;
 using BookActivity.Domain.Commands.ActiveBookCommands;
+using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
@@ -16,6 +18,7 @@ using FluentValidation.Results;
 using NetDevPack.Mediator;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BookActivity.Application.Implementation.Services
@@ -28,11 +31,14 @@ namespace BookActivity.Application.Implementation.Services
 
         private readonly IActiveBookRepository _activeBookRepository;
 
-        public ActiveBookService(IMediatorHandler mediatorHandler, IActiveBookRepository activeBookRepository, IMapper mapper)
+        private readonly IEventStoreRepository _eventStoreRepository;
+
+        public ActiveBookService(IMediatorHandler mediatorHandler, IActiveBookRepository activeBookRepository, IMapper mapper, IEventStoreRepository eventStoreRepository)
         {
             _mediatorHandler = mediatorHandler;
             _activeBookRepository = activeBookRepository;
             _mapper = mapper;
+            _eventStoreRepository = eventStoreRepository;
         }
 
         public async Task<ValidationResult> AddActiveBookAsync(CreateActiveBookDTO createActiveBookModel)
@@ -80,6 +86,35 @@ namespace BookActivity.Application.Implementation.Services
             var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel);
 
             return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
+        }
+
+        public async Task<Result<IEnumerable<ActiveBookHistoryData>>> GetActiveBookHistoryDataAsync(Guid activeBookId)
+        {
+            List<ActiveBookHistoryData> activeBookHistoryDateList = new();
+            var storedEvents = await _eventStoreRepository.GetAllAsync(activeBookId);
+
+            foreach (var storedEvent in storedEvents)
+            {
+                ActiveBookHistoryData activeBookHistoryData = JsonSerializer.Deserialize<ActiveBookHistoryData>(storedEvent.Data);
+
+                switch (storedEvent.MessageType)
+                {
+                    case nameof(AddActiveBookEvent):
+                        activeBookHistoryData.Action = "Registered";
+                        break;
+                    case nameof(UpdateActiveBookEvent):
+                        activeBookHistoryData.Action = "Update";
+                        break;
+                    case nameof(RemoveActiveBookEvent):
+                        activeBookHistoryData.Action = "Remove";
+                        break;
+                }
+
+                activeBookHistoryData.UserId = storedEvent.User;
+                activeBookHistoryDateList.Add(activeBookHistoryData);
+            }
+
+            return activeBookHistoryDateList;
         }
     }
 }
