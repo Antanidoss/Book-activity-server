@@ -1,5 +1,4 @@
 ﻿using Ardalis.Result;
-using BookActivity.Application.EventSourcedNormalizers.Models;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;

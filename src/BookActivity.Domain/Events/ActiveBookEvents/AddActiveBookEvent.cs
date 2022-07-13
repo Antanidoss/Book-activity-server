@@ -13,6 +13,7 @@ namespace BookActivity.Domain.Events.ActiveBookEvent
             BookId = bookId;
             UserId = userId;
             IsPublic = isPublic;
+            AggregateId = activeBookId;
         }
 
         public Guid ActiveBookId { get; private set; }

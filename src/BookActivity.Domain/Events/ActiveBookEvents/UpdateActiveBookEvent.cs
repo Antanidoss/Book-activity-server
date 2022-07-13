@@ -9,6 +9,7 @@ namespace BookActivity.Domain.Events.ActiveBookEvent
         {
             ActiveBookId = activeBookId;
             NumberPagesRead = numberPagesRead;
+            AggregateId = activeBookId;
         }
 
         public Guid ActiveBookId { get; private set; }

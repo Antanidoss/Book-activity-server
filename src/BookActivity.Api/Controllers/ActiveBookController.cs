@@ -1,7 +1,6 @@
 ﻿using BookActivity.Api.Common.Constants;
 using BookActivity.Api.Common.Extansions;
 using BookActivity.Api.Common.Models;
-using BookActivity.Application.EventSourcedNormalizers.Models;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
