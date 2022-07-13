@@ -1,6 +1,7 @@
 ﻿using BookActivity.Api.Common.Constants;
 using BookActivity.Api.Common.Extansions;
 using BookActivity.Api.Common.Models;
+using BookActivity.Application.EventSourcedNormalizers.Models;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
@@ -57,6 +58,12 @@ namespace BookActivity.Api.Controllers
         public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetaActiveBooksByUserIdsAsync(Guid userId, PaginationModel filterModel)
         {
             return (await _activeBookService.GetByUserIdFilterAsync(filterModel, userId)).ToApiResult();
+        }
+
+        [HttpGet(ApiConstants.GetActiveBookHistoryDataMethod)]
+        public async Task<ApiResult<IEnumerable<ActiveBookHistoryData>>> GetActiveBookHistoryDataAsync(Guid activeBookId)
+        {
+            return (await _activeBookService.GetActiveBookHistoryDataAsync(activeBookId)).ToApiResult();
         }
     }
 }
