@@ -99,13 +99,13 @@ namespace BookActivity.Application.Implementation.Services
                 switch (storedEvent.MessageType)
                 {
                     case nameof(AddActiveBookEvent):
-                        activeBookHistoryData.Action = "Registered";
+                        activeBookHistoryData.Action = ActionNamesConstants.Registered;
                         break;
                     case nameof(UpdateActiveBookEvent):
-                        activeBookHistoryData.Action = "Update";
+                        activeBookHistoryData.Action = ActionNamesConstants.Update;
                         break;
                     case nameof(RemoveActiveBookEvent):
-                        activeBookHistoryData.Action = "Remove";
+                        activeBookHistoryData.Action = ActionNamesConstants.Remove;
                         break;
                 }
 
