@@ -7,7 +7,6 @@ using BookActivity.Infrastructure.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories

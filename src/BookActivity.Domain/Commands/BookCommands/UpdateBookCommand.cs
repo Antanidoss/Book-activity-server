@@ -1,16 +1,12 @@
-﻿using BookActivity.Domain.Models;
-using System.Collections.Generic;
-
-namespace BookActivity.Domain.Commands.BookCommands
+﻿namespace BookActivity.Domain.Commands.BookCommands
 {
     public sealed class UpdateBookCommand : BookCommand
     {
         public UpdateBookCommand() { }
-        public UpdateBookCommand(string title, string description, IEnumerable<BookOpinion> bookOpinions)
+        public UpdateBookCommand(string title, string description)
         {
             Title = title;
             Description = description;
-            BookOpinions = bookOpinions;
         }
     }
 }

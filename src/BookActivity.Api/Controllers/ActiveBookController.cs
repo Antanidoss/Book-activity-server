@@ -28,7 +28,7 @@ namespace BookActivity.Api.Controllers
         [HttpPost(ApiConstants.AddActiveBookMethod)]
         public async Task<ActionResult> AddActiveBookAsync(CreateActiveBookDTO createActiveBookModel)
         {
-            createActiveBookModel.UserId = GetCurrentUser().Id;
+            createActiveBookModel.UserId = Guid.Parse("D6F94A10-A6F1-4373-BCC8-08DA66F72234");
 
             return (await _activeBookService.AddActiveBookAsync(createActiveBookModel)).ToActionResult();
         }

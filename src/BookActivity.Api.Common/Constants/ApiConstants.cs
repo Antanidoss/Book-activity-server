@@ -16,6 +16,7 @@
         public const string GetActiveBooksByIdsMethod = "getActiveBookByIds";
         public const string GetActiveBooksByUserIdMethod = "getActiveBooksByUserId";
         public const string GetActiveBookHistoryDataMethod = "getActiveBookHistoryData";
+        public const string GetActiveBooksByPaginationMethod = "getActiveBookHistoryData";
 
         //Book methods
         public const string AddBookMethodMethod = "addBook";

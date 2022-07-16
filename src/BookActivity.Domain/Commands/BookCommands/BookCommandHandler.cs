@@ -1,4 +1,5 @@
 ﻿using Antanidoss.Specification.Filters.Implementation;
+using BookActivity.Domain.Events.BookEvents;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
@@ -41,6 +42,7 @@ namespace BookActivity.Domain.Commands.BookCommands
             var authors = await _authorRepository.GetByFilterAsync(authorFilterModel);
             Book newBook = new(request.Title, request.Description, isPublic: true, authors.ToArray());
 
+            newBook.AddDomainEvent(new AddBookEvent(newBook.Id, newBook.Title, newBook.Description, request.AuthorIds, newBook.IsPublic));
             _bookRepository.Add(newBook);
 
             return await Commit(_bookRepository.UnitOfWork);
@@ -58,6 +60,7 @@ namespace BookActivity.Domain.Commands.BookCommands
             updatedBook.Title = request.Title;
             updatedBook.Description = request.Description;
 
+            updatedBook.AddDomainEvent(new UpdateBookEvent(updatedBook.Id, updatedBook.Description, request.AuthorIds, updatedBook.IsPublic));
             _bookRepository.Update(updatedBook);
 
             return await Commit(_bookRepository.UnitOfWork);
@@ -72,6 +75,7 @@ namespace BookActivity.Domain.Commands.BookCommands
             FirstOrDefault<Book> firstOrDefaultFilter = new(bookByIdSpec);
             var book = _bookRepository.GetByFilterAsync(firstOrDefaultFilter);
 
+            book.AddDomainEvent(new RemoveBookEvent(book.Id));
             _bookRepository.Remove(book);
 
             return await Commit(_bookRepository.UnitOfWork);
