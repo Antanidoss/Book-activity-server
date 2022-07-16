@@ -23,5 +23,10 @@ namespace BookActivity.Domain.Vidations
             if (objects == null || !objects.Any())
                 throw new ArgumentNullException($"{paramName} cannot be null or empty");
         }
+
+        public static bool IsLessThanOrEqualToZero(int count)
+        {
+            return count <= 0;
+        }
     }
 }

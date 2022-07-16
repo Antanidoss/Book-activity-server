@@ -1,10 +1,12 @@
 ﻿using Antanidoss.Specification.Filters.Implementation;
 using BookActivity.Domain.Events.BookEvents;
+using BookActivity.Domain.Exceptions;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AuthorSpecs;
 using BookActivity.Domain.Specifications.BookSpecs;
+using BookActivity.Domain.Vidations;
 using FluentValidation.Results;
 using MediatR;
 using NetDevPack.Messaging;
@@ -37,6 +39,9 @@ namespace BookActivity.Domain.Commands.BookCommands
             BookAuthorByIdSpec specification = new(request.AuthorIds.ToArray());
             Where<BookAuthor> filter = new(specification);
             var count = await _authorRepository.GetCountByFilterAsync(filter);
+
+            if (CommonValidator.IsLessThanOrEqualToZero(count))
+                throw new NotFoundException(nameof(request.AuthorIds));
 
             BookAuthorFilterModel authorFilterModel = new(filter, take: count);
             var authors = await _authorRepository.GetByFilterAsync(authorFilterModel);
