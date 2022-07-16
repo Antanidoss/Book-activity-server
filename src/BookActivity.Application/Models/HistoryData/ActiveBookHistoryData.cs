@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BookActivity.Application.Models
+namespace BookActivity.Application.Models.HistoryData
 {
     public sealed class ActiveBookHistoryData : BaseHistoryData
     {

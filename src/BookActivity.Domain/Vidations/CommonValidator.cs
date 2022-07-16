@@ -1,10 +1,10 @@
-﻿using BookActivity.Application.Models;
+﻿using BookActivity.Domain.FilterModels;
 using System;
 using System.Linq;
 
-namespace BookActivity.Application.Vidations
+namespace BookActivity.Domain.Vidations
 {
-    internal static class CommonValidator
+    public static class CommonValidator
     {
         public static void ThrowExceptionIfNull(PaginationModel paginationModel)
         {

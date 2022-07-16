@@ -1,4 +1,4 @@
-﻿namespace BookActivity.Application.Models
+﻿namespace BookActivity.Application.Models.HistoryData
 {
     public class BaseHistoryData
     {
