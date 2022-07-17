@@ -34,16 +34,13 @@ namespace BookActivity.Api.Controllers
         [HttpGet(ApiConstants.GetBooksByIdsMethod)]
         public async Task<ApiResult<IEnumerable<BookDTO>>> GetBooksByIdsAsync(Guid[] bookIds)
         {
-            return (await _bookService.GetByBookIdsFilterAsync(new PaginationModel
-            {
-                Take = bookIds.Length
-            }, bookIds)).ToApiResult();
+            return (await _bookService.GetByBookIdsAsync(bookIds)).ToApiResult();
         }
 
         [HttpGet(ApiConstants.GetBooksByTitleContainsMethod)]
         public async Task<ApiResult<IEnumerable<BookDTO>>> GetBooksByTitlesAsync(PaginationModel paginationModel, string title)
         {
-            return (await _bookService.GetByTitleContainsFilterAsync(paginationModel, title)).ToApiResult();
+            return (await _bookService.GetByTitleContainsAsync(paginationModel, title)).ToApiResult();
         }
 
         [HttpDelete(ApiConstants.RemoveBookMethod)]

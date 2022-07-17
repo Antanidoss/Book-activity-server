@@ -45,7 +45,7 @@ namespace BookActivity.Api.Controllers
         {
             var currentUser = GetCurrentUser();
 
-            return (await _appUserService.SubscribeAppUserCommand(currentUser.Id, subscribedUserId)).ToActionResult();
+            return (await _appUserService.SubscribeAppUserAsync(currentUser.Id, subscribedUserId)).ToActionResult();
         }
     }
 }

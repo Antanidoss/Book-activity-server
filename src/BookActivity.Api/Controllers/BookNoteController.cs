@@ -21,7 +21,7 @@ namespace BookActivity.Api.Controllers
         [HttpPost(ApiConstants.AddBookNoteMethod)]
         public async Task<ActionResult> AddBookNote(CreateBookNoteDTO createBookNoteModel)
         {
-            return (await _bookNoteService.AddBookNote(createBookNoteModel)).ToActionResult();
+            return (await _bookNoteService.AddBookNoteAsync(createBookNoteModel)).ToActionResult();
         }
     }
 }

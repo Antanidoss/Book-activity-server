@@ -58,26 +58,28 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendCommand(updateBookCommand);
         }
 
-        public async Task<Result<IEnumerable<BookDTO>>> GetByBookIdsFilterAsync(PaginationModel paginationModel, Guid[] bookIds)
+        public async Task<Result<IEnumerable<BookDTO>>> GetByBookIdsAsync(Guid[] bookIds)
         {
-            CommonValidator.ThrowExceptionIfNull(paginationModel);
             CommonValidator.ThrowExceptionIfNullOrEmpty(bookIds, nameof(bookIds));
 
             BookByIdSpec specification = new(bookIds);
             Where<Book> filter = new(specification);
+            PaginationModel paginationModel = new(take: bookIds.Length); 
             BookFilterModel bookFilter = new(filter, paginationModel.Skip, paginationModel.Take);
+
             var books = await _bookRepository.GetByFilterAsync(bookFilter);
 
             return _mapper.Map<List<BookDTO>>(books);
         }
 
-        public async Task<Result<IEnumerable<BookDTO>>> GetByTitleContainsFilterAsync(PaginationModel paginationModel, string title)
+        public async Task<Result<IEnumerable<BookDTO>>> GetByTitleContainsAsync(PaginationModel paginationModel, string title)
         {
             CommonValidator.ThrowExceptionIfNull(paginationModel);
 
             BookByTitleContainsSpec specification = new(title);
             Where<Book> filter = new(specification);
             BookFilterModel bookFilter = new(filter, paginationModel.Skip, paginationModel.Take);
+
             var books = await _bookRepository.GetByFilterAsync(bookFilter);
 
             return _mapper.Map<List<BookDTO>>(books);

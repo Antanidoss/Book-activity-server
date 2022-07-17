@@ -94,7 +94,7 @@ namespace BookActivity.Application.Implementation.Services
             return new Result<AuthenticationResult>(new AuthenticationResult() { Email = appUser.Email, UserName = appUser.UserName, Token = token });
         }
 
-        public async Task<ValidationResult> SubscribeAppUserCommand(Guid currentUserId, Guid subscribedUserId)
+        public async Task<ValidationResult> SubscribeAppUserAsync(Guid currentUserId, Guid subscribedUserId)
         {
             CommonValidator.ThrowExceptionIfEmpty(currentUserId, nameof(currentUserId));
             CommonValidator.ThrowExceptionIfEmpty(subscribedUserId, nameof(subscribedUserId));

@@ -6,6 +6,6 @@ namespace BookActivity.Application.Interfaces.Services
 {
     public interface IBookNoteService
     {
-        Task<ValidationResult> AddBookNote(CreateBookNoteDTO createBookNotemodel);
+        Task<ValidationResult> AddBookNoteAsync(CreateBookNoteDTO createBookNotemodel);
     }
 }
