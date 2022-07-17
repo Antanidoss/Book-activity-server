@@ -15,7 +15,7 @@ namespace BookActivity.Api.Controllers
 
         protected AppUserDTO GetCurrentUser()
         {
-            var user = _httpContextAccessor.HttpContext.Items["__AuthorizationMiddlewareWithEndpointInvoked"];
+            var user = _httpContextAccessor.HttpContext.Items["User"];
 
             return user != null ? (user as AppUserDTO) : null;
         }
