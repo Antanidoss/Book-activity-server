@@ -2,10 +2,13 @@
 using Ardalis.Result;
 using AutoMapper;
 using BookActivity.Application.Interfaces.Services;
+using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
+using BookActivity.Application.Models.HistoryData;
 using BookActivity.Domain.Commands.BookCommands;
+using BookActivity.Domain.Events.BookEvents;
 using BookActivity.Domain.FilterModels;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
@@ -16,6 +19,7 @@ using FluentValidation.Results;
 using NetDevPack.Mediator;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BookActivity.Application.Implementation.Services
@@ -28,11 +32,14 @@ namespace BookActivity.Application.Implementation.Services
 
         private readonly IMediatorHandler _mediatorHandler;
 
-        public BookService(IMapper mapper, IBookRepository bookRepository, IMediatorHandler mediatorHandler)
+        private readonly IEventStoreRepository _eventStoreRepository;
+
+        public BookService(IMapper mapper, IBookRepository bookRepository, IMediatorHandler mediatorHandler, IEventStoreRepository eventStoreRepository)
         {
             _mapper = mapper;
             _bookRepository = bookRepository;
             _mediatorHandler = mediatorHandler;
+            _eventStoreRepository = eventStoreRepository;
         }
 
         public async Task<ValidationResult> AddActiveBookAsync(CreateBookDTO createBookModel)
@@ -83,6 +90,35 @@ namespace BookActivity.Application.Implementation.Services
             var books = await _bookRepository.GetByFilterAsync(bookFilter);
 
             return _mapper.Map<List<BookDTO>>(books);
+        }
+
+        public async Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId)
+        {
+            List<BookHistoryData> bookHistoryDateList = new();
+            var storedEvents = await _eventStoreRepository.GetAllAsync(bookId);
+
+            foreach (var storedEvent in storedEvents)
+            {
+                var bookHistoryData = JsonSerializer.Deserialize<BookHistoryData>(storedEvent.Data);
+
+                switch (storedEvent.MessageType)
+                {
+                    case nameof(AddBookEvent):
+                        bookHistoryData.Action = ActionNamesConstants.Registered;
+                        break;
+                    case nameof(UpdateBookEvent):
+                        bookHistoryData.Action = ActionNamesConstants.Update;
+                        break;
+                    case nameof(RemoveBookEvent):
+                        bookHistoryData.Action = ActionNamesConstants.Remove;
+                        break;
+                }
+
+                bookHistoryData.UserId = storedEvent.User;
+                bookHistoryDateList.Add(bookHistoryData);
+            }
+
+            return bookHistoryDateList;
         }
     }
 }

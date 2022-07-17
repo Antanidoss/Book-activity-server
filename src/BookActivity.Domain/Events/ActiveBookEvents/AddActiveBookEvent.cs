@@ -5,7 +5,6 @@ namespace BookActivity.Domain.Events.ActiveBookEvent
 {
     public sealed class AddActiveBookEvent : Event
     {
-        public Guid ActiveBookId { get; private set; }
         public int TotalNumberPages { get; private set; }
         public int NumberPagesRead { get; private set; }
         public Guid BookId { get; private set; }
@@ -14,13 +13,12 @@ namespace BookActivity.Domain.Events.ActiveBookEvent
 
         public AddActiveBookEvent(Guid activeBookId, int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId, bool isPublic)
         {
-            ActiveBookId = activeBookId;
+            AggregateId = activeBookId;
             TotalNumberPages = totalNumberPages;
             NumberPagesRead = numberPagesRead;
             BookId = bookId;
             UserId = userId;
             IsPublic = isPublic;
-            AggregateId = activeBookId;
         }
     }
 }

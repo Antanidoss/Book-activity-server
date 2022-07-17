@@ -65,7 +65,7 @@ namespace BookActivity.Domain.Commands.BookCommands
             updatedBook.Title = request.Title;
             updatedBook.Description = request.Description;
 
-            updatedBook.AddDomainEvent(new UpdateBookEvent(updatedBook.Id, updatedBook.Description, request.AuthorIds, updatedBook.IsPublic));
+            updatedBook.AddDomainEvent(new UpdateBookEvent(updatedBook.Id, updatedBook.Title, updatedBook.Description, request.AuthorIds, updatedBook.IsPublic));
             _bookRepository.Update(updatedBook);
 
             return await Commit(_bookRepository.UnitOfWork);
