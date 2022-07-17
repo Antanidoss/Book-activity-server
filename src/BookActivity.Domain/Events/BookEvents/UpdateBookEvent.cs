@@ -6,14 +6,15 @@ namespace BookActivity.Domain.Events.BookEvents
 {
     public class UpdateBookEvent : Event
     {
-        public Guid BookId { get; private set; }
+        public string Title { get; set; }
         public string Description { get; private set; }
         public IEnumerable<Guid> AuthorIds { get; private set; }
         public bool IsPublic { get; private set; }
 
-        public UpdateBookEvent(Guid bookId, string description, IEnumerable<Guid> authorIds, bool isPublic)
+        public UpdateBookEvent(Guid bookId, string title, string description, IEnumerable<Guid> authorIds, bool isPublic)
         {
-            BookId = bookId;
+            AggregateId = bookId;
+            Title = title;
             Description = description;
             AuthorIds = authorIds;
             IsPublic = isPublic;
