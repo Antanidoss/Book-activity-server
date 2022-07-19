@@ -94,6 +94,8 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId)
         {
+            CommonValidator.ThrowExceptionIfEmpty(bookId, nameof(bookId));
+
             List<BookHistoryData> bookHistoryDateList = new();
             var storedEvents = await _eventStoreRepository.GetAllAsync(bookId);
 

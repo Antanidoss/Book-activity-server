@@ -78,20 +78,20 @@ namespace BookActivity.Application.Implementation.Services
             FirstOrDefault<AppUser> filter = new(specification);
             var appUser = _appUserRepository.GetByFilterAsync(filter);
 
-            if (appUser == null)
-                return Result<AuthenticationResult>.Error(new string[] { ValidationErrorConstants.IncorrectEmail });
+            if (appUser is null)
+                return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectEmail);
 
             var isCorrectPassword = await _userManager.CheckPasswordAsync(appUser, authenticationModel.Password);
             if (!isCorrectPassword)
-                return Result<AuthenticationResult>.Error(new string[] { ValidationErrorConstants.IncorrectPassword });
+                return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectPassword);
 
             var signResult = await _signInManager.PasswordSignInAsync(appUser, authenticationModel.Password, authenticationModel.RememberMe, lockoutOnFailure: false);
             if (!signResult.Succeeded)
-                return Result<AuthenticationResult>.Error(new string[] { ValidationErrorConstants.FailedSign });
+                return Result<AuthenticationResult>.Error(ValidationErrorConstants.FailedSign);
 
             string token = GenerateJwtToken(appUser.Id.ToString());
 
-            return new Result<AuthenticationResult>(new AuthenticationResult() { Email = appUser.Email, UserName = appUser.UserName, Token = token });
+            return new Result<AuthenticationResult>(new AuthenticationResult(appUser.UserName, appUser.Email, token));
         }
 
         public async Task<ValidationResult> SubscribeAppUserAsync(Guid currentUserId, Guid subscribedUserId)
@@ -110,7 +110,7 @@ namespace BookActivity.Application.Implementation.Services
             var key = Encoding.ASCII.GetBytes(_tokenInfo.SecretKey);
             SecurityTokenDescriptor tokenDescriptor = new()
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", userId.ToString()) }),
+                Subject = new ClaimsIdentity(new[] { new Claim(nameof(userId), userId.ToString()) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

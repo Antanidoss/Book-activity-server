@@ -5,7 +5,6 @@ using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookSpecs;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 

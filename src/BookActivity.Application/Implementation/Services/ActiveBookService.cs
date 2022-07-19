@@ -8,6 +8,7 @@ using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
 using BookActivity.Application.Models.HistoryData;
 using BookActivity.Domain.Commands.ActiveBookCommands;
+using BookActivity.Domain.Commands.ActiveBookCommands.Validations;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.FilterModels;
 using BookActivity.Domain.Filters.Models;
@@ -51,6 +52,8 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId)
         {
+            CommonValidator.ThrowExceptionIfEmpty(activeBookId, nameof(activeBookId));
+
             RemoveActiveBookCommand removeActiveBookCommand = new(activeBookId);
 
             return await _mediatorHandler.SendCommand(removeActiveBookCommand);
@@ -92,6 +95,8 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<IEnumerable<ActiveBookHistoryData>>> GetActiveBookHistoryDataAsync(Guid activeBookId)
         {
+            CommonValidator.ThrowExceptionIfEmpty(activeBookId, nameof(activeBookId));
+
             List<ActiveBookHistoryData> activeBookHistoryDateList = new();
             var storedEvents = await _eventStoreRepository.GetAllAsync(activeBookId);
 
