@@ -81,11 +81,13 @@ namespace BookActivity.Application.Implementation.Services
             if (appUser is null)
                 return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectEmail);
 
-            var isCorrectPassword = await _userManager.CheckPasswordAsync(appUser, authenticationModel.Password);
+            var isCorrectPassword = await _userManager.CheckPasswordAsync(appUser, authenticationModel.Password).ConfigureAwait(false);
             if (!isCorrectPassword)
                 return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectPassword);
 
-            var signResult = await _signInManager.PasswordSignInAsync(appUser, authenticationModel.Password, authenticationModel.RememberMe, lockoutOnFailure: false);
+            var signResult = await _signInManager.PasswordSignInAsync(appUser, authenticationModel.Password, authenticationModel.RememberMe, lockoutOnFailure: false)
+                .ConfigureAwait(false);
+
             if (!signResult.Succeeded)
                 return Result<AuthenticationResult>.Error(ValidationErrorConstants.FailedSign);
 
@@ -101,7 +103,7 @@ namespace BookActivity.Application.Implementation.Services
 
             var subscribeAppUserCommand = new SubscribeAppUserCommand(currentUserId, subscribedUserId);
 
-            return await _mediatorHandler.SendCommand(subscribeAppUserCommand);
+            return await _mediatorHandler.SendCommand(subscribeAppUserCommand).ConfigureAwait(false);
         }
 
         private string GenerateJwtToken(string userId)

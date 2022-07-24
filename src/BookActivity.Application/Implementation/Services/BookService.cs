@@ -55,14 +55,14 @@ namespace BookActivity.Application.Implementation.Services
 
             RemoveBookCommand removeBookCommand = new(bookId);
 
-            return await _mediatorHandler.SendCommand(removeBookCommand);
+            return await _mediatorHandler.SendCommand(removeBookCommand).ConfigureAwait(false);
         }
 
         public async Task<ValidationResult> UpdateBookAsync(UpdateBookDTO updateBookModel)
         {
             var updateBookCommand = _mapper.Map<UpdateBookCommand>(updateBookModel);
 
-            return await _mediatorHandler.SendCommand(updateBookCommand);
+            return await _mediatorHandler.SendCommand(updateBookCommand).ConfigureAwait(false);
         }
 
         public async Task<Result<IEnumerable<BookDTO>>> GetByBookIdsAsync(Guid[] bookIds)
@@ -74,7 +74,7 @@ namespace BookActivity.Application.Implementation.Services
             PaginationModel paginationModel = new(take: bookIds.Length); 
             BookFilterModel bookFilter = new(filter, paginationModel.Skip, paginationModel.Take);
 
-            var books = await _bookRepository.GetByFilterAsync(bookFilter);
+            var books = await _bookRepository.GetByFilterAsync(bookFilter).ConfigureAwait(false);
 
             return _mapper.Map<List<BookDTO>>(books);
         }
@@ -87,7 +87,7 @@ namespace BookActivity.Application.Implementation.Services
             Where<Book> filter = new(specification);
             BookFilterModel bookFilter = new(filter, paginationModel.Skip, paginationModel.Take);
 
-            var books = await _bookRepository.GetByFilterAsync(bookFilter);
+            var books = await _bookRepository.GetByFilterAsync(bookFilter).ConfigureAwait(false);
 
             return _mapper.Map<List<BookDTO>>(books);
         }
@@ -97,7 +97,7 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfEmpty(bookId, nameof(bookId));
 
             List<BookHistoryData> bookHistoryDateList = new();
-            var storedEvents = await _eventStoreRepository.GetAllAsync(bookId);
+            var storedEvents = await _eventStoreRepository.GetAllAsync(bookId).ConfigureAwait(false);
 
             foreach (var storedEvent in storedEvents)
             {

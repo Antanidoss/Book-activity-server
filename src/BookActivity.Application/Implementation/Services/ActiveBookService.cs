@@ -47,7 +47,7 @@ namespace BookActivity.Application.Implementation.Services
         {
             var addActiveBookCommand = _mapper.Map<AddActiveBookCommand>(createActiveBookModel);
 
-            return await _mediatorHandler.SendCommand(addActiveBookCommand);
+            return await _mediatorHandler.SendCommand(addActiveBookCommand).ConfigureAwait(false);
         }
 
         public async Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId)
@@ -56,14 +56,14 @@ namespace BookActivity.Application.Implementation.Services
 
             RemoveActiveBookCommand removeActiveBookCommand = new(activeBookId);
 
-            return await _mediatorHandler.SendCommand(removeActiveBookCommand);
+            return await _mediatorHandler.SendCommand(removeActiveBookCommand).ConfigureAwait(false);
         }
 
         public async Task<ValidationResult> UpdateActiveBookAsync(UpdateNumberPagesReadDTO updateActiveBookModel)
         {
             var updateActiveBookCommand = _mapper.Map<UpdateActiveBookCommand>(updateActiveBookModel);
 
-            return await _mediatorHandler.SendCommand(updateActiveBookCommand);
+            return await _mediatorHandler.SendCommand(updateActiveBookCommand).ConfigureAwait(false);
         }
 
         public async Task<Result<IEnumerable<ActiveBookDTO>>> GetByActiveBookIdAsync(Guid[] activeBookIds)
@@ -75,7 +75,7 @@ namespace BookActivity.Application.Implementation.Services
             PaginationModel paginationModel = new(take: activeBookIds.Length);
             ActiveBookFilterModel activeBookFilterModel = new(filter, paginationModel.Skip, paginationModel.Take);
 
-            var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel);
+            var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel).ConfigureAwait(false);
 
             return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
         }
@@ -88,7 +88,7 @@ namespace BookActivity.Application.Implementation.Services
             ActiveBookByUserIdSpec specification = new(userId);
             Where<ActiveBook> filter = new(specification);
             ActiveBookFilterModel activeBookFilterModel = new(filter, paginationModel.Skip, paginationModel.Take);
-            var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel);
+            var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel).ConfigureAwait(false);
 
             return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
         }
@@ -98,11 +98,11 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfEmpty(activeBookId, nameof(activeBookId));
 
             List<ActiveBookHistoryData> activeBookHistoryDateList = new();
-            var storedEvents = await _eventStoreRepository.GetAllAsync(activeBookId);
+            var storedEvents = await _eventStoreRepository.GetAllAsync(activeBookId).ConfigureAwait(false);
 
             foreach (var storedEvent in storedEvents)
             {
-                ActiveBookHistoryData activeBookHistoryData = JsonSerializer.Deserialize<ActiveBookHistoryData>(storedEvent.Data);
+                var activeBookHistoryData = JsonSerializer.Deserialize<ActiveBookHistoryData>(storedEvent.Data);
 
                 switch (storedEvent.MessageType)
                 {
