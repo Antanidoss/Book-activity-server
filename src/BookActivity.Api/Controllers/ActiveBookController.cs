@@ -30,37 +30,43 @@ namespace BookActivity.Api.Controllers
         {
             createActiveBookModel.UserId = GetCurrentUser().Id;
 
-            return (await _activeBookService.AddActiveBookAsync(createActiveBookModel)).ToActionResult();
+            return (await _activeBookService.AddActiveBookAsync(createActiveBookModel).ConfigureAwait(false))
+                .ToActionResult();
         }
 
         [HttpPut(ApiConstants.UpdateNumberPagesReadMethod)]
         public async Task<ActionResult> UpdateNumberPagesReadAsync(UpdateNumberPagesReadDTO updateActiveBookModel)
         {
-            return (await _activeBookService.UpdateActiveBookAsync(updateActiveBookModel)).ToActionResult();
+            return (await _activeBookService.UpdateActiveBookAsync(updateActiveBookModel).ConfigureAwait(false))
+                .ToActionResult();
         }
 
         [HttpDelete(ApiConstants.RemoveActiveBookMethod)]
         public async Task<ActionResult> RemoveActiveBookAsync(Guid activeBookId)
         {
-            return (await _activeBookService.RemoveActiveBookAsync(activeBookId)).ToActionResult();
+            return (await _activeBookService.RemoveActiveBookAsync(activeBookId).ConfigureAwait(false))
+                .ToActionResult();
         }
 
         [HttpGet(ApiConstants.GetActiveBooksByIdsMethod)]
         public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetaActiveBooksByIdsAsync(Guid[] activeBookIds)
         {
-            return (await _activeBookService.GetByActiveBookIdAsync(activeBookIds)).ToApiResult();
+            return (await _activeBookService.GetByActiveBookIdAsync(activeBookIds).ConfigureAwait(false))
+                .ToApiResult();
         }
 
         [HttpGet(ApiConstants.GetActiveBooksByUserIdMethod)]
         public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetaActiveBooksByUserIdsAsync(Guid userId, PaginationModel filterModel)
         {
-            return (await _activeBookService.GetByUserIdAsync(filterModel, userId)).ToApiResult();
+            return (await _activeBookService.GetByUserIdAsync(filterModel, userId).ConfigureAwait(false))
+                .ToApiResult();
         }
 
         [HttpGet(ApiConstants.GetActiveBookHistoryDataMethod)]
         public async Task<ApiResult<IEnumerable<ActiveBookHistoryData>>> GetActiveBookHistoryDataAsync(Guid activeBookId)
         {
-            return (await _activeBookService.GetActiveBookHistoryDataAsync(activeBookId)).ToApiResult();
+            return (await _activeBookService.GetActiveBookHistoryDataAsync(activeBookId).ConfigureAwait(false))
+                .ToApiResult();
         }
     }
 }
