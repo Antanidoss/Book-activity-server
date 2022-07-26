@@ -25,7 +25,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = _db.Set<ActiveBook>();
         }
 
-        public ActiveBook GetByFilterAsync(IQueryableSingleResultFilter<ActiveBook> filter)
+        public ActiveBook GetByFilter(IQueryableSingleResultFilter<ActiveBook> filter)
         {
             return filter.ApplyFilter(_dbSet.AsNoTracking());
         }

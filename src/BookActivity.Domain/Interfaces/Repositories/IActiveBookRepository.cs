@@ -10,7 +10,7 @@ namespace BookActivity.Domain.Interfaces.Repositories
 {
     public interface IActiveBookRepository : IRepository<ActiveBook>
     {
-        ActiveBook GetByFilterAsync(IQueryableSingleResultFilter<ActiveBook> filter);
+        ActiveBook GetByFilter(IQueryableSingleResultFilter<ActiveBook> filter);
         Task<IEnumerable<ActiveBook>> GetByFilterAsync(ActiveBookFilterModel filterModel);
         Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<ActiveBook> filter, int skip = 0);
         void Add(ActiveBook activeBook);
