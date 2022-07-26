@@ -52,7 +52,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
 
             ActiveBookByIdSpec specification = new(request.Id);
             FirstOrDefault<ActiveBook> filter = new(specification);
-            var activeBook = _activeBookRepository.GetByFilterAsync(filter);
+            var activeBook = _activeBookRepository.GetByFilter(filter);
 
             if (activeBook is null)
                 AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
@@ -62,7 +62,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
             activeBook.AddDomainEvent(new UpdateActiveBookEvent(activeBook.Id, activeBook.NumberPagesRead));
             _activeBookRepository.Update(activeBook);
 
-            return await Commit(_activeBookRepository.UnitOfWork);
+            return await Commit(_activeBookRepository.UnitOfWork).ConfigureAwait(false);
         }
 
         public async Task<ValidationResult> Handle(RemoveActiveBookCommand request, CancellationToken cancellationToken)
@@ -72,7 +72,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
 
             ActiveBookByIdSpec specification = new(request.Id);
             FirstOrDefault<ActiveBook> filter = new(specification);
-            var activeBook = _activeBookRepository.GetByFilterAsync(filter);
+            var activeBook = _activeBookRepository.GetByFilter(filter);
 
             if (activeBook is null)
                 AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
@@ -80,7 +80,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
             activeBook.AddDomainEvent(new RemoveActiveBookEvent(activeBook.Id));
             _activeBookRepository.Remove(activeBook);
 
-            return await Commit(_activeBookRepository.UnitOfWork);
+            return await Commit(_activeBookRepository.UnitOfWork).ConfigureAwait(false);
         }
     }
 }

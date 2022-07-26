@@ -44,13 +44,13 @@ namespace BookActivity.Domain.Commands.BookCommands
                 throw new NotFoundException(nameof(request.AuthorIds));
 
             BookAuthorFilterModel authorFilterModel = new(filter, take: count);
-            var authors = await _authorRepository.GetByFilterAsync(authorFilterModel);
+            var authors = await _authorRepository.GetByFilterAsync(authorFilterModel).ConfigureAwait(false);
             Book newBook = new(request.Title, request.Description, isPublic: true, authors.ToArray());
 
             newBook.AddDomainEvent(new AddBookEvent(newBook.Id, newBook.Title, newBook.Description, request.AuthorIds, newBook.IsPublic));
             _bookRepository.Add(newBook);
 
-            return await Commit(_bookRepository.UnitOfWork);
+            return await Commit(_bookRepository.UnitOfWork).ConfigureAwait(false);
         }
 
         public async Task<ValidationResult> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
@@ -68,7 +68,7 @@ namespace BookActivity.Domain.Commands.BookCommands
             updatedBook.AddDomainEvent(new UpdateBookEvent(updatedBook.Id, updatedBook.Title, updatedBook.Description, request.AuthorIds, updatedBook.IsPublic));
             _bookRepository.Update(updatedBook);
 
-            return await Commit(_bookRepository.UnitOfWork);
+            return await Commit(_bookRepository.UnitOfWork).ConfigureAwait(false);
         }
 
         public async Task<ValidationResult> Handle(RemoveBookCommand request, CancellationToken cancellationToken)
@@ -83,7 +83,7 @@ namespace BookActivity.Domain.Commands.BookCommands
             book.AddDomainEvent(new RemoveBookEvent(book.Id));
             _bookRepository.Remove(book);
 
-            return await Commit(_bookRepository.UnitOfWork);
+            return await Commit(_bookRepository.UnitOfWork).ConfigureAwait(false);
         }
     }
 }

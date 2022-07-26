@@ -32,7 +32,7 @@ namespace BookActivity.Domain.Commands.AppUserCommands
             {
                 Email = request.Email,
                 UserName = request.Name
-            }, request.Password);
+            }, request.Password).ConfigureAwait(false);
 
             return ToValidationResult(createUserResult);
         }
@@ -51,7 +51,7 @@ namespace BookActivity.Domain.Commands.AppUserCommands
             var subscribedUser = _appUserRepository.GetByFilterAsync(filter);
 
             subscribedUser.FollowedUsers.Add(currentUser);
-            var updateUserResult = await _appUserRepository.Updateasync(currentUser);
+            var updateUserResult = await _appUserRepository.Updateasync(currentUser).ConfigureAwait(false);
 
             return ToValidationResult(updateUserResult);
         }
