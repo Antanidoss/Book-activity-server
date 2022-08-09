@@ -28,7 +28,7 @@ namespace BookActivity.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -71,6 +71,11 @@ namespace BookActivity.Api
             {
                 endpoints.MapControllers();
             });
+
+            app.UseCors(x => x.WithOrigins(Configuration.GetValue<string>("ClientAddress"))
+                              .AllowAnyMethod()
+                              .AllowAnyHeader()
+                              .AllowCredentials());
         }
 
         private void AddInfastructure(IServiceCollection services)
