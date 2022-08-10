@@ -38,6 +38,14 @@ namespace BookActivity.Api.Controllers
                 .ToApiResult();
         }
 
+        [HttpGet(ApiConstants.GetBooksMethod)]
+        public async Task<ApiResult<IEnumerable<BookDTO>>> GetBooksByIdsAsync(int skip, int take)
+        {
+            return (await _bookService.GetByPaginationAsync(new PaginationModel(skip, take))
+                .ConfigureAwait(false))
+                .ToApiResult();
+        }
+
         [HttpGet(ApiConstants.GetBooksByTitleContainsMethod)]
         public async Task<ApiResult<IEnumerable<BookDTO>>> GetBooksByTitlesAsync(PaginationModel paginationModel, string title)
         {

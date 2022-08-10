@@ -27,7 +27,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<Book>> GetByFilterAsync(BookFilterModel filterModel)
         {
-            return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
+            return await (filterModel.Filter != null ? filterModel.Filter.ApplyFilter(_dbSet) : _dbSet)
+                .AsNoTracking()
                 .ApplyPaginaton(filterModel.Skip, filterModel.Take)
                 .ToListAsync();
         }

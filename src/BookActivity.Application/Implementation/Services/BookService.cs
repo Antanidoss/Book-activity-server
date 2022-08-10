@@ -92,6 +92,16 @@ namespace BookActivity.Application.Implementation.Services
             return _mapper.Map<List<BookDTO>>(books);
         }
 
+        public async Task<Result<IEnumerable<BookDTO>>> GetByPaginationAsync(PaginationModel paginationModel)
+        {
+            CommonValidator.ThrowExceptionIfNull(paginationModel);
+
+            BookFilterModel filterModel = new(paginationModel.Skip, paginationModel.Take);
+            var books = await _bookRepository.GetByFilterAsync(filterModel);
+
+            return new Result<IEnumerable<BookDTO>>(_mapper.Map<IEnumerable<BookDTO>>(books));
+        }
+
         public async Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId)
         {
             CommonValidator.ThrowExceptionIfEmpty(bookId, nameof(bookId));
