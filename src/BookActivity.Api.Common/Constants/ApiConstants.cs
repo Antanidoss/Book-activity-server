@@ -9,30 +9,31 @@
         public const string AppUserService = "user";
 
         //ActiveBook methods
-        public const string AddActiveBookMethod = "addActiveBook";
-        public const string RemoveActiveBookMethod = "removeActiveBook";
+        public const string AddActiveBookMethod = "add";
+        public const string RemoveActiveBookMethod = "remove";
         public const string UpdateNumberPagesReadMethod = "updateNumberPagesRead";
         public const string UpdateBookNoteMethod = "updateBookNote";
-        public const string GetActiveBooksByIdsMethod = "getActiveBookByIds";
-        public const string GetActiveBooksByUserIdMethod = "getActiveBooksByUserId";
-        public const string GetActiveBookHistoryDataMethod = "getActiveBookHistoryData";
-        public const string GetActiveBooksByPaginationMethod = "getActiveBookHistoryData";
+        public const string GetActiveBooksByIdsMethod = "getById";
+        public const string GetActiveBooksByUserIdMethod = "getByUserId";
+        public const string GetActiveBookHistoryDataMethod = "getHistoryData";
+        public const string GetActiveBooksByPaginationMethod = "getHistoryData";
 
         //Book methods
-        public const string AddBookMethodMethod = "addBook";
-        public const string GetBooksByIdsMethod = "getBooksByIds";
-        public const string GetBooksByTitleContainsMethod = "getBooksByTitleContains";
-        public const string RemoveBookMethod = "removeBook";
-        public const string UpdateBookMethod = "updateBook";
-        public const string GetBookHistoryDataMethod = "getBookHistoryData";
+        public const string AddBookMethodMethod = "add";
+        public const string GetBooksByIdsMethod = "getByIds";
+        public const string GetBooksMethod = "get";
+        public const string GetBooksByTitleContainsMethod = "getByTitleContains";
+        public const string RemoveBookMethod = "remove";
+        public const string UpdateBookMethod = "update";
+        public const string GetBookHistoryDataMethod = "getHistoryData";
 
         //AppUser methods
-        public const string AddUserMethod = "addUser";
-        public const string GetUserByIdMethod = "getUserById";
+        public const string AddUserMethod = "add";
+        public const string GetUserByIdMethod = "getById";
         public const string AuthenticationMethod = "authentication";
         public const string SubscribeAppUserMethod = "subscribeUser";
 
         //BookNote methods
-        public const string AddBookNoteMethod = "addBookNote";
+        public const string AddBookNoteMethod = "add";
     }
 }
