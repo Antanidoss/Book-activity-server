@@ -28,7 +28,6 @@ namespace BookActivity.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -42,6 +41,8 @@ namespace BookActivity.Api
             AddAuthentication(services);
 
             services.Configure<TokenInfo>(Configuration.GetSection(typeof(TokenInfo).Name));
+
+            services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -56,14 +57,12 @@ namespace BookActivity.Api
             CreateDatabasesIfNotExist(app);
 
             app.UseHttpsRedirection();
-
-            app.UseCors(x =>
-                x.AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            app.UseCors(x => x.WithOrigins(Configuration.GetValue<string>("ClientAddress"))
+                              .AllowAnyMethod()
+                              .AllowAnyHeader()
+                              .AllowCredentials());
 
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseMiddleware<JwtMiddleware>();
@@ -72,10 +71,6 @@ namespace BookActivity.Api
                 endpoints.MapControllers();
             });
 
-            app.UseCors(x => x.WithOrigins(Configuration.GetValue<string>("ClientAddress"))
-                              .AllowAnyMethod()
-                              .AllowAnyHeader()
-                              .AllowCredentials());
         }
 
         private void AddInfastructure(IServiceCollection services)
