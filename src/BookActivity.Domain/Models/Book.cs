@@ -24,6 +24,11 @@ namespace BookActivity.Domain.Models
         /// </summary>
         public IList<BookOpinion> BookOpinions { get; set; }
 
+        /// <summary>
+        /// Image data
+        /// </summary>
+        public byte[] ImageData { get; set; }
+
         private Book() : base() { }
         public Book(string title, string description, bool isPublic, params BookAuthor[] authors) : base(isPublic)
         {
