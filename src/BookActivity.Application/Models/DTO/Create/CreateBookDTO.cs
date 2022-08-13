@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 
 namespace BookActivity.Application.Models.DTO.Create
@@ -8,6 +9,7 @@ namespace BookActivity.Application.Models.DTO.Create
         public string Title { get; set; }
         public string Description { get; set; }
         public IEnumerable<Guid> AuthorIds { get; private set; }
+        public IFormFile Image { get; set; }
 
         public CreateBookDTO() { }
 
