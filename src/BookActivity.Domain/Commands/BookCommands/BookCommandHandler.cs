@@ -1,7 +1,6 @@
 ﻿using Antanidoss.Specification.Filters.Implementation;
 using BookActivity.Domain.Events.BookEvents;
 using BookActivity.Domain.Exceptions;
-using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AuthorSpecs;
@@ -37,15 +36,13 @@ namespace BookActivity.Domain.Commands.BookCommands
                 return request.ValidationResult;
 
             BookAuthorByIdSpec specification = new(request.AuthorIds.ToArray());
-            Where<BookAuthor> filter = new(specification);
-            var count = await _authorRepository.GetCountByFilterAsync(filter);
+            Where<Author> filter = new(specification);
+            var authorCount = await _authorRepository.GetCountByFilterAsync(filter).ConfigureAwait(false);
 
-            if (CommonValidator.IsLessThanOrEqualToZero(count))
+            if (CommonValidator.IsLessThanOrEqualToZero(authorCount))
                 throw new NotFoundException(nameof(request.AuthorIds));
 
-            BookAuthorFilterModel authorFilterModel = new(filter, take: count);
-            var authors = await _authorRepository.GetByFilterAsync(authorFilterModel).ConfigureAwait(false);
-            Book newBook = new(request.Title, request.Description, isPublic: true, authors.ToArray());
+            Book newBook = new(request.Title, request.Description, isPublic: true, request.AuthorIds.Select(a => new BookAuthor { AuthorId = a}));
 
             newBook.AddDomainEvent(new AddBookEvent(newBook.Id, newBook.Title, newBook.Description, request.AuthorIds, newBook.IsPublic));
             _bookRepository.Add(newBook);

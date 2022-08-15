@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace BookActivity.Domain.Models
 {
@@ -17,7 +18,7 @@ namespace BookActivity.Domain.Models
         /// <summary>
         /// Relation of book with the book authors
         /// </summary>
-        public IEnumerable<BookAuthor> Authors { get; private set; }
+        public IEnumerable<BookAuthor> BookAuthors { get; private set; }
 
         /// <summary>
         /// Relation of book with the book opinion
@@ -30,11 +31,11 @@ namespace BookActivity.Domain.Models
         public byte[] ImageData { get; set; }
 
         private Book() : base() { }
-        public Book(string title, string description, bool isPublic, params BookAuthor[] authors) : base(isPublic)
+        public Book(string title, string description, bool isPublic, IEnumerable<BookAuthor> bookAuthors) : base(isPublic)
         {
             Title = title;
             Description = description;
-            Authors = authors;
+            BookAuthors = bookAuthors.ToList();
             BookOpinions = new List<BookOpinion>();
         }
     }

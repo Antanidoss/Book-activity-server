@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Specifications.AuthorSpecs
 {
-    public sealed class BookAuthorByIdSpec : ISpecification<BookAuthor>
+    public sealed class BookAuthorByIdSpec : ISpecification<Author>
     {
         private readonly Guid[] _authorIds;
 
@@ -15,7 +15,7 @@ namespace BookActivity.Domain.Specifications.AuthorSpecs
             _authorIds = authorIds;
         }
 
-        public Expression<Func<BookAuthor, bool>> ToExpression()
+        public Expression<Func<Author, bool>> ToExpression()
         {
             return a => _authorIds.Contains(a.Id);
         }

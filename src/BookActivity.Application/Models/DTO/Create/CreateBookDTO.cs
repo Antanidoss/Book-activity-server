@@ -8,7 +8,7 @@ namespace BookActivity.Application.Models.DTO.Create
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public IEnumerable<Guid> AuthorIds { get; private set; }
+        public IEnumerable<Guid> AuthorIds { get; set; }
         public IFormFile Image { get; set; }
 
         public CreateBookDTO() { }

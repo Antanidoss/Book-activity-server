@@ -20,7 +20,7 @@ namespace BookActivity.Infrastructure.Data.Context
         public DbSet<ActiveBook> ActiveBooks { get; set; }
         public DbSet<ResponseOpinion> ResponseOpinions { get; set; }
         public DbSet<BookCategory> BookCategories { get; set; }
-        public DbSet<BookAuthor> BookAuthors { get; set; }
+        public DbSet<Author> Authors { get; set; }
         public DbSet<BookOpinion> BookOpinions { get; set; }
         public DbSet<BookNote> BookNotes { get; set; }
 
@@ -108,8 +108,7 @@ namespace BookActivity.Infrastructure.Data.Context
 
             domainEntities.ToList().ForEach(entity => entity.Entity.ClearDomainEvents());
 
-            var tasks = domainEvents
-                .Select(async (domainEvent) => {
+            var tasks = domainEvents.Select(async (domainEvent) => {
                     await mediator.PublishEvent(domainEvent);
                 });
 

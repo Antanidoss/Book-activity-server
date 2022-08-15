@@ -15,46 +15,46 @@ namespace BookActivity.Infrastructure.Data.Repositories
     {
         private readonly BookActivityContext _db;
 
-        private readonly DbSet<BookAuthor> _dbSet;
+        private readonly DbSet<Author> _dbSet;
 
         public IUnitOfWork UnitOfWork => _db;
 
         public AuthorRepository(BookActivityContext context)
         {
             _db = context;
-            _dbSet = _db.Set<BookAuthor>();
+            _dbSet = _db.Set<Author>();
         }
 
-        public async Task<IEnumerable<BookAuthor>> GetByFilterAsync(BookAuthorFilterModel filterModel)
+        public async Task<IEnumerable<Author>> GetByFilterAsync(BookAuthorFilterModel filterModel)
         {
             return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
                 .ApplyPaginaton(filterModel.Skip, filterModel.Take)
                 .ToListAsync();
         }
 
-        public async Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<BookAuthor> filter, int skip = 0)
+        public async Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<Author> filter, int skip = 0)
         {
-            return await filter.ApplyFilter(_dbSet)
+            return await filter.ApplyFilter(_dbSet.AsNoTracking())
                 .ApplyPaginaton(skip)
                 .CountAsync();
         }
 
-        public void Add(BookAuthor entity)
+        public void Add(Author entity)
         {
             _dbSet.Add(entity);
         }
 
-        public BookAuthor GetByFilter(IQueryableSingleResultFilter<BookAuthor> filter)
+        public Author GetByFilter(IQueryableSingleResultFilter<Author> filter)
         {
-            return filter.ToFunc().Invoke(_dbSet);
+            return filter.ToFunc().Invoke(_dbSet.AsNoTracking());
         }
 
-        public void Remove(BookAuthor entity)
+        public void Remove(Author entity)
         {
             _dbSet.Remove(entity);
         }
 
-        public void Update(BookAuthor entity)
+        public void Update(Author entity)
         {
             _dbSet.Update(entity);
         }
