@@ -42,7 +42,8 @@ namespace BookActivity.Domain.Commands.BookCommands
             if (CommonValidator.IsLessThanOrEqualToZero(authorCount))
                 throw new NotFoundException(nameof(request.AuthorIds));
 
-            Book newBook = new(request.Title, request.Description, isPublic: true, request.AuthorIds.Select(a => new BookAuthor { AuthorId = a}));
+            var bookAuthor = request.AuthorIds.Select(a => new BookAuthor { AuthorId = a });
+            Book newBook = new(request.Title, request.Description, isPublic: true, request.ImageData, bookAuthor);
 
             newBook.AddDomainEvent(new AddBookEvent(newBook.Id, newBook.Title, newBook.Description, request.AuthorIds, newBook.IsPublic));
             _bookRepository.Add(newBook);
