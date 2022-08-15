@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Interfaces.Repositories
 {
-    public interface IAuthorRepository : IRepository<BookAuthor>
+    public interface IAuthorRepository : IRepository<Author>
     {
-        Task<IEnumerable<BookAuthor>> GetByFilterAsync(BookAuthorFilterModel filterModel);
-        BookAuthor GetByFilter(IQueryableSingleResultFilter<BookAuthor> filter);
-        Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<BookAuthor> filter, int skip = 0);
-        void Add(BookAuthor entity);
-        void Remove(BookAuthor entity);
-        void Update(BookAuthor entity);
+        Task<IEnumerable<Author>> GetByFilterAsync(BookAuthorFilterModel filterModel);
+        Author GetByFilter(IQueryableSingleResultFilter<Author> filter);
+        Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<Author> filter, int skip = 0);
+        void Add(Author entity);
+        void Remove(Author entity);
+        void Update(Author entity);
     }
 }
