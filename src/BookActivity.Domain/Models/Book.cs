@@ -31,11 +31,12 @@ namespace BookActivity.Domain.Models
         public byte[] ImageData { get; set; }
 
         private Book() : base() { }
-        public Book(string title, string description, bool isPublic, IEnumerable<BookAuthor> bookAuthors) : base(isPublic)
+        public Book(string title, string description, bool isPublic, byte[] imageData, IEnumerable<BookAuthor> bookAuthors) : base(isPublic)
         {
             Title = title;
             Description = description;
             BookAuthors = bookAuthors.ToList();
+            ImageData = imageData;
             BookOpinions = new List<BookOpinion>();
         }
     }
