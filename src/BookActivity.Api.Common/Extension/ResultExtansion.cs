@@ -16,6 +16,11 @@ namespace BookActivity.Api.Common.Extansions
             };
         }
 
+        public static ApiResult<T> ToApiResult<T>(this T result)
+        {
+            return new ApiResult<T>(result, success: true);
+        }
+
         public static ActionResult ToActionResult(this ValidationResult validationResult)
         {
             return validationResult.IsValid ? new OkObjectResult(null) : new BadRequestObjectResult(ValidationErrorsToString(validationResult.Errors));

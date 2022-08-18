@@ -1,4 +1,5 @@
-﻿using BookActivity.Api.Common.Constants;
+﻿using BookActivity.Api.Attributes;
+using BookActivity.Api.Common.Constants;
 using BookActivity.Api.Common.Extansions;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.DTO.Create;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.BookNoteService)]
+    [Authorize]
     public sealed class BookNoteController : BaseController
     {
         private readonly IBookNoteService _bookNoteService;

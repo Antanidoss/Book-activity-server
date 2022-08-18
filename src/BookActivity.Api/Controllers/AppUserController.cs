@@ -50,5 +50,11 @@ namespace BookActivity.Api.Controllers
             return (await _appUserService.SubscribeAppUserAsync(currentUser.Id, subscribedUserId).ConfigureAwait(false))
                 .ToActionResult();
         }
+
+        [HttpGet(ApiConstants.GetCurrentUserMethod)]
+        public ApiResult<AppUserDTO> GetCurrentUserAsync()
+        {
+            return base.GetCurrentUser().ToApiResult();
+        }
     }
 }
