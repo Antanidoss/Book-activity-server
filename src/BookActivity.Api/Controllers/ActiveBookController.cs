@@ -1,4 +1,5 @@
-﻿using BookActivity.Api.Common.Constants;
+﻿using BookActivity.Api.Attributes;
+using BookActivity.Api.Common.Constants;
 using BookActivity.Api.Common.Extansions;
 using BookActivity.Api.Common.Models;
 using BookActivity.Application.Interfaces.Services;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.ActiveBookService)]
+    [Authorize]
     public sealed class ActiveBookController : BaseController
     {
         private readonly IActiveBookService _activeBookService;

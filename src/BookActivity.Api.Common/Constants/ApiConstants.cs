@@ -32,6 +32,7 @@
         public const string GetUserByIdMethod = "getById";
         public const string AuthenticationMethod = "authentication";
         public const string SubscribeAppUserMethod = "subscribeUser";
+        public const string GetCurrentUserMethod = "getCurrentUser";
 
         //BookNote methods
         public const string AddBookNoteMethod = "add";
