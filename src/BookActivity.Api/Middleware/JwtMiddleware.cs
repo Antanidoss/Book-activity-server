@@ -46,9 +46,11 @@ namespace BookActivity.Api.Middleware
             }, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
-            var userId = jwtToken.Claims.First(x => x.Type == "id").Value.ToString();
+            var userId = jwtToken.Claims.First(x => x.Type == "userId").Value.ToString();
 
-            context.Items["User"] = (await userService.FindByIdAsync(Guid.Parse(userId))).Value;
+            var user = (await userService.FindByIdAsync(Guid.Parse(userId))).Value;
+            user.Token = jwtToken.RawData;
+            context.Items["User"] = user;
         }
     }
 }
