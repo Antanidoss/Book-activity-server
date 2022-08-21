@@ -58,9 +58,18 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetActiveBooksByUserIdMethod)]
-        public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetaActiveBooksByUserIdsAsync(Guid userId, PaginationModel filterModel)
+        public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetaActiveBooksByUserIdsAsync(Guid userId, PaginationModel paginationModel)
         {
-            return (await _activeBookService.GetByUserIdAsync(filterModel, userId).ConfigureAwait(false))
+            return (await _activeBookService.GetByUserIdAsync(paginationModel, userId).ConfigureAwait(false))
+                .ToApiResult();
+        }
+
+        [HttpGet(ApiConstants.GetActiveBooksByCurrentUserMethod)]
+        public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetActiveBooksByCurrentUserAsync(PaginationModel paginationModel)
+        {
+            var currentUserId = GetCurrentUser().Id;
+
+            return (await _activeBookService.GetByUserIdAsync(paginationModel, currentUserId).ConfigureAwait(false))
                 .ToApiResult();
         }
 

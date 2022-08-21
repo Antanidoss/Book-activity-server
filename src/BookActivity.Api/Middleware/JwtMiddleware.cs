@@ -34,23 +34,30 @@ namespace BookActivity.Api.Middleware
 
         private async Task AttachUserToContextAsync(HttpContext context, IAppUserService userService, string token)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_tokenInfo.SecretKey);
-            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            try
             {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ClockSkew = TimeSpan.Zero
-            }, out SecurityToken validatedToken);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_tokenInfo.SecretKey);
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
 
-            var jwtToken = (JwtSecurityToken)validatedToken;
-            var userId = jwtToken.Claims.First(x => x.Type == "userId").Value.ToString();
+                var jwtToken = (JwtSecurityToken)validatedToken;
+                var userId = jwtToken.Claims.First(x => x.Type == "userId").Value.ToString();
 
-            var user = (await userService.FindByIdAsync(Guid.Parse(userId))).Value;
-            user.Token = jwtToken.RawData;
-            context.Items["User"] = user;
+                var user = (await userService.FindByIdAsync(Guid.Parse(userId))).Value;
+                user.Token = jwtToken.RawData;
+                context.Items["User"] = user;
+            }
+            catch
+            {
+
+            }
         }
     }
 }
