@@ -12,6 +12,7 @@ namespace BookActivity.Application.Models.DTO.Read
         public string UserName { get; set; }
         public Guid UserId { get; set; }
         public ICollection<BookNoteDTO> BookNotes { get; set; }
+        public byte[] ImageData { get; set; }
         public ActiveBookDTO() : base() { }
         public ActiveBookDTO(
             Guid activeBookId,
