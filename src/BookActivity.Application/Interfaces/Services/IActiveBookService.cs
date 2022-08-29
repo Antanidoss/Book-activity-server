@@ -17,7 +17,7 @@ namespace BookActivity.Application.Interfaces.Services
         Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId);
         Task<ValidationResult> UpdateActiveBookAsync(UpdateNumberPagesReadDTO updateActiveBookModel);
         Task<Result<IEnumerable<ActiveBookDTO>>> GetByActiveBookIdAsync(Guid[] activeBookIds);
-        Task<Result<IEnumerable<ActiveBookDTO>>> GetByUserIdAsync(PaginationModel paginationModel, Guid userId);
+        Task<Result<IEnumerable<ActiveBookDTO>>> GetByUserIdAsync(PaginationModel paginationModel, Guid currentUserId);
         Task<Result<IEnumerable<ActiveBookHistoryData>>> GetActiveBookHistoryDataAsync(Guid activeBookId);
     }
 }

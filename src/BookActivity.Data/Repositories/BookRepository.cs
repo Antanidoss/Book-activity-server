@@ -3,10 +3,13 @@ using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
+using BookActivity.Infrastructure.Data.Extensions;
 using BookActivity.Infrastructure.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
@@ -25,10 +28,11 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = _db.Books;
         }
 
-        public async Task<IEnumerable<Book>> GetByFilterAsync(BookFilterModel filterModel)
+        public async Task<IEnumerable<Book>> GetByFilterAsync(BookFilterModel filterModel, params Expression<Func<Book, object>>[] includes)
         {
             return await (filterModel.Filter != null ? filterModel.Filter.ApplyFilter(_dbSet) : _dbSet)
                 .AsNoTracking()
+                .IncludeMultiple(includes)
                 .ApplyPaginaton(filterModel.Skip, filterModel.Take)
                 .ToListAsync();
         }

@@ -93,7 +93,7 @@ namespace BookActivity.Application.Implementation.Services
 
             string token = GenerateJwtToken(appUser.Id.ToString());
 
-            return new Result<AuthenticationResult>(new AuthenticationResult(appUser.UserName, appUser.Email, token));
+            return new Result<AuthenticationResult>(new AuthenticationResult(appUser.Id, appUser.UserName, appUser.Email, token));
         }
 
         public async Task<ValidationResult> SubscribeAppUserAsync(Guid currentUserId, Guid subscribedUserId)

@@ -10,24 +10,8 @@ namespace BookActivity.Application.Models.DTO.Read
         public IEnumerable<BookAuthorDTO> Authors { get; set; }
         public IList<BookOpinionDTO> BookOpinions { get; set; }
         public byte[] ImageData { get; set; }
+        public bool IsActiveBook { get; set; }
 
         public BookDTO() : base() { }
-        public BookDTO(
-            Guid bookId,
-            DateTime timeOfCreation,
-            DateTime timeOfUpdate,
-            bool isPublic,
-            string title,
-            string description,
-            IEnumerable<BookAuthorDTO> authors,
-            IList<BookOpinionDTO> bookOpinions,
-            byte[] image) : base(bookId, timeOfCreation, timeOfUpdate, isPublic)
-        {
-            Title = title;
-            Description = description;
-            Authors = authors;
-            BookOpinions = bookOpinions;
-            ImageData = image;
-        }
     }
 }
