@@ -70,7 +70,6 @@ namespace BookActivity.Api
             {
                 endpoints.MapControllers();
             });
-
         }
 
         private void AddInfastructure(IServiceCollection services)

@@ -8,7 +8,6 @@ using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
 using BookActivity.Application.Models.HistoryData;
 using BookActivity.Domain.Commands.ActiveBookCommands;
-using BookActivity.Domain.Commands.ActiveBookCommands.Validations;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.FilterModels;
 using BookActivity.Domain.Filters.Models;
@@ -80,12 +79,11 @@ namespace BookActivity.Application.Implementation.Services
             return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
         }
 
-        public async Task<Result<IEnumerable<ActiveBookDTO>>> GetByUserIdAsync(PaginationModel paginationModel, Guid userId)
+        public async Task<Result<IEnumerable<ActiveBookDTO>>> GetByUserIdAsync(PaginationModel paginationModel, Guid currentUserId)
         {
             CommonValidator.ThrowExceptionIfNull(paginationModel);
-            CommonValidator.ThrowExceptionIfEmpty(userId, nameof(userId));
 
-            ActiveBookByUserIdSpec specification = new(userId);
+            ActiveBookByUserIdSpec specification = new(currentUserId);
             Where<ActiveBook> filter = new(specification);
             ActiveBookFilterModel activeBookFilterModel = new(filter, paginationModel.Skip, paginationModel.Take);
             var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel).ConfigureAwait(false);

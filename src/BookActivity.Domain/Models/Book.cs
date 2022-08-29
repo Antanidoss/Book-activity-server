@@ -30,6 +30,11 @@ namespace BookActivity.Domain.Models
         /// </summary>
         public byte[] ImageData { get; set; }
 
+        /// <summary>
+        /// Relation of book with the active book
+        /// </summary>
+        public ICollection<ActiveBook> ActiveBooks { get; private set; }
+
         private Book() : base() { }
         public Book(string title, string description, bool isPublic, byte[] imageData, IEnumerable<BookAuthor> bookAuthors) : base(isPublic)
         {

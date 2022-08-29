@@ -19,6 +19,7 @@ using FluentValidation.Results;
 using NetDevPack.Mediator;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -92,14 +93,20 @@ namespace BookActivity.Application.Implementation.Services
             return _mapper.Map<List<BookDTO>>(books);
         }
 
-        public async Task<Result<IEnumerable<BookDTO>>> GetByPaginationAsync(PaginationModel paginationModel)
+        public async Task<Result<IEnumerable<BookDTO>>> GetByPaginationAsync(PaginationModel paginationModel, Guid currentUserId)
         {
             CommonValidator.ThrowExceptionIfNull(paginationModel);
 
             BookFilterModel filterModel = new(paginationModel.Skip, paginationModel.Take);
-            var books = await _bookRepository.GetByFilterAsync(filterModel);
+            var books = (await _bookRepository.GetByFilterAsync(filterModel, b => b.ActiveBooks)).ToArray();
+            var booksDto = _mapper.Map<IEnumerable<BookDTO>>(books).ToArray();
 
-            return new Result<IEnumerable<BookDTO>>(_mapper.Map<IEnumerable<BookDTO>>(books));
+            if (currentUserId != Guid.Empty)
+                for (int i = 0; i < books.Count(); i++)
+                    if (books[i].ActiveBooks.Any(a => a.UserId == currentUserId))
+                        booksDto[i].IsActiveBook = true;
+
+            return new Result<IEnumerable<BookDTO>>(booksDto);
         }
 
         public async Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId)
