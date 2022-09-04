@@ -86,7 +86,7 @@ namespace BookActivity.Application.Implementation.Services
             ActiveBookByUserIdSpec specification = new(currentUserId);
             Where<ActiveBook> filter = new(specification);
             ActiveBookFilterModel activeBookFilterModel = new(filter, paginationModel.Skip, paginationModel.Take);
-            var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel).ConfigureAwait(false);
+            var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel, a => a.Book).ConfigureAwait(false);
 
             return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
         }

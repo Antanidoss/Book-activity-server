@@ -12,7 +12,10 @@ namespace BookActivity.Application.AutoMapper
         public ActiveBookDTOProfile()
         {
             CreateMap<ActiveBookDTO, ActiveBook>();
-            CreateMap<ActiveBook, ActiveBookDTO>();
+            CreateMap<ActiveBook, ActiveBookDTO>()
+                .ForMember(a => a.BookName, conf => conf.MapFrom(a => a.Book.Title))
+                .ForMember(a => a.ImageData, conf => conf.MapFrom(a => a.Book.ImageData));
+
             CreateMap<CreateActiveBookDTO, AddActiveBookCommand>();
 
             CreateMap<UpdateNumberPagesReadDTO, UpdateActiveBookCommand>()
