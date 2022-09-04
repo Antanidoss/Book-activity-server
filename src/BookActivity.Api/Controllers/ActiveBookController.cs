@@ -38,7 +38,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.UpdateNumberPagesReadMethod)]
-        public async Task<ActionResult> UpdateNumberPagesReadAsync(UpdateNumberPagesReadDTO updateActiveBookModel)
+        public async Task<ActionResult> UpdateNumberPagesReadAsync([FromBody] UpdateNumberPagesReadDTO updateActiveBookModel)
         {
             return (await _activeBookService.UpdateActiveBookAsync(updateActiveBookModel)
                 .ConfigureAwait(false))
