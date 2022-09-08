@@ -46,7 +46,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpDelete(ApiConstants.RemoveActiveBookMethod)]
-        public async Task<ActionResult> RemoveActiveBookAsync(Guid activeBookId)
+        public async Task<ActionResult> RemoveActiveBookAsync([FromQuery] Guid activeBookId)
         {
             return (await _activeBookService.RemoveActiveBookAsync(activeBookId)
                 .ConfigureAwait(false))

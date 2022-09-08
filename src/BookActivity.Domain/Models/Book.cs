@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BookActivity.Domain.Models
@@ -21,11 +22,6 @@ namespace BookActivity.Domain.Models
         public IEnumerable<BookAuthor> BookAuthors { get; private set; }
 
         /// <summary>
-        /// Relation of book with the book opinion
-        /// </summary>
-        public IList<BookOpinion> BookOpinions { get; set; }
-
-        /// <summary>
         /// Image data
         /// </summary>
         public byte[] ImageData { get; set; }
@@ -35,6 +31,12 @@ namespace BookActivity.Domain.Models
         /// </summary>
         public ICollection<ActiveBook> ActiveBooks { get; private set; }
 
+        /// <summary>
+        /// Relation of book with the book rating
+        /// </summary>
+        public BookRating BookRating { get; set; }
+        public Guid BookRatingId { get; set; }
+
         private Book() : base() { }
         public Book(string title, string description, bool isPublic, byte[] imageData, IEnumerable<BookAuthor> bookAuthors) : base(isPublic)
         {
@@ -42,7 +44,6 @@ namespace BookActivity.Domain.Models
             Description = description;
             BookAuthors = bookAuthors.ToList();
             ImageData = imageData;
-            BookOpinions = new List<BookOpinion>();
         }
     }
 }

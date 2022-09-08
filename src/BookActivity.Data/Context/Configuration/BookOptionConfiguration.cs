@@ -11,14 +11,14 @@ namespace BookActivity.Infrastructure.Data.Context.Configuration
             builder.ToTable("BookOpinions");
             builder.HasKey(b => b.Id);
 
-            builder.Property(r => r.BookId).IsRequired();
+            builder.Property(r => r.BookRatingId).IsRequired();
             builder.Property(r => r.UserId).IsRequired();
             builder.Property(r => r.Description).IsRequired();
             builder.Property(r => r.Grade).IsRequired();
 
-            builder.HasOne(b => b.Book)
+            builder.HasOne(b => b.BookRating)
                 .WithMany(b => b.BookOpinions)
-                .HasForeignKey(b => b.BookId)
+                .HasForeignKey(b => b.BookRatingId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(b => b.User)
