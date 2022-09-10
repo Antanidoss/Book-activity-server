@@ -23,6 +23,7 @@ namespace BookActivity.Infrastructure.Data.Context
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookOpinion> BookOpinions { get; set; }
         public DbSet<BookNote> BookNotes { get; set; }
+        public DbSet<BookRating> BookRatings { get; set; }
 
         private readonly IMediatorHandler _mediatorHandler;
 

@@ -2,9 +2,9 @@
 {
     public class ValidationErrorConstants
     {
-        public const string IncorrectPassword = "Неверный логин или пароль";
-        public const string IncorrectEmail = "Неверный логин или пароль";
-        public const string FailedSign = "Не удалось войти";
+        public const string IncorrectPassword = "Wrong login or password";
+        public const string IncorrectEmail = "Wrong login or password";
+        public const string FailedSign = "Failed to login";
         public const string FilterModelIsNull = "Модель не может быть null";
     }
 }
