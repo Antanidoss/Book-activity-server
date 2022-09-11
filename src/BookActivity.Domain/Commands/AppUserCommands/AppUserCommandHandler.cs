@@ -14,7 +14,8 @@ namespace BookActivity.Domain.Commands.AppUserCommands
 {
     internal sealed class AppUserCommandHandler : CommandHandler,
         IRequestHandler<AddAppUserCommand, ValidationResult>,
-        IRequestHandler<SubscribeAppUserCommand, ValidationResult>
+        IRequestHandler<SubscribeAppUserCommand, ValidationResult>,
+        IRequestHandler<UpdateAppUserCommand, ValidationResult>
     {
         private readonly IAppUserRepository _appUserRepository;
 
@@ -51,9 +52,23 @@ namespace BookActivity.Domain.Commands.AppUserCommands
             var subscribedUser = _appUserRepository.GetByFilterAsync(filter);
 
             subscribedUser.FollowedUsers.Add(currentUser);
-            var updateUserResult = await _appUserRepository.Updateasync(currentUser).ConfigureAwait(false);
+            var updateUserResult = await _appUserRepository.UpdateAsync(currentUser).ConfigureAwait(false);
 
             return ToValidationResult(updateUserResult);
+        }
+
+        public async Task<ValidationResult> Handle(UpdateAppUserCommand request, CancellationToken cancellationToken)
+        {
+            if (!request.IsValid())
+                return request.ValidationResult;
+
+            AppUserByIdSpec specification = new(request.AppUserId);
+            FirstOrDefault<AppUser> filter = new(specification);
+            var user = _appUserRepository.GetByFilterAsync(filter);
+
+            user.AvatarImage = request.AvatarImage;
+
+            return ToValidationResult(await _appUserRepository.UpdateAsync(user));
         }
 
         private ValidationResult ToValidationResult(IdentityResult identityResult)

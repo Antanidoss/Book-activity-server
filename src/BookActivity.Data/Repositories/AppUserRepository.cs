@@ -43,7 +43,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await _userManager.CreateAsync(user, password);
         }
 
-        public async Task<IdentityResult> Updateasync(AppUser user)
+        public async Task<IdentityResult> UpdateAsync(AppUser user)
         {
             return await _userManager.UpdateAsync(user);
         }

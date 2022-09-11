@@ -17,10 +17,8 @@ namespace BookActivity.Application.AutoMapper
             CreateMap<Book, BookDTO>();
             CreateMap<BookDTO, Book>();
 
-            CreateMap<CreateBookDTO, AddBookCommand>()
-                .ForMember(b => b.ImageData, conf => conf.MapFrom(b => IFromFileToBuffer(b.Image)));
-            CreateMap<UpdateBookDTO, UpdateBookCommand>()
-                .ForMember(b => b.ImageData, conf => conf.MapFrom(b => b.Image.ConvertToBuffer()));
+            CreateMap<CreateBookDTO, AddBookCommand>();
+            CreateMap<UpdateBookDTO, UpdateBookCommand>();
         }
 
         private byte[] IFromFileToBuffer(IFormFile file)

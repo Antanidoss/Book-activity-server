@@ -5,6 +5,7 @@ using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
+using BookActivity.Application.Models.DTO.Update;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -60,6 +61,14 @@ namespace BookActivity.Api.Controllers
         public ApiResult<AppUserDTO> GetCurrentUserAsync()
         {
             return base.GetCurrentUser().ToApiResult();
+        }
+
+        [HttpPut(ApiConstants.UpdateUserMethod)]
+        public async Task<ActionResult> UpdateUserAsync([FromBody] UpdateAppUserDTO updateAppUserModel)
+        {
+            return (await _appUserService.UpdateAsync(updateAppUserModel)
+                .ConfigureAwait(false))
+                .ToActionResult();
         }
     }
 }

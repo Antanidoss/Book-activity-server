@@ -27,6 +27,11 @@ namespace BookActivity.Domain.Models
         /// </summary>
         public ICollection<UserNotification> UserNotifications { get; set; }
 
+        /// <summary>
+        /// User avatar
+        /// </summary>
+        public byte[] AvatarImage { get; set; }
+
         public AppUser() : base()
         {
             FollowedUsers = new List<AppUser>();
