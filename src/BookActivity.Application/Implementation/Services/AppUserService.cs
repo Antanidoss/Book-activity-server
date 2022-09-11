@@ -6,6 +6,7 @@ using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
+using BookActivity.Application.Models.DTO.Update;
 using BookActivity.Domain.Commands.AppUserCommands;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
@@ -61,15 +62,21 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendCommand(addAppUserCommand);
         }
 
-        public async Task<Result<AppUserDTO>> FindByIdAsync(Guid appUserId)
+        public async Task<ValidationResult> SubscribeAppUserAsync(Guid currentUserId, Guid subscribedUserId)
         {
-            CommonValidator.ThrowExceptionIfEmpty(appUserId, nameof(appUserId));
+            CommonValidator.ThrowExceptionIfEmpty(currentUserId, nameof(currentUserId));
+            CommonValidator.ThrowExceptionIfEmpty(subscribedUserId, nameof(subscribedUserId));
 
-            AppUserByIdSpec specification = new(appUserId);
-            FirstOrDefault<AppUser> filter = new(specification);
-            var appUser = _appUserRepository.GetByFilterAsync(filter);
+            SubscribeAppUserCommand subscribeAppUserCommand = new(currentUserId, subscribedUserId);
 
-            return _mapper.Map<AppUserDTO>(appUser);
+            return await _mediatorHandler.SendCommand(subscribeAppUserCommand).ConfigureAwait(false);
+        }
+
+        public async Task<ValidationResult> UpdateAsync(UpdateAppUserDTO updateAppUserModel)
+        {
+            CommonValidator.ThrowExceptionIfEmpty(updateAppUserModel.AppUserId, nameof(updateAppUserModel.AppUserId));
+
+            return await _mediatorHandler.SendCommand(_mapper.Map<UpdateAppUserCommand>(updateAppUserModel));
         }
 
         public async Task<Result<AuthenticationResult>> PasswordSignInAsync(AuthenticationModel authenticationModel)
@@ -96,14 +103,15 @@ namespace BookActivity.Application.Implementation.Services
             return new Result<AuthenticationResult>(new AuthenticationResult(appUser.Id, appUser.UserName, appUser.Email, token));
         }
 
-        public async Task<ValidationResult> SubscribeAppUserAsync(Guid currentUserId, Guid subscribedUserId)
+        public async Task<Result<AppUserDTO>> FindByIdAsync(Guid appUserId)
         {
-            CommonValidator.ThrowExceptionIfEmpty(currentUserId, nameof(currentUserId));
-            CommonValidator.ThrowExceptionIfEmpty(subscribedUserId, nameof(subscribedUserId));
+            CommonValidator.ThrowExceptionIfEmpty(appUserId, nameof(appUserId));
 
-            var subscribeAppUserCommand = new SubscribeAppUserCommand(currentUserId, subscribedUserId);
+            AppUserByIdSpec specification = new(appUserId);
+            FirstOrDefault<AppUser> filter = new(specification);
+            var appUser = _appUserRepository.GetByFilterAsync(filter);
 
-            return await _mediatorHandler.SendCommand(subscribeAppUserCommand).ConfigureAwait(false);
+            return _mapper.Map<AppUserDTO>(appUser);
         }
 
         private string GenerateJwtToken(string userId)

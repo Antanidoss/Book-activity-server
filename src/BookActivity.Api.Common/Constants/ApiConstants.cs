@@ -34,6 +34,7 @@
         public const string AuthenticationMethod = "authentication";
         public const string SubscribeAppUserMethod = "subscribeUser";
         public const string GetCurrentUserMethod = "getCurrentUser";
+        public const string UpdateUserMethod = "update";
 
         //BookNote methods
         public const string AddBookNoteMethod = "add";
