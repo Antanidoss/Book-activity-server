@@ -2,7 +2,8 @@
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
-using BookActivity.Domain.Commands.AppUserCommands;
+using BookActivity.Domain.Commands.AppUserCommands.AddAppUser;
+using BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser;
 using BookActivity.Domain.Models;
 
 namespace BookActivity.Application.AutoMapper

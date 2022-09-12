@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BookActivity.Application.Models.DTO.Create;
-using BookActivity.Domain.Commands.BookNoteCommands;
+using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
 
 namespace BookActivity.Application.AutoMapper
 {

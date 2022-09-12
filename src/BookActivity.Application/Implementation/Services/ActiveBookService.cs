@@ -8,6 +8,8 @@ using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
 using BookActivity.Application.Models.HistoryData;
 using BookActivity.Domain.Commands.ActiveBookCommands;
+using BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook;
+using BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.FilterModels;
 using BookActivity.Domain.Filters.Models;
@@ -53,7 +55,7 @@ namespace BookActivity.Application.Implementation.Services
         {
             CommonValidator.ThrowExceptionIfEmpty(activeBookId, nameof(activeBookId));
 
-            RemoveActiveBookCommand removeActiveBookCommand = new(activeBookId);
+            RemoveActiveBookCommand removeActiveBookCommand = new() { Id = activeBookId };
 
             return await _mediatorHandler.SendCommand(removeActiveBookCommand).ConfigureAwait(false);
         }

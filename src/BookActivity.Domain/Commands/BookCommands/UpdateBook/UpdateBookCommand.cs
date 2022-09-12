@@ -1,4 +1,4 @@
-﻿namespace BookActivity.Domain.Commands.BookCommands
+﻿namespace BookActivity.Domain.Commands.BookCommands.UpdateBook
 {
     public sealed class UpdateBookCommand : BookCommand
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BookActivity.Domain.Commands.BookCommands
+namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
 {
     public sealed class RemoveBookCommand : BookCommand
     {

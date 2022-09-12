@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BookActivity.Domain.Commands.AppUserCommands
+namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
 {
     public sealed class SubscribeAppUserCommand : AppUserCommand
     {

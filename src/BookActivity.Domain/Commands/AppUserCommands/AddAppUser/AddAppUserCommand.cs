@@ -1,4 +1,4 @@
-﻿namespace BookActivity.Domain.Commands.AppUserCommands
+﻿namespace BookActivity.Domain.Commands.AppUserCommands.AddAppUser
 {
     public sealed class AddAppUserCommand : AppUserCommand
     {
