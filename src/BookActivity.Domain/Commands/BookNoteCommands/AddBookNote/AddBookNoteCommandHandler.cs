@@ -6,14 +6,14 @@ using NetDevPack.Messaging;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookActivity.Domain.Commands.BookNoteCommands
+namespace BookActivity.Domain.Commands.BookNoteCommands.AddBookNote
 {
-    internal sealed class BookNoteCommandHandler : CommandHandler,
+    internal sealed class AddBookNoteCommandHandler : CommandHandler,
          IRequestHandler<AddBookNoteCommand, ValidationResult>
     {
         private readonly IBookNoteRepository _bookNoteRepository;
 
-        public BookNoteCommandHandler(IBookNoteRepository bookNoteRepository)
+        public AddBookNoteCommandHandler(IBookNoteRepository bookNoteRepository)
         {
             _bookNoteRepository = bookNoteRepository;
         }

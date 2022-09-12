@@ -1,7 +1,14 @@
 ﻿using BookActivity.Domain.Commands.ActiveBookCommands;
-using BookActivity.Domain.Commands.AppUserCommands;
-using BookActivity.Domain.Commands.BookCommands;
-using BookActivity.Domain.Commands.BookNoteCommands;
+using BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook;
+using BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook;
+using BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook;
+using BookActivity.Domain.Commands.AppUserCommands.AddAppUser;
+using BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser;
+using BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser;
+using BookActivity.Domain.Commands.BookCommands.AddBook;
+using BookActivity.Domain.Commands.BookCommands.RemoveBook;
+using BookActivity.Domain.Commands.BookCommands.UpdateBook;
+using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.UserNotificationsEvents;
 using BookActivity.Shared.Interfaces;
@@ -24,18 +31,19 @@ namespace BookActivity.Domain
 
         private void ConfigureCommandHandlers(IServiceCollection services)
         {
-            services.AddScoped<IRequestHandler<AddActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
-            services.AddScoped<IRequestHandler<UpdateActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
-            services.AddScoped<IRequestHandler<RemoveActiveBookCommand, ValidationResult>, ActiveBookCommandHandler>();
+            services.AddScoped<IRequestHandler<AddActiveBookCommand, ValidationResult>, AddActiveBookCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateActiveBookCommand, ValidationResult>, UpdateActiveBookCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveActiveBookCommand, ValidationResult>, RemoveActiveBookCommandHandler>();
 
-            services.AddScoped<IRequestHandler<AddBookCommand, ValidationResult>, BookCommandHandler>();
-            services.AddScoped<IRequestHandler<UpdateBookCommand, ValidationResult>, BookCommandHandler>();
-            services.AddScoped<IRequestHandler<RemoveBookCommand, ValidationResult>, BookCommandHandler>();
+            services.AddScoped<IRequestHandler<AddBookCommand, ValidationResult>, AddBookCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateBookCommand, ValidationResult>, UpdateBookCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveBookCommand, ValidationResult>, RemoveBookCommandHandler>();
 
-            services.AddScoped<IRequestHandler<AddAppUserCommand, ValidationResult>, AppUserCommandHandler>();
-            services.AddScoped<IRequestHandler<SubscribeAppUserCommand, ValidationResult>, AppUserCommandHandler>();
+            services.AddScoped<IRequestHandler<AddAppUserCommand, ValidationResult>, AddAppUserCommandHandler>();
+            services.AddScoped<IRequestHandler<SubscribeAppUserCommand, ValidationResult>, SubscribeAppUserCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateAppUserCommand, ValidationResult>, UpdateAppUserCommandHandler>();
 
-            services.AddScoped<IRequestHandler<AddBookNoteCommand, ValidationResult>, BookNoteCommandHandler>();
+            services.AddScoped<IRequestHandler<AddBookNoteCommand, ValidationResult>, AddBookNoteCommandHandler>();
         }
 
         private void ConfigureEventHandlers(IServiceCollection services)

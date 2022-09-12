@@ -1,7 +1,7 @@
 ﻿using BookActivity.Domain.Models;
 using System;
 
-namespace BookActivity.Domain.Commands.BookNoteCommands
+namespace BookActivity.Domain.Commands.BookNoteCommands.AddBookNote
 {
     public class AddBookNoteCommand : BookNoteCommand
     {

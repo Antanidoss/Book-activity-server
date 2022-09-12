@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BookActivity.Domain.Commands.BookCommands
+namespace BookActivity.Domain.Commands.BookCommands.AddBook
 {
     public sealed class AddBookCommand : BookCommand
     {
