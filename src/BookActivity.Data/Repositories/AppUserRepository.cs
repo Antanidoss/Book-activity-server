@@ -43,9 +43,9 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await _userManager.CreateAsync(user, password);
         }
 
-        public async Task<IdentityResult> UpdateAsync(AppUser user)
+        public async Task UpdateAsync(AppUser user)
         {
-            return await _userManager.UpdateAsync(user);
+            _db.Users.Update(user);
         }
 
         public void Dispose()

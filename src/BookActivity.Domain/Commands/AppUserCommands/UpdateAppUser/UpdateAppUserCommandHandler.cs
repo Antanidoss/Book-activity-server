@@ -32,7 +32,9 @@ namespace BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser
 
             user.AvatarImage = request.AvatarImage;
 
-            return (await _appUserRepository.UpdateAsync(user)).ToValidationResult();
+            await _appUserRepository.UpdateAsync(user);
+
+            return await Commit(_appUserRepository.UnitOfWork);
         }
     }
 }
