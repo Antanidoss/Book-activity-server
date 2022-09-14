@@ -11,7 +11,7 @@ namespace BookActivity.Domain.Interfaces.Repositories
     public interface IAppUserRepository : IRepository<AppUser>
     {
         Task<IdentityResult> Addasync(AppUser user, string password);
-        Task<IdentityResult> UpdateAsync(AppUser user);
+        Task UpdateAsync(AppUser user);
         Task<IEnumerable<AppUser>> GetByFilterAsync(AppUserFilterModel filterModel);
         AppUser GetByFilterAsync(IQueryableSingleResultFilter<AppUser> filter);
     }

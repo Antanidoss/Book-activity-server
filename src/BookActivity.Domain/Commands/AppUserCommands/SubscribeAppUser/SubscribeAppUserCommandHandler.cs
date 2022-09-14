@@ -35,9 +35,9 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
             var subscribedUser = _appUserRepository.GetByFilterAsync(filter);
 
             subscribedUser.FollowedUsers.Add(currentUser);
-            var updateUserResult = await _appUserRepository.UpdateAsync(currentUser).ConfigureAwait(false);
+            await _appUserRepository.UpdateAsync(currentUser).ConfigureAwait(false);
 
-            return updateUserResult.ToValidationResult();
+            return new ValidationResult();
         }
     }
 }

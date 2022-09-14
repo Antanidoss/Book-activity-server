@@ -9,6 +9,7 @@ namespace BookActivity.Application.Models.DTO.Read
         public string Email { get; set; }
         public string UserName { get; set; }
         public string Token { get; set; }
+        public byte[] AvatarImage { get; set; }
         public ICollection<AppUserDTO> FollowedUsers { get; set; }
         public IEnumerable<BookOpinionDTO> BookOpinions { get; set; }
         public IList<ResponseOpinionDTO> ResponseOpinions { get; set; }

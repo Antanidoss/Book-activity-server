@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BookActivity.Application.Extensions;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
@@ -15,7 +16,10 @@ namespace BookActivity.Application.AutoMapper
             CreateMap<AppUser, AppUserDTO>();
             CreateMap<AppUserDTO, AppUser>();
             CreateMap<AppUserCreateDTO, AddAppUserCommand>();
-            CreateMap<UpdateAppUserDTO, UpdateAppUserCommand>();
+            CreateMap<UpdateAppUserDTO, UpdateAppUserCommand>()
+                .ForMember(u => u.AvatarImage, conf => conf.MapFrom(u => u.AvatarImage))
+                .ForMember(u => u.AppUserId, conf => conf.MapFrom(u => u.AppUserId))
+                .IgnoreAllPropertiesWithAnInaccessibleSetter();
         }
     }
 }
