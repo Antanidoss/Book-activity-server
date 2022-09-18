@@ -28,11 +28,11 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
 
             AppUserByIdSpec specification = new(request.AppUserId);
             FirstOrDefault<AppUser> filter = new(specification);
-            var currentUser = _appUserRepository.GetByFilterAsync(filter);
+            var currentUser = _appUserRepository.GetByFilter(filter);
 
             specification = new(request.SubscribedUserId);
             filter = new(specification);
-            var subscribedUser = _appUserRepository.GetByFilterAsync(filter);
+            var subscribedUser = _appUserRepository.GetByFilter(filter);
 
             subscribedUser.FollowedUsers.Add(currentUser);
             await _appUserRepository.UpdateAsync(currentUser).ConfigureAwait(false);

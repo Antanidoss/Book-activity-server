@@ -28,13 +28,12 @@ namespace BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser
 
             AppUserByIdSpec specification = new(request.AppUserId);
             FirstOrDefault<AppUser> filter = new(specification);
-            var user = _appUserRepository.GetByFilterAsync(filter);
+            var user = _appUserRepository.GetByFilter(filter);
 
             user.AvatarImage = request.AvatarImage;
+            user.UserName = request.Name;
 
-            await _appUserRepository.UpdateAsync(user);
-
-            return await Commit(_appUserRepository.UnitOfWork);
+            return (await _appUserRepository.UpdateAsync(user)).ToValidationResult();
         }
     }
 }

@@ -6,6 +6,7 @@ namespace BookActivity.Application.Models.DTO.Update
     public class UpdateAppUserDTO
     {
         public Guid AppUserId { get; set; }
+        public string UserName { get; set; }
         public IFormFile AvatarImage { get; set; }
     }
 }
