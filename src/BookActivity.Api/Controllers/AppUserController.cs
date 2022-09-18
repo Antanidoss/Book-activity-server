@@ -64,7 +64,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.UpdateUserMethod)]
-        public async Task<ActionResult> UpdateUserAsync([FromBody] UpdateAppUserDTO updateAppUserModel)
+        public async Task<ActionResult> UpdateUserAsync([FromForm] UpdateAppUserDTO updateAppUserModel)
         {
             return (await _appUserService.UpdateAsync(updateAppUserModel)
                 .ConfigureAwait(false))

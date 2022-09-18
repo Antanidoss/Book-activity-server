@@ -85,7 +85,7 @@ namespace BookActivity.Application.Implementation.Services
         {
             AppUserByEmailSpec specification = new(authenticationModel.Email);
             FirstOrDefault<AppUser> filter = new(specification);
-            var appUser = _appUserRepository.GetByFilterAsync(filter);
+            var appUser = _appUserRepository.GetByFilter(filter);
 
             if (appUser is null)
                 return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectEmail);
@@ -111,7 +111,7 @@ namespace BookActivity.Application.Implementation.Services
 
             AppUserByIdSpec specification = new(appUserId);
             FirstOrDefault<AppUser> filter = new(specification);
-            var appUser = _appUserRepository.GetByFilterAsync(filter);
+            var appUser = _appUserRepository.GetByFilter(filter);
 
             return _mapper.Map<AppUserDTO>(appUser);
         }

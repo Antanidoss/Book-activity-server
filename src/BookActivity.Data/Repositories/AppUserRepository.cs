@@ -14,28 +14,25 @@ namespace BookActivity.Infrastructure.Data.Repositories
 {
     internal sealed class AppUserRepository : IAppUserRepository
     {
-        private readonly BookActivityContext _db;
-
         private readonly UserManager<AppUser> _userManager;
 
-        public AppUserRepository(BookActivityContext db, UserManager<AppUser> userManager)
+        public AppUserRepository(UserManager<AppUser> userManager)
         {
-            _db = db;
             _userManager = userManager;
         }
 
-        public IUnitOfWork UnitOfWork => _db;
+        public IUnitOfWork UnitOfWork => null;
 
         public async Task<IEnumerable<AppUser>> GetByFilterAsync(AppUserFilterModel filterModel)
         {
-            return await filterModel.Filter.ApplyFilter(_db.Users.AsNoTracking())
+            return await filterModel.Filter.ApplyFilter(_userManager.Users.AsNoTracking())
                 .ApplyPaginaton(filterModel.Skip, filterModel.Take)
                 .ToListAsync();
         }
 
-        public AppUser GetByFilterAsync(IQueryableSingleResultFilter<AppUser> filter)
+        public AppUser GetByFilter(IQueryableSingleResultFilter<AppUser> filter)
         {
-            return filter.ApplyFilter(_db.Users.AsNoTracking());
+            return filter.ApplyFilter(_userManager.Users);
         }
 
         public async Task<IdentityResult> Addasync(AppUser user, string password)
@@ -43,14 +40,14 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await _userManager.CreateAsync(user, password);
         }
 
-        public async Task UpdateAsync(AppUser user)
+        public async Task<IdentityResult> UpdateAsync(AppUser user)
         {
-            _db.Users.Update(user);
+            return await _userManager.UpdateAsync(user);
         }
 
         public void Dispose()
         {
-            _db.Dispose();
+            _userManager.Dispose();
         }
     }
 }
