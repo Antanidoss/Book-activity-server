@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BookActivity.Application.Extensions;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Application.Models.DTO.Read;
 using BookActivity.Application.Models.DTO.Update;
@@ -15,7 +16,8 @@ namespace BookActivity.Application.AutoMapper
             CreateMap<Book, BookDTO>();
             CreateMap<BookDTO, Book>();
 
-            CreateMap<CreateBookDTO, AddBookCommand>();
+            CreateMap<CreateBookDTO, AddBookCommand>()
+                .ForMember(b => b.ImageData, conf => conf.MapFrom(b => b.Image.ConvertToBuffer()));
             CreateMap<UpdateBookDTO, UpdateBookCommand>();
         }
     }
