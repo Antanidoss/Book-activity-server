@@ -7,6 +7,7 @@
         public const string BookNoteService = "bookNote";
         public const string BookService = "book";
         public const string AppUserService = "user";
+        public const string AuthorService = "author";
 
         //ActiveBook methods
         public const string AddActiveBookMethod = "add";
@@ -38,5 +39,8 @@
 
         //BookNote methods
         public const string AddBookNoteMethod = "add";
+
+        //Author methods
+        public const string AddAuthorMethod = "add";
     }
 }

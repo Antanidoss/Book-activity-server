@@ -30,12 +30,12 @@ namespace BookActivity.Domain.Models
         {
             Id = authorId;
         }
-        public Author(string firstName, string surname, string patronymic, bool isPublic, params BookAuthor[] bookAuthors) : base(isPublic)
+        public Author(string firstName, string surname, string patronymic) : base(true)
         {
             FirstName = firstName;
             Surname = surname;
             Patronymic = patronymic;
-            BookAuthors = bookAuthors;
+            BookAuthors = new List<BookAuthor>();
         }
     }
 }
