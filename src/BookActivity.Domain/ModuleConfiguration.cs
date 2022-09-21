@@ -5,6 +5,7 @@ using BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook;
 using BookActivity.Domain.Commands.AppUserCommands.AddAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser;
+using BookActivity.Domain.Commands.AuthorCommands.AddAuthor;
 using BookActivity.Domain.Commands.BookCommands.AddBook;
 using BookActivity.Domain.Commands.BookCommands.RemoveBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
@@ -44,6 +45,8 @@ namespace BookActivity.Domain
             services.AddScoped<IRequestHandler<UpdateAppUserCommand, ValidationResult>, UpdateAppUserCommandHandler>();
 
             services.AddScoped<IRequestHandler<AddBookNoteCommand, ValidationResult>, AddBookNoteCommandHandler>();
+
+            services.AddScoped<IRequestHandler<AddAuthorCommand, ValidationResult>, AddAuthorCommandHandler>();
         }
 
         private void ConfigureEventHandlers(IServiceCollection services)
