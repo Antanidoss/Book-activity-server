@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace BookActivity.Application.Models.DTO.Create
 {
-    public sealed class CreateBookDTO : BaseCreateDTO
+    public sealed class CreateBookDto : BaseCreateDto
     {
         public string Title { get; set; }
         public string Description { get; set; }
         public IEnumerable<Guid> AuthorIds { get; set; }
         public IFormFile Image { get; set; }
 
-        public CreateBookDTO() { }
-        public CreateBookDTO(string title, string description, IEnumerable<Guid> authorIds) : base()
+        public CreateBookDto() { }
+        public CreateBookDto(string title, string description, IEnumerable<Guid> authorIds) : base()
         {
             Title = title;
             Description = description;

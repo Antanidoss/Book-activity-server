@@ -9,16 +9,16 @@ using BookActivity.Domain.Models;
 
 namespace BookActivity.Application.AutoMapper
 {
-    internal sealed class ActiveBookDTOProfile : Profile
+    internal sealed class ActiveBookDtoProfile : Profile
     {
-        public ActiveBookDTOProfile()
+        public ActiveBookDtoProfile()
         {
             CreateMap<ActiveBookDTO, ActiveBook>();
             CreateMap<ActiveBook, ActiveBookDTO>()
                 .ForMember(a => a.BookName, conf => conf.MapFrom(a => a.Book.Title))
                 .ForMember(a => a.ImageData, conf => conf.MapFrom(a => a.Book.ImageData));
 
-            CreateMap<CreateActiveBookDTO, AddActiveBookCommand>();
+            CreateMap<CreateActiveBookDto, AddActiveBookCommand>();
             CreateMap<UpdateNumberPagesReadDTO, UpdateActiveBookCommand>();
         }
     }

@@ -45,7 +45,7 @@ namespace BookActivity.Application.Implementation.Services
             _eventStoreRepository = eventStoreRepository;
         }
 
-        public async Task<ValidationResult> AddActiveBookAsync(CreateBookDTO createBookModel)
+        public async Task<ValidationResult> AddActiveBookAsync(CreateBookDto createBookModel)
         {
             var addBookCommand = _mapper.Map<AddBookCommand>(createBookModel);
 

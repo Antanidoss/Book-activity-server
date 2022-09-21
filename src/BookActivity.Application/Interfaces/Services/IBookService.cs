@@ -13,7 +13,7 @@ namespace BookActivity.Application.Interfaces.Services
 {
     public interface IBookService
     {
-        Task<ValidationResult> AddActiveBookAsync(CreateBookDTO createBookModel);
+        Task<ValidationResult> AddActiveBookAsync(CreateBookDto createBookModel);
         Task<ValidationResult> RemoveActiveBookAsync(Guid bookId);
         Task<ValidationResult> UpdateBookAsync(UpdateBookDTO updateBookModel);
         Task<Result<IEnumerable<BookDTO>>> GetByPaginationAsync(PaginationModel paginationModel, Guid currentUserId);

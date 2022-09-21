@@ -57,7 +57,7 @@ namespace BookActivity.Application.Implementation.Services
             _tokenInfo = tokenInfo.Value;
         }
 
-        public async Task<ValidationResult> AddAsync(AppUserCreateDTO appUserCreateDTO)
+        public async Task<ValidationResult> AddAsync(CreateAppUserDto appUserCreateDTO)
         {
             var addAppUserCommand = _mapper.Map<AddAppUserCommand>(appUserCreateDTO);
 

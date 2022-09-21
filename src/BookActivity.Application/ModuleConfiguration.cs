@@ -38,10 +38,10 @@ namespace BookActivity.Application
 
         private void AddMapperProfiles(MapperConfigurationExpression mapperConfigureExpression)
         {
-            mapperConfigureExpression.AddProfile(new ActiveBookDTOProfile());
-            mapperConfigureExpression.AddProfile(new BookDTOProfile());
-            mapperConfigureExpression.AddProfile(new AppUserDTOProfile());
-            mapperConfigureExpression.AddProfile(new BookNoteDTOProfile());
+            mapperConfigureExpression.AddProfile(new ActiveBookDtoProfile());
+            mapperConfigureExpression.AddProfile(new BookDtoProfile());
+            mapperConfigureExpression.AddProfile(new AppUserDtoProfile());
+            mapperConfigureExpression.AddProfile(new BookNoteDtoProfile());
             mapperConfigureExpression.AddProfile(new AuthorDtoProfile());
         }
     }

@@ -2,7 +2,7 @@
 
 namespace BookActivity.Application.Models.DTO.Create
 {
-    public sealed class CreateActiveBookDTO : BaseCreateDTO
+    public sealed class CreateActiveBookDto : BaseCreateDto
     {
         public int TotalNumberPages { get; set; }
         public int NumberPagesRead { get; set; }
@@ -11,6 +11,6 @@ namespace BookActivity.Application.Models.DTO.Create
         [System.Text.Json.Serialization.JsonIgnore]
         public Guid UserId { get; set; } 
         public bool IsPublic { get; set; }
-        public CreateActiveBookDTO() { }
+        public CreateActiveBookDto() { }
     }
 }

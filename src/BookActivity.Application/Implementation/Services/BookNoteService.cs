@@ -20,7 +20,7 @@ namespace BookActivity.Application.Implementation.Services
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<ValidationResult> AddBookNoteAsync(CreateBookNoteDTO createBookNotemodel)
+        public async Task<ValidationResult> AddBookNoteAsync(CreateBookNoteDto createBookNotemodel)
         {
             var addBookNoteCommand = _mapper.Map<AddBookNoteCommand>(createBookNotemodel);
 
