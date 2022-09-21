@@ -9,14 +9,14 @@ using BookActivity.Domain.Models;
 
 namespace BookActivity.Application.AutoMapper
 {
-    internal sealed class BookDTOProfile : Profile
+    internal sealed class BookDtoProfile : Profile
     {
-        public BookDTOProfile()
+        public BookDtoProfile()
         {
             CreateMap<Book, BookDTO>();
             CreateMap<BookDTO, Book>();
 
-            CreateMap<CreateBookDTO, AddBookCommand>()
+            CreateMap<CreateBookDto, AddBookCommand>()
                 .ForMember(b => b.ImageData, conf => conf.MapFrom(b => b.Image.ConvertToBuffer()));
             CreateMap<UpdateBookDTO, UpdateBookCommand>();
         }

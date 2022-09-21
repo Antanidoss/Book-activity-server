@@ -26,7 +26,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPost(ApiConstants.AddActiveBookMethod)]
-        public async Task AddBookAsync([FromForm] CreateBookDTO createBookModel)
+        public async Task AddBookAsync([FromForm] CreateBookDto createBookModel)
         {
             await _bookService.AddActiveBookAsync(createBookModel);
         }

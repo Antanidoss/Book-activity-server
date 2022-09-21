@@ -24,7 +24,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPost(ApiConstants.AddUserMethod)]
-        public async Task<IActionResult> AddAppUserAsync([FromBody] AppUserCreateDTO appUserCreateDTO)
+        public async Task<IActionResult> AddAppUserAsync([FromBody] CreateAppUserDto appUserCreateDTO)
         {
             return (await _appUserService.AddAsync(appUserCreateDTO)
                 .ConfigureAwait(false))

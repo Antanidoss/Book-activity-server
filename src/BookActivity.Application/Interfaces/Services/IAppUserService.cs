@@ -11,7 +11,7 @@ namespace BookActivity.Application.Interfaces.Services
 {
     public interface IAppUserService
     {
-        Task<ValidationResult> AddAsync(AppUserCreateDTO appUserCreateDTO);
+        Task<ValidationResult> AddAsync(CreateAppUserDto appUserCreateDTO);
         Task<ValidationResult> SubscribeAppUserAsync(Guid currentUserId, Guid subscribedUserId);
         Task<Result<AuthenticationResult>> PasswordSignInAsync(AuthenticationModel authenticationModel);
         Task<Result<AppUserDTO>> FindByIdAsync(Guid appUserId);

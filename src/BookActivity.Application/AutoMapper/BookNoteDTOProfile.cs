@@ -4,11 +4,11 @@ using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
 
 namespace BookActivity.Application.AutoMapper
 {
-    internal sealed class BookNoteDTOProfile : Profile
+    internal sealed class BookNoteDtoProfile : Profile
     {
-        public BookNoteDTOProfile()
+        public BookNoteDtoProfile()
         {
-            CreateMap<CreateBookNoteDTO, AddBookNoteCommand>();
+            CreateMap<CreateBookNoteDto, AddBookNoteCommand>();
         }
     }
 }

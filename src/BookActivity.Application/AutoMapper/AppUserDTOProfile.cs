@@ -9,13 +9,13 @@ using BookActivity.Domain.Models;
 
 namespace BookActivity.Application.AutoMapper
 {
-    internal sealed class AppUserDTOProfile : Profile
+    internal sealed class AppUserDtoProfile : Profile
     {
-        public AppUserDTOProfile()
+        public AppUserDtoProfile()
         {
             CreateMap<AppUser, AppUserDTO>();
             CreateMap<AppUserDTO, AppUser>();
-            CreateMap<AppUserCreateDTO, AddAppUserCommand>();
+            CreateMap<CreateAppUserDto, AddAppUserCommand>();
             CreateMap<UpdateAppUserDTO, UpdateAppUserCommand>()
                 .ForMember(u => u.AvatarImage, conf => conf.MapFrom(u => u.AvatarImage.ConvertToBuffer()))
                 .ForMember(u => u.AppUserId, conf => conf.MapFrom(u => u.AppUserId))
