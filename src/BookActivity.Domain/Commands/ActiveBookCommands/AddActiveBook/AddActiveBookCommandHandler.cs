@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Interfaces.Repositories;
@@ -25,7 +24,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            ActiveBook activeBook = new(Guid.NewGuid(), request.TotalNumberPages, request.NumberPagesRead, request.BookId, request.UserId, request.IsPublic);
+            ActiveBook activeBook = new(request.TotalNumberPages, request.NumberPagesRead, request.BookId, request.UserId, request.IsPublic);
 
             activeBook.AddDomainEvent(new AddActiveBookEvent(
                 activeBook.Id,
@@ -36,6 +35,8 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
                 activeBook.IsPublic));
 
             _activeBookRepository.Add(activeBook);
+
+            request.Id = activeBook.Id;
 
             return await Commit(_activeBookRepository.UnitOfWork);
         }

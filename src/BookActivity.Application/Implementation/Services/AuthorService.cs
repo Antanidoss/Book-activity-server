@@ -1,11 +1,11 @@
 ﻿using Ardalis.Result;
 using AutoMapper;
+using BookActivity.Application.Extensions;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Domain.Commands.AuthorCommands.AddAuthor;
 using NetDevPack.Mediator;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Application.Implementation.Services
@@ -28,9 +28,7 @@ namespace BookActivity.Application.Implementation.Services
 
             var validationResult = await _mediatorHandler.SendCommand(addAuthorCommand);
 
-            return validationResult.IsValid
-                ? new Result<Guid>(addAuthorCommand.Id)
-                : Result<Guid>.Error(validationResult.Errors.Select(e => e.ErrorMessage).ToArray());
+            return validationResult.ToResult(addAuthorCommand.Id);
         }
     }
 }

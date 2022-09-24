@@ -28,13 +28,13 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPost(ApiConstants.AddActiveBookMethod)]
-        public async Task<ActionResult> AddActiveBookAsync([FromBody] CreateActiveBookDto createActiveBookModel)
+        public async Task<ApiResult<Guid>> AddActiveBookAsync([FromBody] CreateActiveBookDto createActiveBookModel)
         {
             createActiveBookModel.UserId = GetCurrentUser().Id;
 
             return (await _activeBookService.AddActiveBookAsync(createActiveBookModel)
                 .ConfigureAwait(false))
-                .ToActionResult();
+                .ToApiResult();
         }
 
         [HttpPut(ApiConstants.UpdateNumberPagesReadMethod)]
