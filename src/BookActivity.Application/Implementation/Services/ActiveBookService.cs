@@ -1,6 +1,7 @@
 ﻿using Antanidoss.Specification.Filters.Implementation;
 using Ardalis.Result;
 using AutoMapper;
+using BookActivity.Application.Extensions;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.DTO.Create;
@@ -44,11 +45,13 @@ namespace BookActivity.Application.Implementation.Services
             _eventStoreRepository = eventStoreRepository;
         }
 
-        public async Task<ValidationResult> AddActiveBookAsync(CreateActiveBookDto createActiveBookModel)
+        public async Task<Result<Guid>> AddActiveBookAsync(CreateActiveBookDto createActiveBookModel)
         {
             var addActiveBookCommand = _mapper.Map<AddActiveBookCommand>(createActiveBookModel);
 
-            return await _mediatorHandler.SendCommand(addActiveBookCommand).ConfigureAwait(false);
+            var validationResult = await _mediatorHandler.SendCommand(addActiveBookCommand).ConfigureAwait(false);
+
+            return validationResult.ToResult(addActiveBookCommand.Id);
         }
 
         public async Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId)
