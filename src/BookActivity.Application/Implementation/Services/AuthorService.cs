@@ -1,9 +1,11 @@
-﻿using AutoMapper;
+﻿using Ardalis.Result;
+using AutoMapper;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Domain.Commands.AuthorCommands.AddAuthor;
-using FluentValidation.Results;
 using NetDevPack.Mediator;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Application.Implementation.Services
@@ -20,11 +22,15 @@ namespace BookActivity.Application.Implementation.Services
             _mapper = mapper;
         }
 
-        public async Task<ValidationResult> AddAsync(CreateAuthorDto createAuthor)
+        public async Task<Result<Guid>> AddAsync(CreateAuthorDto createAuthor)
         {
             var addAuthorCommand = _mapper.Map<AddAuthorCommand>(createAuthor);
 
-            return await _mediatorHandler.SendCommand(addAuthorCommand);
+            var validationResult = await _mediatorHandler.SendCommand(addAuthorCommand);
+
+            return validationResult.IsValid
+                ? new Result<Guid>(addAuthorCommand.Id)
+                : Result<Guid>.Error(validationResult.Errors.Select(e => e.ErrorMessage).ToArray());
         }
     }
 }

@@ -23,7 +23,11 @@ namespace BookActivity.Domain.Commands.AuthorCommands.AddAuthor
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            _authorRepository.Add(new Author ( request.FirstName, request.Surname, request.Patronymic));
+            Author newAuthor = new(request.FirstName, request.Surname, request.Patronymic);
+
+            _authorRepository.Add(newAuthor);
+
+            request.Id = newAuthor.Id;
 
             return await Commit(_authorRepository.UnitOfWork);
         }
