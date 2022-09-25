@@ -13,10 +13,10 @@ namespace BookActivity.Application.AutoMapper
     {
         public ActiveBookDtoProfile()
         {
-            CreateMap<ActiveBookDTO, ActiveBook>();
-            CreateMap<ActiveBook, ActiveBookDTO>();
+            CreateMap<ActiveBookDto, ActiveBook>();
+            CreateMap<ActiveBook, ActiveBookDto>();
             CreateMap<CreateActiveBookDto, AddActiveBookCommand>();
-            CreateMap<UpdateNumberPagesReadDTO, UpdateActiveBookCommand>();
+            CreateMap<UpdateNumberPagesReadDto, UpdateActiveBookCommand>();
         }
     }
 }

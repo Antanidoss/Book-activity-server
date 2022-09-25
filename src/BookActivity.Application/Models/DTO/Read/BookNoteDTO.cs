@@ -3,20 +3,20 @@ using System;
 
 namespace BookActivity.Application.Models.DTO.Read
 {
-    public sealed class BookNoteDTO : BaseEntityDTO
+    public sealed class BookNoteDto : BaseEntityDto
     {
         public string Note { get; set; }
         public NoteColor NoteColor { get; set; }
-        public ActiveBookDTO ActiveBook { get; set; }
-        public BookNoteDTO() : base() { }
-        public BookNoteDTO(
+        public ActiveBookDto ActiveBook { get; set; }
+        public BookNoteDto() : base() { }
+        public BookNoteDto(
             Guid bookNoteId,
             DateTime timeOfCreation,
             DateTime timeOfUpdate,
             bool isPublic,
             string note,
             NoteColor noteColor,
-            ActiveBookDTO activeBook) : base(bookNoteId, timeOfCreation, timeOfUpdate, isPublic)
+            ActiveBookDto activeBook) : base(bookNoteId, timeOfCreation, timeOfUpdate, isPublic)
         {
             Note = note;
             NoteColor = noteColor;

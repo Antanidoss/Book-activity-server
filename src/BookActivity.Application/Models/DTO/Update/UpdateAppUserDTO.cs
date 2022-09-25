@@ -3,7 +3,7 @@ using System;
 
 namespace BookActivity.Application.Models.DTO.Update
 {
-    public class UpdateAppUserDTO
+    public class UpdateAppUserDto
     {
         public Guid AppUserId { get; set; }
         public string UserName { get; set; }

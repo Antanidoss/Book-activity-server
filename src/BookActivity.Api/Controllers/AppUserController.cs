@@ -32,7 +32,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetUserByIdMethod)]
-        public async Task<ApiResult<AppUserDTO>> GetAppUserByIdAsync(Guid appUserId)
+        public async Task<ApiResult<AppUserDto>> GetAppUserByIdAsync(Guid appUserId)
         {
             return (await _appUserService.FindByIdAsync(appUserId)
                 .ConfigureAwait(false))
@@ -58,13 +58,13 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetCurrentUserMethod)]
-        public ApiResult<AppUserDTO> GetCurrentUserAsync()
+        public ApiResult<AppUserDto> GetCurrentUserAsync()
         {
             return base.GetCurrentUser().ToApiResult();
         }
 
         [HttpPut(ApiConstants.UpdateUserMethod)]
-        public async Task<ActionResult> UpdateUserAsync([FromForm] UpdateAppUserDTO updateAppUserModel)
+        public async Task<ActionResult> UpdateUserAsync([FromForm] UpdateAppUserDto updateAppUserModel)
         {
             return (await _appUserService.UpdateAsync(updateAppUserModel)
                 .ConfigureAwait(false))

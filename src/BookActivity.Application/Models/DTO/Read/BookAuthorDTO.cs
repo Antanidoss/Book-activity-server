@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace BookActivity.Application.Models.DTO.Read
 {
-    public sealed class BookAuthorDTO : BaseEntityDTO
+    public sealed class BookAuthorDto : BaseEntityDto
     {
         public string FirstName { get; set; }
         public string Surname { get; set; }
         public string Patronymic { get; set; }
-        public ICollection<BookDTO> Books { get; set; }
+        public ICollection<BookDto> Books { get; set; }
         
-        public BookAuthorDTO() : base() { }
-        public BookAuthorDTO(
+        public BookAuthorDto() : base() { }
+        public BookAuthorDto(
             Guid bookAuthorId,
             DateTime timeOfCreation,
             DateTime timeOfUpdate,
@@ -19,7 +19,7 @@ namespace BookActivity.Application.Models.DTO.Read
             string firstName,
             string surname,
             string patronymic,
-            ICollection<BookDTO> books) : base(bookAuthorId, timeOfCreation, timeOfUpdate, isPublic)
+            ICollection<BookDto> books) : base(bookAuthorId, timeOfCreation, timeOfUpdate, isPublic)
         {
             FirstName = firstName;
             Surname = surname;

@@ -15,10 +15,10 @@ namespace BookActivity.Application.Interfaces.Services
     {
         Task<ValidationResult> AddActiveBookAsync(CreateBookDto createBookModel);
         Task<ValidationResult> RemoveActiveBookAsync(Guid bookId);
-        Task<ValidationResult> UpdateBookAsync(UpdateBookDTO updateBookModel);
-        Task<Result<IEnumerable<BookDTO>>> GetByPaginationAsync(PaginationModel paginationModel, Guid currentUserId);
-        Task<Result<IEnumerable<BookDTO>>> GetByBookIdsAsync(Guid[] bookIds);
-        Task<Result<IEnumerable<BookDTO>>> GetByTitleContainsAsync(PaginationModel paginationModel, string title);
+        Task<ValidationResult> UpdateBookAsync(UpdateBookDto updateBookModel);
+        Task<Result<IEnumerable<BookDto>>> GetByPaginationAsync(PaginationModel paginationModel, Guid currentUserId);
+        Task<Result<IEnumerable<BookDto>>> GetByBookIdsAsync(Guid[] bookIds);
+        Task<Result<IEnumerable<BookDto>>> GetByTitleContainsAsync(PaginationModel paginationModel, string title);
         Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId);
     }
 }

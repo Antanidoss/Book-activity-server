@@ -13,11 +13,11 @@ namespace BookActivity.Api.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        protected AppUserDTO GetCurrentUser()
+        protected AppUserDto GetCurrentUser()
         {
             var user = _httpContextAccessor.HttpContext.Items["User"];
 
-            return user != null ? (user as AppUserDTO) : null;
+            return user != null ? (user as AppUserDto) : null;
         }
     }
 }

@@ -63,14 +63,14 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendCommand(removeActiveBookCommand).ConfigureAwait(false);
         }
 
-        public async Task<ValidationResult> UpdateActiveBookAsync(UpdateNumberPagesReadDTO updateActiveBookModel)
+        public async Task<ValidationResult> UpdateActiveBookAsync(UpdateNumberPagesReadDto updateActiveBookModel)
         {
             var updateActiveBookCommand = _mapper.Map<UpdateActiveBookCommand>(updateActiveBookModel);
 
             return await _mediatorHandler.SendCommand(updateActiveBookCommand).ConfigureAwait(false);
         }
 
-        public async Task<Result<IEnumerable<ActiveBookDTO>>> GetByActiveBookIdAsync(Guid[] activeBookIds)
+        public async Task<Result<IEnumerable<ActiveBookDto>>> GetByActiveBookIdAsync(Guid[] activeBookIds)
         {
             CommonValidator.ThrowExceptionIfNullOrEmpty(activeBookIds, nameof(activeBookIds));
 
@@ -81,10 +81,10 @@ namespace BookActivity.Application.Implementation.Services
 
             var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel).ConfigureAwait(false);
 
-            return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
+            return _mapper.Map<List<ActiveBookDto>>(activeBooks);
         }
 
-        public async Task<Result<IEnumerable<ActiveBookDTO>>> GetByUserIdAsync(PaginationModel paginationModel, Guid currentUserId)
+        public async Task<Result<IEnumerable<ActiveBookDto>>> GetByUserIdAsync(PaginationModel paginationModel, Guid currentUserId)
         {
             CommonValidator.ThrowExceptionIfNull(paginationModel);
 
@@ -93,7 +93,7 @@ namespace BookActivity.Application.Implementation.Services
             ActiveBookFilterModel activeBookFilterModel = new(filter, paginationModel.Skip, paginationModel.Take);
             var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel, a => a.Book).ConfigureAwait(false);
 
-            return _mapper.Map<List<ActiveBookDTO>>(activeBooks);
+            return _mapper.Map<List<ActiveBookDto>>(activeBooks);
         }
 
         public async Task<Result<IEnumerable<ActiveBookHistoryData>>> GetActiveBookHistoryDataAsync(Guid activeBookId)
