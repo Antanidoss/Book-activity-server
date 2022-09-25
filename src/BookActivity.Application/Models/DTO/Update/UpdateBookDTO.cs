@@ -2,7 +2,7 @@
 
 namespace BookActivity.Application.Models.DTO.Update
 {
-    public sealed class UpdateBookDTO
+    public sealed class UpdateBookDto
     {
         public Guid BookId { get; set; }
         public string Title { get; set; }

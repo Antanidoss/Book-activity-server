@@ -2,18 +2,18 @@
 
 namespace BookActivity.Application.Models.DTO.Read
 {
-    public sealed class UserNotificationDTO : BaseEntityDTO
+    public sealed class UserNotificationDto : BaseEntityDto
     {
         public string Description { get; set; }
-        public AppUserDTO User { get; set; }
-        public UserNotificationDTO() : base() { }
-        public UserNotificationDTO(
+        public AppUserDto User { get; set; }
+        public UserNotificationDto() : base() { }
+        public UserNotificationDto(
             Guid UserNotificationId,
             DateTime timeOfCreation,
             DateTime timeOfUpdate,
             bool isPublic,
             string description,
-            AppUserDTO user) : base(UserNotificationId, timeOfCreation, timeOfUpdate, isPublic)
+            AppUserDto user) : base(UserNotificationId, timeOfCreation, timeOfUpdate, isPublic)
         {
             Description = description;
             User = user;

@@ -3,20 +3,20 @@ using System;
 
 namespace BookActivity.Application.Models.DTO.Read
 {
-    public sealed class ResponseOpinionDTO : BaseEntityDTO
+    public sealed class ResponseOpinionDto : BaseEntityDto
     {
         public ResponseOpinionType ResponseOpinionType { get; set; }
-        public BookOpinionDTO BookOpinion { get; set; }
-        public AppUserDTO User { get; set; }
-        public ResponseOpinionDTO() : base() { }
-        public ResponseOpinionDTO(
+        public BookOpinionDto BookOpinion { get; set; }
+        public AppUserDto User { get; set; }
+        public ResponseOpinionDto() : base() { }
+        public ResponseOpinionDto(
             Guid responseOpinionId,
             DateTime timeOfCreation,
             DateTime timeOfUpdate,
             bool isPublic,
             ResponseOpinionType responseOpinionType,
-            BookOpinionDTO bookOpinion,
-            AppUserDTO user) : base(responseOpinionId, timeOfCreation, timeOfUpdate, isPublic)
+            BookOpinionDto bookOpinion,
+            AppUserDto user) : base(responseOpinionId, timeOfCreation, timeOfUpdate, isPublic)
         {
             ResponseOpinionType = responseOpinionType;
             BookOpinion = bookOpinion;

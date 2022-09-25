@@ -61,14 +61,14 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendCommand(removeBookCommand).ConfigureAwait(false);
         }
 
-        public async Task<ValidationResult> UpdateBookAsync(UpdateBookDTO updateBookModel)
+        public async Task<ValidationResult> UpdateBookAsync(UpdateBookDto updateBookModel)
         {
             var updateBookCommand = _mapper.Map<UpdateBookCommand>(updateBookModel);
 
             return await _mediatorHandler.SendCommand(updateBookCommand).ConfigureAwait(false);
         }
 
-        public async Task<Result<IEnumerable<BookDTO>>> GetByBookIdsAsync(Guid[] bookIds)
+        public async Task<Result<IEnumerable<BookDto>>> GetByBookIdsAsync(Guid[] bookIds)
         {
             CommonValidator.ThrowExceptionIfNullOrEmpty(bookIds, nameof(bookIds));
 
@@ -79,10 +79,10 @@ namespace BookActivity.Application.Implementation.Services
 
             var books = await _bookRepository.GetByFilterAsync(bookFilter).ConfigureAwait(false);
 
-            return _mapper.Map<List<BookDTO>>(books);
+            return _mapper.Map<List<BookDto>>(books);
         }
 
-        public async Task<Result<IEnumerable<BookDTO>>> GetByTitleContainsAsync(PaginationModel paginationModel, string title)
+        public async Task<Result<IEnumerable<BookDto>>> GetByTitleContainsAsync(PaginationModel paginationModel, string title)
         {
             CommonValidator.ThrowExceptionIfNull(paginationModel);
 
@@ -92,23 +92,23 @@ namespace BookActivity.Application.Implementation.Services
 
             var books = await _bookRepository.GetByFilterAsync(bookFilter).ConfigureAwait(false);
 
-            return _mapper.Map<List<BookDTO>>(books);
+            return _mapper.Map<List<BookDto>>(books);
         }
 
-        public async Task<Result<IEnumerable<BookDTO>>> GetByPaginationAsync(PaginationModel paginationModel, Guid currentUserId)
+        public async Task<Result<IEnumerable<BookDto>>> GetByPaginationAsync(PaginationModel paginationModel, Guid currentUserId)
         {
             CommonValidator.ThrowExceptionIfNull(paginationModel);
 
             BookFilterModel filterModel = new(paginationModel.Skip, paginationModel.Take);
             var books = (await _bookRepository.GetByFilterAsync(filterModel, b => b.ActiveBooks)).ToArray();
-            var booksDto = _mapper.Map<IEnumerable<BookDTO>>(books).ToArray();
+            var booksDto = _mapper.Map<IEnumerable<BookDto>>(books).ToArray();
 
             if (currentUserId != Guid.Empty)
                 for (int i = 0; i < books.Count(); i++)
                     if (books[i].ActiveBooks.Any(a => a.UserId == currentUserId))
                         booksDto[i].IsActiveBook = true;
 
-            return new Result<IEnumerable<BookDTO>>(booksDto);
+            return new Result<IEnumerable<BookDto>>(booksDto);
         }
 
         public async Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId)

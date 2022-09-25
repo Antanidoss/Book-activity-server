@@ -38,7 +38,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.UpdateNumberPagesReadMethod)]
-        public async Task<ActionResult> UpdateNumberPagesReadAsync([FromBody] UpdateNumberPagesReadDTO updateActiveBookModel)
+        public async Task<ActionResult> UpdateNumberPagesReadAsync([FromBody] UpdateNumberPagesReadDto updateActiveBookModel)
         {
             return (await _activeBookService.UpdateActiveBookAsync(updateActiveBookModel)
                 .ConfigureAwait(false))
@@ -54,7 +54,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetActiveBooksByIdsMethod)]
-        public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetaActiveBooksByIdsAsync(Guid[] activeBookIds)
+        public async Task<ApiResult<IEnumerable<ActiveBookDto>>> GetaActiveBooksByIdsAsync(Guid[] activeBookIds)
         {
             return (await _activeBookService.GetByActiveBookIdAsync(activeBookIds)
                 .ConfigureAwait(false))
@@ -62,7 +62,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetActiveBooksByUserIdMethod)]
-        public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetaActiveBooksByUserIdsAsync(Guid userId, PaginationModel paginationModel)
+        public async Task<ApiResult<IEnumerable<ActiveBookDto>>> GetaActiveBooksByUserIdsAsync(Guid userId, PaginationModel paginationModel)
         {
             return (await _activeBookService.GetByUserIdAsync(paginationModel, userId)
                 .ConfigureAwait(false))
@@ -70,7 +70,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetActiveBooksByCurrentUserMethod)]
-        public async Task<ApiResult<IEnumerable<ActiveBookDTO>>> GetActiveBooksByCurrentUserAsync(PaginationModel paginationModel)
+        public async Task<ApiResult<IEnumerable<ActiveBookDto>>> GetActiveBooksByCurrentUserAsync(PaginationModel paginationModel)
         {
             var currentUserId = GetCurrentUser().Id;
 

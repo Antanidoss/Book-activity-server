@@ -13,12 +13,12 @@ namespace BookActivity.Application.AutoMapper
     {
         public BookDtoProfile()
         {
-            CreateMap<Book, BookDTO>();
-            CreateMap<BookDTO, Book>();
+            CreateMap<Book, BookDto>();
+            CreateMap<BookDto, Book>();
 
             CreateMap<CreateBookDto, AddBookCommand>()
                 .ForMember(b => b.ImageData, conf => conf.MapFrom(b => b.Image.ConvertToBuffer()));
-            CreateMap<UpdateBookDTO, UpdateBookCommand>();
+            CreateMap<UpdateBookDto, UpdateBookCommand>();
         }
     }
 }

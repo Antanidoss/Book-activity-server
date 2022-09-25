@@ -13,10 +13,10 @@ namespace BookActivity.Application.AutoMapper
     {
         public AppUserDtoProfile()
         {
-            CreateMap<AppUser, AppUserDTO>();
-            CreateMap<AppUserDTO, AppUser>();
+            CreateMap<AppUser, AppUserDto>();
+            CreateMap<AppUserDto, AppUser>();
             CreateMap<CreateAppUserDto, AddAppUserCommand>();
-            CreateMap<UpdateAppUserDTO, UpdateAppUserCommand>()
+            CreateMap<UpdateAppUserDto, UpdateAppUserCommand>()
                 .ForMember(u => u.AvatarImage, conf => conf.MapFrom(u => u.AvatarImage.ConvertToBuffer()))
                 .ForMember(u => u.AppUserId, conf => conf.MapFrom(u => u.AppUserId))
                 .ForMember(u => u.Name, conf => conf.MapFrom(u => u.UserName))
