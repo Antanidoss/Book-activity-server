@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.DTO.Create;
 using BookActivity.Domain.Commands.AuthorCommands.AddAuthor;
+using BookActivity.Domain.Models;
 
 namespace BookActivity.Application.AutoMapper
 {
@@ -8,6 +10,7 @@ namespace BookActivity.Application.AutoMapper
     {
         public AuthorDtoProfile()
         {
+            CreateMap<Author, AuthorDto>();
             CreateMap<CreateAuthorDto, AddAuthorCommand>();
         }
     }

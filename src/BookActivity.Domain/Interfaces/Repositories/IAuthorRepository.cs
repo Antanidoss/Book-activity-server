@@ -9,7 +9,7 @@ namespace BookActivity.Domain.Interfaces.Repositories
 {
     public interface IAuthorRepository : IRepository<Author>
     {
-        Task<IEnumerable<Author>> GetByFilterAsync(BookAuthorFilterModel filterModel);
+        Task<IEnumerable<Author>> GetByFilterAsync(AuthorFilterModel filterModel);
         Author GetByFilter(IQueryableSingleResultFilter<Author> filter);
         Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<Author> filter, int skip = 0);
         void Add(Author entity);

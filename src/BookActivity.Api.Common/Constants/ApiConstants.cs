@@ -42,5 +42,6 @@
 
         //Author methods
         public const string AddAuthorMethod = "add";
+        public const string GetAuthorByNameMethod = "getByName";
     }
 }
