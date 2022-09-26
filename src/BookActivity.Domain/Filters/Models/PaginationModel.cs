@@ -1,4 +1,4 @@
-﻿namespace BookActivity.Domain.FilterModels
+﻿namespace BookActivity.Domain.Filters.Models
 {
     public class PaginationModel
     {

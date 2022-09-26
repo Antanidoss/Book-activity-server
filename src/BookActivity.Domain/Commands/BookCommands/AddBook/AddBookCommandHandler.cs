@@ -32,7 +32,7 @@ namespace BookActivity.Domain.Commands.BookCommands.AddBook
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            BookAuthorByIdSpec specification = new(request.AuthorIds.ToArray());
+            AuthorByIdSpec specification = new(request.AuthorIds.ToArray());
             Where<Author> filter = new(specification);
             var authorCount = await _authorRepository.GetCountByFilterAsync(filter).ConfigureAwait(false);
 

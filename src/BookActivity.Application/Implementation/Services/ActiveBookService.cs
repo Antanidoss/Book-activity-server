@@ -12,7 +12,6 @@ using BookActivity.Domain.Commands.ActiveBookCommands;
 using BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook;
 using BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook;
 using BookActivity.Domain.Events.ActiveBookEvent;
-using BookActivity.Domain.FilterModels;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;

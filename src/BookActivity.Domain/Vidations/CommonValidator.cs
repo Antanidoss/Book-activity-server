@@ -1,4 +1,4 @@
-﻿using BookActivity.Domain.FilterModels;
+﻿using BookActivity.Domain.Filters.Models;
 using System;
 using System.Linq;
 
