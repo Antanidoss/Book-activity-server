@@ -11,7 +11,7 @@ namespace BookActivity.Domain.Interfaces.Repositories
     {
         Task<IEnumerable<Author>> GetByFilterAsync(AuthorFilterModel filterModel);
         Author GetByFilter(IQueryableSingleResultFilter<Author> filter);
-        Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<Author> filter, int skip = 0);
+        Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<Author> filter = null, int skip = 0);
         void Add(Author entity);
         void Remove(Author entity);
         void Update(Author entity);

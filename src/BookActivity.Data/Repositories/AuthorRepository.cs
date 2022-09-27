@@ -27,14 +27,14 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<Author>> GetByFilterAsync(AuthorFilterModel filterModel)
         {
-            return await filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking())
+            return await (filterModel.Filter == null ? _dbSet.AsNoTracking() : filterModel.Filter.ApplyFilter(_dbSet.AsNoTracking()))
                 .ApplyPaginaton(filterModel.Skip, filterModel.Take)
                 .ToListAsync();
         }
 
-        public async Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<Author> filter, int skip = 0)
+        public async Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<Author> filter = null, int skip = 0)
         {
-            return await filter.ApplyFilter(_dbSet.AsNoTracking())
+            return await (filter == null ? _dbSet.AsNoTracking() : filter.ApplyFilter(_dbSet.AsNoTracking()))
                 .ApplyPaginaton(skip)
                 .CountAsync();
         }
