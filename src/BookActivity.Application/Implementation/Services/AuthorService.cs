@@ -12,7 +12,6 @@ using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AuthorSpecs;
 using NetDevPack.Mediator;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -40,6 +39,14 @@ namespace BookActivity.Application.Implementation.Services
             var validationResult = await _mediatorHandler.SendCommand(addAuthorCommand);
 
             return validationResult.ToResult(addAuthorCommand.Id);
+        }
+
+        public async Task<Result<IEnumerable<AuthorDto>>> GetAllAuthorsAsync()
+        {
+            var authorCount = await _authorRepository.GetCountByFilterAsync();
+            var authors = await _authorRepository.GetByFilterAsync(new AuthorFilterModel(take: authorCount)).ConfigureAwait(false);
+
+            return new Result<IEnumerable<AuthorDto>>(_mapper.Map<IEnumerable<AuthorDto>>(authors));
         }
 
         public async Task<Result<IEnumerable<AuthorDto>>> GetAuthorsByNameAsync(string name, int take)
