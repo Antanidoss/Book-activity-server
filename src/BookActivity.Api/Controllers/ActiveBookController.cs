@@ -69,12 +69,12 @@ namespace BookActivity.Api.Controllers
                 .ToApiResult();
         }
 
-        [HttpGet(ApiConstants.GetActiveBooksByCurrentUserMethod)]
-        public async Task<ApiResult<IEnumerable<ActiveBookDto>>> GetActiveBooksByCurrentUserAsync(PaginationModel paginationModel)
+        [HttpGet(ApiConstants.GetActiveBooksByCurrentUserMethod + "/{skip}/{take}")]
+        public async Task<ApiResult<IEnumerable<ActiveBookDto>>> GetActiveBooksByCurrentUserAsync(int skip, int take)
         {
             var currentUserId = GetCurrentUser().Id;
 
-            return (await _activeBookService.GetByUserIdAsync(paginationModel, currentUserId)
+            return (await _activeBookService.GetByUserIdAsync(new PaginationModel(skip, take), currentUserId)
                 .ConfigureAwait(false))
                 .ToApiResult();
         }
