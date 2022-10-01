@@ -8,6 +8,7 @@
         public const string BookService = "book";
         public const string AppUserService = "user";
         public const string AuthorService = "author";
+        public const string BookRatingService = "bookRating";
 
         //ActiveBook methods
         public const string AddActiveBookMethod = "add";
@@ -44,5 +45,8 @@
         public const string AddAuthorMethod = "add";
         public const string GetAuthorByNameMethod = "getByName";
         public const string GetAllAuthorsMethod = "getAll";
+
+        //BookRating methods
+        public const string UpdateBookRatingMethod = "update";
     }
 }

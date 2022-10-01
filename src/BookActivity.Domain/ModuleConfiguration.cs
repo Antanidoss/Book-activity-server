@@ -10,6 +10,7 @@ using BookActivity.Domain.Commands.BookCommands.AddBook;
 using BookActivity.Domain.Commands.BookCommands.RemoveBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
+using BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.UserNotificationsEvents;
 using BookActivity.Shared.Interfaces;
@@ -47,6 +48,8 @@ namespace BookActivity.Domain
             services.AddScoped<IRequestHandler<AddBookNoteCommand, ValidationResult>, AddBookNoteCommandHandler>();
 
             services.AddScoped<IRequestHandler<AddAuthorCommand, ValidationResult>, AddAuthorCommandHandler>();
+
+            services.AddScoped<IRequestHandler<UpdateBookRatingCommand, ValidationResult>, UpdateBookRatingCommandHandler>();
         }
 
         private void ConfigureEventHandlers(IServiceCollection services)

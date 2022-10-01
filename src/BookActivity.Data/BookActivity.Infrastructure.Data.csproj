@@ -25,4 +25,8 @@
     <ProjectReference Include="..\BookActivity.Shared\BookActivity.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Context\Configuration\" />
+  </ItemGroup>
+
 </Project>

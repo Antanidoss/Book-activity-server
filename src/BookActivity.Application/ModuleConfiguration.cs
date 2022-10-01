@@ -25,6 +25,7 @@ namespace BookActivity.Application
             services.AddScoped<IAppUserService, AppUserService>();
             services.AddScoped<IBookNoteService, BookNoteService>();
             services.AddScoped<IAuthorService, AuthorService>();
+            services.AddScoped<IBookRatingService, BookRatingService>();
         }
 
         private void AddAutoMapper(IServiceCollection services)
@@ -43,6 +44,7 @@ namespace BookActivity.Application
             mapperConfigureExpression.AddProfile(new AppUserDtoProfile());
             mapperConfigureExpression.AddProfile(new BookNoteDtoProfile());
             mapperConfigureExpression.AddProfile(new AuthorDtoProfile());
+            mapperConfigureExpression.AddProfile(new BookOpinionDtoProfile());
         }
     }
 }
