@@ -12,15 +12,13 @@ namespace BookActivity.Application.Models.DTO.Read
         public byte[] AvatarImage { get; set; }
         public ICollection<AppUserDto> FollowedUsers { get; set; }
         public IEnumerable<BookOpinionDto> BookOpinions { get; set; }
-        public IList<ResponseOpinionDto> ResponseOpinions { get; set; }
         public ICollection<UserNotificationDto> UserNotifications { get; set; }
 
         public AppUserDto() { }
-        public AppUserDto(ICollection<AppUserDto> followedUsers, IEnumerable<BookOpinionDto> bookOpinions, IList<ResponseOpinionDto> responseOpinions, ICollection<UserNotificationDto> userNotifications)
+        public AppUserDto(ICollection<AppUserDto> followedUsers, IEnumerable<BookOpinionDto> bookOpinions, ICollection<UserNotificationDto> userNotifications)
         {
             FollowedUsers = followedUsers;
             BookOpinions = bookOpinions;
-            ResponseOpinions = responseOpinions;
             UserNotifications = userNotifications;
         }
     }

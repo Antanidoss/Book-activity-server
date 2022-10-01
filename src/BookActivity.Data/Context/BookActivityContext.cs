@@ -1,5 +1,4 @@
-﻿using BookActivity.Infrastructure.Data.Context.Configuration;
-using BookActivity.Domain.Models;
+﻿using BookActivity.Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
@@ -18,7 +17,6 @@ namespace BookActivity.Infrastructure.Data.Context
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<ActiveBook> ActiveBooks { get; set; }
-        public DbSet<ResponseOpinion> ResponseOpinions { get; set; }
         public DbSet<BookCategory> BookCategories { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookOpinion> BookOpinions { get; set; }
@@ -44,8 +42,6 @@ namespace BookActivity.Infrastructure.Data.Context
         {
             modelBuilder.Ignore<ValidationResult>();
             modelBuilder.Ignore<Event>();
-
-            modelBuilder.ApplyConfiguration(new BookOptionConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

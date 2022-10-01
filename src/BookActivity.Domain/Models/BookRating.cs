@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace BookActivity.Domain.Models
 {
-    public class BookRating
+    public class BookRating : BaseEntity
     {
-        public Guid Id { get; set; }
+        public Book Book { get; set; }
+
         public IList<BookOpinion> BookOpinions { get; set; }
 
         public int CalculateAverageRating()

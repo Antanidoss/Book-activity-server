@@ -18,11 +18,6 @@ namespace BookActivity.Domain.Models
         public IEnumerable<BookOpinion> BookOpinions { get; set; }
 
         /// <summary>
-        /// Relation of user with the response opinios
-        /// </summary>
-        public IList<ResponseOpinion> ResponseOpinions { get; set; }
-
-        /// <summary>
         /// Relation of user with the notifications
         /// </summary>
         public ICollection<UserNotification> UserNotifications { get; set; }
