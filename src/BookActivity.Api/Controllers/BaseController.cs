@@ -1,4 +1,4 @@
-﻿using BookActivity.Application.Models.DTO.Read;
+﻿using BookActivity.Application.Models.Dto.Read;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BookActivity.Application.Models.Dto.Read;
-using BookActivity.Application.Models.DTO.Create;
+using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Domain.Commands.AuthorCommands.AddAuthor;
 using BookActivity.Domain.Models;
 

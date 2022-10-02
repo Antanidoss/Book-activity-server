@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace BookActivity.Domain.Models
 {
@@ -8,7 +7,7 @@ namespace BookActivity.Domain.Models
         /// <summary>
         /// User rating of the book
         /// </summary>
-        public int Grade { get; set; }
+        public float Grade { get; set; }
 
         /// <summary>
         /// Opinion Description
@@ -28,7 +27,7 @@ namespace BookActivity.Domain.Models
         public Guid BookRatingId { get; set; }
 
         private BookOpinion() : base() { }
-        public BookOpinion(int grade, string description, Guid userId, bool isPublic) : base(isPublic)
+        public BookOpinion(float grade, string description, Guid userId, bool isPublic) : base(isPublic)
         {
             Grade = grade;
             Description = description;

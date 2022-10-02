@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 
-namespace BookActivity.Application.Models.DTO.Update
+namespace BookActivity.Application.Models.Dto.Update
 {
     public class UpdateAppUserDto
     {

@@ -45,6 +45,7 @@ namespace BookActivity.Application
             mapperConfigureExpression.AddProfile(new BookNoteDtoProfile());
             mapperConfigureExpression.AddProfile(new AuthorDtoProfile());
             mapperConfigureExpression.AddProfile(new BookOpinionDtoProfile());
+            mapperConfigureExpression.AddProfile(new BookRatingDtoProfile());
         }
     }
 }

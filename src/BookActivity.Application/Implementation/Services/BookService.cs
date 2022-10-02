@@ -3,9 +3,9 @@ using Ardalis.Result;
 using AutoMapper;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
-using BookActivity.Application.Models.DTO.Create;
-using BookActivity.Application.Models.DTO.Read;
-using BookActivity.Application.Models.DTO.Update;
+using BookActivity.Application.Models.Dto.Create;
+using BookActivity.Application.Models.Dto.Read;
+using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
 using BookActivity.Domain.Commands.BookCommands.AddBook;
 using BookActivity.Domain.Commands.BookCommands.RemoveBook;
@@ -99,13 +99,12 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfNull(paginationModel);
 
             BookFilterModel filterModel = new(paginationModel.Skip, paginationModel.Take);
-            var books = (await _bookRepository.GetByFilterAsync(filterModel, b => b.ActiveBooks)).ToArray();
+            var books = (await _bookRepository.GetByFilterAsync(filterModel, b => b.ActiveBooks, b => b.BookRating.BookOpinions)).ToArray();
             var booksDto = _mapper.Map<IEnumerable<BookDto>>(books).ToArray();
 
             if (currentUserId != Guid.Empty)
                 for (int i = 0; i < books.Count(); i++)
-                    if (books[i].ActiveBooks.Any(a => a.UserId == currentUserId))
-                        booksDto[i].IsActiveBook = true;
+                    booksDto[i].IsActiveBook = books[i].ActiveBooks.Any(a => a.UserId == currentUserId);
 
             return new Result<IEnumerable<BookDto>>(booksDto);
         }

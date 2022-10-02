@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace BookActivity.Domain.Models
@@ -11,7 +9,7 @@ namespace BookActivity.Domain.Models
 
         public IList<BookOpinion> BookOpinions { get; set; }
 
-        public int CalculateAverageRating()
+        public float CalculateAverageRating()
         {
             if (BookOpinions == null)
                 return -1;

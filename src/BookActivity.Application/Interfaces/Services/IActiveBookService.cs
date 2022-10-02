@@ -1,7 +1,7 @@
 ﻿using Ardalis.Result;
-using BookActivity.Application.Models.DTO.Create;
-using BookActivity.Application.Models.DTO.Read;
-using BookActivity.Application.Models.DTO.Update;
+using BookActivity.Application.Models.Dto.Create;
+using BookActivity.Application.Models.Dto.Read;
+using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
 using BookActivity.Domain.Filters.Models;
 using FluentValidation.Results;
