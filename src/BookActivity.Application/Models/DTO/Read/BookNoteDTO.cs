@@ -1,7 +1,7 @@
 ﻿using BookActivity.Domain.Models;
 using System;
 
-namespace BookActivity.Application.Models.DTO.Read
+namespace BookActivity.Application.Models.Dto.Read
 {
     public sealed class BookNoteDto : BaseEntityDto
     {

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using BookActivity.Application.Interfaces.Services;
-using BookActivity.Application.Models.DTO.Create;
+using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
 using FluentValidation.Results;
 using NetDevPack.Mediator;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BookActivity.Application.Models.DTO.Read
+namespace BookActivity.Application.Models.Dto.Read
 {
     public sealed class AppUserDto
     {

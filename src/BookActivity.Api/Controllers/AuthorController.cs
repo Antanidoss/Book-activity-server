@@ -3,7 +3,7 @@ using BookActivity.Api.Common.Extansions;
 using BookActivity.Api.Common.Models;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Read;
-using BookActivity.Application.Models.DTO.Create;
+using BookActivity.Application.Models.Dto.Create;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

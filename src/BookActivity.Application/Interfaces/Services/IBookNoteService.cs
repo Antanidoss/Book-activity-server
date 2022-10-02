@@ -1,4 +1,4 @@
-﻿using BookActivity.Application.Models.DTO.Create;
+﻿using BookActivity.Application.Models.Dto.Create;
 using FluentValidation.Results;
 using System.Threading.Tasks;
 

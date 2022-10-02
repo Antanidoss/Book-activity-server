@@ -1,4 +1,4 @@
-﻿namespace BookActivity.Application.Models.DTO.Create
+﻿namespace BookActivity.Application.Models.Dto.Create
 {
     public class CreateAuthorDto : BaseCreateDto
     {

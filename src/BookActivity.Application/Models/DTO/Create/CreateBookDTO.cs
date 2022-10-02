@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BookActivity.Application.Models.DTO.Create
+namespace BookActivity.Application.Models.Dto.Create
 {
     public sealed class CreateBookDto : BaseCreateDto
     {

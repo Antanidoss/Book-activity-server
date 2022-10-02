@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BookActivity.Application.Models.DTO.Read
+namespace BookActivity.Application.Models.Dto.Read
 {
     public class BaseEntityDto
     {

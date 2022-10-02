@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using BookActivity.Application.Extensions;
-using BookActivity.Application.Models.DTO.Create;
-using BookActivity.Application.Models.DTO.Read;
-using BookActivity.Application.Models.DTO.Update;
+using BookActivity.Application.Models.Dto.Create;
+using BookActivity.Application.Models.Dto.Read;
+using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Commands.BookCommands.AddBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Models;
