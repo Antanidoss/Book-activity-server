@@ -62,6 +62,7 @@ namespace BookActivity.Infrastructure.Data
             services.AddScoped<IAppUserRepository, AppUserRepository>();
             services.AddScoped<IBookNoteRepository, BookNoteRepository>();
             services.AddScoped<IBookRatingRepository, BookRatingRepositiory>();
+            services.AddScoped<IBookOpinionRepository, BookOpinionRepository>();
         }
     }
 }

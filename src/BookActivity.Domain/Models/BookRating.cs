@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BookActivity.Domain.Models
@@ -6,6 +7,7 @@ namespace BookActivity.Domain.Models
     public class BookRating : BaseEntity
     {
         public Book Book { get; set; }
+        public Guid BookId { get; set; }
 
         public IList<BookOpinion> BookOpinions { get; set; }
 

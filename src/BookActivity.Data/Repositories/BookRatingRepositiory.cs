@@ -26,11 +26,6 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return filter.ApplyFilter(_dbSet.AsNoTracking());
         }
 
-        public void Update(BookRating bookRating)
-        {
-            _dbSet.Update(bookRating);
-        }
-
         public void Dispose()
         {
             _db.Dispose();

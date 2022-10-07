@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookActivity.Application.Models.Dto.Create;
+using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Domain.Models;
 
 namespace BookActivity.Application.AutoMapper
@@ -9,6 +10,7 @@ namespace BookActivity.Application.AutoMapper
         public BookOpinionDtoProfile()
         {
             CreateMap<CreateBookOpinionDto, BookOpinion>();
+            CreateMap<BookOpinion, BookOpinionDto>();
         }
     }
 }

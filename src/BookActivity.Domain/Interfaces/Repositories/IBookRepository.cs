@@ -13,6 +13,7 @@ namespace BookActivity.Domain.Interfaces.Repositories
     {
         Task<IEnumerable<Book>> GetByFilterAsync(BookFilterModel filterModel, params Expression<Func<Book, object>>[] includes);
         Book GetByFilterAsync(IQueryableSingleResultFilter<Book> filter);
+        Book GetByFilterAsync(IQueryableSingleResultFilter<Book> filter, params Expression<Func<Book, object>>[] includes);
         Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<Book> filter, int skip);
         void Add(Book book);
         void Update(Book book);
