@@ -5,6 +5,7 @@ using BookActivity.Domain.Specifications.BookRatingSpecs;
 using FluentValidation.Results;
 using MediatR;
 using NetDevPack.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -18,9 +19,12 @@ namespace BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating
     {
         private readonly IBookRatingRepository _bookRatingRepository;
 
-        public UpdateBookRatingCommandHandler(IBookRatingRepository bookRatingRepository)
+        private readonly IBookOpinionRepository _bookOpinionRepository;
+
+        public UpdateBookRatingCommandHandler(IBookRatingRepository bookRatingRepository, IBookOpinionRepository bookOpinionRepository)
         {
             _bookRatingRepository = bookRatingRepository;
+            _bookOpinionRepository = bookOpinionRepository;
         }
 
         public async Task<ValidationResult> Handle(UpdateBookRatingCommand request, CancellationToken cancellationToken)
@@ -28,16 +32,28 @@ namespace BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            BookRatingByIdSpec bookRatingByIdSpec = new(request.Id);
-            FirstOrDefault<BookRating> BookRating = new(bookRatingByIdSpec);
-            var bookRating = _bookRatingRepository.GetByFilterAsync(BookRating);
+            var bookRating = GetBookRatingById(request.Id);
+            if (bookRating == null)
+                throw new ArgumentException($"Could not be found book rating by id: {request.Id}");
 
-            if (bookRating.BookOpinions.Any(o => o.UserId == request.BookOpinion.UserId))
+            if (bookRating.BookOpinions == null || !bookRating.BookOpinions.Any())
+                bookRating.BookOpinions = new List<BookOpinion>();
+            else if (bookRating.BookOpinions.Any(o => o.UserId == request.BookOpinion.UserId))
                 return new ValidationResult(new List<ValidationFailure> { new(nameof(request.BookOpinion), "This user has already rated the book") });
 
-            bookRating.BookOpinions.Add(request.BookOpinion);
+            request.BookOpinion.BookRatingId = bookRating.Id;
+
+            _bookOpinionRepository.Add(request.BookOpinion);
 
             return await Commit(_bookRatingRepository.UnitOfWork);
+        }
+
+        private BookRating GetBookRatingById(Guid bookRatingId)
+        {
+            BookRatingByIdSpec bookRatingByIdSpec = new(bookRatingId);
+            FirstOrDefault<BookRating> firstOrDefault = new(bookRatingByIdSpec);
+
+            return _bookRatingRepository.GetByFilterAsync(firstOrDefault);
         }
     }
 }

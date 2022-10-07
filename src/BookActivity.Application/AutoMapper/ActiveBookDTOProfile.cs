@@ -4,7 +4,6 @@ using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Commands.ActiveBookCommands;
 using BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook;
-using BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook;
 using BookActivity.Domain.Models;
 
 namespace BookActivity.Application.AutoMapper
@@ -16,7 +15,8 @@ namespace BookActivity.Application.AutoMapper
             CreateMap<ActiveBookDto, ActiveBook>();
             CreateMap<ActiveBook, ActiveBookDto>();
             CreateMap<CreateActiveBookDto, AddActiveBookCommand>();
-            CreateMap<UpdateNumberPagesReadDto, UpdateActiveBookCommand>();
+            CreateMap<UpdateNumberPagesReadDto, UpdateActiveBookCommand>()
+                .ForMember(a => a.Id, conf => conf.MapFrom(a => a.ActiveBookId));
         }
     }
 }

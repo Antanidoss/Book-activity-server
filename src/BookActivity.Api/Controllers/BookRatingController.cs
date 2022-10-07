@@ -20,7 +20,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.UpdateBookRatingMethod)]
-        public async Task UpdateBookRatingAsync(UpdateBookRatingDto updateBookRating)
+        public async Task UpdateBookRatingAsync([FromBody] UpdateBookRatingDto updateBookRating)
         {
             updateBookRating.BookOpinion.UserId = GetCurrentUser().Id;
 

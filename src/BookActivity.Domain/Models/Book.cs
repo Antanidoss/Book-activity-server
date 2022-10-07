@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace BookActivity.Domain.Models
@@ -36,8 +35,6 @@ namespace BookActivity.Domain.Models
         /// Relation of book with the book rating
         /// </summary>
         public BookRating BookRating { get; set; }
-        [ForeignKey(nameof(BookRating))]
-        public Guid BookRatingId { get; set; }
 
         private Book() : base() { }
         public Book(string title, string description, bool isPublic, byte[] imageData, IEnumerable<BookAuthor> bookAuthors) : base(isPublic)

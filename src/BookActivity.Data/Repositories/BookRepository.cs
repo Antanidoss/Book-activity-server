@@ -42,6 +42,11 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return filter.ApplyFilter(_dbSet.AsNoTracking());
         }
 
+        public Book GetByFilterAsync(IQueryableSingleResultFilter<Book> filter, params Expression<Func<Book, object>>[] includes)
+        {
+            return filter.ApplyFilter(_dbSet.AsNoTracking().IncludeMultiple(includes));
+        }
+
         public async Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<Book> filter, int skip)
         {
             return await filter.ApplyFilter(_dbSet.AsNoTracking())
