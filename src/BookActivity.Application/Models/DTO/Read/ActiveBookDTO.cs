@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace BookActivity.Application.Models.Dto.Read
 {
-    public sealed class ActiveBookDto : BaseEntityDto
+    public sealed class ActiveBookDto
     {
+        public Guid Id { get; set; }
         public int TotalNumberPages { get; set; }
         public int NumberPagesRead { get; set; }
         public string UserName { get; set; }
