@@ -13,7 +13,7 @@ using BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AppUserSpecs;
-using BookActivity.Domain.Vidations;
+using BookActivity.Domain.Validations;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;

@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace BookActivity.Domain.Vidations
+namespace BookActivity.Domain.Validations
 {
     public static class CommonValidator
     {

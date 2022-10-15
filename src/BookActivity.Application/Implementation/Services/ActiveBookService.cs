@@ -16,7 +16,7 @@ using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.ActiveBookSpecs;
-using BookActivity.Domain.Vidations;
+using BookActivity.Domain.Validations;
 using FluentValidation.Results;
 using NetDevPack.Mediator;
 using System;
