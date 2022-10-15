@@ -4,7 +4,7 @@ using BookActivity.Domain.Exceptions;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AuthorSpecs;
-using BookActivity.Domain.Vidations;
+using BookActivity.Domain.Validations;
 using FluentValidation.Results;
 using MediatR;
 using NetDevPack.Messaging;

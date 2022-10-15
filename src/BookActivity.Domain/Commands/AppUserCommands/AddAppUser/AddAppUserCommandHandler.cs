@@ -27,7 +27,8 @@ namespace BookActivity.Domain.Commands.AppUserCommands.AddAppUser
             var createUserResult = await _appUserRepository.Addasync(new AppUser()
             {
                 Email = request.Email,
-                UserName = request.Name
+                UserName = request.Name,
+                AvatarImage = request.AvatarImage
             }, request.Password).ConfigureAwait(false);
 
             return createUserResult.ToValidationResult();

@@ -15,7 +15,9 @@ namespace BookActivity.Application.AutoMapper
         {
             CreateMap<AppUser, AppUserDto>();
             CreateMap<AppUserDto, AppUser>();
-            CreateMap<CreateAppUserDto, AddAppUserCommand>();
+            CreateMap<CreateAppUserDto, AddAppUserCommand>()
+                 .ForMember(u => u.AvatarImage, conf => conf.MapFrom(u => u.AvatarImage.ConvertToBuffer()));
+
             CreateMap<UpdateAppUserDto, UpdateAppUserCommand>()
                 .ForMember(u => u.AvatarImage, conf => conf.MapFrom(u => u.AvatarImage.ConvertToBuffer()))
                 .ForMember(u => u.AppUserId, conf => conf.MapFrom(u => u.AppUserId))

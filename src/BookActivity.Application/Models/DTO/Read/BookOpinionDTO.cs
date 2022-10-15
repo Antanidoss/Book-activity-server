@@ -7,5 +7,6 @@ namespace BookActivity.Application.Models.Dto.Read
         public Guid Id { get; set; }
         public int Grade { get; set; }
         public string Description { get; set; }
+        public Guid UserId { get; set; }
     }
 }
