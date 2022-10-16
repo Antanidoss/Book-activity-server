@@ -31,7 +31,7 @@ namespace BookActivity.Domain.Commands.AppUserCommands.AddAppUser
                 AvatarImage = request.AvatarImage
             }, request.Password).ConfigureAwait(false);
 
-            return createUserResult.ToValidationResult();
+            return await Commit(_appUserRepository.UnitOfWork);
         }
     }
 }
