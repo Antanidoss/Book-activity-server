@@ -76,7 +76,7 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<ValidationResult> UpdateAsync(UpdateAppUserDto updateAppUserModel)
         {
-            CommonValidator.ThrowExceptionIfEmpty(updateAppUserModel.AppUserId, nameof(updateAppUserModel.AppUserId));
+            CommonValidator.ThrowExceptionIfEmpty(updateAppUserModel.UserId, nameof(updateAppUserModel.UserId));
 
             return await _mediatorHandler.SendCommand(_mapper.Map<UpdateAppUserCommand>(updateAppUserModel));
         }
@@ -102,7 +102,7 @@ namespace BookActivity.Application.Implementation.Services
 
             string token = GenerateJwtToken(appUser.Id.ToString());
 
-            return new Result<AuthenticationResult>(new AuthenticationResult(appUser.Id, appUser.UserName, appUser.Email, token));
+            return new Result<AuthenticationResult>(new AuthenticationResult(appUser.Id, appUser.UserName, appUser.Email, token, appUser.AvatarImage));
         }
 
         public async Task<Result<AppUserDto>> FindByIdAsync(Guid appUserId)
