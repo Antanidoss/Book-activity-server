@@ -1,5 +1,4 @@
-﻿using Antanidoss.Specification.Filters.Implementation;
-using BookActivity.Domain.Events.ActiveBookEvent;
+﻿using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookSpecs;
@@ -24,10 +23,8 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
 
         public async Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
         {
-            var specification = new BookByIdSpec(notification.BookId);
-            var filter = new FirstOrDefault<Book>(specification);
-
-            var book = _bookRepository.GetByFilterAsync(filter);
+            BookByIdSpec bookByIdSpec = new(notification.BookId);
+            var book = await _bookRepository.GetBySpecAsync(bookByIdSpec);
             var user = await _userManager.FindByIdAsync(notification.UserId.ToString());
 
             foreach (var followedUser in user.FollowedUsers)

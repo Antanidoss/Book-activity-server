@@ -1,14 +1,13 @@
 ﻿using Antanidoss.Specification.Filters.Interfaces;
+using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
-using BookActivity.Infrastructure.Data.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BookActivity.Infrastructure.Data.Helpers;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {

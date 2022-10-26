@@ -1,6 +1,7 @@
 ﻿using Antanidoss.Specification.Filters.Implementation;
 using Ardalis.Result;
 using AutoMapper;
+using BookActivity.Application.Implementation.Filters;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.Dto.Create;
@@ -11,6 +12,7 @@ using BookActivity.Domain.Commands.BookCommands.AddBook;
 using BookActivity.Domain.Commands.BookCommands.RemoveBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Events.BookEvents;
+using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
@@ -20,6 +22,7 @@ using FluentValidation.Results;
 using NetDevPack.Mediator;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -72,41 +75,29 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfNullOrEmpty(bookIds, nameof(bookIds));
 
             BookByIdSpec specification = new(bookIds);
-            Where<Book> filter = new(specification);
             PaginationModel paginationModel = new(take: bookIds.Length); 
-            BookFilterModel bookFilter = new(filter, paginationModel.Skip, paginationModel.Take);
 
-            var books = await _bookRepository.GetByFilterAsync(bookFilter).ConfigureAwait(false);
-
-            return _mapper.Map<List<BookDto>>(books);
-        }
-
-        public async Task<Result<IEnumerable<BookDto>>> GetByTitleContainsAsync(PaginationModel paginationModel, string title)
-        {
-            CommonValidator.ThrowExceptionIfNull(paginationModel);
-
-            BookByTitleContainsSpec specification = new(title);
-            Where<Book> filter = new(specification);
-            BookFilterModel bookFilter = new(filter, paginationModel.Skip, paginationModel.Take);
-
-            var books = await _bookRepository.GetByFilterAsync(bookFilter).ConfigureAwait(false);
+            var books = await _bookRepository.GetBySpecAsync(specification, paginationModel).ConfigureAwait(false);
 
             return _mapper.Map<List<BookDto>>(books);
         }
 
-        public async Task<Result<IEnumerable<BookDto>>> GetByPaginationAsync(PaginationModel paginationModel, Guid currentUserId)
+        public async Task<Result<IEnumerable<BookDto>>> GetByFilterAsync(BookFilterModel bookFilterModel)
         {
-            CommonValidator.ThrowExceptionIfNull(paginationModel);
+            if (bookFilterModel == null)
+                throw new ArgumentNullException(nameof(bookFilterModel));
 
-            BookFilterModel filterModel = new(paginationModel.Skip, paginationModel.Take);
-            var books = (await _bookRepository.GetByFilterAsync(filterModel, b => b.ActiveBooks, b => b.BookRating.BookOpinions)).ToArray();
-            var booksDto = _mapper.Map<IEnumerable<BookDto>>(books).ToArray();
+            Func<IQueryable<Book>, IQueryable<Book>> filter = (query) =>
+            {
+                return query
+                    .Include(b => b.BookRating.BookOpinions)
+                    .ApplyBookFilter(bookFilterModel)
+                    .ApplyPaginaton(bookFilterModel.Skip, bookFilterModel.Take);
+            };
 
-            if (currentUserId != Guid.Empty)
-                for (int i = 0; i < books.Count(); i++)
-                    booksDto[i].IsActiveBook = books[i].ActiveBooks.Any(a => a.UserId == currentUserId);
+            var books = await _bookRepository.GetByFilterAsync(filter).ConfigureAwait(false);
 
-            return new Result<IEnumerable<BookDto>>(booksDto);
+            return _mapper.Map<List<BookDto>>(books);
         }
 
         public async Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId)

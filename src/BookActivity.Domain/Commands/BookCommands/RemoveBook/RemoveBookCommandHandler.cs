@@ -1,7 +1,5 @@
-﻿using Antanidoss.Specification.Filters.Implementation;
-using BookActivity.Domain.Events.BookEvents;
+﻿using BookActivity.Domain.Events.BookEvents;
 using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookSpecs;
 using FluentValidation.Results;
 using MediatR;
@@ -27,8 +25,7 @@ namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
                 return request.ValidationResult;
 
             BookByIdSpec bookByIdSpec = new(request.BookId);
-            FirstOrDefault<Book> firstOrDefaultFilter = new(bookByIdSpec);
-            var book = _bookRepository.GetByFilterAsync(firstOrDefaultFilter);
+            var book = await _bookRepository.GetBySpecAsync(bookByIdSpec);
 
             book.AddDomainEvent(new RemoveBookEvent(book.Id));
             _bookRepository.Remove(book);

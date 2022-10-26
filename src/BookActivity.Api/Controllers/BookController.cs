@@ -39,20 +39,10 @@ namespace BookActivity.Api.Controllers
                 .ToApiResult();
         }
 
-        [HttpGet(ApiConstants.GetBooksMethod)]
-        public async Task<ApiResult<IEnumerable<BookDto>>> GetBooksByIdsAsync(int skip, int take)
+        [HttpGet(ApiConstants.GetBooksByFilterMethod)]
+        public async Task<ApiResult<IEnumerable<BookDto>>> GetBooksByFilterAsync(BookFilterModel bookFilterModel)
         {
-            var currentUser = GetCurrentUser();
-
-            return (await _bookService.GetByPaginationAsync(new PaginationModel(skip, take), currentUser?.Id ?? Guid.Empty)
-                .ConfigureAwait(false))
-                .ToApiResult();
-        }
-
-        [HttpGet(ApiConstants.GetBooksByTitleContainsMethod)]
-        public async Task<ApiResult<IEnumerable<BookDto>>> GetBooksByTitlesAsync(PaginationModel paginationModel, string title)
-        {
-            return (await _bookService.GetByTitleContainsAsync(paginationModel, title)
+            return (await _bookService.GetByFilterAsync(bookFilterModel)
                 .ConfigureAwait(false))
                 .ToApiResult();
         }

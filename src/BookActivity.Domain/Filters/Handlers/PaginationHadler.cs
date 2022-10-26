@@ -1,11 +1,10 @@
-﻿using BookActivity.Domain.Models;
-using System.Linq;
+﻿using System.Linq;
 using System.Data.Entity;
 using NetDevPack.Domain;
 
-namespace BookActivity.Infrastructure.Data.Helpers
+namespace BookActivity.Domain.Filters.Handlers
 {
-    internal static class PaginationHelper
+    public static class PaginationHadler
     {
         public static IQueryable<TEntity> ApplyPaginaton<TEntity>(this IQueryable<TEntity> entities, int? skip, int? take)
             where TEntity : IAggregateRoot

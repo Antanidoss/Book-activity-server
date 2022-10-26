@@ -1,17 +1,11 @@
-﻿using Antanidoss.Specification.Filters.Interfaces;
-using BookActivity.Domain.Models;
-
-namespace BookActivity.Domain.Filters.Models
+﻿namespace BookActivity.Domain.Filters.Models
 {
-    public sealed class BookFilterModel : BaseFilterModel
+    public sealed class BookFilterModel
     {
-        public IQueryableMultipleResultFilter<Book> Filter { get; set; }
-
-        public BookFilterModel(int? skip = SkipDefault, int? take = TakeDefault) : base(skip, take) { }
-
-        public BookFilterModel(IQueryableMultipleResultFilter<Book> filter, int? skip = SkipDefault, int? take = TakeDefault) : base(skip, take)
-        {
-            Filter = filter;
-        }
+        public string BookTitle { get; set; }
+        public float AverageRatingFrom { get; set; }
+        public float AverageRatingTo { get; set; }
+        public int Skip { get; set; }
+        public int Take { get; set; }
     }
 }
