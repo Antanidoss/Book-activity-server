@@ -11,8 +11,7 @@
 
         public PaginationModel()
         {
-            Skip = SkipDefault;
-            Take = TakeDefault;
+
         }
 
         public PaginationModel(int? skip = SkipDefault, int? take = TakeDefault)
