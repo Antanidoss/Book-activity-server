@@ -29,9 +29,10 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = _db.Books;
         }
 
-        public async Task<IEnumerable<Book>> GetByFilterAsync(Func<IQueryable<Book>, IQueryable<Book>> filterHandler)
+        public async Task<IEnumerable<Book>> GetByFilterAsync(Func<IQueryable<Book>, IQueryable<Book>> filterHandler, params Expression<Func<Book, object>>[] includes)
         {
-            return await filterHandler(_dbSet).ToListAsync();
+            return await filterHandler(_dbSet.IncludeMultiple(includes))
+                .ToListAsync();
         }
 
         public async Task<Book> GetBySpecAsync(ISpecification<Book> specification)

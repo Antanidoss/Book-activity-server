@@ -20,8 +20,7 @@ namespace BookActivity.Domain.Specifications.BookSpecs
 
         public Expression<Func<Book, bool>> ToExpression()
         {
-            return b => !b.BookRating.BookOpinions.Any() ||
-                (_averageRatingFrom <= b.BookRating.BookOpinions.Average(o => o.Grade) && _averageRatingTo >= b.BookRating.BookOpinions.Average(o => o.Grade));
+            return b => _averageRatingFrom <= b.BookRating.BookOpinions.Average(o => o.Grade) && _averageRatingTo >= b.BookRating.BookOpinions.Average(o => o.Grade);
         }
     }
 }

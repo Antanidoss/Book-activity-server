@@ -1,5 +1,4 @@
-﻿using Antanidoss.Specification.Filters.Implementation;
-using Ardalis.Result;
+﻿using Ardalis.Result;
 using AutoMapper;
 using BookActivity.Application.Implementation.Filters;
 using BookActivity.Application.Interfaces.Services;
@@ -90,12 +89,11 @@ namespace BookActivity.Application.Implementation.Services
             Func<IQueryable<Book>, IQueryable<Book>> filter = (query) =>
             {
                 return query
-                    .Include(b => b.BookRating.BookOpinions)
                     .ApplyBookFilter(bookFilterModel)
                     .ApplyPaginaton(bookFilterModel.Skip, bookFilterModel.Take);
             };
 
-            var books = await _bookRepository.GetByFilterAsync(filter).ConfigureAwait(false);
+            var books = await _bookRepository.GetByFilterAsync(filter, b => b.BookRating, b => b.BookRating.BookOpinions).ConfigureAwait(false);
 
             return _mapper.Map<List<BookDto>>(books);
         }
