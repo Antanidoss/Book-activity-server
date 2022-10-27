@@ -12,7 +12,6 @@ namespace BookActivity.Infrastructure.Data.Extensions
         public static IQueryable<TEntity> IncludeMultiple<TEntity>(this IQueryable<TEntity> query, params Expression<Func<TEntity, object>>[] includes)
             where TEntity : class, IAggregateRoot
         {
-
             includes.ForEach((i) => query = query.Include(i));
 
             return query;
