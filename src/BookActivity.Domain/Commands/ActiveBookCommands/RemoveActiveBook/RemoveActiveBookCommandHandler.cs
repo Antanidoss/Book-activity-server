@@ -28,8 +28,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook
                 return request.ValidationResult;
 
             ActiveBookByIdSpec specification = new(request.Id);
-            FirstOrDefault<ActiveBook> filter = new(specification);
-            var activeBook = _activeBookRepository.GetByFilter(filter);
+            var activeBook = await _activeBookRepository.GetBySpecAsync(specification);
 
             if (activeBook is null)
                 AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));

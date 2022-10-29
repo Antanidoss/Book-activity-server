@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Data.Entity;
 using NetDevPack.Domain;
+using BookActivity.Domain.Filters.Models;
 
 namespace BookActivity.Domain.Filters.Handlers
 {
@@ -12,6 +13,14 @@ namespace BookActivity.Domain.Filters.Handlers
             return entities
                 .Skip(() => skip.Value)
                 .Take(() => take.Value);
+        }
+
+        public static IQueryable<TEntity> ApplyPaginaton<TEntity>(this IQueryable<TEntity> entities, PaginationModel paginationModel)
+            where TEntity : IAggregateRoot
+        {
+            return entities
+                .Skip(() => paginationModel.Skip.Value)
+                .Take(() => paginationModel.Take.Value);
         }
 
         public static IQueryable<TEntity> ApplyPaginaton<TEntity>(this IQueryable<TEntity> entities, int skip)

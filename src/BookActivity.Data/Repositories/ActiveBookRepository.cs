@@ -1,4 +1,4 @@
-﻿using Antanidoss.Specification.Filters.Interfaces;
+﻿using Antanidoss.Specification.Interfaces;
 using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -28,23 +29,29 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = _db.Set<ActiveBook>();
         }
 
-        public ActiveBook GetByFilter(IQueryableSingleResultFilter<ActiveBook> filter)
+        public async Task<ActiveBook> GetBySpecAsync(ISpecification<ActiveBook> specification, params Expression<Func<ActiveBook, object>>[] includes)
         {
-            return filter.ApplyFilter(_dbSet.AsNoTracking());
+            return await _dbSet
+                .AsNoTracking()
+                .IncludeMultiple(includes)
+                .FirstOrDefaultAsync(specification.ToExpression());
         }
 
-        public async Task<IEnumerable<ActiveBook>> GetByFilterAsync(ActiveBookFilterModel activeBookFilterModel, Expression<Func<ActiveBook, object>>[] includes)
+        public async Task<IEnumerable<ActiveBook>> GetBySpecAsync(ISpecification<ActiveBook> specification, PaginationModel paginationModel, params Expression<Func<ActiveBook, object>>[] includes)
         {
-            return await activeBookFilterModel.Filter
-                .ApplyFilter(_dbSet.AsNoTracking())
-                .ApplyPaginaton(activeBookFilterModel.Skip, activeBookFilterModel.Take)
+            return await _dbSet
+                .AsNoTracking()
                 .IncludeMultiple(includes)
+                .Where(specification.ToExpression())
+                .ApplyPaginaton(paginationModel)
                 .ToListAsync();
         }
 
-        public async Task<int> GetCountByFilterAsync(IQueryableMultipleResultFilter<ActiveBook> filter, int skip = 0)
+        public async Task<int> GetCountBySpecAsync(ISpecification<ActiveBook> specification, int skip = 0)
         {
-            return await filter.ApplyFilter(_dbSet)
+            return await _dbSet
+                .AsNoTracking()
+                .Where(specification.ToExpression())
                 .ApplyPaginaton(skip)
                 .CountAsync();
         }
