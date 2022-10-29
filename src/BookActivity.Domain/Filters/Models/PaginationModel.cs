@@ -9,11 +9,6 @@
         public const int SkipDefault = 0;
         public const int TakeDefault = 1;
 
-        public PaginationModel()
-        {
-
-        }
-
         public PaginationModel(int? skip = SkipDefault, int? take = TakeDefault)
         {
             Skip = skip ?? SkipDefault;

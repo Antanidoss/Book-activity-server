@@ -16,12 +16,12 @@ namespace BookActivity.Application.Implementation.Filters
                 query = query.Where(bookByTitleSpec.ToExpression());
             }
 
-            //if (filterModel.AverageRatingFrom != 0 || filterModel.AverageRatingTo != 5)
-            //{
-            //    BookByRatingRange bookByRatingRangeSpec = new(filterModel.AverageRatingFrom, filterModel.AverageRatingTo);
+            if (filterModel.AverageRatingFrom != 0 || filterModel.AverageRatingTo != 5)
+            {
+                BookByRatingRange bookByRatingRangeSpec = new(filterModel.AverageRatingFrom, filterModel.AverageRatingTo);
 
-            //    query = query.Where(bookByRatingRangeSpec.ToExpression());
-            //}
+                query = query.Where(bookByRatingRangeSpec.ToExpression());
+            }
 
             return query;
         }

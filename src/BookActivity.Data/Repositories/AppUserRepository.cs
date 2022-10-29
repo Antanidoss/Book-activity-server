@@ -1,12 +1,16 @@
-﻿using Antanidoss.Specification.Filters.Interfaces;
+﻿using Antanidoss.Specification.Interfaces;
 using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Infrastructure.Data.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
@@ -22,16 +26,22 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public IUnitOfWork UnitOfWork => null;
 
-        public async Task<IEnumerable<AppUser>> GetByFilterAsync(AppUserFilterModel filterModel)
+        public async Task<IEnumerable<AppUser>> GetBySpecAsync(ISpecification<AppUser> specification, PaginationModel paginationModel, params Expression<Func<AppUser, object>>[] includes)
         {
-            return await filterModel.Filter.ApplyFilter(_userManager.Users.AsNoTracking())
-                .ApplyPaginaton(filterModel.Skip, filterModel.Take)
+            return await _userManager.Users
+                .AsNoTracking()
+                .IncludeMultiple(includes)
+                .Where(specification.ToExpression())
+                .ApplyPaginaton(paginationModel)
                 .ToListAsync();
         }
 
-        public AppUser GetByFilter(IQueryableSingleResultFilter<AppUser> filter)
+        public async Task<AppUser> GetBySpecAsync(ISpecification<AppUser> specification, params Expression<Func<AppUser, object>>[] includes)
         {
-            return filter.ApplyFilter(_userManager.Users);
+            return await _userManager.Users
+                .AsNoTracking()
+                .IncludeMultiple(includes)
+                .FirstOrDefaultAsync(specification.ToExpression());
         }
 
         public async Task<IdentityResult> Addasync(AppUser user, string password)

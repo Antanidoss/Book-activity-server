@@ -1,7 +1,4 @@
-﻿using Antanidoss.Specification.Filters.Implementation;
-using BookActivity.Domain.Extensions;
-using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
+﻿using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using FluentValidation.Results;
 using MediatR;
@@ -27,12 +24,10 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
                 return request.ValidationResult;
 
             AppUserByIdSpec specification = new(request.AppUserId);
-            FirstOrDefault<AppUser> filter = new(specification);
-            var currentUser = _appUserRepository.GetByFilter(filter);
+            var currentUser = await _appUserRepository.GetBySpecAsync(specification).ConfigureAwait(false);
 
             specification = new(request.SubscribedUserId);
-            filter = new(specification);
-            var subscribedUser = _appUserRepository.GetByFilter(filter);
+            var subscribedUser = await _appUserRepository.GetBySpecAsync(specification).ConfigureAwait(false);
 
             subscribedUser.FollowedUsers.Add(currentUser);
             await _appUserRepository.UpdateAsync(currentUser).ConfigureAwait(false);
