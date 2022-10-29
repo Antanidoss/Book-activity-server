@@ -1,5 +1,4 @@
-﻿using Antanidoss.Specification.Filters.Implementation;
-using Ardalis.Result;
+﻿using Ardalis.Result;
 using AutoMapper;
 using BookActivity.Application.Extensions;
 using BookActivity.Application.Interfaces.Services;
@@ -14,7 +13,6 @@ using BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.ActiveBookSpecs;
 using BookActivity.Domain.Validations;
 using FluentValidation.Results;
@@ -74,11 +72,9 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfNullOrEmpty(activeBookIds, nameof(activeBookIds));
 
             ActiveBookByIdSpec specification = new(activeBookIds);
-            Where<ActiveBook> filter = new(specification);
             PaginationModel paginationModel = new(take: activeBookIds.Length);
-            ActiveBookFilterModel activeBookFilterModel = new(filter, paginationModel.Skip, paginationModel.Take);
 
-            var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel).ConfigureAwait(false);
+            var activeBooks = await _activeBookRepository.GetBySpecAsync(specification, paginationModel).ConfigureAwait(false);
 
             return _mapper.Map<List<ActiveBookDto>>(activeBooks);
         }
@@ -88,9 +84,7 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfNull(paginationModel);
 
             ActiveBookByUserIdSpec specification = new(currentUserId);
-            Where<ActiveBook> filter = new(specification);
-            ActiveBookFilterModel activeBookFilterModel = new(filter, paginationModel.Skip, paginationModel.Take);
-            var activeBooks = await _activeBookRepository.GetByFilterAsync(activeBookFilterModel, a => a.Book).ConfigureAwait(false);
+            var activeBooks = await _activeBookRepository.GetBySpecAsync(specification, paginationModel, a => a.Book).ConfigureAwait(false);
 
             return _mapper.Map<List<ActiveBookDto>>(activeBooks);
         }

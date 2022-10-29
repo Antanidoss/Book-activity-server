@@ -21,7 +21,6 @@ using FluentValidation.Results;
 using NetDevPack.Mediator;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -93,7 +92,9 @@ namespace BookActivity.Application.Implementation.Services
                     .ApplyPaginaton(bookFilterModel.Skip, bookFilterModel.Take);
             };
 
-            var books = await _bookRepository.GetByFilterAsync(filter, b => b.BookRating, b => b.BookRating.BookOpinions).ConfigureAwait(false);
+            var books = await _bookRepository.GetByFilterAsync(filter,
+                b => b.BookRating,
+                b => b.BookRating.BookOpinions).ConfigureAwait(false);
 
             return _mapper.Map<List<BookDto>>(books);
         }

@@ -1,5 +1,4 @@
-﻿using Antanidoss.Specification.Filters.Implementation;
-using BookActivity.Domain.Constants;
+﻿using BookActivity.Domain.Constants;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
@@ -28,8 +27,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook
                 return request.ValidationResult;
 
             ActiveBookByIdSpec specification = new(request.Id);
-            FirstOrDefault<ActiveBook> filter = new(specification);
-            var activeBook = _activeBookRepository.GetByFilter(filter);
+            var activeBook = await _activeBookRepository.GetBySpecAsync(specification);
 
             if (activeBook is null)
                 AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
