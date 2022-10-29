@@ -1,7 +1,5 @@
-﻿using Antanidoss.Specification.Filters.Implementation;
-using BookActivity.Domain.Extensions;
+﻿using BookActivity.Domain.Extensions;
 using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using FluentValidation.Results;
 using MediatR;
@@ -27,8 +25,7 @@ namespace BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser
                 return request.ValidationResult;
 
             AppUserByIdSpec specification = new(request.AppUserId);
-            FirstOrDefault<AppUser> filter = new(specification);
-            var user = _appUserRepository.GetByFilter(filter);
+            var user = await _appUserRepository.GetBySpecAsync(specification).ConfigureAwait(false);
 
             user.AvatarImage = request.AvatarImage;
             user.UserName = request.Name;

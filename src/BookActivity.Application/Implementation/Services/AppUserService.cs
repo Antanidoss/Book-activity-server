@@ -84,8 +84,7 @@ namespace BookActivity.Application.Implementation.Services
         public async Task<Result<AuthenticationResult>> PasswordSignInAsync(AuthenticationModel authenticationModel)
         {
             AppUserByEmailSpec specification = new(authenticationModel.Email);
-            FirstOrDefault<AppUser> filter = new(specification);
-            var appUser = _appUserRepository.GetByFilter(filter);
+            var appUser = await _appUserRepository.GetBySpecAsync(specification).ConfigureAwait(false);
 
             if (appUser is null)
                 return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectEmail);
@@ -110,8 +109,7 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfEmpty(appUserId, nameof(appUserId));
 
             AppUserByIdSpec specification = new(appUserId);
-            FirstOrDefault<AppUser> filter = new(specification);
-            var appUser = _appUserRepository.GetByFilter(filter);
+            var appUser = await _appUserRepository.GetBySpecAsync(specification).ConfigureAwait(false);
 
             return _mapper.Map<AppUserDto>(appUser);
         }
