@@ -1,5 +1,4 @@
-﻿using Antanidoss.Specification.Filters.Implementation;
-using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookRatingSpecs;
 using FluentValidation.Results;
@@ -32,7 +31,8 @@ namespace BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            var bookRating = GetBookRatingById(request.Id);
+            BookRatingByIdSpec bookRatingByIdSpec = new(request.Id);
+            var bookRating = await _bookRatingRepository.GetBySpecAsync(bookRatingByIdSpec);
             if (bookRating == null)
                 throw new ArgumentException($"Could not be found book rating by id: {request.Id}");
 
@@ -46,14 +46,6 @@ namespace BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating
             _bookOpinionRepository.Add(request.BookOpinion);
 
             return await Commit(_bookRatingRepository.UnitOfWork);
-        }
-
-        private BookRating GetBookRatingById(Guid bookRatingId)
-        {
-            BookRatingByIdSpec bookRatingByIdSpec = new(bookRatingId);
-            FirstOrDefault<BookRating> firstOrDefault = new(bookRatingByIdSpec);
-
-            return _bookRatingRepository.GetByFilterAsync(firstOrDefault);
         }
     }
 }

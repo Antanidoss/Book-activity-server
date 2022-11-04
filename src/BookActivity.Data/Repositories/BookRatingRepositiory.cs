@@ -1,9 +1,10 @@
-﻿using Antanidoss.Specification.Filters.Interfaces;
+﻿using Antanidoss.Specification.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
+using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
@@ -21,9 +22,11 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = _db.Set<BookRating>();
         }
 
-        public BookRating GetByFilterAsync(IQueryableSingleResultFilter<BookRating> filter)
+        public async Task<BookRating> GetBySpecAsync(ISpecification<BookRating> specification)
         {
-            return filter.ApplyFilter(_dbSet.AsNoTracking());
+            return await _dbSet
+                .AsNoTracking()
+                .FirstOrDefaultAsync(specification.ToExpression());
         }
 
         public void Dispose()
