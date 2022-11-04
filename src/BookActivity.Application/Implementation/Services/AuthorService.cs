@@ -41,21 +41,11 @@ namespace BookActivity.Application.Implementation.Services
             return validationResult.ToResult(addAuthorCommand.Id);
         }
 
-        public async Task<Result<IEnumerable<AuthorDto>>> GetAllAuthorsAsync()
-        {
-            var authorCount = await _authorRepository.GetCountByFilterAsync();
-            var authors = await _authorRepository.GetByFilterAsync(new AuthorFilterModel(take: authorCount)).ConfigureAwait(false);
-
-            return new Result<IEnumerable<AuthorDto>>(_mapper.Map<IEnumerable<AuthorDto>>(authors));
-        }
-
         public async Task<Result<IEnumerable<AuthorDto>>> GetAuthorsByNameAsync(string name, int take)
         {
             AuthorByNameSpec authorByNameSpec = new(name);
-            Where<Author> filter = new(authorByNameSpec);
-            AuthorFilterModel authorFilterModel = new(filter, take: take);
 
-            var authors = await _authorRepository.GetByFilterAsync(authorFilterModel).ConfigureAwait(false);
+            var authors = await _authorRepository.GetBySpecAsync(authorByNameSpec, new PaginationModel(take: take)).ConfigureAwait(false);
 
             return new Result<IEnumerable<AuthorDto>>(_mapper.Map<IEnumerable<AuthorDto>>(authors));
         }

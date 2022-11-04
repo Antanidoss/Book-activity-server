@@ -37,13 +37,5 @@ namespace BookActivity.Api.Controllers
                 .ConfigureAwait(false))
                 .ToApiResult();
         }
-
-        [HttpGet(ApiConstants.GetAllAuthorsMethod)]
-        public async Task<ApiResult<IEnumerable<AuthorDto>>> GetAllAuthorsAsync()
-        {
-            return (await _authorService.GetAllAuthorsAsync()
-                .ConfigureAwait(false))
-                .ToApiResult();
-        }
     }
 }

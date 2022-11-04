@@ -11,6 +11,5 @@ namespace BookActivity.Application.Interfaces.Services
     {
         Task<Result<Guid>> AddAsync(CreateAuthorDto createAuthor);
         Task<Result<IEnumerable<AuthorDto>>> GetAuthorsByNameAsync(string name, int take);
-        Task<Result<IEnumerable<AuthorDto>>> GetAllAuthorsAsync();
     }
 }
