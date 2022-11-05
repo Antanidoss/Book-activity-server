@@ -1,13 +1,14 @@
 ﻿using BookActivity.Domain.Core.Events;
+using BookActivity.Domain.Interfaces;
+using BookActivity.Domain.Queries;
 using FluentValidation.Results;
 using MediatR;
-using NetDevPack.Mediator;
 using NetDevPack.Messaging;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure
 {
-    internal sealed class InMemoryBus : IMediatorHandler
+    internal sealed class InMemoryBus : IMediatorHandlerWithQuery
     {
         private readonly IMediator _mediator;
 
@@ -30,6 +31,11 @@ namespace BookActivity.Infrastructure
         public async Task<ValidationResult> SendCommand<T>(T command) where T : Command
         {
             return await _mediator.Send(command);
+        }
+
+        public async Task<TResult> SendQuery<TResult>(Query<TResult> query)
+        {
+            return await _mediator.Send(query);
         }
     }
 }

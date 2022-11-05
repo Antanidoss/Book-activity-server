@@ -1,5 +1,4 @@
-﻿using Antanidoss.Specification.Filters.Interfaces;
-using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Interfaces;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Models;
 using NetDevPack.Data;

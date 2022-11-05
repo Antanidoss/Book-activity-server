@@ -31,7 +31,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<Book>> GetByFilterAsync(Func<IQueryable<Book>, IQueryable<Book>> filterHandler, params Expression<Func<Book, object>>[] includes)
         {
-            return await filterHandler(_dbSet.IncludeMultiple(includes))
+            return await filterHandler(_dbSet.AsNoTracking())
+                .IncludeMultiple(includes)
                 .ToListAsync();
         }
 

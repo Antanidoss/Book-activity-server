@@ -3,7 +3,7 @@ using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookSpecs;
 using System.Linq;
 
-namespace BookActivity.Application.Implementation.Filters
+namespace BookActivity.Domain.Filters.Handlers
 {
     public static class BookFilterHandler
     {
