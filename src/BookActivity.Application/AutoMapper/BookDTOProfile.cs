@@ -5,7 +5,9 @@ using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Commands.BookCommands.AddBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
+using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Queries.BookQueries;
 
 namespace BookActivity.Application.AutoMapper
 {
@@ -19,6 +21,8 @@ namespace BookActivity.Application.AutoMapper
             CreateMap<CreateBookDto, AddBookCommand>()
                 .ForMember(b => b.ImageData, conf => conf.MapFrom(b => b.Image.ConvertToBuffer()));
             CreateMap<UpdateBookDto, UpdateBookCommand>();
+
+            CreateMap<BookFilterModel, GetBooksByFilterQuery>();
         }
     }
 }

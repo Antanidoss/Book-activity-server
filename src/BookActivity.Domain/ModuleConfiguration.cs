@@ -13,11 +13,14 @@ using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
 using BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.UserNotificationsEvents;
+using BookActivity.Domain.Models;
+using BookActivity.Domain.Queries.BookQueries;
 using BookActivity.Shared.Interfaces;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 
 namespace BookActivity.Domain
 {
@@ -26,6 +29,7 @@ namespace BookActivity.Domain
         public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration Configuration)
         {
             ConfigureCommandHandlers(services);
+            ConfigureQueryHandlers(services);
             ConfigureEventHandlers(services);
 
             return services;
@@ -50,6 +54,11 @@ namespace BookActivity.Domain
             services.AddScoped<IRequestHandler<AddAuthorCommand, ValidationResult>, AddAuthorCommandHandler>();
 
             services.AddScoped<IRequestHandler<UpdateBookRatingCommand, ValidationResult>, UpdateBookRatingCommandHandler>();
+        }
+
+        private void ConfigureQueryHandlers(IServiceCollection services)
+        {
+            services.AddScoped<IRequestHandler<GetBooksByFilterQuery, IEnumerable<Book>>, GetBooksByFilterQueryHandler>();
         }
 
         private void ConfigureEventHandlers(IServiceCollection services)

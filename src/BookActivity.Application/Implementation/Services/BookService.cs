@@ -1,6 +1,5 @@
 ﻿using Ardalis.Result;
 using AutoMapper;
-using BookActivity.Application.Implementation.Filters;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.Dto.Create;
@@ -11,17 +10,15 @@ using BookActivity.Domain.Commands.BookCommands.AddBook;
 using BookActivity.Domain.Commands.BookCommands.RemoveBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Events.BookEvents;
-using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
+using BookActivity.Domain.Queries.BookQueries;
 using BookActivity.Domain.Specifications.BookSpecs;
 using BookActivity.Domain.Validations;
 using FluentValidation.Results;
-using NetDevPack.Mediator;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -33,11 +30,11 @@ namespace BookActivity.Application.Implementation.Services
 
         private readonly IBookRepository _bookRepository;
 
-        private readonly IMediatorHandler _mediatorHandler;
+        private readonly IMediatorHandlerWithQuery _mediatorHandler;
 
         private readonly IEventStoreRepository _eventStoreRepository;
 
-        public BookService(IMapper mapper, IBookRepository bookRepository, IMediatorHandler mediatorHandler, IEventStoreRepository eventStoreRepository)
+        public BookService(IMapper mapper, IBookRepository bookRepository, IMediatorHandlerWithQuery mediatorHandler, IEventStoreRepository eventStoreRepository)
         {
             _mapper = mapper;
             _bookRepository = bookRepository;
@@ -82,19 +79,9 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<IEnumerable<BookDto>>> GetByFilterAsync(BookFilterModel bookFilterModel)
         {
-            if (bookFilterModel == null)
-                throw new ArgumentNullException(nameof(bookFilterModel));
+           GetBooksByFilterQuery query = _mapper.Map<GetBooksByFilterQuery>(bookFilterModel);
 
-            Func<IQueryable<Book>, IQueryable<Book>> filter = (query) =>
-            {
-                return query
-                    .ApplyBookFilter(bookFilterModel)
-                    .ApplyPaginaton(bookFilterModel.Skip, bookFilterModel.Take);
-            };
-
-            var books = await _bookRepository.GetByFilterAsync(filter,
-                b => b.BookRating,
-                b => b.BookRating.BookOpinions).ConfigureAwait(false);
+            var books = await _mediatorHandler.SendQuery(query);
 
             return _mapper.Map<List<BookDto>>(books);
         }
