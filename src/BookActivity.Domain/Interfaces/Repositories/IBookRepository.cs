@@ -16,7 +16,7 @@ namespace BookActivity.Domain.Interfaces.Repositories
         Task<Book> GetBySpecAsync(ISpecification<Book> specification);
         Task<Book> GetBySpecAsync(ISpecification<Book> specification, params Expression<Func<Book, object>>[] includes);
         Task<IEnumerable<Book>> GetBySpecAsync(ISpecification<Book> specification, PaginationModel paginationModel, params Expression<Func<Book, object>>[] includes);
-        Task<int> GetCountBySpecAsync(ISpecification<Book> specification, int skip);
+        Task<int> GetCountByFilterAsync(Func<IQueryable<Book>, IQueryable<Book>> filterHandler, int skip = 0);
         void Add(Book book);
         void Update(Book book);
         void Remove(Book book);

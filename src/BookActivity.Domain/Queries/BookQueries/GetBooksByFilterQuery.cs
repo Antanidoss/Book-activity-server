@@ -1,9 +1,9 @@
 ﻿using BookActivity.Domain.Models;
-using System.Collections.Generic;
+using BookActivity.Shared.Models;
 
 namespace BookActivity.Domain.Queries.BookQueries
 {
-    public sealed class GetBooksByFilterQuery : Query<IEnumerable<Book>>
+    public sealed class GetBooksByFilterQuery : Query<EntityListResult<Book>>
     {
         public string BookTitle { get; set; }
         public float AverageRatingFrom { get; set; }

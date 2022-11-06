@@ -16,6 +16,7 @@ using BookActivity.Domain.Events.UserNotificationsEvents;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.BookQueries;
 using BookActivity.Shared.Interfaces;
+using BookActivity.Shared.Models;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -58,7 +59,7 @@ namespace BookActivity.Domain
 
         private void ConfigureQueryHandlers(IServiceCollection services)
         {
-            services.AddScoped<IRequestHandler<GetBooksByFilterQuery, IEnumerable<Book>>, GetBooksByFilterQueryHandler>();
+            services.AddScoped<IRequestHandler<GetBooksByFilterQuery, EntityListResult<Book>>, GetBooksByFilterQueryHandler>();
         }
 
         private void ConfigureEventHandlers(IServiceCollection services)

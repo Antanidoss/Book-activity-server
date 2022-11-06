@@ -61,10 +61,9 @@ namespace BookActivity.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<int> GetCountBySpecAsync(ISpecification<Book> specification, int skip)
+        public async Task<int> GetCountByFilterAsync(Func<IQueryable<Book>, IQueryable<Book>> filterHandler, int skip)
         {
-            return await _dbSet.AsNoTracking()
-                .Where(specification.ToExpression())
+            return await filterHandler(_dbSet.AsNoTracking())
                 .ApplyPaginaton(skip)
                 .CountAsync();
         }

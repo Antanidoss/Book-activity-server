@@ -4,6 +4,7 @@ using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
 using BookActivity.Domain.Filters.Models;
+using BookActivity.Shared.Models;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace BookActivity.Application.Interfaces.Services
         Task<ValidationResult> RemoveActiveBookAsync(Guid bookId);
         Task<ValidationResult> UpdateBookAsync(UpdateBookDto updateBookModel);
         Task<Result<IEnumerable<BookDto>>> GetByBookIdsAsync(Guid[] bookIds);
-        Task<Result<IEnumerable<BookDto>>> GetByFilterAsync(BookFilterModel bookFilterModel);
+        Task<Result<EntityListResult<BookDto>>> GetByFilterAsync(BookFilterModel bookFilterModel);
         Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId);
     }
 }
