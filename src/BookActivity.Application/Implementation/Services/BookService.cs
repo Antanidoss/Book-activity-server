@@ -16,6 +16,7 @@ using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Queries.BookQueries;
 using BookActivity.Domain.Specifications.BookSpecs;
 using BookActivity.Domain.Validations;
+using BookActivity.Shared.Models;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
@@ -77,13 +78,13 @@ namespace BookActivity.Application.Implementation.Services
             return _mapper.Map<List<BookDto>>(books);
         }
 
-        public async Task<Result<IEnumerable<BookDto>>> GetByFilterAsync(BookFilterModel bookFilterModel)
+        public async Task<Result<EntityListResult<BookDto>>> GetByFilterAsync(BookFilterModel bookFilterModel)
         {
            GetBooksByFilterQuery query = _mapper.Map<GetBooksByFilterQuery>(bookFilterModel);
 
-            var books = await _mediatorHandler.SendQuery(query);
+            var result = await _mediatorHandler.SendQuery(query);
 
-            return _mapper.Map<List<BookDto>>(books);
+            return new Result<EntityListResult<BookDto>>(result.CopyWithNewEntityType(_mapper.Map<List<BookDto>>(result.Entities)));
         }
 
         public async Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId)

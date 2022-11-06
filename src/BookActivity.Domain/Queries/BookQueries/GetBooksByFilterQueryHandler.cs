@@ -2,16 +2,16 @@
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookSpecs;
+using BookActivity.Shared.Models;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Queries.BookQueries
 {
-    internal sealed class GetBooksByFilterQueryHandler : IRequestHandler<GetBooksByFilterQuery, IEnumerable<Book>>
+    internal sealed class GetBooksByFilterQueryHandler : IRequestHandler<GetBooksByFilterQuery, EntityListResult<Book>>
     {
         private readonly IBookRepository _bookRepository;
 
@@ -20,7 +20,7 @@ namespace BookActivity.Domain.Queries.BookQueries
             _bookRepository = bookRepository;
         }
 
-        public async Task<IEnumerable<Book>> Handle(GetBooksByFilterQuery request, CancellationToken cancellationToken)
+        public async Task<EntityListResult<Book>> Handle(GetBooksByFilterQuery request, CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
@@ -41,10 +41,18 @@ namespace BookActivity.Domain.Queries.BookQueries
                     query = query.Where(bookByRatingRangeSpec.ToExpression());
                 }
 
-                return query.ApplyPaginaton(request.Skip, request.Take);
+                return query;
             };
 
-            return await _bookRepository.GetByFilterAsync(filter, b => b.BookRating, b => b.BookRating.BookOpinions).ConfigureAwait(false);
+            Func<IQueryable<Book>, IQueryable<Book>> filterWithPagination = (query) =>
+            {
+                return filter(query).ApplyPaginaton(request.Skip, request.Take);
+            };
+
+            var books = await _bookRepository.GetByFilterAsync(filterWithPagination, b => b.BookRating, b => b.BookRating.BookOpinions).ConfigureAwait(false);
+            var booksCount = await _bookRepository.GetCountByFilterAsync(filter);
+
+            return new EntityListResult<Book>(books, booksCount);
         }
     }
 }
