@@ -3,8 +3,10 @@ using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.Extensions;
+using BookActivity.Infrastructure.Data.Validations;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System;
@@ -31,6 +33,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<ActiveBook> GetBySpecAsync(ISpecification<ActiveBook> specification, params Expression<Func<ActiveBook, object>>[] includes)
         {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+
             return await _dbSet
                 .AsNoTracking()
                 .IncludeMultiple(includes)
@@ -39,6 +43,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<ActiveBook>> GetBySpecAsync(ISpecification<ActiveBook> specification, PaginationModel paginationModel, params Expression<Func<ActiveBook, object>>[] includes)
         {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+
             return await _dbSet
                 .AsNoTracking()
                 .IncludeMultiple(includes)
@@ -49,6 +55,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<int> GetCountBySpecAsync(ISpecification<ActiveBook> specification, int skip = 0)
         {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+
             return await _dbSet
                 .AsNoTracking()
                 .Where(specification.ToExpression())
@@ -56,19 +64,25 @@ namespace BookActivity.Infrastructure.Data.Repositories
                 .CountAsync();
         }
 
-        public void Add(ActiveBook entity)
+        public void Add(ActiveBook activeBook)
         {
-            _dbSet.Add(entity);
+            CommonValidator.ThrowExceptionIfNull(activeBook);
+
+            _dbSet.Add(activeBook);
         }
 
-        public void Remove(ActiveBook entity)
+        public void Remove(ActiveBook activeBook)
         {
-            _dbSet.Remove(entity);
+            CommonValidator.ThrowExceptionIfNull(activeBook);
+
+            _dbSet.Remove(activeBook);
         }
 
-        public void Update(ActiveBook entity)
+        public void Update(ActiveBook activeBook)
         {
-            _dbSet.Update(entity);
+            CommonValidator.ThrowExceptionIfNull(activeBook);
+
+            _dbSet.Update(activeBook);
         }
 
         public void Dispose()

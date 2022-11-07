@@ -68,7 +68,7 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<IEnumerable<BookDto>>> GetByBookIdsAsync(Guid[] bookIds)
         {
-            CommonValidator.ThrowExceptionIfNullOrEmpty(bookIds, nameof(bookIds));
+            CommonValidator.ThrowExceptionIfNullOrEmpty(bookIds);
 
             BookByIdSpec specification = new(bookIds);
             PaginationModel paginationModel = new(take: bookIds.Length); 

@@ -1,13 +1,9 @@
 ﻿using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
@@ -27,6 +23,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public void Add(BookOpinion bookOpinion)
         {
+            CommonValidator.ThrowExceptionIfNull(bookOpinion);
+
             _dbSet.Add(bookOpinion);
         }
 

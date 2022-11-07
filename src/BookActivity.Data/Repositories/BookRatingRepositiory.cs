@@ -2,6 +2,7 @@
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
+using BookActivity.Infrastructure.Data.Validations;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<BookRating> GetBySpecAsync(ISpecification<BookRating> specification)
         {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+
             return await _dbSet
                 .AsNoTracking()
                 .FirstOrDefaultAsync(specification.ToExpression());

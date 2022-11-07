@@ -3,8 +3,10 @@ using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.Extensions;
+using BookActivity.Infrastructure.Data.Validations;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System;
@@ -31,6 +33,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<Book>> GetByFilterAsync(Func<IQueryable<Book>, IQueryable<Book>> filterHandler, params Expression<Func<Book, object>>[] includes)
         {
+            CommonValidator.ThrowExceptionIfNull(filterHandler);
+
             return await filterHandler(_dbSet.AsNoTracking())
                 .IncludeMultiple(includes)
                 .ToListAsync();
@@ -38,6 +42,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<Book> GetBySpecAsync(ISpecification<Book> specification)
         {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+
             return await _dbSet
                 .AsNoTracking()
                 .FirstOrDefaultAsync(specification.ToExpression());
@@ -45,6 +51,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<Book> GetBySpecAsync(ISpecification<Book> specification, params Expression<Func<Book, object>>[] includes)
         {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+
             return await _dbSet
                 .AsNoTracking()
                 .IncludeMultiple(includes)
@@ -53,6 +61,9 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<Book>> GetBySpecAsync(ISpecification<Book> specification, PaginationModel paginationModel, params Expression<Func<Book, object>>[] includes)
         {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+            CommonValidator.ThrowExceptionIfNull(paginationModel);
+
             return await _dbSet
                 .AsNoTracking()
                 .IncludeMultiple(includes)
@@ -63,6 +74,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<int> GetCountByFilterAsync(Func<IQueryable<Book>, IQueryable<Book>> filterHandler, int skip)
         {
+            CommonValidator.ThrowExceptionIfNull(filterHandler);
+
             return await filterHandler(_dbSet.AsNoTracking())
                 .ApplyPaginaton(skip)
                 .CountAsync();
