@@ -1,5 +1,6 @@
 ﻿using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
@@ -22,16 +23,22 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public void Add(BookNote bookNote)
         {
+            CommonValidator.ThrowExceptionIfNull(bookNote);
+
             _dbSet.Add(bookNote);
         }
 
         public void Remove(BookNote bookNote)
         {
+            CommonValidator.ThrowExceptionIfNull(bookNote);
+
             _dbSet.Remove(bookNote);
         }
 
         public void Update(BookNote bookNote)
         {
+            CommonValidator.ThrowExceptionIfNull(bookNote);
+
             _dbSet.Update(bookNote);
         }
 

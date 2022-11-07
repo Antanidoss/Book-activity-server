@@ -10,6 +10,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Antanidoss.Specification.Interfaces;
 using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Validations;
+using BookActivity.Infrastructure.Data.Validations;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
@@ -29,11 +31,16 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<Author>> GetByFilterAsync(Func<IQueryable<Author>, IQueryable<Author>> filterHandler)
         {
+            CommonValidator.ThrowExceptionIfNull(filterHandler);
+
             return await filterHandler(_dbSet).ToListAsync();
         }
 
         public async Task<IEnumerable<Author>> GetBySpecAsync(ISpecification<Author> specification, PaginationModel paginationModel)
         {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+            CommonValidator.ThrowExceptionIfNull(paginationModel);
+
             return await _dbSet
                 .AsNoTracking()
                 .Where(specification.ToExpression())
@@ -43,6 +50,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<Author> GetBySpecAsync(ISpecification<Author> specification)
         {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+
             return await _dbSet
                 .AsNoTracking()
                 .FirstOrDefaultAsync(specification.ToExpression());
@@ -50,6 +59,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<int> GetCountBySpecAsync(ISpecification<Author> specification, int skip = 0)
         {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+
             return await _dbSet
                 .AsNoTracking()
                 .ApplyPaginaton(skip)
@@ -59,17 +70,22 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public void Add(Author entity)
         {
+            CommonValidator.ThrowExceptionIfNull(entity);
+
             _dbSet.Add(entity);
         }
 
-
         public void Remove(Author entity)
         {
+            CommonValidator.ThrowExceptionIfNull(entity);
+
             _dbSet.Remove(entity);
         }
 
         public void Update(Author entity)
         {
+            CommonValidator.ThrowExceptionIfNull(entity);
+
             _dbSet.Update(entity);
         }
 

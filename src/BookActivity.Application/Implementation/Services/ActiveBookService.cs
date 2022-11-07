@@ -69,7 +69,7 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<IEnumerable<ActiveBookDto>>> GetByActiveBookIdAsync(Guid[] activeBookIds)
         {
-            CommonValidator.ThrowExceptionIfNullOrEmpty(activeBookIds, nameof(activeBookIds));
+            CommonValidator.ThrowExceptionIfNullOrEmpty(activeBookIds);
 
             ActiveBookByIdSpec specification = new(activeBookIds);
             PaginationModel paginationModel = new(take: activeBookIds.Length);

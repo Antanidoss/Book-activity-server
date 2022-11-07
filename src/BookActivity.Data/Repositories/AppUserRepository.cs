@@ -3,7 +3,9 @@ using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Extensions;
+using BookActivity.Infrastructure.Data.Validations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
@@ -28,6 +30,9 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<AppUser>> GetBySpecAsync(ISpecification<AppUser> specification, PaginationModel paginationModel, params Expression<Func<AppUser, object>>[] includes)
         {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+            CommonValidator.ThrowExceptionIfNull(paginationModel);
+
             return await _userManager.Users
                 .AsNoTracking()
                 .IncludeMultiple(includes)
@@ -38,6 +43,8 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<AppUser> GetBySpecAsync(ISpecification<AppUser> specification, params Expression<Func<AppUser, object>>[] includes)
         {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+
             return await _userManager.Users
                 .AsNoTracking()
                 .IncludeMultiple(includes)
@@ -46,11 +53,15 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<IdentityResult> Addasync(AppUser user, string password)
         {
+            CommonValidator.ThrowExceptionIfNull(user);
+
             return await _userManager.CreateAsync(user, password);
         }
 
         public async Task<IdentityResult> UpdateAsync(AppUser user)
         {
+            CommonValidator.ThrowExceptionIfNull(user);
+
             return await _userManager.UpdateAsync(user);
         }
 
