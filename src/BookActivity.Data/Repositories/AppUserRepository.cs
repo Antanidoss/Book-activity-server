@@ -21,6 +21,14 @@ namespace BookActivity.Infrastructure.Data.Repositories
     {
         private readonly UserManager<AppUser> _userManager;
 
+        private readonly Expression<Func<AppUser, AppUser>> _baseSelectUser = a => new AppUser
+        {
+            Id = a.Id,
+            AvatarImage = a.AvatarImage,
+            UserName = a.UserName,
+            Email = a.Email,
+        };
+
         public AppUserRepository(UserManager<AppUser> userManager)
         {
             _userManager = userManager;
@@ -38,6 +46,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
                 .IncludeMultiple(includes)
                 .Where(specification.ToExpression())
                 .ApplyPaginaton(paginationModel)
+                .Select(_baseSelectUser)
                 .ToListAsync();
         }
 
@@ -48,6 +57,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await _userManager.Users
                 .AsNoTracking()
                 .IncludeMultiple(includes)
+                .Select(_baseSelectUser)
                 .FirstOrDefaultAsync(specification.ToExpression());
         }
 
