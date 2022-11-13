@@ -6,7 +6,7 @@ using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
-using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Queries.BookQueries;
 using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +41,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetBooksByFilterMethod)]
-        public async Task<ApiResult<EntityListResult<BookDto>>> GetBooksByFilterAsync(BookFilterModel bookFilterModel)
+        public async Task<ApiResult<EntityListResult<BookDto>>> GetBooksByFilterAsync(GetBooksByFilterQuery bookFilterModel)
         {
             return (await _bookService.GetByFilterAsync(bookFilterModel)
                 .ConfigureAwait(false))

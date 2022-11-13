@@ -1,7 +1,7 @@
 ﻿using BookActivity.Domain.Filters.Handlers;
+using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Specifications.BookSpecs;
 using BookActivity.Shared.Models;
 using MediatR;
 using System;
@@ -25,32 +25,11 @@ namespace BookActivity.Domain.Queries.BookQueries
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
 
-            Func<IQueryable<Book>, IQueryable<Book>> filter = (query) =>
-            {
-                if (!string.IsNullOrEmpty(request.BookTitle))
-                {
-                    BookByTitleContainsSpec bookByTitleSpec = new(request.BookTitle);
+            Func<IQueryable<Book>, IQueryable<Book>> filterWithPagination = (query) => query.ApplyBookFilter(request).ApplyPaginaton(request.Skip, request.Take);
+            FilterModel<Book> filterModel = new(filterWithPagination, b => b.BookRating.BookOpinions);
+            var books = await _bookRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
 
-                    query = query.Where(bookByTitleSpec.ToExpression());
-                }
-
-                if (request.AverageRatingFrom != 0 || request.AverageRatingTo != 5)
-                {
-                    BookByRatingRange bookByRatingRangeSpec = new(request.AverageRatingFrom, request.AverageRatingTo);
-
-                    query = query.Where(bookByRatingRangeSpec.ToExpression());
-                }
-
-                return query;
-            };
-
-            Func<IQueryable<Book>, IQueryable<Book>> filterWithPagination = (query) =>
-            {
-                return filter(query).ApplyPaginaton(request.Skip, request.Take);
-            };
-
-            var books = await _bookRepository.GetByFilterAsync(filterWithPagination, b => b.BookRating, b => b.BookRating.BookOpinions).ConfigureAwait(false);
-            var booksCount = await _bookRepository.GetCountByFilterAsync(filter);
+            var booksCount = await _bookRepository.GetCountByFilterAsync(query => query.ApplyBookFilter(request)).ConfigureAwait(false);
 
             return new EntityListResult<Book>(books, booksCount);
         }

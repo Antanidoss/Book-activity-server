@@ -31,12 +31,13 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = _db.Books;
         }
 
-        public async Task<IEnumerable<Book>> GetByFilterAsync(Func<IQueryable<Book>, IQueryable<Book>> filterHandler, params Expression<Func<Book, object>>[] includes)
+        public async Task<IEnumerable<Book>> GetByFilterAsync(FilterModel<Book> filter)
         {
-            CommonValidator.ThrowExceptionIfNull(filterHandler);
+            CommonValidator.ThrowExceptionIfNull(filter);
 
-            return await filterHandler(_dbSet.AsNoTracking())
-                .IncludeMultiple(includes)
+            var query = _dbSet.AsNoTracking().IncludeMultiple(filter.Includes);
+
+            return await filter.FilterHandler(query)
                 .ToListAsync();
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace BookActivity.Domain.Models
@@ -36,7 +35,7 @@ namespace BookActivity.Domain.Models
         /// </summary>
         public BookRating BookRating { get; set; }
 
-        private Book() : base() { }
+        public Book() : base() { }
         public Book(string title, string description, bool isPublic, byte[] imageData, IEnumerable<BookAuthor> bookAuthors) : base(isPublic)
         {
             Title = title;

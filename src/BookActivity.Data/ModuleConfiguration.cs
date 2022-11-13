@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace BookActivity.Infrastructure.Data
 {
@@ -20,7 +22,7 @@ namespace BookActivity.Infrastructure.Data
         public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration Configuration)
         {
             string deffaultConnection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<BookActivityContext>(option => option.UseSqlServer(deffaultConnection));
+            services.AddDbContext<BookActivityContext>(option => option.UseSqlServer(deffaultConnection).LogTo(Console.WriteLine, LogLevel.Information));
 
             string eventStoreConnection = Configuration.GetConnectionString("EventStoreConnection");
             services.AddDbContext<BookActivityEventStoreContext>(option => option.UseSqlServer(eventStoreConnection));

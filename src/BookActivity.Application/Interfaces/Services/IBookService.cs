@@ -3,7 +3,7 @@ using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
-using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Queries.BookQueries;
 using BookActivity.Shared.Models;
 using FluentValidation.Results;
 using System;
@@ -18,7 +18,7 @@ namespace BookActivity.Application.Interfaces.Services
         Task<ValidationResult> RemoveActiveBookAsync(Guid bookId);
         Task<ValidationResult> UpdateBookAsync(UpdateBookDto updateBookModel);
         Task<Result<IEnumerable<BookDto>>> GetByBookIdsAsync(Guid[] bookIds);
-        Task<Result<EntityListResult<BookDto>>> GetByFilterAsync(BookFilterModel bookFilterModel);
+        Task<Result<EntityListResult<BookDto>>> GetByFilterAsync(GetBooksByFilterQuery bookFilterModel);
         Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId);
     }
 }
