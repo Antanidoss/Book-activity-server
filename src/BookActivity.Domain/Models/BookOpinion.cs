@@ -26,7 +26,10 @@ namespace BookActivity.Domain.Models
         public BookRating BookRating { get; set; }
         public Guid BookRatingId { get; set; }
 
-        private BookOpinion() : base() { }
+        public const int GradeMin = 0;
+        public const int GradeMax = 5;
+
+        public BookOpinion() : base() { }
         public BookOpinion(float grade, string description, Guid userId, bool isPublic) : base(isPublic)
         {
             Grade = grade;

@@ -78,11 +78,9 @@ namespace BookActivity.Application.Implementation.Services
             return _mapper.Map<List<BookDto>>(books);
         }
 
-        public async Task<Result<EntityListResult<BookDto>>> GetByFilterAsync(BookFilterModel bookFilterModel)
+        public async Task<Result<EntityListResult<BookDto>>> GetByFilterAsync(GetBooksByFilterQuery bookFilterModel)
         {
-           GetBooksByFilterQuery query = _mapper.Map<GetBooksByFilterQuery>(bookFilterModel);
-
-            var result = await _mediatorHandler.SendQuery(query);
+            var result = await _mediatorHandler.SendQuery(bookFilterModel);
 
             return new Result<EntityListResult<BookDto>>(result.CopyWithNewEntityType(_mapper.Map<List<BookDto>>(result.Entities)));
         }
