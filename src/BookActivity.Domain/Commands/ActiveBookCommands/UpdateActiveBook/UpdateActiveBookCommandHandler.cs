@@ -34,7 +34,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook
 
             activeBook.NumberPagesRead = request.NumberPagesRead;
 
-            activeBook.AddDomainEvent(new UpdateActiveBookEvent(activeBook.Id, activeBook.NumberPagesRead));
+            activeBook.AddDomainEvent(new UpdateActiveBookEvent(activeBook.Id, activeBook.NumberPagesRead, request.UserId));
             _activeBookRepository.Update(activeBook);
 
             return await Commit(_activeBookRepository.UnitOfWork).ConfigureAwait(false);

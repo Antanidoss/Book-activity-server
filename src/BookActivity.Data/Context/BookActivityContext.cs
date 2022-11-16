@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using NetDevPack.Domain;
-using NetDevPack.Mediator;
-using NetDevPack.Messaging;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
+using BookActivity.Domain.Core.Events;
+using BookActivity.Domain.Interfaces;
 
 namespace BookActivity.Infrastructure.Data.Context
 {
@@ -41,6 +41,7 @@ namespace BookActivity.Infrastructure.Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<ValidationResult>();
+            modelBuilder.Ignore<NetDevPack.Messaging.Event>();
             modelBuilder.Ignore<Event>();
 
             base.OnModelCreating(modelBuilder);
@@ -106,7 +107,7 @@ namespace BookActivity.Infrastructure.Data.Context
             domainEntities.ToList().ForEach(entity => entity.Entity.ClearDomainEvents());
 
             var tasks = domainEvents.Select(async (domainEvent) => {
-                    await mediator.PublishEvent(domainEvent);
+                    await mediator.PublishEvent(domainEvent as Event);
                 });
 
             await Task.WhenAll(tasks);

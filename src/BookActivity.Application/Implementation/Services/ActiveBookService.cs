@@ -12,11 +12,11 @@ using BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook;
 using BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Specifications.ActiveBookSpecs;
 using BookActivity.Domain.Validations;
 using FluentValidation.Results;
-using NetDevPack.Mediator;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
@@ -113,7 +113,7 @@ namespace BookActivity.Application.Implementation.Services
                         break;
                 }
 
-                activeBookHistoryData.UserId = storedEvent.User;
+                activeBookHistoryData.UserId = storedEvent.UserId.ToString();
                 activeBookHistoryDateList.Add(activeBookHistoryData);
             }
 

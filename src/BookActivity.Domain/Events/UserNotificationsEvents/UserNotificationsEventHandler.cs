@@ -29,7 +29,7 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
 
             foreach (var followedUser in user.FollowedUsers)
             {
-                followedUser.UserNotifications.Add(new UserNotification($"Пользователь {followedUser.UserName} сделал книгу \"{book.Title}\" активной", followedUser.Id, notification.IsPublic));
+                followedUser.UserNotifications.Add(new UserNotification($"Пользователь {followedUser.UserName} сделал книгу \"{book.Title}\" активной", followedUser.Id, true));
 
                 await _userManager.UpdateAsync(followedUser);
             }

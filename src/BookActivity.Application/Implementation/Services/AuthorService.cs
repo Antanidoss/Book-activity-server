@@ -1,5 +1,4 @@
-﻿using Antanidoss.Specification.Filters.Implementation;
-using Ardalis.Result;
+﻿using Ardalis.Result;
 using AutoMapper;
 using BookActivity.Application.Extensions;
 using BookActivity.Application.Interfaces.Services;
@@ -8,12 +7,11 @@ using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Domain.Commands.AuthorCommands.AddAuthor;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AuthorSpecs;
-using NetDevPack.Mediator;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BookActivity.Domain.Interfaces;
 
 namespace BookActivity.Application.Implementation.Services
 {
