@@ -27,7 +27,7 @@ namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
             BookByIdSpec bookByIdSpec = new(request.BookId);
             var book = await _bookRepository.GetBySpecAsync(bookByIdSpec);
 
-            book.AddDomainEvent(new RemoveBookEvent(book.Id));
+            book.AddDomainEvent(new RemoveBookEvent(book.Id, request.UserId));
             _bookRepository.Remove(book);
 
             return await Commit(_bookRepository.UnitOfWork).ConfigureAwait(false);

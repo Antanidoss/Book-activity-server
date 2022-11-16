@@ -31,7 +31,7 @@ namespace BookActivity.Domain.Commands.BookCommands.UpdateBook
             updatedBook.Description = request.Description;
             updatedBook.ImageData = request.ImageData;
 
-            updatedBook.AddDomainEvent(new UpdateBookEvent(updatedBook.Id, updatedBook.Title, updatedBook.Description, request.AuthorIds, updatedBook.IsPublic));
+            updatedBook.AddDomainEvent(new UpdateBookEvent(updatedBook.Id, updatedBook.Title, updatedBook.Description, request.AuthorIds, request.UserId, updatedBook.IsPublic));
             _bookRepository.Update(updatedBook);
 
             return await Commit(_bookRepository.UnitOfWork).ConfigureAwait(false);

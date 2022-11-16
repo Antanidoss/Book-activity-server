@@ -50,11 +50,11 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendCommand(addBookCommand);
         }
 
-        public async Task<ValidationResult> RemoveActiveBookAsync(Guid bookId)
+        public async Task<ValidationResult> RemoveActiveBookAsync(Guid bookId, Guid userId)
         {
             CommonValidator.ThrowExceptionIfEmpty(bookId, nameof(bookId));
 
-            RemoveBookCommand removeBookCommand = new(bookId);
+            RemoveBookCommand removeBookCommand = new(bookId, userId);
 
             return await _mediatorHandler.SendCommand(removeBookCommand).ConfigureAwait(false);
         }
