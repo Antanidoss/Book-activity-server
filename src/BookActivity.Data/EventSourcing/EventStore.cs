@@ -1,6 +1,5 @@
 ﻿using BookActivity.Domain.Core.Events;
 using BookActivity.Domain.Interfaces.Repositories;
-using NetDevPack.Messaging;
 using Newtonsoft.Json;
 
 namespace BookActivity.Infrastructure.Data.EventSourcing
@@ -14,14 +13,11 @@ namespace BookActivity.Infrastructure.Data.EventSourcing
             _eventStoreRepository = eventStoreRepository;
         }
 
-        public void Save<T>(T theEvent) where T : Event
+        public void Save<T>(T @event) where T : Event
         {
-            var serializedData = JsonConvert.SerializeObject(theEvent);
+            var serializedData = JsonConvert.SerializeObject(@event);
 
-            var storedEvent = new StoredEvent(
-                theEvent,
-                serializedData,
-                string.Empty);
+            var storedEvent = new StoredEvent(@event, serializedData);
 
             _eventStoreRepository.Save(storedEvent);
         }

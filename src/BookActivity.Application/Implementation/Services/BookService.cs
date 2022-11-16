@@ -31,11 +31,11 @@ namespace BookActivity.Application.Implementation.Services
 
         private readonly IBookRepository _bookRepository;
 
-        private readonly IMediatorHandlerWithQuery _mediatorHandler;
+        private readonly IMediatorHandler _mediatorHandler;
 
         private readonly IEventStoreRepository _eventStoreRepository;
 
-        public BookService(IMapper mapper, IBookRepository bookRepository, IMediatorHandlerWithQuery mediatorHandler, IEventStoreRepository eventStoreRepository)
+        public BookService(IMapper mapper, IBookRepository bookRepository, IMediatorHandler mediatorHandler, IEventStoreRepository eventStoreRepository)
         {
             _mapper = mapper;
             _bookRepository = bookRepository;
@@ -109,7 +109,7 @@ namespace BookActivity.Application.Implementation.Services
                         break;
                 }
 
-                bookHistoryData.UserId = storedEvent.User;
+                bookHistoryData.UserId = storedEvent.UserId.ToString();
                 bookHistoryDateList.Add(bookHistoryData);
             }
 

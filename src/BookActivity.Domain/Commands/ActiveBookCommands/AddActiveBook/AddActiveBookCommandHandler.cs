@@ -31,8 +31,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
                 activeBook.TotalNumberPages,
                 activeBook.NumberPagesRead,
                 activeBook.BookId,
-                activeBook.UserId,
-                activeBook.IsPublic));
+                activeBook.UserId));
 
             _activeBookRepository.Add(activeBook);
 

@@ -1,6 +1,4 @@
-﻿using NetDevPack.Messaging;
-
-namespace BookActivity.Domain.Core.Events
+﻿namespace BookActivity.Domain.Core.Events
 {
     public interface IEventStore
     {

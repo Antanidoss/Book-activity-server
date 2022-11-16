@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure
 {
-    internal sealed class InMemoryBus : IMediatorHandlerWithQuery
+    internal sealed class InMemoryBus : IMediatorHandler
     {
         private readonly IMediator _mediator;
 
@@ -20,7 +20,7 @@ namespace BookActivity.Infrastructure
             _eventStore = eventStore;
         }
 
-        public async Task PublishEvent<T>(T @event) where T : Event
+        public async Task PublishEvent<T>(T @event) where T : Domain.Core.Events.Event
         {
             if (!@event.MessageType.Equals("DomainNotification"))
                 _eventStore?.Save(@event);

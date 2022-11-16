@@ -2,8 +2,8 @@
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
+using BookActivity.Domain.Interfaces;
 using FluentValidation.Results;
-using NetDevPack.Mediator;
 using System.Threading.Tasks;
 
 namespace BookActivity.Application.Implementation.Services

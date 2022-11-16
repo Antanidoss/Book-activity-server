@@ -1,16 +1,18 @@
-﻿using NetDevPack.Messaging;
+﻿using BookActivity.Domain.Core.Events;
+using Newtonsoft.Json;
 using System;
 
 namespace BookActivity.Domain.Events.ActiveBookEvent
 {
-    public sealed class UpdateActiveBookEvent : Event
+    public sealed class UpdateActiveBookEvent : StoredEvent
     {
         public int NumberPagesRead { get; private set; }
 
-        public UpdateActiveBookEvent(Guid activeBookId, int numberPagesRead)
+        public UpdateActiveBookEvent(Guid activeBookId, int numberPagesRead, Guid userId)
         {
             AggregateId = activeBookId;
-            NumberPagesRead = numberPagesRead;
+            UserId = userId;
+            Data = JsonConvert.SerializeObject(new { numberPagesRead });
         }
     }
 }

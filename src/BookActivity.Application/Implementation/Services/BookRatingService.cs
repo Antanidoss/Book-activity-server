@@ -2,9 +2,9 @@
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
 using FluentValidation.Results;
-using NetDevPack.Mediator;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
