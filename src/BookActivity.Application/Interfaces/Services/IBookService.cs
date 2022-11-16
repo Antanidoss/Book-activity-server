@@ -15,7 +15,7 @@ namespace BookActivity.Application.Interfaces.Services
     public interface IBookService
     {
         Task<ValidationResult> AddActiveBookAsync(CreateBookDto createBookModel);
-        Task<ValidationResult> RemoveActiveBookAsync(Guid bookId);
+        Task<ValidationResult> RemoveActiveBookAsync(Guid bookId, Guid userId);
         Task<ValidationResult> UpdateBookAsync(UpdateBookDto updateBookModel);
         Task<Result<IEnumerable<BookDto>>> GetByBookIdsAsync(Guid[] bookIds);
         Task<Result<EntityListResult<BookDto>>> GetByFilterAsync(GetBooksByFilterQuery bookFilterModel);

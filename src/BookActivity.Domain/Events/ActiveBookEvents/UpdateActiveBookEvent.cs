@@ -1,10 +1,9 @@
 ﻿using BookActivity.Domain.Core.Events;
-using Newtonsoft.Json;
 using System;
 
 namespace BookActivity.Domain.Events.ActiveBookEvent
 {
-    public sealed class UpdateActiveBookEvent : StoredEvent
+    public sealed class UpdateActiveBookEvent : Event
     {
         public int NumberPagesRead { get; private set; }
 
@@ -12,7 +11,6 @@ namespace BookActivity.Domain.Events.ActiveBookEvent
         {
             AggregateId = activeBookId;
             UserId = userId;
-            Data = JsonConvert.SerializeObject(new { numberPagesRead });
         }
     }
 }
