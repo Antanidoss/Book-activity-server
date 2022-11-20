@@ -3,8 +3,6 @@
     public enum NoteColor
     {
         White,
-        Red,
         Blue,
-        Grean
     }
 }

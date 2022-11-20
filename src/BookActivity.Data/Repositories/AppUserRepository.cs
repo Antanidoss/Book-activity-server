@@ -50,15 +50,18 @@ namespace BookActivity.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<AppUser> GetBySpecAsync(ISpecification<AppUser> specification, params Expression<Func<AppUser, object>>[] includes)
+        public async Task<AppUser> GetBySpecAsync(ISpecification<AppUser> specification, bool forAccountOperation, params Expression<Func<AppUser, object>>[] includes)
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
 
-            return await _userManager.Users
+            var query = _userManager.Users
                 .AsNoTracking()
-                .IncludeMultiple(includes)
-                .Select(_baseSelectUser)
-                .FirstOrDefaultAsync(specification.ToExpression());
+                .IncludeMultiple(includes);
+
+            if (!forAccountOperation)
+                query = query.Select(_baseSelectUser);
+
+            return await query.FirstOrDefaultAsync(specification.ToExpression());
         }
 
         public async Task<IdentityResult> Addasync(AppUser user, string password)
