@@ -84,7 +84,7 @@ namespace BookActivity.Application.Implementation.Services
         public async Task<Result<AuthenticationResult>> PasswordSignInAsync(AuthenticationModel authenticationModel)
         {
             AppUserByEmailSpec specification = new(authenticationModel.Email);
-            var appUser = await _appUserRepository.GetBySpecAsync(specification).ConfigureAwait(false);
+            var appUser = await _appUserRepository.GetBySpecAsync(specification, forAccountOperation: true).ConfigureAwait(false);
 
             if (appUser is null)
                 return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectEmail);
