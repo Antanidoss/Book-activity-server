@@ -1,15 +1,24 @@
 ﻿using BookActivity.Domain.Core.Events;
 using System;
+using System.Text.Json.Serialization;
 
 namespace BookActivity.Domain.Events.ActiveBookEvent
 {
     public sealed class UpdateActiveBookEvent : Event
     {
+        [JsonInclude]
         public int NumberPagesRead { get; private set; }
 
-        public UpdateActiveBookEvent(Guid activeBookId, int numberPagesRead, Guid userId)
+        [JsonInclude]
+        public int CountPagesRead { get; private set; }
+
+        public UpdateActiveBookEvent() { }
+
+        public UpdateActiveBookEvent(Guid activeBookId, int newNumberPagesRead, int prevNumberPagesRead, Guid userId)
         {
             AggregateId = activeBookId;
+            NumberPagesRead = newNumberPagesRead;
+            CountPagesRead = newNumberPagesRead - prevNumberPagesRead;
             UserId = userId;
         }
     }

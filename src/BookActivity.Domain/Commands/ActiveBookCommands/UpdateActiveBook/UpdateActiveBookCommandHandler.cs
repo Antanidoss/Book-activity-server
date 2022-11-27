@@ -32,10 +32,12 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook
             if (activeBook is null)
                 AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
 
+            var prevNumberPagesRead = activeBook.NumberPagesRead;
             activeBook.NumberPagesRead = request.NumberPagesRead;
 
-            activeBook.AddDomainEvent(new UpdateActiveBookEvent(activeBook.Id, activeBook.NumberPagesRead, request.UserId));
             _activeBookRepository.Update(activeBook);
+
+            activeBook.AddDomainEvent(new UpdateActiveBookEvent(activeBook.Id, activeBook.NumberPagesRead, prevNumberPagesRead, request.UserId));
 
             return await Commit(_activeBookRepository.UnitOfWork).ConfigureAwait(false);
         }

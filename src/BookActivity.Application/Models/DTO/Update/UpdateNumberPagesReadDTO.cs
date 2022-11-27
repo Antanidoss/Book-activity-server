@@ -6,5 +6,7 @@ namespace BookActivity.Application.Models.Dto.Update
     {
         public Guid ActiveBookId { get; set; }
         public int NumberPagesRead { get; set; }
+        [System.Text.Json.Serialization.JsonIgnore]
+        public Guid UserId { get; set; }
     }
 }

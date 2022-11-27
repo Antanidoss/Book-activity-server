@@ -40,6 +40,8 @@ namespace BookActivity.Api.Controllers
         [HttpPut(ApiConstants.UpdateNumberPagesReadMethod)]
         public async Task<ActionResult> UpdateNumberPagesReadAsync([FromBody] UpdateNumberPagesReadDto updateActiveBookModel)
         {
+            updateActiveBookModel.UserId = GetCurrentUser().Id;
+
             return (await _activeBookService.UpdateActiveBookAsync(updateActiveBookModel)
                 .ConfigureAwait(false))
                 .ToActionResult();
