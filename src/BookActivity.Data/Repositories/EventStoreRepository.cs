@@ -1,4 +1,5 @@
-﻿using BookActivity.Domain.Core.Events;
+﻿using Antanidoss.Specification.Interfaces;
+using BookActivity.Domain.Core.Events;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,14 @@ namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
             return await _dB.StoredEvent
                 .AsNoTracking()
                 .Where(e => e.AggregateId == aggregateId)
+                .ToListAsync();
+        }
+
+        public async Task<IList<StoredEvent>> GetBySpecificationAsync(ISpecification<StoredEvent> specification)
+        {
+            return await _dB.StoredEvent
+                .AsNoTracking()
+                .Where(specification.ToExpression())
                 .ToListAsync();
         }
 

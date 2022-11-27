@@ -26,6 +26,7 @@ namespace BookActivity.Application
             services.AddScoped<IBookNoteService, BookNoteService>();
             services.AddScoped<IAuthorService, AuthorService>();
             services.AddScoped<IBookRatingService, BookRatingService>();
+            services.AddScoped<IActiveBookStatisticService, ActiveBookStatisticService>();
         }
 
         private void AddAutoMapper(IServiceCollection services)
