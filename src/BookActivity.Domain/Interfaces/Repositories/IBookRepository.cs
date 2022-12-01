@@ -2,6 +2,7 @@
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Models;
 using NetDevPack.Data;
+using NetDevPack.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace BookActivity.Domain.Interfaces.Repositories
 {
     public interface IBookRepository : IRepository<Book>
     {
-        Task<IEnumerable<Book>> GetByFilterAsync(FilterModel<Book> filter);
+        Task<TResult> GetByFilterAsync<TResult>(Func<IQueryable<Book>, Task<TResult>> filter, params Expression<Func<Book, object>>[] includes);
         Task<Book> GetBySpecAsync(ISpecification<Book> specification, params Expression<Func<Book, object>>[] includes);
         Task<IEnumerable<Book>> GetBySpecAsync(ISpecification<Book> specification, PaginationModel paginationModel, params Expression<Func<Book, object>>[] includes);
         Task<int> GetCountByFilterAsync(Func<IQueryable<Book>, IQueryable<Book>> filterHandler, int skip = PaginationModel.SkipDefault);

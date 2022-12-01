@@ -1,37 +1,61 @@
 ﻿using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Shared.Models;
 using MediatR;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Queries.BookQueries
 {
-    internal sealed class GetBooksByFilterQueryHandler : IRequestHandler<GetBooksByFilterQuery, EntityListResult<Book>>
+    internal sealed class GetBooksByFilterQueryHandler : IRequestHandler<GetBooksByFilterQuery, EntityListResult<SelectedBook>>
     {
         private readonly IBookRepository _bookRepository;
 
-        public GetBooksByFilterQueryHandler(IBookRepository bookRepository)
+        private readonly IFilterHandler<Book, GetBooksByFilterQuery> _filterHandler;
+
+        private readonly IFilterSelectHandler<Book, IEnumerable<SelectedBook>, GetBooksByFilterQuery> _filterSelectHandler;
+
+        public GetBooksByFilterQueryHandler(IBookRepository bookRepository, IFilterHandler<Book, GetBooksByFilterQuery> filterHandler, IFilterSelectHandler<Book, IEnumerable<SelectedBook>, GetBooksByFilterQuery> filterSelectHandler)
         {
             _bookRepository = bookRepository;
+            _filterHandler = filterHandler;
+            _filterSelectHandler = filterSelectHandler;
         }
 
-        public async Task<EntityListResult<Book>> Handle(GetBooksByFilterQuery request, CancellationToken cancellationToken)
+        public async Task<EntityListResult<SelectedBook>> Handle(GetBooksByFilterQuery request, CancellationToken cancellationToken)
         {
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
 
-            Func<IQueryable<Book>, IQueryable<Book>> filterWithPagination = (query) => query.ApplyBookFilter(request).ApplyPaginaton(request.Skip, request.Take);
-            FilterModel<Book> filterModel = new(filterWithPagination, b => b.BookRating.BookOpinions);
-            var books = await _bookRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
+            var filterWithPagination = GetFilterWithPagination(request);
+            var books = await _bookRepository.GetByFilterAsync(filterWithPagination, b => b.BookRating.BookOpinions).ConfigureAwait(false);
 
-            var booksCount = await _bookRepository.GetCountByFilterAsync(query => query.ApplyBookFilter(request)).ConfigureAwait(false);
+            var booksCount = await _bookRepository.GetCountByFilterAsync(GetFilter(request)).ConfigureAwait(false);
 
-            return new EntityListResult<Book>(books, booksCount);
+            return new EntityListResult<SelectedBook>(books, booksCount);
+        }
+
+        private Func<IQueryable<Book>, Task<IEnumerable<SelectedBook>>> GetFilterWithPagination(GetBooksByFilterQuery filterModel)
+        {
+            return async (query) =>
+            {
+                query = _filterHandler.ApplyFilter(query, filterModel);
+
+                query = query.ApplyPaginaton(filterModel.Skip, filterModel.Take);
+
+                return await _filterSelectHandler.Select(query, filterModel);
+            };
+        }
+
+        private Func<IQueryable<Book>, IQueryable<Book>> GetFilter(GetBooksByFilterQuery filterModel)
+        {
+            return (query) => _filterHandler.ApplyFilter(query, filterModel);
         }
     }
 }
