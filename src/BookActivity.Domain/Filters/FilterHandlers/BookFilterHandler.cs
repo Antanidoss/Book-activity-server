@@ -1,13 +1,14 @@
-﻿using BookActivity.Domain.Models;
+﻿using BookActivity.Domain.Interfaces;
+using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.BookQueries;
 using BookActivity.Domain.Specifications.BookSpecs;
 using System.Linq;
 
 namespace BookActivity.Domain.Filters.Handlers
 {
-    public static class BookFilterHandler
+    internal class BookFilterHandler : IFilterHandler<Book, GetBooksByFilterQuery>
     {
-        public static IQueryable<Book> ApplyBookFilter(this IQueryable<Book> query, GetBooksByFilterQuery filterModel)
+        public IQueryable<Book> ApplyFilter(IQueryable<Book> query, GetBooksByFilterQuery filterModel)
         {
             if (!string.IsNullOrEmpty(filterModel.BookTitle))
             {
@@ -23,21 +24,7 @@ namespace BookActivity.Domain.Filters.Handlers
                 query = query.Where(bookByRatingRangeSpec.ToExpression());
             }
 
-            return query.Select(b => new Book
-            {
-                Id = b.Id,
-                Title = b.Title,
-                ImageData = b.ImageData,
-                BookRating = new BookRating
-                {
-                    Id = b.BookRating.Id,
-                    BookOpinions = b.BookRating.BookOpinions.Select(r => new BookOpinion
-                    {
-                        Id = r.Id,
-                        Grade = r.Grade,
-                    }).ToList()
-                }
-            });
+            return query;
         }
     }
 }

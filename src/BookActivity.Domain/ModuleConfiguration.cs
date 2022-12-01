@@ -13,6 +13,10 @@ using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
 using BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.UserNotificationsEvents;
+using BookActivity.Domain.Filters.Handlers;
+using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Filters.SelectFilterHandlers;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries;
 using BookActivity.Domain.Queries.BookQueries;
@@ -22,6 +26,7 @@ using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 
 namespace BookActivity.Domain
 {
@@ -32,6 +37,7 @@ namespace BookActivity.Domain
             ConfigureCommandHandlers(services);
             ConfigureQueryHandlers(services);
             ConfigureEventHandlers(services);
+            ConfigureFilterHandlers(services);
 
             return services;
         }
@@ -60,9 +66,16 @@ namespace BookActivity.Domain
 
         private void ConfigureQueryHandlers(IServiceCollection services)
         {
-            services.AddScoped<IRequestHandler<GetBooksByFilterQuery, EntityListResult<Book>>, GetBooksByFilterQueryHandler>();
+            services.AddScoped<IRequestHandler<GetBooksByFilterQuery, EntityListResult<SelectedBook>>, GetBooksByFilterQueryHandler>();
 
             services.AddScoped<IRequestHandler<GetActiveBookStatisticQuery, ActiveBooksStatistic>, GetActiveBookStatisticQueryHandler>();
+        }
+
+        private void ConfigureFilterHandlers(IServiceCollection services)
+        {
+            services.AddScoped<IFilterHandler<Book, GetBooksByFilterQuery>, BookFilterHandler>();
+
+            services.AddScoped<IFilterSelectHandler<Book, IEnumerable<SelectedBook>, GetBooksByFilterQuery>, BookSelectFilterHandler>();
         }
 
         private void ConfigureEventHandlers(IServiceCollection services)

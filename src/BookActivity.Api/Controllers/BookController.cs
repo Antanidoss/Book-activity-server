@@ -43,6 +43,8 @@ namespace BookActivity.Api.Controllers
         [HttpGet(ApiConstants.GetBooksByFilterMethod)]
         public async Task<ApiResult<EntityListResult<BookDto>>> GetBooksByFilterAsync(GetBooksByFilterQuery bookFilterModel)
         {
+            bookFilterModel.UserId = GetCurrentUser().Id;
+
             return (await _bookService.GetByFilterAsync(bookFilterModel)
                 .ConfigureAwait(false))
                 .ToApiResult();
