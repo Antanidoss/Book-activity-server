@@ -14,8 +14,10 @@ using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter;
 using BookActivity.Domain.Specifications.ActiveBookSpecs;
 using BookActivity.Domain.Validations;
+using BookActivity.Shared.Models;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
@@ -40,31 +42,6 @@ namespace BookActivity.Application.Implementation.Services
             _activeBookRepository = activeBookRepository;
             _mapper = mapper;
             _eventStoreRepository = eventStoreRepository;
-        }
-
-        public async Task<Result<Guid>> AddActiveBookAsync(CreateActiveBookDto createActiveBookModel)
-        {
-            var addActiveBookCommand = _mapper.Map<AddActiveBookCommand>(createActiveBookModel);
-
-            var validationResult = await _mediatorHandler.SendCommand(addActiveBookCommand).ConfigureAwait(false);
-
-            return validationResult.ToResult(addActiveBookCommand.Id);
-        }
-
-        public async Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId)
-        {
-            CommonValidator.ThrowExceptionIfEmpty(activeBookId, nameof(activeBookId));
-
-            RemoveActiveBookCommand removeActiveBookCommand = new() { Id = activeBookId };
-
-            return await _mediatorHandler.SendCommand(removeActiveBookCommand).ConfigureAwait(false);
-        }
-
-        public async Task<ValidationResult> UpdateActiveBookAsync(UpdateNumberPagesReadDto updateActiveBookModel)
-        {
-            var updateActiveBookCommand = _mapper.Map<UpdateActiveBookCommand>(updateActiveBookModel);
-
-            return await _mediatorHandler.SendCommand(updateActiveBookCommand).ConfigureAwait(false);
         }
 
         public async Task<Result<IEnumerable<ActiveBookDto>>> GetByActiveBookIdAsync(Guid[] activeBookIds)
@@ -118,6 +95,36 @@ namespace BookActivity.Application.Implementation.Services
             }
 
             return activeBookHistoryDateList;
+        }
+
+        public async Task<EntityListResult<SelectedActiveBook>> GetByFilterAsync(GetActiveBookByFilterQuery filterModel)
+        {
+            return await _mediatorHandler.SendQuery(filterModel);
+        }
+
+        public async Task<Result<Guid>> AddActiveBookAsync(CreateActiveBookDto createActiveBookModel)
+        {
+            var addActiveBookCommand = _mapper.Map<AddActiveBookCommand>(createActiveBookModel);
+
+            var validationResult = await _mediatorHandler.SendCommand(addActiveBookCommand).ConfigureAwait(false);
+
+            return validationResult.ToResult(addActiveBookCommand.Id);
+        }
+
+        public async Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId)
+        {
+            CommonValidator.ThrowExceptionIfEmpty(activeBookId, nameof(activeBookId));
+
+            RemoveActiveBookCommand removeActiveBookCommand = new() { Id = activeBookId };
+
+            return await _mediatorHandler.SendCommand(removeActiveBookCommand).ConfigureAwait(false);
+        }
+
+        public async Task<ValidationResult> UpdateActiveBookAsync(UpdateNumberPagesReadDto updateActiveBookModel)
+        {
+            var updateActiveBookCommand = _mapper.Map<UpdateActiveBookCommand>(updateActiveBookModel);
+
+            return await _mediatorHandler.SendCommand(updateActiveBookCommand).ConfigureAwait(false);
         }
     }
 }

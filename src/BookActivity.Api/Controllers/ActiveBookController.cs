@@ -8,6 +8,8 @@ using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
 using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter;
+using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -71,12 +73,13 @@ namespace BookActivity.Api.Controllers
                 .ToApiResult();
         }
 
-        [HttpGet(ApiConstants.GetActiveBooksByCurrentUserMethod + "/{skip}/{take}")]
-        public async Task<ApiResult<IEnumerable<ActiveBookDto>>> GetActiveBooksByCurrentUserAsync(int skip, int take)
+        [HttpGet(ApiConstants.GetActiveBooksByFilterMethod)]
+        public async Task<ApiResult<EntityListResult<SelectedActiveBook>>> GetActiveBooksByFilterAsync(GetActiveBookByFilterQuery filterModel)
         {
-            var currentUserId = GetCurrentUser().Id;
+            if (filterModel.UserId == Guid.Empty)
+                filterModel.UserId = GetCurrentUser().Id;
 
-            return (await _activeBookService.GetByUserIdAsync(new PaginationModel(skip, take), currentUserId)
+            return (await _activeBookService.GetByFilterAsync(filterModel)
                 .ConfigureAwait(false))
                 .ToApiResult();
         }

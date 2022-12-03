@@ -13,13 +13,16 @@ using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
 using BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.UserNotificationsEvents;
+using BookActivity.Domain.Filters.FilterHandlers;
 using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Filters.SelectFilterHandlers;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries;
-using BookActivity.Domain.Queries.BookQueries;
+using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic;
+using BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery;
 using BookActivity.Shared.Interfaces;
 using BookActivity.Shared.Models;
 using FluentValidation.Results;
@@ -74,8 +77,10 @@ namespace BookActivity.Domain
         private void ConfigureFilterHandlers(IServiceCollection services)
         {
             services.AddScoped<IFilterHandler<Book, GetBooksByFilterQuery>, BookFilterHandler>();
+            services.AddScoped<IFilterHandler<ActiveBook, GetActiveBookByFilterQuery>, ActiveBookFilterHandler>();
 
             services.AddScoped<IFilterSelectHandler<Book, IEnumerable<SelectedBook>, GetBooksByFilterQuery>, BookSelectFilterHandler>();
+            services.AddScoped<IFilterSelectHandler<ActiveBook, IEnumerable<SelectedActiveBook>, GetActiveBookByFilterQuery>, ActiveBookSelectFilterHandler>();
         }
 
         private void ConfigureEventHandlers(IServiceCollection services)

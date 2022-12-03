@@ -1,7 +1,6 @@
 ﻿using Antanidoss.Specification.Interfaces;
 using BookActivity.Domain.Models;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Specifications.BookSpecs
@@ -12,12 +11,17 @@ namespace BookActivity.Domain.Specifications.BookSpecs
 
         public BookByTitleContainsSpec(string title)
         {
-            _title = title;
+            _title = title.ToLower();
         }
 
         public Expression<Func<Book, bool>> ToExpression()
         {
-            return b => b.Title.Contains(_title);
+            return b => IsSatisfy(b);
+        }
+
+        public bool IsSatisfy(Book book)
+        {
+            return book.Title.ToLower().Contains(_title);
         }
     }
 }

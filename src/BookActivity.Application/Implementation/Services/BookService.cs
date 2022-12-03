@@ -13,7 +13,7 @@ using BookActivity.Domain.Events.BookEvents;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Queries.BookQueries;
+using BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery;
 using BookActivity.Domain.Specifications.BookSpecs;
 using BookActivity.Domain.Validations;
 using BookActivity.Shared.Models;

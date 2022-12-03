@@ -1,14 +1,14 @@
 ﻿using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Queries.BookQueries;
+using BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Filters.SelectFilterHandlers
 {
-    internal class BookSelectFilterHandler : IFilterSelectHandler<Book, IEnumerable<SelectedBook>, GetBooksByFilterQuery>
+    internal sealed class BookSelectFilterHandler : IFilterSelectHandler<Book, IEnumerable<SelectedBook>, GetBooksByFilterQuery>
     {
         public async Task<IEnumerable<SelectedBook>> Select(IQueryable<Book> query, GetBooksByFilterQuery filterModel)
         {

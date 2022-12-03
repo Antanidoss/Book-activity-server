@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookActivity.Domain.Queries.BookQueries
+namespace BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery
 {
     internal sealed class GetBooksByFilterQueryHandler : IRequestHandler<GetBooksByFilterQuery, EntityListResult<SelectedBook>>
     {
