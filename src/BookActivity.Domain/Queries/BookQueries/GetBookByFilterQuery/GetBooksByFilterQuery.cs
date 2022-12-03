@@ -3,7 +3,7 @@ using BookActivity.Domain.Models;
 using BookActivity.Shared.Models;
 using System;
 
-namespace BookActivity.Domain.Queries.BookQueries
+namespace BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery
 {
     public sealed class GetBooksByFilterQuery : Query<EntityListResult<SelectedBook>>
     {

@@ -12,7 +12,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries
+namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic
 {
     internal sealed class GetActiveBookStatisticQueryHandler : IRequestHandler<GetActiveBookStatisticQuery, ActiveBooksStatistic>
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries
+namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic
 {
     public sealed class GetActiveBookStatisticQuery : Query<ActiveBooksStatistic>
     {

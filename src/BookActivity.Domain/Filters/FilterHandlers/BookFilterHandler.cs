@@ -1,12 +1,12 @@
 ﻿using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Queries.BookQueries;
+using BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery;
 using BookActivity.Domain.Specifications.BookSpecs;
 using System.Linq;
 
 namespace BookActivity.Domain.Filters.Handlers
 {
-    internal class BookFilterHandler : IFilterHandler<Book, GetBooksByFilterQuery>
+    internal sealed class BookFilterHandler : IFilterHandler<Book, GetBooksByFilterQuery>
     {
         public IQueryable<Book> ApplyFilter(IQueryable<Book> query, GetBooksByFilterQuery filterModel)
         {

@@ -31,6 +31,15 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = _db.Set<ActiveBook>();
         }
 
+        public async Task<TResult> GetByFilterAsync<TResult>(Func<IQueryable<ActiveBook>, Task<TResult>> filter, params Expression<Func<ActiveBook, object>>[] includes)
+        {
+            CommonValidator.ThrowExceptionIfNull(filter);
+
+            var query = _dbSet.AsNoTracking().IncludeMultiple(includes);
+
+            return await filter(query);
+        }
+
         public async Task<ActiveBook> GetBySpecAsync(ISpecification<ActiveBook> specification, params Expression<Func<ActiveBook, object>>[] includes)
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
@@ -53,13 +62,11 @@ namespace BookActivity.Infrastructure.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<int> GetCountBySpecAsync(ISpecification<ActiveBook> specification, int skip = 0)
+        public async Task<int> GetCountByFilterAsync(Func<IQueryable<ActiveBook>, IQueryable<ActiveBook>> filterHandler, int skip = 0)
         {
-            SpecificationValidator.ThrowExceptionIfNull(specification);
+            CommonValidator.ThrowExceptionIfNull(filterHandler);
 
-            return await _dbSet
-                .AsNoTracking()
-                .Where(specification.ToExpression())
+            return await filterHandler(_dbSet.AsNoTracking())
                 .ApplyPaginaton(skip)
                 .CountAsync();
         }

@@ -1,6 +1,7 @@
 ﻿using BookActivity.Application.Interfaces.Services;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries;
+using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic;
 using System;
 using System.Threading.Tasks;
 
