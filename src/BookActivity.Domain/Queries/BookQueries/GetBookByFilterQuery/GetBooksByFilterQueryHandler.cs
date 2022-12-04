@@ -47,7 +47,7 @@ namespace BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery
             {
                 query = _filterHandler.ApplyFilter(query, filterModel);
 
-                query = query.ApplyPaginaton(filterModel.Skip, filterModel.Take);
+                query = query.ApplyPaginaton(new PaginationModel(filterModel.Skip, filterModel.Take));
 
                 return await _filterSelectHandler.Select(query, filterModel);
             };
