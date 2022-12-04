@@ -2,6 +2,7 @@
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace BookActivity.Domain.Filters.SelectFilterHandlers
                 Id = b.Id,
                 Title = b.Title,
                 ImageData = b.ImageData,
-                IsActiveBook =  b.ActiveBooks.Any(a => a.UserId == filterModel.UserId),
+                IsActiveBook = filterModel.UserId == Guid.Empty ? false : b.ActiveBooks.Any(a => a.UserId == filterModel.UserId),
                 BookRating = new BookRating
                 {
                     Id = b.BookRating.Id,

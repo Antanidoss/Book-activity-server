@@ -13,19 +13,21 @@ namespace BookActivity.Domain.Filters.SelectFilterHandlers
     {
         public async Task<IEnumerable<SelectedActiveBook>> Select(IQueryable<ActiveBook> query, GetActiveBookByFilterQuery filterModel)
         {
-            return await query.Include(a => a.BookNotes).Select(a => new SelectedActiveBook
+            return query.Include(a => a.BookNotes).Select(a => new SelectedActiveBook
             {
                 Id = a.Id,
                 BookId = a.BookId,
                 BookTitle = a.Book.Title,
+                ImageData = a.Book.ImageData,
                 NumberPagesRead = a.NumberPagesRead,
                 TotalNumberPages = a.TotalNumberPages,
                 BookNotes = a.BookNotes.Select(n => new SelectedBookNote
                 {
+                    Id = n.Id,
                     Note = n.Note,
                     NoteColor = (int)n.NoteColor
                 }),
-            }).ToListAsync();
+            }).ToList();
         }
     }
 }

@@ -68,7 +68,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
                 .AsNoTracking()
                 .IncludeMultiple(includes)
                 .Where(specification?.ToExpression())
-                .ApplyPaginaton(paginationModel.Skip, paginationModel.Take)
+                .ApplyPaginaton(paginationModel)
                 .ToListAsync();
         }
 

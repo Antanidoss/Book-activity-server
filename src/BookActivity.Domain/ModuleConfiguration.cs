@@ -72,6 +72,8 @@ namespace BookActivity.Domain
             services.AddScoped<IRequestHandler<GetBooksByFilterQuery, EntityListResult<SelectedBook>>, GetBooksByFilterQueryHandler>();
 
             services.AddScoped<IRequestHandler<GetActiveBookStatisticQuery, ActiveBooksStatistic>, GetActiveBookStatisticQueryHandler>();
+
+            services.AddScoped<IRequestHandler<GetActiveBookByFilterQuery, EntityListResult<SelectedActiveBook>>, GetActiveBookByFilterQueryHandler>();
         }
 
         private void ConfigureFilterHandlers(IServiceCollection services)

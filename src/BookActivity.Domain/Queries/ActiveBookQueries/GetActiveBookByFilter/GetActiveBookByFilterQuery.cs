@@ -8,7 +8,7 @@ namespace BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter
     {
         public string BookTitle { get; set; }
         public bool WithFullRead { get; set; } = true;
-        public SortByType SortBy { get; set; } = SortByType.CreateDateDown;
+        public SortByType SortBy { get; set; } = SortByType.CreateDate;
         public Guid UserId { get; set; } 
         public int Skip { get; set; }
         public int Take { get; set; }
@@ -16,8 +16,8 @@ namespace BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter
 
     public enum SortByType
     {
-        CreateDateUp,
-        CreateDateDown,
-        UpdateDate,
+        CreateDate,
+        CreateDateDescending,
+        UpdateDateDescending,
     }
 }

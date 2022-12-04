@@ -22,22 +22,22 @@ namespace BookActivity.Domain.Filters.FilterHandlers
 
             if (!string.IsNullOrEmpty(filterModel.BookTitle))
             {
-                query = query.Include(a => a.Book);
                 BookByTitleContainsSpec bookByTitleSpec = new(filterModel.BookTitle);
+                var bookTitle = filterModel.BookTitle.Replace(" ", string.Empty).ToLower();
 
-                query = query.Where(a => bookByTitleSpec.IsSatisfy(a.Book));
+                query = query.Include(b => b.Book).Where(a => a.Book.Title.Replace(" ", string.Empty).ToLower() == bookTitle);
             }
 
             switch (filterModel.SortBy)
             {
-                case SortByType.CreateDateUp:
+                case SortByType.CreateDate:
                     query = query.OrderBy(a => a.TimeOfCreation);
                     break;
-                case SortByType.CreateDateDown:
+                case SortByType.CreateDateDescending:
                     query = query.OrderByDescending(a => a.TimeOfCreation);
                     break;
-                case SortByType.UpdateDate:
-                    query = query.OrderBy(a => a.TimeOfUpdate);
+                case SortByType.UpdateDateDescending:
+                    query = query.OrderByDescending(a => a.TimeOfUpdate);
                     break;
             }
 

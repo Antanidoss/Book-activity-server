@@ -11,7 +11,7 @@ namespace BookActivity.Domain.Specifications.BookSpecs
 
         public BookByTitleContainsSpec(string title)
         {
-            _title = title.ToLower();
+            _title = title.ToLower().Replace(" ", string.Empty);
         }
 
         public Expression<Func<Book, bool>> ToExpression()
@@ -21,7 +21,7 @@ namespace BookActivity.Domain.Specifications.BookSpecs
 
         public bool IsSatisfy(Book book)
         {
-            return book.Title.ToLower().Contains(_title);
+            return book.Title.ToLower().Replace(" ", string.Empty).Contains(_title);
         }
     }
 }

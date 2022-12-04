@@ -1,5 +1,4 @@
-﻿using BookActivity.Domain.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace BookActivity.Domain.Filters.Models
@@ -11,6 +10,7 @@ namespace BookActivity.Domain.Filters.Models
         public int NumberPagesRead { get; set; }
         public Guid BookId { get; set; }
         public string BookTitle { get; set; }
+        public byte[] ImageData { get; set; }
         public IEnumerable<SelectedBookNote> BookNotes { get; set; }
     }
 }

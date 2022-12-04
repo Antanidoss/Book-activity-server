@@ -8,7 +8,6 @@ using System.Threading;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery;
 using System.Linq;
 using BookActivity.Domain.Filters.Handlers;
 
@@ -31,7 +30,6 @@ namespace BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter
 
         public async Task<EntityListResult<SelectedActiveBook>> Handle(GetActiveBookByFilterQuery request, CancellationToken cancellationToken)
         {
-
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
 
@@ -49,7 +47,7 @@ namespace BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter
             {
                 query = _filterHandler.ApplyFilter(query, filterModel);
 
-                query = query.ApplyPaginaton(filterModel.Skip, filterModel.Take);
+                query = query.ApplyPaginaton(new PaginationModel(filterModel.Skip, filterModel.Take), withDefaultOrder: false);
 
                 return await _filterSelectHandler.Select(query, filterModel);
             };
