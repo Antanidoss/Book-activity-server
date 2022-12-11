@@ -22,6 +22,7 @@ using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic;
+using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
 using BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery;
 using BookActivity.Shared.Interfaces;
 using BookActivity.Shared.Models;
@@ -74,15 +75,19 @@ namespace BookActivity.Domain
             services.AddScoped<IRequestHandler<GetActiveBookStatisticQuery, ActiveBooksStatistic>, GetActiveBookStatisticQueryHandler>();
 
             services.AddScoped<IRequestHandler<GetActiveBookByFilterQuery, EntityListResult<SelectedActiveBook>>, GetActiveBookByFilterQueryHandler>();
+
+            services.AddScoped<IRequestHandler<GetUsersByFilterQuery, EntityListResult<SelectedAppUser>>, GetUsersByFilterQueryHandler>();
         }
 
         private void ConfigureFilterHandlers(IServiceCollection services)
         {
             services.AddScoped<IFilterHandler<Book, GetBooksByFilterQuery>, BookFilterHandler>();
             services.AddScoped<IFilterHandler<ActiveBook, GetActiveBookByFilterQuery>, ActiveBookFilterHandler>();
+            services.AddScoped<IFilterHandler<AppUser, GetUsersByFilterQuery>, AppUserFilterHandler>();
 
             services.AddScoped<IFilterSelectHandler<Book, IEnumerable<SelectedBook>, GetBooksByFilterQuery>, BookSelectFilterHandler>();
             services.AddScoped<IFilterSelectHandler<ActiveBook, IEnumerable<SelectedActiveBook>, GetActiveBookByFilterQuery>, ActiveBookSelectFilterHandler>();
+            services.AddScoped<IFilterSelectHandler<AppUser, IEnumerable<SelectedAppUser>, GetUsersByFilterQuery>, AppUserSelectFilterHandler>();
         }
 
         private void ConfigureEventHandlers(IServiceCollection services)
