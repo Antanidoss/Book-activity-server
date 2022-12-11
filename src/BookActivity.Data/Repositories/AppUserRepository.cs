@@ -1,4 +1,5 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Filters.Implementation;
+using Antanidoss.Specification.Interfaces;
 using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
@@ -36,6 +37,15 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public IUnitOfWork UnitOfWork => null;
 
+        public async Task<TResult> GetByFilterAsync<TResult>(Func<IQueryable<AppUser>, Task<TResult>> filter, params Expression<Func<AppUser, object>>[] includes)
+        {
+            CommonValidator.ThrowExceptionIfNull(filter);
+
+            var query = _userManager.Users.AsNoTracking().IncludeMultiple(includes);
+
+            return await filter(query);
+        }
+
         public async Task<IEnumerable<AppUser>> GetBySpecAsync(ISpecification<AppUser> specification, PaginationModel paginationModel, params Expression<Func<AppUser, object>>[] includes)
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
@@ -62,6 +72,13 @@ namespace BookActivity.Infrastructure.Data.Repositories
                 query = query.Select(_baseSelectUser);
 
             return await query.FirstOrDefaultAsync(specification.ToExpression());
+        }
+
+        public async Task<int> GetCountByFilterAsync(Func<IQueryable<AppUser>, IQueryable<AppUser>> filter, int skip = 0)
+        {
+            CommonValidator.ThrowExceptionIfNull(filter);
+
+            return await filter(_userManager.Users).CountAsync();
         }
 
         public async Task<IdentityResult> Addasync(AppUser user, string password)

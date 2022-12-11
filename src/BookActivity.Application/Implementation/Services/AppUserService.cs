@@ -10,11 +10,14 @@ using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Commands.AppUserCommands.AddAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser;
+using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using BookActivity.Domain.Validations;
+using BookActivity.Shared.Models;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -114,6 +117,11 @@ namespace BookActivity.Application.Implementation.Services
             return _mapper.Map<AppUserDto>(appUser);
         }
 
+        public async Task<EntityListResult<SelectedAppUser>> GetAppUserByFilter(GetUsersByFilterQuery filterModel)
+        {
+            return await _mediatorHandler.SendQuery(filterModel);
+        }
+
         private string GenerateJwtToken(string userId)
         {
             JwtSecurityTokenHandler tokenHandler = new();
@@ -129,5 +137,6 @@ namespace BookActivity.Application.Implementation.Services
 
             return tokenHandler.WriteToken(token);
         }
+
     }
 }
