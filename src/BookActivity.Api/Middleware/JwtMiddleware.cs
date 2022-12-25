@@ -1,5 +1,5 @@
 ﻿using BookActivity.Application.Interfaces.Services;
-using BookActivity.Application.Models;
+using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

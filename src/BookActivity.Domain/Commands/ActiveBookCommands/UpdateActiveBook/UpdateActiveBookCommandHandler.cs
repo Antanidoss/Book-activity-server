@@ -30,7 +30,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook
             var activeBook = await _activeBookRepository.GetBySpecAsync(specification);
 
             if (activeBook is null)
-                AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
+                AddError(ValidationErrorConstants.GetEnitityNotFoundMessage(nameof(ActiveBook)));
 
             var prevNumberPagesRead = activeBook.NumberPagesRead;
             activeBook.NumberPagesRead = request.NumberPagesRead;

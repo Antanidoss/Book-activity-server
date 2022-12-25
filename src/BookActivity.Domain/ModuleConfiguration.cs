@@ -1,4 +1,5 @@
-﻿using BookActivity.Domain.Commands.ActiveBookCommands;
+﻿using Ardalis.Result;
+using BookActivity.Domain.Commands.ActiveBookCommands;
 using BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook;
 using BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook;
 using BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook;
@@ -22,6 +23,7 @@ using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic;
+using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
 using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
 using BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery;
 using BookActivity.Shared.Interfaces;
@@ -77,6 +79,7 @@ namespace BookActivity.Domain
             services.AddScoped<IRequestHandler<GetActiveBookByFilterQuery, EntityListResult<SelectedActiveBook>>, GetActiveBookByFilterQueryHandler>();
 
             services.AddScoped<IRequestHandler<GetUsersByFilterQuery, EntityListResult<SelectedAppUser>>, GetUsersByFilterQueryHandler>();
+            services.AddScoped<IRequestHandler<AuthenticationUserQuery, Result<AuthenticationResult>>, AuthenticationUserQueryHandler>();
         }
 
         private void ConfigureFilterHandlers(IServiceCollection services)

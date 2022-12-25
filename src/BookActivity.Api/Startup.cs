@@ -1,8 +1,8 @@
 using BookActivity.Api.Common.Extension;
 using BookActivity.Api.Middleware;
 using BookActivity.Application.Configuration;
-using BookActivity.Application.Models;
 using BookActivity.Infrastructure.Configuration;
+using BookActivity.Shared.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;

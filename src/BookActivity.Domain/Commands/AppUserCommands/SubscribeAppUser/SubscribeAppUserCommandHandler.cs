@@ -1,4 +1,6 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Extensions;
+using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using FluentValidation.Results;
 using MediatR;
@@ -24,15 +26,11 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
                 return request.ValidationResult;
 
             AppUserByIdSpec specification = new(request.AppUserId);
-            var currentUser = await _appUserRepository.GetBySpecAsync(specification).ConfigureAwait(false);
+            var currentUser = await _appUserRepository.GetBySpecAsync(specification, forAccountOperation: true, u => u.Subscriptions).ConfigureAwait(false);
 
-            specification = new(request.SubscribedUserId);
-            var subscribedUser = await _appUserRepository.GetBySpecAsync(specification).ConfigureAwait(false);
+            currentUser.Subscriptions.Add(new AppUser { Id = request.SubscribedUserId});
 
-            subscribedUser.FollowedUsers.Add(currentUser);
-            await _appUserRepository.UpdateAsync(currentUser).ConfigureAwait(false);
-
-            return new ValidationResult();
+            return (await _appUserRepository.UpdateAsync(currentUser).ConfigureAwait(false)).ToValidationResult();
         }
     }
 }

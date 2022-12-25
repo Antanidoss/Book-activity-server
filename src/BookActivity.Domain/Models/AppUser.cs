@@ -10,7 +10,7 @@ namespace BookActivity.Domain.Models
         /// <summary>
         /// Relation of user with the subscription info
         /// </summary>
-        public ICollection<AppUser> FollowedUsers { get; set; }
+        public ICollection<AppUser> Subscriptions { get; set; }
 
         /// <summary>
         /// Relation of user with the book opinios
@@ -29,9 +29,8 @@ namespace BookActivity.Domain.Models
 
         public AppUser() : base()
         {
-            FollowedUsers = new List<AppUser>();
+            Subscriptions = new List<AppUser>();
             BookOpinions = new List<BookOpinion>();
-            FollowedUsers = new List<AppUser>();
             UserNotifications = new List<UserNotification>();
         }
     }

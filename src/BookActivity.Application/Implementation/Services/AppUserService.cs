@@ -1,7 +1,5 @@
-﻿using Antanidoss.Specification.Filters.Implementation;
-using Ardalis.Result;
+﻿using Ardalis.Result;
 using AutoMapper;
-using BookActivity.Application.Constants;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.Dto.Create;
@@ -13,19 +11,13 @@ using BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
+using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
 using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using BookActivity.Domain.Validations;
 using BookActivity.Shared.Models;
 using FluentValidation.Results;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BookActivity.Application.Implementation.Services
@@ -38,26 +30,11 @@ namespace BookActivity.Application.Implementation.Services
 
         private readonly IAppUserRepository _appUserRepository;
 
-        private readonly UserManager<AppUser> _userManager;
-
-        private readonly SignInManager<AppUser> _signInManager;
-
-        private readonly TokenInfo _tokenInfo;
-
-        public AppUserService(
-            IMapper mapper,
-            IMediatorHandler mediatorHandler,
-            IAppUserRepository appUserRepository,
-            UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager,
-            IOptions<TokenInfo> tokenInfo)
+        public AppUserService(IMapper mapper, IMediatorHandler mediatorHandler, IAppUserRepository appUserRepository)
         {
             _mapper = mapper;
             _mediatorHandler = mediatorHandler;
             _appUserRepository = appUserRepository;
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _tokenInfo = tokenInfo.Value;
         }
 
         public async Task<ValidationResult> AddAsync(CreateAppUserDto appUserCreateDTO)
@@ -81,30 +58,16 @@ namespace BookActivity.Application.Implementation.Services
         {
             CommonValidator.ThrowExceptionIfEmpty(updateAppUserModel.UserId, nameof(updateAppUserModel.UserId));
 
-            return await _mediatorHandler.SendCommand(_mapper.Map<UpdateAppUserCommand>(updateAppUserModel));
+            return await _mediatorHandler.SendCommand(_mapper.Map<UpdateAppUserCommand>(updateAppUserModel)).ConfigureAwait(false);
         }
 
-        public async Task<Result<AuthenticationResult>> PasswordSignInAsync(AuthenticationModel authenticationModel)
+        public async Task<Result<AuthenticationResult>> AuthenticationAsync(AuthenticationModel authenticationModel)
         {
-            AppUserByEmailSpec specification = new(authenticationModel.Email);
-            var appUser = await _appUserRepository.GetBySpecAsync(specification, forAccountOperation: true).ConfigureAwait(false);
+            CommonValidator.ThrowExceptionIfNull(authenticationModel);
 
-            if (appUser is null)
-                return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectEmail);
+            var query = _mapper.Map<AuthenticationUserQuery>(authenticationModel);
 
-            var isCorrectPassword = await _userManager.CheckPasswordAsync(appUser, authenticationModel.Password).ConfigureAwait(false);
-            if (!isCorrectPassword)
-                return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectPassword);
-
-            var signResult = await _signInManager.PasswordSignInAsync(appUser, authenticationModel.Password, authenticationModel.RememberMe, lockoutOnFailure: false)
-                .ConfigureAwait(false);
-
-            if (!signResult.Succeeded)
-                return Result<AuthenticationResult>.Error(ValidationErrorConstants.FailedSign);
-
-            string token = GenerateJwtToken(appUser.Id.ToString());
-
-            return new Result<AuthenticationResult>(new AuthenticationResult(appUser.Id, appUser.UserName, appUser.Email, token, appUser.AvatarImage));
+            return await _mediatorHandler.SendQuery(query).ConfigureAwait(false);
         }
 
         public async Task<Result<AppUserDto>> FindByIdAsync(Guid appUserId)
@@ -121,22 +84,5 @@ namespace BookActivity.Application.Implementation.Services
         {
             return await _mediatorHandler.SendQuery(filterModel);
         }
-
-        private string GenerateJwtToken(string userId)
-        {
-            JwtSecurityTokenHandler tokenHandler = new();
-            var key = Encoding.ASCII.GetBytes(_tokenInfo.SecretKey);
-            SecurityTokenDescriptor tokenDescriptor = new()
-            {
-                Subject = new ClaimsIdentity(new[] { new Claim(nameof(userId), userId.ToString()) }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
-        }
-
     }
 }

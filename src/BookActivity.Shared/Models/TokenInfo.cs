@@ -1,4 +1,4 @@
-﻿namespace BookActivity.Application.Models
+﻿namespace BookActivity.Shared.Models
 {
     public sealed class TokenInfo
     {

@@ -25,7 +25,7 @@ namespace BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser
                 return request.ValidationResult;
 
             AppUserByIdSpec specification = new(request.AppUserId);
-            var user = await _appUserRepository.GetBySpecAsync(specification).ConfigureAwait(false);
+            var user = await _appUserRepository.GetBySpecAsync(specification, forAccountOperation: true).ConfigureAwait(false);
 
             user.AvatarImage = request.AvatarImage;
             user.UserName = request.Name;
