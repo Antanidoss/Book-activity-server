@@ -45,13 +45,13 @@ namespace BookActivity.Api.Controllers
         [HttpPost(ApiConstants.AuthenticationMethod)]
         public async Task<ApiResult<AuthenticationResult>> AuthenticationAsync([FromBody] AuthenticationModel authenticationModel)
         {
-            return (await _appUserService.PasswordSignInAsync(authenticationModel)
+            return (await _appUserService.AuthenticationAsync(authenticationModel)
                 .ConfigureAwait(false))
                 .ToApiResult();
         }
 
         [HttpPut(ApiConstants.SubscribeAppUserMethod)]
-        public async Task<ActionResult> SubscribeAppUserAsync(Guid subscribedUserId)
+        public async Task<ActionResult> SubscribeAppUserAsync([FromQuery] Guid subscribedUserId)
         {
             var currentUser = GetCurrentUser();
 

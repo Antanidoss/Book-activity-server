@@ -14,6 +14,7 @@ namespace BookActivity.Domain.Filters.SelectFilterHandlers
         {
             return query.Select(u => new SelectedAppUser
             {
+                Id = u.Id,
                 UserName = u.UserName,
                 AvatarImage = u.AvatarImage,
             }).ToList();

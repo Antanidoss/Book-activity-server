@@ -5,6 +5,7 @@ using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Validations;
+using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.Extensions;
 using BookActivity.Infrastructure.Data.Validations;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +23,10 @@ namespace BookActivity.Infrastructure.Data.Repositories
     {
         private readonly UserManager<AppUser> _userManager;
 
+        private DbSet<AppUser> _dbSet;
+
+        private BookActivityContext _context;
+
         private readonly Expression<Func<AppUser, AppUser>> _baseSelectUser = a => new AppUser
         {
             Id = a.Id,
@@ -30,9 +35,11 @@ namespace BookActivity.Infrastructure.Data.Repositories
             Email = a.Email,
         };
 
-        public AppUserRepository(UserManager<AppUser> userManager)
+        public AppUserRepository(UserManager<AppUser> userManager, BookActivityContext context)
         {
+            _context = context;
             _userManager = userManager;
+            _dbSet = context.Users;
         }
 
         public IUnitOfWork UnitOfWork => null;
@@ -51,7 +58,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
             SpecificationValidator.ThrowExceptionIfNull(specification);
             CommonValidator.ThrowExceptionIfNull(paginationModel);
 
-            return await _userManager.Users
+            return await _dbSet
                 .AsNoTracking()
                 .IncludeMultiple(includes)
                 .Where(specification.ToExpression())
@@ -64,14 +71,13 @@ namespace BookActivity.Infrastructure.Data.Repositories
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
 
-            var query = _userManager.Users
-                .AsNoTracking()
+            var query = _dbSet
                 .IncludeMultiple(includes);
 
             if (!forAccountOperation)
                 query = query.Select(_baseSelectUser);
 
-            return await query.FirstOrDefaultAsync(specification.ToExpression());
+            return await query.AsNoTracking().FirstOrDefaultAsync(specification.ToExpression());
         }
 
         public async Task<int> GetCountByFilterAsync(Func<IQueryable<AppUser>, IQueryable<AppUser>> filter, int skip = 0)

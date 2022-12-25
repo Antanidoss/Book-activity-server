@@ -31,7 +31,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook
             var activeBook = await _activeBookRepository.GetBySpecAsync(specification);
 
             if (activeBook is null)
-                AddError(ValidationErrorMessage.GetEnitityNotFoundMessage(nameof(ActiveBook)));
+                AddError(ValidationErrorConstants.GetEnitityNotFoundMessage(nameof(ActiveBook)));
 
             activeBook.AddDomainEvent(new RemoveActiveBookEvent(activeBook.Id));
             _activeBookRepository.Remove(activeBook);

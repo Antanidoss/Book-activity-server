@@ -27,7 +27,7 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
             var book = await _bookRepository.GetBySpecAsync(bookByIdSpec);
             var user = await _userManager.FindByIdAsync(notification.UserId.ToString());
 
-            foreach (var followedUser in user.FollowedUsers)
+            foreach (var followedUser in user.Subscriptions)
             {
                 followedUser.UserNotifications.Add(new UserNotification($"Пользователь {followedUser.UserName} сделал книгу \"{book.Title}\" активной", followedUser.Id, true));
 
