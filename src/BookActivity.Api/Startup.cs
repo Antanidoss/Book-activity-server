@@ -1,6 +1,7 @@
 using BookActivity.Api.Common.Extension;
 using BookActivity.Api.Middleware;
 using BookActivity.Application.Configuration;
+using BookActivity.Domain.Events.UserNotificationsEvents;
 using BookActivity.Infrastructure.Configuration;
 using BookActivity.Shared.Models;
 using MediatR;
@@ -43,6 +44,7 @@ namespace BookActivity.Api
             services.Configure<TokenInfo>(Configuration.GetSection(typeof(TokenInfo).Name));
 
             services.AddCors();
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -69,6 +71,7 @@ namespace BookActivity.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<UserNotificationsHub>("/userNotificationsHub");
             });
         }
 

@@ -19,6 +19,7 @@ using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Filters.SelectFilterHandlers;
 using BookActivity.Domain.Interfaces;
+using BookActivity.Domain.Interfaces.Hubs;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries;
@@ -44,6 +45,7 @@ namespace BookActivity.Domain
             ConfigureQueryHandlers(services);
             ConfigureEventHandlers(services);
             ConfigureFilterHandlers(services);
+            ConfigureHubs(services);
 
             return services;
         }
@@ -99,6 +101,11 @@ namespace BookActivity.Domain
             services.AddScoped<INotificationHandler<UpdateActiveBookEvent>, ActiveBookEventHandler>();
             services.AddScoped<INotificationHandler<RemoveActiveBookEvent>, ActiveBookEventHandler>();
             services.AddScoped<INotificationHandler<AddActiveBookEvent>, UserNotificationsEventHandler>();
+        }
+
+        private void ConfigureHubs(IServiceCollection services)
+        {
+            services.AddScoped<IUserNotificationsHub, UserNotificationsHub>();
         }
     }
 }
