@@ -6,6 +6,5 @@ namespace BookActivity.Application.Models.Dto.Read
     {
         public Guid Id { get; set; }
         public string Description { get; set; }
-        public AppUserDto User { get; set; }
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.ActiveBookStatisticService)]
-    //[Authorize]
+    [Authorize]
     public sealed class ActiveBookStatisticController : BaseController
     {
         private readonly IActiveBookStatisticService _activeBookStatisticService;
