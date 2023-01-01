@@ -1,4 +1,4 @@
-﻿using NetDevPack.Messaging;
+﻿using BookActivity.Domain.Core.Events;
 using System;
 
 namespace BookActivity.Domain.Events.ActiveBookEvent
