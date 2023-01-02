@@ -36,7 +36,7 @@ namespace BookActivity.Domain.Models
         public BookRating BookRating { get; set; }
 
         public Book() : base() { }
-        public Book(string title, string description, bool isPublic, byte[] imageData, IEnumerable<BookAuthor> bookAuthors) : base(isPublic)
+        public Book(string title, string description, byte[] imageData, IEnumerable<BookAuthor> bookAuthors)
         {
             Title = title;
             Description = description;

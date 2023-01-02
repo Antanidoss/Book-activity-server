@@ -39,9 +39,9 @@ namespace BookActivity.Domain.Commands.BookCommands.AddBook
                 throw new NotFoundException(nameof(request.AuthorIds));
 
             var bookAuthor = request.AuthorIds.Select(a => new BookAuthor { AuthorId = a });
-            Book newBook = new(request.Title, request.Description, isPublic: true, request.ImageData, bookAuthor);
+            Book newBook = new(request.Title, request.Description, request.ImageData, bookAuthor);
 
-            newBook.AddDomainEvent(new AddBookEvent(newBook.Id, newBook.Title, newBook.Description, request.AuthorIds, newBook.IsPublic));
+            newBook.AddDomainEvent(new AddBookEvent(newBook.Id, newBook.Title, newBook.Description, request.AuthorIds));
             _bookRepository.Add(newBook);
 
             return await Commit(_bookRepository.UnitOfWork).ConfigureAwait(false);

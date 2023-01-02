@@ -4,11 +4,12 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
 {
     public sealed class SubscribeAppUserCommand : AppUserCommand
     {
+        public Guid UserIdWhoSubscribed { get; set; }
         public Guid SubscribedUserId { get; set; }
-        public SubscribeAppUserCommand(Guid appUserId, Guid subscribedUser)
+        public SubscribeAppUserCommand(Guid subscribedUserId, Guid userIdWhoSubscribed)
         {
-            AppUserId = appUserId;
-            SubscribedUserId = subscribedUser;
+            SubscribedUserId = subscribedUserId;
+            UserIdWhoSubscribed = userIdWhoSubscribed;
         }
     }
 }

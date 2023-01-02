@@ -33,7 +33,7 @@ namespace BookActivity.Domain.Models
         public ICollection<BookNote> BookNotes { get; set; }
 
         private ActiveBook() : base() { }
-        public ActiveBook(int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId, bool isPublic) : base(isPublic)
+        public ActiveBook(int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId)
         {
             TotalNumberPages = totalNumberPages;
             NumberPagesRead = numberPagesRead;

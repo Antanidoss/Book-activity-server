@@ -10,5 +10,7 @@ namespace BookActivity.Domain.Interfaces.Repositories
     public interface IUserNotificationRepository : IRepository<UserNotification>
     {
         Task<IEnumerable<UserNotification>> GetBySpecAsync(ISpecification<UserNotification> specification);
+
+        void Add(UserNotification notification);
     }
 }

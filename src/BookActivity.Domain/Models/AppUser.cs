@@ -8,9 +8,14 @@ namespace BookActivity.Domain.Models
     public sealed class AppUser : IdentityUser<Guid>, IAggregateRoot
     {
         /// <summary>
-        /// Relation of user with the subscription info
+        /// Relation of user with the subscribers info
         /// </summary>
-        public ICollection<AppUser> Subscriptions { get; set; }
+        public ICollection<Subscriber> Subscribers { get; set; }
+
+        /// <summary>
+        /// Relation of user with the subscriptions info
+        /// </summary>
+        public ICollection<Subscription> Subscriptions { get; set; }
 
         /// <summary>
         /// Relation of user with the book opinios
@@ -29,9 +34,7 @@ namespace BookActivity.Domain.Models
 
         public AppUser() : base()
         {
-            Subscriptions = new List<AppUser>();
-            BookOpinions = new List<BookOpinion>();
-            UserNotifications = new List<UserNotification>();
+            
         }
     }
 }

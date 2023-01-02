@@ -1,5 +1,4 @@
-﻿using BookActivity.Domain.Extensions;
-using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using FluentValidation.Results;
 using MediatR;
@@ -25,12 +24,12 @@ namespace BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser
                 return request.ValidationResult;
 
             AppUserByIdSpec specification = new(request.AppUserId);
-            var user = await _appUserRepository.GetBySpecAsync(specification, forAccountOperation: true).ConfigureAwait(false);
+            var user = await _appUserRepository.GetForUpdateBySpecAsync(specification, forAccountOperation: true).ConfigureAwait(false);
 
             user.AvatarImage = request.AvatarImage;
             user.UserName = request.Name;
 
-            return (await _appUserRepository.UpdateAsync(user)).ToValidationResult();
+            return await Commit(_appUserRepository.UnitOfWork);
         }
     }
 }
