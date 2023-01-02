@@ -49,7 +49,7 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfEmpty(currentUserId, nameof(currentUserId));
             CommonValidator.ThrowExceptionIfEmpty(subscribedUserId, nameof(subscribedUserId));
 
-            SubscribeAppUserCommand subscribeAppUserCommand = new(currentUserId, subscribedUserId);
+            SubscribeAppUserCommand subscribeAppUserCommand = new(subscribedUserId, currentUserId);
 
             return await _mediatorHandler.SendCommand(subscribeAppUserCommand).ConfigureAwait(false);
         }

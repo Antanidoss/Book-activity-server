@@ -4,7 +4,6 @@ using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,6 +30,11 @@ namespace BookActivity.Infrastructure.Data.Repositories
                 .AsNoTracking()
                 .Where(specification.ToExpression())
                 .ToListAsync();
+        }
+
+        public void Add(UserNotification notification)
+        {
+            _context.Add(notification);
         }
 
         public void Dispose()

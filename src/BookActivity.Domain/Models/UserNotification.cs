@@ -17,7 +17,7 @@ namespace BookActivity.Domain.Models
 
         private UserNotification() : base() { }
 
-        public UserNotification(string description, Guid userId, bool isPublic) : base(isPublic)
+        public UserNotification(string description, Guid userId)
         {
             Description = description;
             UserId = userId;

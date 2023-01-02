@@ -30,7 +30,7 @@ namespace BookActivity.Domain.Models
         {
             Id = authorId;
         }
-        public Author(string firstName, string surname, string patronymic) : base(true)
+        public Author(string firstName, string surname, string patronymic)
         {
             FirstName = firstName;
             Surname = surname;

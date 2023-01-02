@@ -15,15 +15,6 @@ namespace BookActivity.Domain.Models
         /// </summary>
         public DateTime TimeOfUpdate { get; set; }
 
-        /// <summary>
-        /// This entity can be shown to the user
-        /// </summary>
-        public bool IsPublic { get; set; }
-
         protected BaseEntity() { }
-        public BaseEntity(bool isPublic)
-        {
-            IsPublic = isPublic;
-        }
     }
 }

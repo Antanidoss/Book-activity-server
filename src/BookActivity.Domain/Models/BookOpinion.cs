@@ -30,7 +30,7 @@ namespace BookActivity.Domain.Models
         public const int GradeMax = 5;
 
         public BookOpinion() : base() { }
-        public BookOpinion(float grade, string description, Guid userId, bool isPublic) : base(isPublic)
+        public BookOpinion(float grade, string description, Guid userId)
         {
             Grade = grade;
             Description = description;

@@ -1,5 +1,4 @@
-﻿using Antanidoss.Specification.Filters.Implementation;
-using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Interfaces;
 using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
@@ -42,7 +41,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = context.Users;
         }
 
-        public IUnitOfWork UnitOfWork => null;
+        public IUnitOfWork UnitOfWork => _context;
 
         public async Task<TResult> GetByFilterAsync<TResult>(Func<IQueryable<AppUser>, Task<TResult>> filter, params Expression<Func<AppUser, object>>[] includes)
         {
@@ -71,13 +70,24 @@ namespace BookActivity.Infrastructure.Data.Repositories
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
 
-            var query = _dbSet
-                .IncludeMultiple(includes);
+            var query = _dbSet.IncludeMultiple(includes);
 
             if (!forAccountOperation)
                 query = query.Select(_baseSelectUser);
 
             return await query.AsNoTracking().FirstOrDefaultAsync(specification.ToExpression());
+        }
+
+        public async Task<AppUser> GetForUpdateBySpecAsync(ISpecification<AppUser> specification, bool forAccountOperation = false, params Expression<Func<AppUser, object>>[] includes)
+        {
+            SpecificationValidator.ThrowExceptionIfNull(specification);
+
+            var query = _dbSet.IncludeMultiple(includes);
+
+            if (!forAccountOperation)
+                query = query.Select(_baseSelectUser);
+
+            return await query.FirstOrDefaultAsync(specification.ToExpression());
         }
 
         public async Task<int> GetCountByFilterAsync(Func<IQueryable<AppUser>, IQueryable<AppUser>> filter, int skip = 0)
@@ -87,6 +97,11 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await filter(_userManager.Users).CountAsync();
         }
 
+        public async Task<bool> CheckExistBySpecAsync(ISpecification<AppUser> specification)
+        {
+            return await _dbSet.AnyAsync(specification.ToExpression());
+        }
+
         public async Task<IdentityResult> Addasync(AppUser user, string password)
         {
             CommonValidator.ThrowExceptionIfNull(user);
@@ -94,11 +109,16 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await _userManager.CreateAsync(user, password);
         }
 
-        public async Task<IdentityResult> UpdateAsync(AppUser user)
+        public async Task<IdentityResult> UpdateAccountDataAsync(AppUser user)
         {
             CommonValidator.ThrowExceptionIfNull(user);
 
             return await _userManager.UpdateAsync(user);
+        }
+
+        public void Update(AppUser appUser)
+        {
+            _context.Update(appUser);
         }
 
         public void Dispose()

@@ -23,6 +23,8 @@ namespace BookActivity.Infrastructure.Data.Context
         public DbSet<BookNote> BookNotes { get; set; }
         public DbSet<BookRating> BookRatings { get; set; }
         public DbSet<UserNotification> UserNotifications { get; set; }
+        public DbSet<Subscriber> Subscribers { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
 
         private readonly IMediatorHandler _mediatorHandler;
 
@@ -44,6 +46,12 @@ namespace BookActivity.Infrastructure.Data.Context
             modelBuilder.Ignore<ValidationResult>();
             modelBuilder.Ignore<NetDevPack.Messaging.Event>();
             modelBuilder.Ignore<Event>();
+
+            modelBuilder.Entity<AppUser>(b =>
+            {
+                b.HasMany(u => u.Subscriptions).WithOne(s => s.UserWhoSubscribed).HasForeignKey(s => s.UserIdWhoSubscribed).OnDelete(DeleteBehavior.ClientSetNull);
+                b.HasMany(u => u.Subscribers).WithOne(s => s.SubscribedUser).HasForeignKey(s => s.SubscribedUserId).OnDelete(DeleteBehavior.ClientSetNull);
+            });
 
             base.OnModelCreating(modelBuilder);
         }
