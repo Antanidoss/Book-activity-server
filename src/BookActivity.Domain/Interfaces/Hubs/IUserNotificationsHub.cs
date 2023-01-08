@@ -1,4 +1,4 @@
-﻿using BookActivity.Domain.Events.UserNotificationsEvents;
+﻿using BookActivity.Domain.Hubs;
 using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Interfaces.Hubs

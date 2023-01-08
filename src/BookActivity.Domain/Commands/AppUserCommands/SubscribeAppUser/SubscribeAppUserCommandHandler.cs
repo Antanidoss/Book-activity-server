@@ -40,7 +40,7 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
                 throw new Exception();
 
             _subscriptionRepository.Add(new Subscription { UserIdWhoSubscribed = request.UserIdWhoSubscribed, SubscribedUserId = request.SubscribedUserId });
-            _subscriberRepository.Add(new Subscriber { UserIdWhoSubscribed = request.SubscribedUserId, SubscribedUserId = request.UserIdWhoSubscribed });
+            _subscriberRepository.Add(new Subscriber { UserIdWhoSubscribed = request.UserIdWhoSubscribed, SubscribedUserId = request.SubscribedUserId });
 
             return await Commit(_subscriberRepository.UnitOfWork);
         }
