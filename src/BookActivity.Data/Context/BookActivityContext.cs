@@ -50,7 +50,7 @@ namespace BookActivity.Infrastructure.Data.Context
             modelBuilder.Entity<AppUser>(b =>
             {
                 b.HasMany(u => u.Subscriptions).WithOne(s => s.UserWhoSubscribed).HasForeignKey(s => s.UserIdWhoSubscribed).OnDelete(DeleteBehavior.ClientSetNull);
-                b.HasMany(u => u.Subscribers).WithOne(s => s.SubscribedUser).HasForeignKey(s => s.SubscribedUserId).OnDelete(DeleteBehavior.ClientSetNull);
+                b.HasMany(u => u.Subscribers).WithOne(s => s.UserWhoSubscribed).HasForeignKey(s => s.UserIdWhoSubscribed).OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             base.OnModelCreating(modelBuilder);

@@ -4,7 +4,7 @@ namespace BookActivity.Domain.Models
 {
     public sealed class Subscriber : BaseEntity
     {
-        //public AppUser UserWhoSubscribed { get; set; }
+        public AppUser UserWhoSubscribed { get; set; }
         public Guid UserIdWhoSubscribed { get; set; }
         public AppUser SubscribedUser { get; set; }
         public Guid SubscribedUserId { get; set; }

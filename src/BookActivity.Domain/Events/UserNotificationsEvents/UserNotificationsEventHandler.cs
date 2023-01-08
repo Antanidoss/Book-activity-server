@@ -1,11 +1,12 @@
 ﻿using BookActivity.Domain.Events.ActiveBookEvent;
+using BookActivity.Domain.Hubs;
 using BookActivity.Domain.Interfaces.Hubs;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using BookActivity.Domain.Specifications.BookSpecs;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,17 +39,21 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
             string notificationMessage = $"{user.UserName} has made the book \"{book.Title}\" active";
 
             foreach (var followedUser in user.Subscribers)
-            {
                 _userNotificationRepository.Add(new UserNotification(notificationMessage, notification.UserId));
 
-                await _userNotificationsHub.Send(new UserNotificationModel(
-                    notification.UserId,
-                    followedUser.Id,
-                    notificationMessage
-                ));
-            }
+            var success = await _userNotificationRepository.UnitOfWork.Commit();
 
-            await _userNotificationRepository.UnitOfWork.Commit();
+            if (success)
+            {
+                foreach (var followedUser in user.Subscribers)
+                {
+                    await _userNotificationsHub.Send(new UserNotificationModel(
+                        Guid.Empty,
+                        followedUser.SubscribedUserId,
+                        notificationMessage
+                    ));
+                }
+            }
         }
     }
 }

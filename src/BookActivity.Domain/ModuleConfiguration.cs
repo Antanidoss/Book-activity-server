@@ -18,6 +18,7 @@ using BookActivity.Domain.Filters.FilterHandlers;
 using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Filters.SelectFilterHandlers;
+using BookActivity.Domain.Hubs;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Hubs;
 using BookActivity.Domain.Models;
@@ -105,7 +106,7 @@ namespace BookActivity.Domain
 
         private void ConfigureHubs(IServiceCollection services)
         {
-            services.AddScoped<IUserNotificationsHub, UserNotificationsHub>();
+            services.AddSingleton<IUserNotificationsHub, UserNotificationsHub>();
         }
     }
 }
