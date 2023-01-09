@@ -20,6 +20,7 @@
 - .NET DevPack.Identity
 - FluentValidator
 - Swagger
+- SignalR
 
 # Architecture:
 - Full architecture with responsibility separation concerns, SOLID and Clean Code
