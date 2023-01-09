@@ -32,3 +32,18 @@
 - Event Sourcing
 - Unit of Work
 - Repository
+
+# How to start a project
+
+#### 1.Clone the repository
+---
+#### 2. At the root directory, restore required packages by running:
+### `dotnet restore`
+---
+#### 3. Next, build the solution by running:
+### `dotnet build`
+---
+#### 4. Once the front end has started, within the \src\BookActivity.Api directory, launch the back end by running:
+### `dotnet run`
+---
+#### 5. Copy the address and go to the site
