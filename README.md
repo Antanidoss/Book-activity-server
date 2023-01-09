@@ -32,6 +32,3 @@
 - Event Sourcing
 - Unit of Work
 - Repository
-
-More detailed information about the project can be found in the wiki in Russian.
-The project is under development and the README.md may change frequently.
