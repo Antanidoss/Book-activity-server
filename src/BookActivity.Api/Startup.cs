@@ -1,7 +1,7 @@
 using BookActivity.Api.Common.Extension;
 using BookActivity.Api.Middleware;
 using BookActivity.Application.Configuration;
-using BookActivity.Domain.Events.UserNotificationsEvents;
+using BookActivity.Domain.Hubs;
 using BookActivity.Infrastructure.Configuration;
 using BookActivity.Shared.Models;
 using MediatR;
