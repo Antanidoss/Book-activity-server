@@ -39,20 +39,14 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
             string notificationMessage = $"{user.UserName} has made the book \"{book.Title}\" active";
 
             foreach (var followedUser in user.Subscribers)
-                _userNotificationRepository.Add(new UserNotification(notificationMessage, notification.UserId));
-
-            var success = await _userNotificationRepository.UnitOfWork.Commit();
-
-            if (success)
             {
-                foreach (var followedUser in user.Subscribers)
-                {
-                    await _userNotificationsHub.Send(new UserNotificationModel(
+                _userNotificationRepository.Add(new UserNotification(notificationMessage, followedUser.UserIdWhoSubscribed));
+
+                await _userNotificationsHub.Send(new UserNotificationModel(
                         Guid.Empty,
-                        followedUser.SubscribedUserId,
+                        followedUser.UserIdWhoSubscribed,
                         notificationMessage
                     ));
-                }
             }
         }
     }
