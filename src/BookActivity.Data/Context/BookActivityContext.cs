@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using BookActivity.Domain.Core.Events;
 using BookActivity.Domain.Interfaces;
+using BookActivity.Infrastructure.Data.Context.Configuration;
 
 namespace BookActivity.Infrastructure.Data.Context
 {
@@ -41,21 +42,6 @@ namespace BookActivity.Infrastructure.Data.Context
             return success;
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Ignore<ValidationResult>();
-            modelBuilder.Ignore<NetDevPack.Messaging.Event>();
-            modelBuilder.Ignore<Event>();
-
-            modelBuilder.Entity<AppUser>(b =>
-            {
-                b.HasMany(u => u.Subscriptions).WithOne(s => s.UserWhoSubscribed).HasForeignKey(s => s.UserIdWhoSubscribed).OnDelete(DeleteBehavior.ClientSetNull);
-                b.HasMany(u => u.Subscribers).WithOne(s => s.SubscribedUser).HasForeignKey(s => s.SubscribedUserId).OnDelete(DeleteBehavior.ClientSetNull);
-            });
-
-            base.OnModelCreating(modelBuilder);
-        }
-
         public override int SaveChanges()
         {
             UpdateCreationAndUpdateTime();
@@ -63,11 +49,24 @@ namespace BookActivity.Infrastructure.Data.Context
             return base.SaveChanges();
         }
 
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             UpdateCreationAndUpdateTime();
 
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Ignore<ValidationResult>();
+            modelBuilder.Ignore<NetDevPack.Messaging.Event>();
+            modelBuilder.Ignore<Event>();
+
+            modelBuilder.ApplyConfiguration(new AppUserConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriberConfiguration());
+            modelBuilder.ApplyConfiguration(new SubscriptionConfiguration());
+
+            base.OnModelCreating(modelBuilder);
         }
 
         private void UpdateCreationAndUpdateTime()
@@ -116,8 +115,8 @@ namespace BookActivity.Infrastructure.Data.Context
             domainEntities.ToList().ForEach(entity => entity.Entity.ClearDomainEvents());
 
             var tasks = domainEvents.Select(async (domainEvent) => {
-                    await mediator.PublishEvent(domainEvent as Event);
-                });
+                await mediator.PublishEvent(domainEvent as Event);
+            });
 
             await Task.WhenAll(tasks);
         }
