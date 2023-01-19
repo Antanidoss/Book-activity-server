@@ -1,4 +1,4 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Models;
 using System;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Specifications.AppUserSpecs
 {
-    public sealed class AppUserByEmailSpec : ISpecification<AppUser>
+    public sealed class AppUserByEmailSpec : Specification<AppUser>
     {
         private readonly string _email;
 
@@ -15,7 +15,7 @@ namespace BookActivity.Domain.Specifications.AppUserSpecs
             _email = email;
         }
 
-        public Expression<Func<AppUser, bool>> ToExpression()
+        public override Expression<Func<AppUser, bool>> ToExpression()
         {
             return x => x.Email == _email;
         }

@@ -1,11 +1,11 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Models;
 using System;
 using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Specifications.AppUserSpecs
 {
-    public sealed class AppUserByNameSpec : ISpecification<AppUser>
+    public sealed class AppUserByNameSpec : Specification<AppUser>
     {
         private readonly string _name;
 
@@ -14,7 +14,7 @@ namespace BookActivity.Domain.Specifications.AppUserSpecs
             _name = name;
         }
 
-        public Expression<Func<AppUser, bool>> ToExpression()
+        public override Expression<Func<AppUser, bool>> ToExpression()
         {
             return a => a.UserName.Contains(_name);
         }

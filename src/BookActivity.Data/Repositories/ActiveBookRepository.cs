@@ -1,4 +1,4 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
@@ -40,24 +40,24 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await filter(query);
         }
 
-        public async Task<ActiveBook> GetBySpecAsync(ISpecification<ActiveBook> specification, params Expression<Func<ActiveBook, object>>[] includes)
+        public async Task<ActiveBook> GetBySpecAsync(Specification<ActiveBook> specification, params Expression<Func<ActiveBook, object>>[] includes)
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
 
             return await _dbSet
                 .AsNoTracking()
                 .IncludeMultiple(includes)
-                .FirstOrDefaultAsync(specification.ToExpression());
+                .FirstOrDefaultAsync(specification);
         }
 
-        public async Task<IEnumerable<ActiveBook>> GetBySpecAsync(ISpecification<ActiveBook> specification, PaginationModel paginationModel, params Expression<Func<ActiveBook, object>>[] includes)
+        public async Task<IEnumerable<ActiveBook>> GetBySpecAsync(Specification<ActiveBook> specification, PaginationModel paginationModel, params Expression<Func<ActiveBook, object>>[] includes)
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
 
             return await _dbSet
                 .AsNoTracking()
                 .IncludeMultiple(includes)
-                .Where(specification.ToExpression())
+                .Where(specification)
                 .ApplyPaginaton(paginationModel)
                 .ToListAsync();
         }

@@ -1,4 +1,4 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
@@ -40,26 +40,26 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await filter(query);
         }
 
-        public async Task<Book> GetBySpecAsync(ISpecification<Book> specification)
+        public async Task<Book> GetBySpecAsync(Specification<Book> specification)
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
 
             return await _dbSet
                 .AsNoTracking()
-                .FirstOrDefaultAsync(specification.ToExpression());
+                .FirstOrDefaultAsync(specification);
         }
 
-        public async Task<Book> GetBySpecAsync(ISpecification<Book> specification, params Expression<Func<Book, object>>[] includes)
+        public async Task<Book> GetBySpecAsync(Specification<Book> specification, params Expression<Func<Book, object>>[] includes)
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
 
             return await _dbSet
                 .AsNoTracking()
                 .IncludeMultiple(includes)
-                .FirstOrDefaultAsync(specification.ToExpression());
+                .FirstOrDefaultAsync(specification);
         }
 
-        public async Task<IEnumerable<Book>> GetBySpecAsync(ISpecification<Book> specification, PaginationModel paginationModel, params Expression<Func<Book, object>>[] includes)
+        public async Task<IEnumerable<Book>> GetBySpecAsync(Specification<Book> specification, PaginationModel paginationModel, params Expression<Func<Book, object>>[] includes)
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
             CommonValidator.ThrowExceptionIfNull(paginationModel);
@@ -67,7 +67,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await _dbSet
                 .AsNoTracking()
                 .IncludeMultiple(includes)
-                .Where(specification?.ToExpression())
+                .Where(specification)
                 .ApplyPaginaton(paginationModel)
                 .ToListAsync();
         }

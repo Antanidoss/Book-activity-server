@@ -1,11 +1,11 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Models;
 using System;
 using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Specifications.BookSpecs
 {
-    public sealed class BookByTitleContainsSpec : ISpecification<Book>
+    public sealed class BookByTitleContainsSpec : Specification<Book>
     {
         private readonly string _title;
 
@@ -14,7 +14,7 @@ namespace BookActivity.Domain.Specifications.BookSpecs
             _title = title.ToLower().Replace(" ", string.Empty);
         }
 
-        public Expression<Func<Book, bool>> ToExpression()
+        public override Expression<Func<Book, bool>> ToExpression()
         {
             return b => IsSatisfy(b);
         }

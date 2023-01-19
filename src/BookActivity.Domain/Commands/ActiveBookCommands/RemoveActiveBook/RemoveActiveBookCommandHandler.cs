@@ -1,5 +1,4 @@
-﻿using Antanidoss.Specification.Filters.Implementation;
-using BookActivity.Domain.Constants;
+﻿using BookActivity.Domain.Constants;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;

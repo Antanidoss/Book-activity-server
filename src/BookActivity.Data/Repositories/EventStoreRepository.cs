@@ -1,4 +1,4 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Core.Events;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Infrastructure.Data.Context;
@@ -27,11 +27,11 @@ namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
                 .ToListAsync();
         }
 
-        public async Task<IList<StoredEvent>> GetBySpecificationAsync(ISpecification<StoredEvent> specification)
+        public async Task<IList<StoredEvent>> GetBySpecificationAsync(Specification<StoredEvent> specification)
         {
             return await _dB.StoredEvent
                 .AsNoTracking()
-                .Where(specification.ToExpression())
+                .Where(specification)
                 .ToListAsync();
         }
 

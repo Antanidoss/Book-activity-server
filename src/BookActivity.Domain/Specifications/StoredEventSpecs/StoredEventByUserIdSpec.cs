@@ -1,11 +1,11 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Core.Events;
 using System;
 using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Specifications.StoredEventSpecs
 {
-    public sealed class StoredEventByUserIdSpec : ISpecification<StoredEvent>
+    public sealed class StoredEventByUserIdSpec : Specification<StoredEvent>
     {
         private readonly Guid _userId;
 
@@ -14,7 +14,7 @@ namespace BookActivity.Domain.Specifications.StoredEventSpecs
             _userId = userId;
         }
 
-        public Expression<Func<StoredEvent, bool>> ToExpression()
+        public override Expression<Func<StoredEvent, bool>> ToExpression()
         {
             return e => e.UserId == _userId;
         }

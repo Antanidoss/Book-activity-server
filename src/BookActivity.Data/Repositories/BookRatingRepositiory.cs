@@ -1,4 +1,4 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
@@ -23,13 +23,13 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = _db.Set<BookRating>();
         }
 
-        public async Task<BookRating> GetBySpecAsync(ISpecification<BookRating> specification)
+        public async Task<BookRating> GetBySpecAsync(Specification<BookRating> specification)
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
 
             return await _dbSet
                 .AsNoTracking()
-                .FirstOrDefaultAsync(specification.ToExpression());
+                .FirstOrDefaultAsync(specification);
         }
 
         public void Dispose()
