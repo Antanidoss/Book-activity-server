@@ -1,4 +1,4 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Models;
 using System;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Specifications.BookSpecs
 {
-    public sealed class BookByRatingRange : ISpecification<Book>
+    public sealed class BookByRatingRange : Specification<Book>
     {
         private readonly float _averageRatingFrom;
 
@@ -18,7 +18,7 @@ namespace BookActivity.Domain.Specifications.BookSpecs
             _averageRatingTo = averageRatingTo;
         }
 
-        public Expression<Func<Book, bool>> ToExpression()
+        public override Expression<Func<Book, bool>> ToExpression()
         {
             return b => _averageRatingFrom <= b.BookRating.BookOpinions.Average(o => o.Grade) && _averageRatingTo >= b.BookRating.BookOpinions.Average(o => o.Grade);
         }

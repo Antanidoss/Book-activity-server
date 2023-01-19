@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Antanidoss.Specification.Interfaces;
+using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Validations;
@@ -36,35 +36,35 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await filterHandler(_dbSet).ToListAsync();
         }
 
-        public async Task<IEnumerable<Author>> GetBySpecAsync(ISpecification<Author> specification, PaginationModel paginationModel)
+        public async Task<IEnumerable<Author>> GetBySpecAsync(Specification<Author> specification, PaginationModel paginationModel)
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
             CommonValidator.ThrowExceptionIfNull(paginationModel);
 
             return await _dbSet
                 .AsNoTracking()
-                .Where(specification.ToExpression())
+                .Where(specification)
                 .ApplyPaginaton(paginationModel)
                 .ToListAsync();
         }
 
-        public async Task<Author> GetBySpecAsync(ISpecification<Author> specification)
+        public async Task<Author> GetBySpecAsync(Specification<Author> specification)
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
 
             return await _dbSet
                 .AsNoTracking()
-                .FirstOrDefaultAsync(specification.ToExpression());
+                .FirstOrDefaultAsync(specification);
         }
 
-        public async Task<int> GetCountBySpecAsync(ISpecification<Author> specification, int skip = 0)
+        public async Task<int> GetCountBySpecAsync(Specification<Author> specification, int skip = 0)
         {
             SpecificationValidator.ThrowExceptionIfNull(specification);
 
             return await _dbSet
                 .AsNoTracking()
                 .ApplyPaginaton(skip)
-                .Where(specification.ToExpression())
+                .Where(specification)
                 .CountAsync();
         }
 

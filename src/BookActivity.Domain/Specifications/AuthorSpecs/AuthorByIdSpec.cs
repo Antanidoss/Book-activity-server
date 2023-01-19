@@ -1,4 +1,4 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Models;
 using System;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Specifications.AuthorSpecs
 {
-    public sealed class AuthorByIdSpec : ISpecification<Author>
+    public sealed class AuthorByIdSpec : Specification<Author>
     {
         private readonly Guid[] _authorIds;
 
@@ -15,7 +15,7 @@ namespace BookActivity.Domain.Specifications.AuthorSpecs
             _authorIds = authorIds;
         }
 
-        public Expression<Func<Author, bool>> ToExpression()
+        public override Expression<Func<Author, bool>> ToExpression()
         {
             return a => _authorIds.Contains(a.Id);
         }

@@ -1,12 +1,12 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Models;
 using System;
 using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Specifications.AppUserSpecs
 {
-    public sealed class AppUserByIdSpec : ISpecification<AppUser>
-    {
+    public sealed class AppUserByIdSpec : Specification<AppUser>
+    { 
         private readonly Guid _appUserId;
 
         public AppUserByIdSpec(Guid appUserId)
@@ -14,7 +14,7 @@ namespace BookActivity.Domain.Specifications.AppUserSpecs
             _appUserId = appUserId;
         }
 
-        public Expression<Func<AppUser, bool>> ToExpression()
+        public override Expression<Func<AppUser, bool>> ToExpression()
         {
             return a => a.Id == _appUserId;
         }

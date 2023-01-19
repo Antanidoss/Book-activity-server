@@ -1,4 +1,4 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
@@ -24,11 +24,11 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public IUnitOfWork UnitOfWork => _context;
 
-        public async Task<IEnumerable<UserNotification>> GetBySpecAsync(ISpecification<UserNotification> specification)
+        public async Task<IEnumerable<UserNotification>> GetBySpecAsync(Specification<UserNotification> specification)
         {
             return await _dbSet
                 .AsNoTracking()
-                .Where(specification.ToExpression())
+                .Where(specification)
                 .ToListAsync();
         }
 

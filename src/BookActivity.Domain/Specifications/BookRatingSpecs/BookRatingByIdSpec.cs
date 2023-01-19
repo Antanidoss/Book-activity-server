@@ -1,11 +1,11 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Models;
 using System;
 using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Specifications.BookRatingSpecs
 {
-    public sealed class BookRatingByIdSpec : ISpecification<BookRating>
+    public sealed class BookRatingByIdSpec : Specification<BookRating>
     {
         private readonly Guid _bookRatingId;
 
@@ -14,7 +14,7 @@ namespace BookActivity.Domain.Specifications.BookRatingSpecs
             _bookRatingId = bookRatingId;
         }
 
-        public Expression<Func<BookRating, bool>> ToExpression()
+        public override Expression<Func<BookRating, bool>> ToExpression()
         {
             return r => r.Id == _bookRatingId;
         }

@@ -25,7 +25,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
 
         public async Task<ActiveBooksStatistic> Handle(GetActiveBookStatisticQuery request, CancellationToken cancellationToken)
         {
-            var specificatione = new StoredEventByMessageTypeSpec(EventMessageTypeConstants.UpdateActiveBook).And(new StoredEventByUserIdSpec(request.AppUserId));
+            var specificatione = new StoredEventByMessageTypeSpec(EventMessageTypeConstants.UpdateActiveBook) & new StoredEventByUserIdSpec(request.AppUserId);
 
             var usersReadInfos = (await _eventStoreRepository.GetBySpecificationAsync(specificatione))
                 .Select(e => JsonSerializer.Deserialize<UpdateActiveBookEvent>(e.Data));

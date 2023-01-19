@@ -1,11 +1,11 @@
-﻿using Antanidoss.Specification.Interfaces;
+﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Core.Events;
 using System;
 using System.Linq.Expressions;
 
 namespace BookActivity.Domain.Specifications.StoredEventSpecs
 {
-    public sealed class StoredEventByMessageTypeSpec : ISpecification<StoredEvent>
+    public sealed class StoredEventByMessageTypeSpec : Specification<StoredEvent>
     {
         private readonly string _messageType;
 
@@ -14,7 +14,7 @@ namespace BookActivity.Domain.Specifications.StoredEventSpecs
             _messageType = messageType;
         }
 
-        public Expression<Func<StoredEvent, bool>> ToExpression()
+        public override Expression<Func<StoredEvent, bool>> ToExpression()
         {
             return e => e.MessageType == _messageType;
         }
