@@ -3,6 +3,7 @@ using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.EventSourcing;
+using BookActivity.Infrastructure.Data.Intefaces;
 using BookActivity.Infrastructure.Data.Repositories;
 using BookActivity.Infrastructure.Data.Repositories.EventSourcing;
 using BookActivity.Shared.Interfaces;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data
 {
@@ -45,14 +47,25 @@ namespace BookActivity.Infrastructure.Data
 
         public void CreateDatabasesIfNotExist(IServiceScope serviceScope)
         {
-            CreateDatabasesIfNotExist(serviceScope.ServiceProvider.GetRequiredService<BookActivityContext>());
-            CreateDatabasesIfNotExist(serviceScope.ServiceProvider.GetRequiredService<BookActivityEventStoreContext>());
+            CreateDatabasesIfNotExist(serviceScope.ServiceProvider.GetRequiredService<BookActivityContext>(), serviceScope.ServiceProvider);
+            CreateDatabasesIfNotExist(serviceScope.ServiceProvider.GetRequiredService<BookActivityEventStoreContext>(), serviceScope.ServiceProvider);
         }
 
-        private void CreateDatabasesIfNotExist(DbContext context)
+        private void CreateDatabasesIfNotExist(DbContext context, IServiceProvider serviceProvider)
         {
-            if (!(context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
-                context.Database.EnsureCreated();
+            if ((context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
+                return;
+
+            context.Database.EnsureCreated();
+
+            if (context is BookActivityContext)
+            {
+                var initializer = serviceProvider.GetService<IDbInitializer>();
+                if (initializer != null)
+                {
+                    initializer.InitializeAsync(context as BookActivityContext).GetAwaiter().GetResult();
+                }
+            }
         }
 
         private void ConfigureRepositories(IServiceCollection services)

@@ -3,6 +3,7 @@ using BookActivity.Api.Middleware;
 using BookActivity.Application.Configuration;
 using BookActivity.Domain.Hubs;
 using BookActivity.Infrastructure.Configuration;
+using BookActivity.Initialization;
 using BookActivity.Shared.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -40,6 +41,7 @@ namespace BookActivity.Api
             AddInfastructure(services);
             AddApplication(services);
             AddAuthentication(services);
+            AddAppInitializer(services);
 
             services.Configure<TokenInfo>(Configuration.GetSection(typeof(TokenInfo).Name));
 
@@ -85,6 +87,12 @@ namespace BookActivity.Api
         {
             ApplicationModuleConfiguration appModuleConfiguration = new();
             appModuleConfiguration.ConfigureDI(services, Configuration);
+        }
+
+        private void AddAppInitializer(IServiceCollection services)
+        {
+            AppInitializer appInitializerConfiguration = new();
+            appInitializerConfiguration.ConfigureDI(services, Configuration);
         }
 
         private void CreateDatabasesIfNotExist(IApplicationBuilder app)
