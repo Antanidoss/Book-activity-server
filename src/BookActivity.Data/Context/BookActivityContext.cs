@@ -14,7 +14,7 @@ using BookActivity.Infrastructure.Data.Context.Configuration;
 
 namespace BookActivity.Infrastructure.Data.Context
 {
-    internal sealed class BookActivityContext : IdentityDbContext<AppUser, AppRole, Guid>, IUnitOfWork
+    public sealed class BookActivityContext : IdentityDbContext<AppUser, AppRole, Guid>, IUnitOfWork
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<ActiveBook> ActiveBooks { get; set; }
