@@ -2,16 +2,84 @@
 using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.Intefaces;
 using BookActivity.Shared;
+using Microsoft.AspNetCore.Identity;
 
 namespace BookActivity.Initialization
 {
     internal sealed class DbInitializer : IDbInitializer
     {
-        public async Task InitializeAsync(BookActivityContext context)
+        public async Task InitializeAsync(BookActivityContext context, UserManager<AppUser> userManager)
         {
             AddBooks(context);
+            await AddUsersAsync(userManager);
 
             await context.SaveChangesAsync();
+        }
+
+        private async Task AddUsersAsync(UserManager<AppUser> userManager)
+        {
+            await userManager.CreateAsync(new AppUser
+            {
+                UserName = "Admin book-activity",
+                AvatarImage = GetImageData("Man with beard.jpg"),
+                Email = "adminBookActivity@gmail.com"
+            }, "adminPassword123#");
+
+            await userManager.CreateAsync(new AppUser
+            {
+                UserName = "Nastya",
+                AvatarImage = GetImageData("Women red.jpg"),
+                Email = "nastyaBookActivity@gmail.com"
+            }, "Password123#");
+
+            await userManager.CreateAsync(new AppUser
+            {
+                UserName = "Nikita",
+                AvatarImage = GetImageData("Nikita.jpeg"),
+                Email = "nikitaBookActivity@gmail.com"
+            }, "Password123#");
+
+            await userManager.CreateAsync(new AppUser
+            {
+                UserName = "Vlad",
+                AvatarImage = GetImageData("Vlad.jpeg"),
+                Email = "vladBookActivity@gmail.com"
+            }, "Password123#");
+
+            await userManager.CreateAsync(new AppUser
+            {
+                UserName = "Evelina",
+                AvatarImage = GetImageData("Evelina.jpeg"),
+                Email = "evelinaBookActivity@gmail.com"
+            }, "Password123#");
+
+            await userManager.CreateAsync(new AppUser
+            {
+                UserName = "Anton",
+                AvatarImage = GetImageData("Anton.jpeg"),
+                Email = "antonBookActivity@gmail.com"
+            }, "Password123#");
+
+            await userManager.CreateAsync(new AppUser
+            {
+                UserName = "Jeck",
+                AvatarImage = GetImageData("Jeck.jpeg"),
+                Email = "jeckBookActivity@gmail.com"
+            }, "Password123#");
+
+            await userManager.CreateAsync(new AppUser
+            {
+                UserName = "Tony",
+                AvatarImage = GetImageData("Tony.jpeg"),
+                Email = "tonyBookActivity@gmail.com"
+            }, "Password123#");
+
+            await userManager.CreateAsync(new AppUser
+            {
+                UserName = "Andrew",
+                AvatarImage = GetImageData("Andrew.jpeg"),
+                Email = "andrewBookActivity@gmail.com"
+            }, "Password123#");
         }
 
         private void AddBooks(BookActivityContext context)
