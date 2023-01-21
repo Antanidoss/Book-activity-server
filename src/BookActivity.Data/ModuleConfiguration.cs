@@ -15,7 +15,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data
 {
@@ -63,7 +62,7 @@ namespace BookActivity.Infrastructure.Data
                 var initializer = serviceProvider.GetService<IDbInitializer>();
                 if (initializer != null)
                 {
-                    initializer.InitializeAsync(context as BookActivityContext).GetAwaiter().GetResult();
+                    initializer.InitializeAsync(context as BookActivityContext, serviceProvider.GetRequiredService<UserManager<AppUser>>()).GetAwaiter().GetResult();
                 }
             }
         }
