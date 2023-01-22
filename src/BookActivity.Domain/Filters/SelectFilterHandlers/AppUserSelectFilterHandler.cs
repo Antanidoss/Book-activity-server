@@ -17,6 +17,12 @@ namespace BookActivity.Domain.Filters.SelectFilterHandlers
                 Id = u.Id,
                 UserName = u.UserName,
                 AvatarImage = u.AvatarImage,
+                IsSubscriber = filterModel.CurrentUserId.HasValue
+                    ? u.Subscriptions.Any(s => s.SubscribedUserId == filterModel.CurrentUserId.Value)
+                    : false,
+                IsSubscription= filterModel.CurrentUserId.HasValue
+                    ? u.Subscribers.Any(s => s.UserIdWhoSubscribed == filterModel.CurrentUserId.Value)
+                    : false,
             }).ToList();
         }
     }
