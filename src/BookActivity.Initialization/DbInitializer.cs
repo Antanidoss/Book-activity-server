@@ -91,7 +91,7 @@ namespace BookActivity.Initialization
                 "insights for building robust, reliable, and responsive apps and components.",
                 GetImageData("CLR VIA C#.jpg"),
                 new List<BookAuthor>() {
-                    new BookAuthor { Author = new Author("Jeffrey", "Richter", string.Empty) }
+                    new BookAuthor { Author = new Author("Jeffrey", "Richter") }
                 }
             ));
 
@@ -106,8 +106,8 @@ namespace BookActivity.Initialization
                 "\r\n\r\nAn unforgettable family drama by two writers at the top of their craft.",
                 GetImageData("The House of Wolves.jpeg"),
                 new List<BookAuthor>() {
-                    new BookAuthor { Author = new Author("Mike", "Lupica", string.Empty) },
-                    new BookAuthor { Author = new Author("James", "Patterson", string.Empty) },
+                    new BookAuthor { Author = new Author("Mike", "Lupica") },
+                    new BookAuthor { Author = new Author("James", "Patterson") },
                 }
             ));
 
@@ -119,7 +119,7 @@ namespace BookActivity.Initialization
                 "From” personalization page in the front of the book, making this heartwarming book an ideal gift.",
                 GetImageData("I Love You to the Moon and Back.jpg"),
                 new List<BookAuthor>() {
-                    new BookAuthor { Author = new Author("Amelia", "Hepworth", string.Empty) }
+                    new BookAuthor { Author = new Author("Amelia", "Hepworth") }
                 }
             ));
 
@@ -130,7 +130,7 @@ namespace BookActivity.Initialization
                 "and Prince Harry must be thinking and feeling—and how their lives would play out from that point on.",
                 GetImageData("Spare.jpeg"),
                 new List<BookAuthor>() {
-                    new BookAuthor { Author = new Author("Henry", "Charles", string.Empty) }
+                    new BookAuthor { Author = new Author("Henry", "Charles") }
                 }
             ));
 
@@ -145,7 +145,7 @@ namespace BookActivity.Initialization
                 "the mystery of why she shot her husband takes him down a twisting path into his own motivations―a search for the truth that threatens to consume him....",
                 GetImageData("The Silent Patient.jpeg"),
                 new List<BookAuthor>() {
-                    new BookAuthor { Author = new Author("Alex", "Michaelides", string.Empty) }
+                    new BookAuthor { Author = new Author("Alex", "Michaelides") }
                 }
             ));
 
@@ -154,7 +154,7 @@ namespace BookActivity.Initialization
                 "In this generation-defining self-help guide, a superstar blogger cuts through the crap to show us how to stop trying to be \"positive\" all the time so that we can truly become better, happier people.",
                 GetImageData("The Subtle Art of Not Giving.jpeg"),
                 new List<BookAuthor>() {
-                    new BookAuthor { Author = new Author("Mark", "Manson", string.Empty) }
+                    new BookAuthor { Author = new Author("Mark", "Manson") }
                 }
             ));
 
@@ -164,8 +164,8 @@ namespace BookActivity.Initialization
                 "People call him “the bitter neighbor from hell.” But must Ove be bitter just because he doesn’t walk around with a smile plastered to his face all the time?",
                 GetImageData("A Man Called Ove A Novel.jpg"),
                 new List<BookAuthor>() {
-                    new BookAuthor { Author = new Author("Henning", "Koch", string.Empty) },
-                    new BookAuthor { Author = new Author("Fredrik", "Backman", string.Empty) }
+                    new BookAuthor { Author = new Author("Henning", "Koch") },
+                    new BookAuthor { Author = new Author("Fredrik", "Backman") }
                 }
             ));
 
@@ -175,7 +175,7 @@ namespace BookActivity.Initialization
                 "the dominance of Wolf Larsen, the powerful and amoral sea captain who rescues him.",
                 GetImageData("The Sea-Wolf.jpg"),
                 new List<BookAuthor>() {
-                    new BookAuthor { Author = new Author("Jack", "London", string.Empty) }
+                    new BookAuthor { Author = new Author("Jack", "London") }
                 }
             ));
         }

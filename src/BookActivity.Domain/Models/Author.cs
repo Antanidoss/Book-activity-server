@@ -16,11 +16,6 @@ namespace BookActivity.Domain.Models
         public string Surname { get; set; }
 
         /// <summary>
-        /// Patronymic author
-        /// </summary>
-        public string Patronymic { get; set; }
-
-        /// <summary>
         /// Relation of author with the book authors
         /// </summary>
         public ICollection<BookAuthor> BookAuthors { get; set; }
@@ -30,11 +25,10 @@ namespace BookActivity.Domain.Models
         {
             Id = authorId;
         }
-        public Author(string firstName, string surname, string patronymic)
+        public Author(string firstName, string surname)
         {
             FirstName = firstName;
             Surname = surname;
-            Patronymic = patronymic;
             BookAuthors = new List<BookAuthor>();
         }
     }

@@ -16,7 +16,7 @@ namespace BookActivity.Domain.Specifications.AuthorSpecs
 
         public override Expression<Func<Author, bool>> ToExpression()
         {
-            return a => a.FirstName.Contains(_name) || a.Surname.Contains(_name) || a.Patronymic.Contains(_name);
+            return a => a.FirstName.Contains(_name) || a.Surname.Contains(_name);
         }
     }
 }
