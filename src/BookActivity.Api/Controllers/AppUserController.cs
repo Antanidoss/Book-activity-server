@@ -79,5 +79,15 @@ namespace BookActivity.Api.Controllers
         {
             return await _appUserService.GetAppUserByFilter(filterModel);
         }
+
+        [HttpDelete(ApiConstants.UnsubscribeAppUserMethod)]
+        public async Task<ActionResult> UnsubscribeUserAsync([FromQuery] Guid unsubscribedUserId)
+        {
+            var currentUser = GetCurrentUser();
+
+            return (await _appUserService.UnsubscribeAppUserAsync(currentUser.Id, unsubscribedUserId)
+                .ConfigureAwait(false))
+                .ToActionResult();
+        }
     }
 }

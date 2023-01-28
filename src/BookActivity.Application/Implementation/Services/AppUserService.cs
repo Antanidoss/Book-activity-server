@@ -7,6 +7,7 @@ using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Commands.AppUserCommands.AddAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser;
+using BookActivity.Domain.Commands.AppUserCommands.UnsubscribeAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
@@ -50,6 +51,16 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfEmpty(subscribedUserId, nameof(subscribedUserId));
 
             SubscribeAppUserCommand subscribeAppUserCommand = new(subscribedUserId, currentUserId);
+
+            return await _mediatorHandler.SendCommand(subscribeAppUserCommand).ConfigureAwait(false);
+        }
+
+        public async Task<ValidationResult> UnsubscribeAppUserAsync(Guid currentUserId, Guid unsubscribedUserId)
+        {
+            CommonValidator.ThrowExceptionIfEmpty(currentUserId, nameof(currentUserId));
+            CommonValidator.ThrowExceptionIfEmpty(unsubscribedUserId, nameof(unsubscribedUserId));
+
+            UnsubscribeAppUserCommand subscribeAppUserCommand = new(unsubscribedUserId, currentUserId);
 
             return await _mediatorHandler.SendCommand(subscribeAppUserCommand).ConfigureAwait(false);
         }

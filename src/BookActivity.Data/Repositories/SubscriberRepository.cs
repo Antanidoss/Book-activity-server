@@ -20,6 +20,10 @@ namespace BookActivity.Infrastructure.Data.Repositories
         {
             _context.Subscribers.Add(subscriber);
         }
+        public void Remove(Subscriber subscriber)
+        {
+            _context.Subscribers.Remove(subscriber);
+        }
 
         public void Dispose()
         {
