@@ -1,4 +1,5 @@
 ﻿using BookActivity.Domain.Events.ActiveBookEvent;
+using BookActivity.Domain.Events.AppUserEvents;
 using BookActivity.Domain.Hubs;
 using BookActivity.Domain.Interfaces.Hubs;
 using BookActivity.Domain.Interfaces.Repositories;
@@ -12,7 +13,9 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Events.UserNotificationsEvents
 {
-    internal sealed class UserNotificationsEventHandler : INotificationHandler<AddActiveBookEvent>
+    internal sealed class UserNotificationsEventHandler :
+        INotificationHandler<AddActiveBookEvent>,
+        INotificationHandler<SubscribeAppUserEvent>
     {
         private readonly IUserNotificationRepository _userNotificationRepository;
 
@@ -48,6 +51,17 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
                         notificationMessage
                     ));
             }
+        }
+
+        public async Task Handle(SubscribeAppUserEvent notification, CancellationToken cancellationToken)
+        {
+            string notificationMessage = $"{notification.UserNameWhoSubscribed} has subscribed to you";
+
+            await _userNotificationsHub.Send(new UserNotificationModel(
+                       Guid.Empty,
+                       notification.SubscribedUserId,
+                       notificationMessage
+                   ));
         }
     }
 }

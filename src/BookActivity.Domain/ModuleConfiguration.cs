@@ -13,6 +13,7 @@ using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
 using BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating;
 using BookActivity.Domain.Events.ActiveBookEvent;
+using BookActivity.Domain.Events.AppUserEvents;
 using BookActivity.Domain.Events.UserNotificationsEvents;
 using BookActivity.Domain.Filters.FilterHandlers;
 using BookActivity.Domain.Filters.Handlers;
@@ -102,6 +103,7 @@ namespace BookActivity.Domain
             services.AddScoped<INotificationHandler<UpdateActiveBookEvent>, ActiveBookEventHandler>();
             services.AddScoped<INotificationHandler<RemoveActiveBookEvent>, ActiveBookEventHandler>();
             services.AddScoped<INotificationHandler<AddActiveBookEvent>, UserNotificationsEventHandler>();
+            services.AddScoped<INotificationHandler<SubscribeAppUserEvent>, UserNotificationsEventHandler>();
         }
 
         private void ConfigureHubs(IServiceCollection services)
