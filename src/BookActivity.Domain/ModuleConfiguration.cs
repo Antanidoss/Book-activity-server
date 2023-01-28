@@ -5,6 +5,7 @@ using BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook;
 using BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook;
 using BookActivity.Domain.Commands.AppUserCommands.AddAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser;
+using BookActivity.Domain.Commands.AppUserCommands.UnsubscribeAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser;
 using BookActivity.Domain.Commands.AuthorCommands.AddAuthor;
 using BookActivity.Domain.Commands.BookCommands.AddBook;
@@ -65,6 +66,7 @@ namespace BookActivity.Domain
             services.AddScoped<IRequestHandler<AddAppUserCommand, ValidationResult>, AddAppUserCommandHandler>();
             services.AddScoped<IRequestHandler<SubscribeAppUserCommand, ValidationResult>, SubscribeAppUserCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateAppUserCommand, ValidationResult>, UpdateAppUserCommandHandler>();
+            services.AddScoped<IRequestHandler<UnsubscribeAppUserCommand, ValidationResult>, UnsubscribeAppUserCommandHandler>();
 
             services.AddScoped<IRequestHandler<AddBookNoteCommand, ValidationResult>, AddBookNoteCommandHandler>();
 
@@ -99,9 +101,6 @@ namespace BookActivity.Domain
 
         private void ConfigureEventHandlers(IServiceCollection services)
         {
-            services.AddScoped<INotificationHandler<AddActiveBookEvent>, ActiveBookEventHandler>();
-            services.AddScoped<INotificationHandler<UpdateActiveBookEvent>, ActiveBookEventHandler>();
-            services.AddScoped<INotificationHandler<RemoveActiveBookEvent>, ActiveBookEventHandler>();
             services.AddScoped<INotificationHandler<AddActiveBookEvent>, UserNotificationsEventHandler>();
             services.AddScoped<INotificationHandler<SubscribeAppUserEvent>, UserNotificationsEventHandler>();
         }

@@ -40,6 +40,7 @@
         public const string GetCurrentUserMethod = "getCurrentUser";
         public const string UpdateUserMethod = "update";
         public const string GetUserByFilterMethod = "getUsersByFilter";
+        public const string UnsubscribeAppUserMethod = "unsubscribe";
 
         //BookNote methods
         public const string AddBookNoteMethod = "add";
