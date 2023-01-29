@@ -1,7 +1,6 @@
 ﻿using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter;
-using BookActivity.Domain.Specifications.BookSpecs;
 using System;
 using System.Data.Entity;
 using System.Linq;
@@ -22,7 +21,6 @@ namespace BookActivity.Domain.Filters.FilterHandlers
 
             if (!string.IsNullOrEmpty(filterModel.BookTitle))
             {
-                BookByTitleContainsSpec bookByTitleSpec = new(filterModel.BookTitle);
                 var bookTitle = filterModel.BookTitle.Replace(" ", string.Empty).ToLower();
 
                 query = query.Include(b => b.Book).Where(a => a.Book.Title.Replace(" ", string.Empty).ToLower() == bookTitle);
