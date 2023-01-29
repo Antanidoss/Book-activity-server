@@ -14,14 +14,14 @@ namespace BookActivity.Domain.Filters.Handlers
             {
                 BookByTitleContainsSpec bookByTitleSpec = new(filterModel.BookTitle);
 
-                query = query.Where(bookByTitleSpec.ToExpression());
+                query = query.Where(bookByTitleSpec);
             }
 
             if (filterModel.AverageRatingFrom != BookOpinion.GradeMin || filterModel.AverageRatingTo != BookOpinion.GradeMax)
             {
                 BookByRatingRange bookByRatingRangeSpec = new(filterModel.AverageRatingFrom, filterModel.AverageRatingTo);
 
-                query = query.Where(bookByRatingRangeSpec.ToExpression());
+                query = query.Where(bookByRatingRangeSpec);
             }
 
             return query;

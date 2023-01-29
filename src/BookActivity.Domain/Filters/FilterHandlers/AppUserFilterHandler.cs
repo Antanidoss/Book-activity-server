@@ -13,7 +13,7 @@ namespace BookActivity.Domain.Filters.FilterHandlers
             if (!string.IsNullOrEmpty(filterModel.Name))
             {
                 AppUserByNameSpec userByNameSpec = new(filterModel.Name);
-                query = query.Where(userByNameSpec.ToExpression());
+                query = query.Where(userByNameSpec);
             }
 
             return query;

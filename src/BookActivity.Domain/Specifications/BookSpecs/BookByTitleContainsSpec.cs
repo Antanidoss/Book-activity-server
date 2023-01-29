@@ -16,12 +16,7 @@ namespace BookActivity.Domain.Specifications.BookSpecs
 
         public override Expression<Func<Book, bool>> ToExpression()
         {
-            return b => IsSatisfy(b);
-        }
-
-        public bool IsSatisfy(Book book)
-        {
-            return book.Title.ToLower().Replace(" ", string.Empty).Contains(_title);
+            return b => b.Title.ToLower().Replace(" ", string.Empty).Contains(_title);
         }
     }
 }

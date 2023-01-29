@@ -99,7 +99,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public async Task<bool> CheckExistBySpecAsync(Specification<AppUser> specification)
         {
-            return await _dbSet.AnyAsync(specification.ToExpression());
+            return await _dbSet.AnyAsync(specification);
         }
 
         public async Task<IdentityResult> Addasync(AppUser user, string password)
