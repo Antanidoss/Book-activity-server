@@ -4,6 +4,7 @@ using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Queries.AppUserQueries.GetUserProfileInfo;
 using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
 using BookActivity.Shared.Models;
 using FluentValidation.Results;
@@ -21,5 +22,6 @@ namespace BookActivity.Application.Interfaces.Services
         Task<EntityListResult<SelectedAppUser>> GetAppUserByFilter(GetUsersByFilterQuery filterModel);
         Task<ValidationResult> UpdateAsync(UpdateAppUserDto updateAppUserModel);
         Task<ValidationResult> UnsubscribeAppUserAsync(Guid currentUserId, Guid unsubscribedUserId);
+        Task<AppUserProfileInfo> GetUserProfileInfoAsync(Guid userId);
     }
 }
