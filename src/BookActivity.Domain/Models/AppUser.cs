@@ -28,6 +28,11 @@ namespace BookActivity.Domain.Models
         public ICollection<UserNotification> UserNotifications { get; set; }
 
         /// <summary>
+        /// Relation of user with the active books
+        /// </summary>
+        public ICollection<ActiveBook> ActiveBooks { get; set; }
+
+        /// <summary>
         /// User avatar
         /// </summary>
         public byte[] AvatarImage { get; set; }

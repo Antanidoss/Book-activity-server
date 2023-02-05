@@ -7,6 +7,7 @@ using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Queries.AppUserQueries.GetUserProfileInfo;
 using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
 using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Http;
@@ -75,7 +76,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetUserByFilterMethod)]
-        public async Task<EntityListResult<SelectedAppUser>> GetUsersByFilter(GetUsersByFilterQuery filterModel)
+        public async Task<EntityListResult<SelectedAppUser>> GetUsersByFilterAsync(GetUsersByFilterQuery filterModel)
         {
             return await _appUserService.GetAppUserByFilter(filterModel);
         }
@@ -88,6 +89,12 @@ namespace BookActivity.Api.Controllers
             return (await _appUserService.UnsubscribeAppUserAsync(currentUser.Id, unsubscribedUserId)
                 .ConfigureAwait(false))
                 .ToActionResult();
+        }
+
+        [HttpGet(ApiConstants.GetUserProfileInfoMethod)]
+        public async Task<AppUserProfileInfo> GetUserProfileInfoAsync([FromQuery] Guid userId)
+        {
+            return await _appUserService.GetUserProfileInfoAsync(userId);
         }
     }
 }

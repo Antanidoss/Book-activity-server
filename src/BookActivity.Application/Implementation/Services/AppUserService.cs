@@ -13,6 +13,7 @@ using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
+using BookActivity.Domain.Queries.AppUserQueries.GetUserProfileInfo;
 using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using BookActivity.Domain.Validations;
@@ -94,6 +95,13 @@ namespace BookActivity.Application.Implementation.Services
         public async Task<EntityListResult<SelectedAppUser>> GetAppUserByFilter(GetUsersByFilterQuery filterModel)
         {
             return await _mediatorHandler.SendQuery(filterModel);
+        }
+
+        public async Task<AppUserProfileInfo> GetUserProfileInfoAsync(Guid userId)
+        {
+            GetUserProfileInfoQuery query = new() { UserId = userId };
+
+            return await _mediatorHandler.SendQuery(query);
         }
     }
 }
