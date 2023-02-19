@@ -9,5 +9,6 @@ namespace BookActivity.Domain.Filters.Models
         public byte[] AvatarImage { get; set; }
         public bool IsSubscriber { get; set; }
         public bool IsSubscription { get; set; }
+        public int ActiveBookCount { get; set; }
     }
 }
