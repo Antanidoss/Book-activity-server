@@ -10,5 +10,6 @@ namespace BookActivity.Domain.Filters.Models
         public bool IsSubscriber { get; set; }
         public bool IsSubscription { get; set; }
         public int ActiveBookCount { get; set; }
+        public int BookOpinionCount { get; set; }
     }
 }
