@@ -27,6 +27,7 @@ namespace BookActivity.Domain.Filters.SelectFilterHandlers
                     ? u.Subscribers.Any(s => s.UserIdWhoSubscribed == filterModel.CurrentUserId.Value)
                     : false,
                 ActiveBookCount = u.ActiveBooks.Count(),
+                BookOpinionCount = u.BookOpinions.Count()
             }).ToList();
         }
 
