@@ -34,7 +34,9 @@ namespace BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter
                 throw new ArgumentNullException(nameof(request));
 
             var filterWithPagination = GetFilterWithPagination(request);
-            var activeBooks = await _activeBookRepository.GetByFilterAsync(filterWithPagination, b => b.Book).ConfigureAwait(false);
+            var activeBooks = await _activeBookRepository
+                .GetByFilterAsync(filterWithPagination, b => b.Book.BookRating.BookOpinions)
+                .ConfigureAwait(false);
 
             var booksCount = await _activeBookRepository.GetCountByFilterAsync(GetFilter(request)).ConfigureAwait(false);
 
