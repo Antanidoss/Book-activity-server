@@ -76,7 +76,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetUserByFilterMethod)]
-        public async Task<EntityListResult<SelectedAppUser>> GetUsersByFilterAsync(GetUsersByFilterQuery filterModel)
+        public async Task<EntityListResult<SelectedAppUser>> GetUsersByFilterAsync(GetUsersByFilterDto filterModel)
         {
             return await _appUserService.GetAppUserByFilter(filterModel);
         }

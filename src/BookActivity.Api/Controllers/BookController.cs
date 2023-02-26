@@ -41,7 +41,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetBooksByFilterMethod)]
-        public async Task<ApiResult<EntityListResult<BookDto>>> GetBooksByFilterAsync(GetBooksByFilterQuery bookFilterModel)
+        public async Task<ApiResult<EntityListResult<BookDto>>> GetBooksByFilterAsync(GetBooksByFilterDto bookFilterModel)
         {
             bookFilterModel.UserId = GetCurrentUser()?.Id ?? Guid.Empty;
 

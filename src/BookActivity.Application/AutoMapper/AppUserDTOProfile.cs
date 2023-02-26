@@ -8,6 +8,7 @@ using BookActivity.Domain.Commands.AppUserCommands.AddAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
+using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
 
 namespace BookActivity.Application.AutoMapper
 {
@@ -18,6 +19,7 @@ namespace BookActivity.Application.AutoMapper
             CreateMap<AppUser, AppUserDto>();
             CreateMap<AppUserDto, AppUser>();
             CreateMap<AuthenticationModel, AuthenticationUserQuery>();
+            CreateMap<GetUsersByFilterDto, GetUsersByFilterQuery>();
             CreateMap<CreateAppUserDto, AddAppUserCommand>()
                  .ForMember(u => u.AvatarImage, conf => conf.MapFrom(u => u.AvatarImage.ConvertToBuffer()));
 

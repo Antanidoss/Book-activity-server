@@ -97,9 +97,11 @@ namespace BookActivity.Application.Implementation.Services
             return activeBookHistoryDateList;
         }
 
-        public async Task<EntityListResult<SelectedActiveBook>> GetByFilterAsync(GetActiveBookByFilterQuery filterModel)
+        public async Task<EntityListResult<SelectedActiveBook>> GetByFilterAsync(GetActiveBookByFilterDto filterModel)
         {
-            return await _mediatorHandler.SendQuery(filterModel);
+            var query = _mapper.Map<GetActiveBookByFilterQuery>(filterModel);
+
+            return await _mediatorHandler.SendQuery(query);
         }
 
         public async Task<Result<Guid>> AddActiveBookAsync(CreateActiveBookDto createActiveBookModel)

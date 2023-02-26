@@ -19,7 +19,7 @@ namespace BookActivity.Application.Interfaces.Services
         Task<ValidationResult> SubscribeAppUserAsync(Guid currentUserId, Guid subscribedUserId);
         Task<Result<AuthenticationResult>> AuthenticationAsync(AuthenticationModel authenticationModel);
         Task<Result<AppUserDto>> FindByIdAsync(Guid appUserId);
-        Task<EntityListResult<SelectedAppUser>> GetAppUserByFilter(GetUsersByFilterQuery filterModel);
+        Task<EntityListResult<SelectedAppUser>> GetAppUserByFilter(GetUsersByFilterDto filterModel);
         Task<ValidationResult> UpdateAsync(UpdateAppUserDto updateAppUserModel);
         Task<ValidationResult> UnsubscribeAppUserAsync(Guid currentUserId, Guid unsubscribedUserId);
         Task<AppUserProfileInfo> GetUserProfileInfoAsync(Guid userId);

@@ -71,16 +71,18 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfNullOrEmpty(bookIds);
 
             BookByIdSpec specification = new(bookIds);
-            PaginationModel paginationModel = new(take: bookIds.Length); 
+            PaginationModel paginationModel = new(take: bookIds.Length);
 
             var books = await _bookRepository.GetBySpecAsync(specification, paginationModel).ConfigureAwait(false);
 
             return _mapper.Map<List<BookDto>>(books);
         }
 
-        public async Task<Result<EntityListResult<BookDto>>> GetByFilterAsync(GetBooksByFilterQuery bookFilterModel)
+        public async Task<Result<EntityListResult<BookDto>>> GetByFilterAsync(GetBooksByFilterDto bookFilterModel)
         {
-            var result = await _mediatorHandler.SendQuery(bookFilterModel);
+            var query = _mapper.Map<GetBooksByFilterQuery>(bookFilterModel);
+
+            var result = await _mediatorHandler.SendQuery(query);
 
             return new Result<EntityListResult<BookDto>>(result.CopyWithNewEntityType(_mapper.Map<List<BookDto>>(result.Entities)));
         }
