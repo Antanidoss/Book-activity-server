@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
@@ -47,6 +48,7 @@ namespace BookActivity.Api
 
             services.AddCors();
             services.AddSignalR();
+            services.AddLogging();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -61,13 +63,14 @@ namespace BookActivity.Api
             CreateDatabasesIfNotExist(app);
 
             app.UseHttpsRedirection();
-            app.UseCors(x => x.WithOrigins(Configuration.GetValue<string>("ClientAddress"))
+            app.UseCors(x => x.WithOrigins(Configuration.GetValue<string>("ClientAddress"), "http://localhost:3001")
                               .AllowAnyMethod()
                               .AllowAnyHeader()
                               .AllowCredentials());
 
             app.UseRouting();
             app.UseAuthorization();
+            app.UseHttpLogging();
 
             app.UseMiddleware<JwtMiddleware>();
             app.UseEndpoints(endpoints =>

@@ -92,9 +92,11 @@ namespace BookActivity.Application.Implementation.Services
             return _mapper.Map<AppUserDto>(appUser);
         }
 
-        public async Task<EntityListResult<SelectedAppUser>> GetAppUserByFilter(GetUsersByFilterQuery filterModel)
+        public async Task<EntityListResult<SelectedAppUser>> GetAppUserByFilter(GetUsersByFilterDto filterModel)
         {
-            return await _mediatorHandler.SendQuery(filterModel);
+            var query = _mapper.Map<GetUsersByFilterQuery>(filterModel);
+
+            return await _mediatorHandler.SendQuery(query);
         }
 
         public async Task<AppUserProfileInfo> GetUserProfileInfoAsync(Guid userId)
