@@ -1,5 +1,6 @@
 ﻿using BookActivity.Domain.Constants;
 using BookActivity.Domain.Events.ActiveBookEvent;
+using BookActivity.Domain.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.ActiveBookSpecs;
@@ -27,7 +28,8 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook
                 return request.ValidationResult;
 
             ActiveBookByIdSpec specification = new(request.Id);
-            var activeBook = await _activeBookRepository.GetBySpecAsync(specification);
+            DbSingleResultFilterModel<ActiveBook> filterModel = new(specification, forUpdate: true);
+            var activeBook = await _activeBookRepository.GetByFilterAsync(filterModel);
 
             if (activeBook is null)
                 AddError(ValidationErrorConstants.GetEnitityNotFoundMessage(nameof(ActiveBook)));

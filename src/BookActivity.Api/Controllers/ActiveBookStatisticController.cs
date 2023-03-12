@@ -23,7 +23,7 @@ namespace BookActivity.Api.Controllers
         [HttpGet(ApiConstants.GetActiveBooksStaticMethod)]
         public async Task<ActiveBooksStatistic> GetActiveBooksStatistics()
         {
-            return await _activeBookStatisticService.GetActiveBookStatistics(Guid.Parse("4B8796DD-321B-45E3-3155-08DAAF5BF715") /*GetCurrentUser().Id*/);
+            return await _activeBookStatisticService.GetActiveBookStatistics(GetCurrentUser().Id);
         }
     }
 }

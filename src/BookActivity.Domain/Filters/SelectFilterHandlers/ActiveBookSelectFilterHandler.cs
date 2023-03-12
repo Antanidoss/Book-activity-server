@@ -31,7 +31,7 @@ namespace BookActivity.Domain.Filters.SelectFilterHandlers
                         Note = n.Note,
                         NoteColor = (int)n.NoteColor
                     }),
-                }).ToList();
+                });
         }
 
         private static SelectedBookOpinion GetBookOpinion(ActiveBook activeBook, Guid userId)

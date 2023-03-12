@@ -1,18 +1,13 @@
-﻿using Antanidoss.Specification.Abstract;
+﻿using BookActivity.Domain.Filters;
 using BookActivity.Domain.Filters.Handlers;
-using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.Extensions;
-using BookActivity.Infrastructure.Data.Validations;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
@@ -31,43 +26,41 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = _db.Set<ActiveBook>();
         }
 
-        public async Task<TResult> GetByFilterAsync<TResult>(Func<IQueryable<ActiveBook>, Task<TResult>> filter, params Expression<Func<ActiveBook, object>>[] includes)
+        public async Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<ActiveBook, TResult> filterModel)
         {
-            CommonValidator.ThrowExceptionIfNull(filter);
+            CommonValidator.ThrowExceptionIfNull(filterModel);
 
-            var query = _dbSet.AsNoTracking().IncludeMultiple(includes);
+            var query = _dbSet.IncludeMultiple(filterModel.Includes);
 
-            return await filter(query);
+            if (!filterModel.ForUpdate)
+                query = query.AsNoTracking();
+
+            if (typeof(TResult) == typeof(IEnumerable<ActiveBook>))
+                query = query.ApplyPaginaton(filterModel.PaginationModel);
+
+            return await filterModel.Filter(query);
         }
 
-        public async Task<ActiveBook> GetBySpecAsync(Specification<ActiveBook> specification, params Expression<Func<ActiveBook, object>>[] includes)
+        public async Task<ActiveBook> GetByFilterAsync(DbSingleResultFilterModel<ActiveBook> filterModel)
         {
-            SpecificationValidator.ThrowExceptionIfNull(specification);
+            CommonValidator.ThrowExceptionIfNull(filterModel);
 
-            return await _dbSet
-                .AsNoTracking()
-                .IncludeMultiple(includes)
-                .FirstOrDefaultAsync(specification);
+            var query = _dbSet.IncludeMultiple(filterModel.Includes);
+
+            if (!filterModel.ForUpdate)
+                query = query.AsNoTracking();
+
+            return await query.FirstOrDefaultAsync(filterModel.Specification);
         }
 
-        public async Task<IEnumerable<ActiveBook>> GetBySpecAsync(Specification<ActiveBook> specification, PaginationModel paginationModel, params Expression<Func<ActiveBook, object>>[] includes)
+        public async Task<int> GetCountByFilterAsync(DbMultipleResultFilterModel<ActiveBook> filterModel)
         {
-            SpecificationValidator.ThrowExceptionIfNull(specification);
+            CommonValidator.ThrowExceptionIfNull(filterModel);
 
-            return await _dbSet
-                .AsNoTracking()
-                .IncludeMultiple(includes)
-                .Where(specification)
-                .ApplyPaginaton(paginationModel)
-                .ToListAsync();
-        }
+            var query = await filterModel.Filter(_dbSet);
 
-        public async Task<int> GetCountByFilterAsync(Func<IQueryable<ActiveBook>, IQueryable<ActiveBook>> filterHandler, int skip = 0)
-        {
-            CommonValidator.ThrowExceptionIfNull(filterHandler);
-
-            return await filterHandler(_dbSet.AsNoTracking())
-                .ApplyPaginaton(skip)
+            return await query
+                .ApplyPaginaton(filterModel.PaginationModel)
                 .CountAsync();
         }
 
