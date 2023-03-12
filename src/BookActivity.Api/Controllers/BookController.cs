@@ -6,7 +6,6 @@ using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
-using BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery;
 using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

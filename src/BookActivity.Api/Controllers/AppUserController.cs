@@ -8,7 +8,6 @@ using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Queries.AppUserQueries.GetUserProfileInfo;
-using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
 using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

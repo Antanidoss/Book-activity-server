@@ -10,6 +10,7 @@ using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
 using System.Linq;
 using BookActivity.Domain.Filters.Handlers;
+using BookActivity.Domain.Filters;
 
 namespace BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter
 {
@@ -21,7 +22,10 @@ namespace BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter
 
         private readonly IFilterSelectHandler<ActiveBook, IEnumerable<SelectedActiveBook>, GetActiveBookByFilterQuery> _filterSelectHandler;
 
-        public GetActiveBookByFilterQueryHandler(IActiveBookRepository activeBookRepository, IFilterHandler<ActiveBook, GetActiveBookByFilterQuery> filterHandler, IFilterSelectHandler<ActiveBook, IEnumerable<SelectedActiveBook>, GetActiveBookByFilterQuery> filterSelectHandler)
+        public GetActiveBookByFilterQueryHandler(
+            IActiveBookRepository activeBookRepository,
+            IFilterHandler<ActiveBook, GetActiveBookByFilterQuery> filterHandler,
+            IFilterSelectHandler<ActiveBook, IEnumerable<SelectedActiveBook>, GetActiveBookByFilterQuery> filterSelectHandler)
         {
             _activeBookRepository = activeBookRepository;
             _filterHandler = filterHandler;
@@ -34,18 +38,22 @@ namespace BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter
                 throw new ArgumentNullException(nameof(request));
 
             var filterWithPagination = GetFilterWithPagination(request);
-            var activeBooks = await _activeBookRepository
-                .GetByFilterAsync(filterWithPagination, b => b.Book.BookRating.BookOpinions)
+            DbMultipleResultFilterModel<ActiveBook, IEnumerable<SelectedActiveBook>> filterModel = new(filterWithPagination, b => b.Book.BookRating.BookOpinions);
+
+            var activeBooks = await _activeBookRepository.GetByFilterAsync(filterModel)
                 .ConfigureAwait(false);
 
-            var booksCount = await _activeBookRepository.GetCountByFilterAsync(GetFilter(request)).ConfigureAwait(false);
+            DbMultipleResultFilterModel<ActiveBook> filterModelForCount = new(GetFilter(request));
+
+            var booksCount = await _activeBookRepository.GetCountByFilterAsync(filterModelForCount)
+                .ConfigureAwait(false);
 
             return new EntityListResult<SelectedActiveBook>(activeBooks, booksCount);
         }
 
         private Func<IQueryable<ActiveBook>, Task<IEnumerable<SelectedActiveBook>>> GetFilterWithPagination(GetActiveBookByFilterQuery filterModel)
         {
-            return async (query) =>
+            return async query =>
             {
                 query = _filterHandler.ApplyFilter(query, filterModel);
 
@@ -57,7 +65,7 @@ namespace BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter
 
         private Func<IQueryable<ActiveBook>, IQueryable<ActiveBook>> GetFilter(GetActiveBookByFilterQuery filterModel)
         {
-            return (query) => _filterHandler.ApplyFilter(query, filterModel);
+            return query => _filterHandler.ApplyFilter(query, filterModel);
         }
     }
 }

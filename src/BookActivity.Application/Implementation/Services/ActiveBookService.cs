@@ -11,9 +11,11 @@ using BookActivity.Domain.Commands.ActiveBookCommands;
 using BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook;
 using BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook;
 using BookActivity.Domain.Events.ActiveBookEvent;
+using BookActivity.Domain.Filters;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter;
 using BookActivity.Domain.Specifications.ActiveBookSpecs;
 using BookActivity.Domain.Validations;
@@ -21,6 +23,7 @@ using BookActivity.Shared.Models;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -50,8 +53,10 @@ namespace BookActivity.Application.Implementation.Services
 
             ActiveBookByIdSpec specification = new(activeBookIds);
             PaginationModel paginationModel = new(take: activeBookIds.Length);
+            DbMultipleResultFilterModel<ActiveBook> filterModel = new(query => query.Where(specification), paginationModel, forUpdate: false);
 
-            var activeBooks = await _activeBookRepository.GetBySpecAsync(specification, paginationModel).ConfigureAwait(false);
+            var activeBooks = await _activeBookRepository.GetByFilterAsync(filterModel)
+                .ConfigureAwait(false);
 
             return _mapper.Map<List<ActiveBookDto>>(activeBooks);
         }
@@ -61,7 +66,10 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfNull(paginationModel);
 
             ActiveBookByUserIdSpec specification = new(currentUserId);
-            var activeBooks = await _activeBookRepository.GetBySpecAsync(specification, paginationModel, a => a.Book).ConfigureAwait(false);
+            DbMultipleResultFilterModel<ActiveBook> filterModel = new(query => query.Where(specification), paginationModel, forUpdate: false);
+
+            var activeBooks = await _activeBookRepository.GetByFilterAsync(filterModel)
+                .ConfigureAwait(false);
 
             return _mapper.Map<List<ActiveBookDto>>(activeBooks);
         }

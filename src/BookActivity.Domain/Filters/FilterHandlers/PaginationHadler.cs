@@ -8,31 +8,34 @@ namespace BookActivity.Domain.Filters.Handlers
 {
     public static class PaginationHadler
     {
-        public static IQueryable<TEntity> ApplyPaginaton<TEntity>(this IQueryable<TEntity> entities, PaginationModel paginationModel, bool withDefaultOrder = true)
+        public static IQueryable<TEntity> ApplyPaginaton<TEntity>(this IQueryable<TEntity> query, PaginationModel paginationModel, bool withDefaultOrder = true)
             where TEntity : Entity
         {
-            return (withDefaultOrder ? entities.OrderBy(e => e.Id) : entities)
+            if (paginationModel == null)
+                return ApplyPaginaton(query, skip: 0, withDefaultOrder);
+
+            return (withDefaultOrder ? query.OrderBy(e => e.Id) : query)
                 .Skip(() => paginationModel.Skip.Value)
                 .Take(() => paginationModel.Take.Value);
         }
 
-        public static IQueryable<TEntity> ApplyPaginaton<TEntity>(this IQueryable<TEntity> entities, int skip, bool withDefaultOrder = true)
+        public static IQueryable<TEntity> ApplyPaginaton<TEntity>(this IQueryable<TEntity> query, int skip, bool withDefaultOrder = true)
            where TEntity : Entity
         {
-            return (withDefaultOrder ? entities.OrderBy(e => e.Id) : entities)
+            return (withDefaultOrder ? query.OrderBy(e => e.Id) : query)
                 .Skip(() => skip);
         }
 
-        public static IQueryable<AppUser> ApplyPaginaton(this IQueryable<AppUser> entities, PaginationModel paginationModel, bool withDefaultOrder = true)
+        public static IQueryable<AppUser> ApplyPaginaton(this IQueryable<AppUser> query, PaginationModel paginationModel, bool withDefaultOrder = true)
         {
-            return (withDefaultOrder ? entities.OrderBy(e => e.Id) : entities)
+            return (withDefaultOrder ? query.OrderBy(e => e.Id) : query)
                 .Skip(() => paginationModel.Skip.Value)
                 .Take(() => paginationModel.Take.Value);
         }
 
-        public static IQueryable<AppUser> ApplyPaginaton(this IQueryable<AppUser> entities, int skip, bool withDefaultOrder = true)
+        public static IQueryable<AppUser> ApplyPaginaton(this IQueryable<AppUser> query, int skip, bool withDefaultOrder = true)
         {
-            return (withDefaultOrder ? entities.OrderBy(e => e.Id) : entities)
+            return (withDefaultOrder ? query.OrderBy(e => e.Id) : query)
                 .Skip(() => skip);
         }
     }
