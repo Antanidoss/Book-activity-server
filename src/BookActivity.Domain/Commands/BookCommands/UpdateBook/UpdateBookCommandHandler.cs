@@ -1,5 +1,8 @@
 ﻿using BookActivity.Domain.Events.BookEvents;
+using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookSpecs;
 using FluentValidation.Results;
 using MediatR;
@@ -25,7 +28,8 @@ namespace BookActivity.Domain.Commands.BookCommands.UpdateBook
                 return request.ValidationResult;
 
             BookByIdSpec bookByIdSpec = new(request.BookId);
-            var updatedBook = await _bookRepository.GetBySpecAsync(bookByIdSpec);
+            DbSingleResultFilterModel<Book> filterModel = new(bookByIdSpec, forUpdate: false);
+            var updatedBook = await _bookRepository.GetByFilterAsync(filterModel);
 
             updatedBook.Title = request.Title;
             updatedBook.Description = request.Description;
