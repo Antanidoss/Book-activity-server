@@ -6,6 +6,8 @@ using MediatR;
 using NetDevPack.Messaging;
 using System.Threading.Tasks;
 using System.Threading;
+using BookActivity.Domain.Filters;
+using BookActivity.Domain.Models;
 
 namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
 {
@@ -25,7 +27,8 @@ namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
                 return request.ValidationResult;
 
             BookByIdSpec bookByIdSpec = new(request.BookId);
-            var book = await _bookRepository.GetBySpecAsync(bookByIdSpec);
+            DbSingleResultFilterModel<Book> filterModel = new(bookByIdSpec, forUpdate: false);
+            var book = await _bookRepository.GetByFilterAsync(filterModel);
 
             book.AddDomainEvent(new RemoveBookEvent(book.Id, request.UserId));
             _bookRepository.Remove(book);

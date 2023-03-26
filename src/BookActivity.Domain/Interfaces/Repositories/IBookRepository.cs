@@ -1,22 +1,15 @@
-﻿using Antanidoss.Specification.Abstract;
-using BookActivity.Domain.Filters.Models;
+﻿using BookActivity.Domain.Filters;
 using BookActivity.Domain.Models;
 using NetDevPack.Data;
-using NetDevPack.Domain;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Interfaces.Repositories
 {
     public interface IBookRepository : IRepository<Book>
     {
-        Task<TResult> GetByFilterAsync<TResult>(Func<IQueryable<Book>, Task<TResult>> filter, params Expression<Func<Book, object>>[] includes);
-        Task<Book> GetBySpecAsync(Specification<Book> specification, params Expression<Func<Book, object>>[] includes);
-        Task<IEnumerable<Book>> GetBySpecAsync(Specification<Book> specification, PaginationModel paginationModel, params Expression<Func<Book, object>>[] includes);
-        Task<int> GetCountByFilterAsync(Func<IQueryable<Book>, IQueryable<Book>> filterHandler, int skip = PaginationModel.SkipDefault);
+        Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<Book, TResult> filterModel);
+        Task<Book> GetByFilterAsync(DbSingleResultFilterModel<Book> filterModel);
+        Task<int> GetCountByFilterAsync(DbMultipleResultFilterModel<Book> filterModel);
         void Add(Book book);
         void Update(Book book);
         void Remove(Book book);

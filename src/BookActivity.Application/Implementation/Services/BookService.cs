@@ -10,9 +10,11 @@ using BookActivity.Domain.Commands.BookCommands.AddBook;
 using BookActivity.Domain.Commands.BookCommands.RemoveBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Events.BookEvents;
+using BookActivity.Domain.Filters;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery;
 using BookActivity.Domain.Specifications.BookSpecs;
 using BookActivity.Domain.Validations;
@@ -20,6 +22,7 @@ using BookActivity.Shared.Models;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -72,8 +75,9 @@ namespace BookActivity.Application.Implementation.Services
 
             BookByIdSpec specification = new(bookIds);
             PaginationModel paginationModel = new(take: bookIds.Length);
+            DbMultipleResultFilterModel<Book> filterModel = new(query => query.Where(specification), paginationModel);
 
-            var books = await _bookRepository.GetBySpecAsync(specification, paginationModel).ConfigureAwait(false);
+            var books = await _bookRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
 
             return _mapper.Map<List<BookDto>>(books);
         }

@@ -1,4 +1,5 @@
-﻿using BookActivity.Domain.Filters.Handlers;
+﻿using BookActivity.Domain.Filters;
+using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
@@ -34,16 +35,18 @@ namespace BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery
                 throw new ArgumentNullException(nameof(request));
 
             var filterWithPagination = GetFilterWithPagination(request);
-            var books = await _bookRepository.GetByFilterAsync(filterWithPagination, b => b.BookRating.BookOpinions).ConfigureAwait(false);
+            DbMultipleResultFilterModel<Book, IEnumerable<SelectedBook>> filterModel = new(filterWithPagination, b => b.BookRating.BookOpinions);
+            var books = await _bookRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
 
-            var booksCount = await _bookRepository.GetCountByFilterAsync(GetFilter(request)).ConfigureAwait(false);
+            DbMultipleResultFilterModel<Book> filterModelForCount = new(GetFilter(request));
+            var booksCount = await _bookRepository.GetCountByFilterAsync(filterModelForCount).ConfigureAwait(false);
 
             return new EntityListResult<SelectedBook>(books, booksCount);
         }
 
         private Func<IQueryable<Book>, Task<IEnumerable<SelectedBook>>> GetFilterWithPagination(GetBooksByFilterQuery filterModel)
         {
-            return async (query) =>
+            return async query =>
             {
                 query = _filterHandler.ApplyFilter(query, filterModel);
 
@@ -55,7 +58,7 @@ namespace BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery
 
         private Func<IQueryable<Book>, IQueryable<Book>> GetFilter(GetBooksByFilterQuery filterModel)
         {
-            return (query) => _filterHandler.ApplyFilter(query, filterModel);
+            return query => _filterHandler.ApplyFilter(query, filterModel);
         }
     }
 }
