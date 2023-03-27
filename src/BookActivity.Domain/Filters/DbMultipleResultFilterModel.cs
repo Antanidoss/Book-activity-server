@@ -1,5 +1,5 @@
-﻿using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Queries;
+﻿using Antanidoss.Specification.Abstract;
+using BookActivity.Domain.Filters.Models;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -46,6 +46,14 @@ namespace BookActivity.Domain.Filters
             PaginationModel paginationModel = null,
             bool forUpdate = false,
             params Expression<Func<TEntity, object>>[] includes) : base(async query => filter(query), paginationModel, forUpdate, includes)
+        {
+        }
+
+        public DbMultipleResultFilterModel(
+            Specification<TEntity> specification,
+            PaginationModel paginationModel = null,
+            bool forUpdate = false,
+            params Expression<Func<TEntity, object>>[] includes) : base(async query => query.Where(specification), paginationModel, forUpdate, includes)
         {
         }
     }
