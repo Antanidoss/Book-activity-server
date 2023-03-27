@@ -1,5 +1,6 @@
 ﻿using BookActivity.Domain.Events.BookEvents;
 using BookActivity.Domain.Exceptions;
+using BookActivity.Domain.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AuthorSpecs;
@@ -32,7 +33,8 @@ namespace BookActivity.Domain.Commands.BookCommands.AddBook
                 return request.ValidationResult;
 
             AuthorByIdSpec specification = new(request.AuthorIds.ToArray());
-            var authorCount = await _authorRepository.GetCountBySpecAsync(specification).ConfigureAwait(false);
+            DbMultipleResultFilterModel<Author> filterModel = new(specification);
+            var authorCount = await _authorRepository.GetCountByFilterAsync(filterModel).ConfigureAwait(false);
 
             if (CommonValidator.IsLessThanOrEqualToZero(authorCount))
                 throw new NotFoundException(nameof(request.AuthorIds));

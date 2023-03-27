@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BookActivity.Domain.Interfaces;
+using BookActivity.Domain.Filters;
+using BookActivity.Domain.Models;
 
 namespace BookActivity.Application.Implementation.Services
 {
@@ -42,8 +44,8 @@ namespace BookActivity.Application.Implementation.Services
         public async Task<Result<IEnumerable<AuthorDto>>> GetAuthorsByNameAsync(string name, int take)
         {
             AuthorByNameSpec authorByNameSpec = new(name);
-
-            var authors = await _authorRepository.GetBySpecAsync(authorByNameSpec, new PaginationModel(take: take)).ConfigureAwait(false);
+            DbMultipleResultFilterModel<Author> filterModel = new(authorByNameSpec, new PaginationModel(take));
+            var authors = await _authorRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
 
             return new Result<IEnumerable<AuthorDto>>(_mapper.Map<IEnumerable<AuthorDto>>(authors));
         }
