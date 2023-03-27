@@ -28,7 +28,7 @@ namespace BookActivity.Domain.Commands.BookCommands.UpdateBook
                 return request.ValidationResult;
 
             BookByIdSpec bookByIdSpec = new(request.BookId);
-            DbSingleResultFilterModel<Book> filterModel = new(bookByIdSpec, forUpdate: false);
+            DbSingleResultFilterModel<Book> filterModel = new(bookByIdSpec, forUpdate: true);
             var updatedBook = await _bookRepository.GetByFilterAsync(filterModel);
 
             updatedBook.Title = request.Title;
@@ -36,7 +36,6 @@ namespace BookActivity.Domain.Commands.BookCommands.UpdateBook
             updatedBook.ImageData = request.ImageData;
 
             updatedBook.AddDomainEvent(new UpdateBookEvent(updatedBook.Id, updatedBook.Title, updatedBook.Description, request.AuthorIds, request.UserId));
-            _bookRepository.Update(updatedBook);
 
             return await Commit(_bookRepository.UnitOfWork).ConfigureAwait(false);
         }

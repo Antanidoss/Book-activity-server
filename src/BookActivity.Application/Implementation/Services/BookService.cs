@@ -22,7 +22,6 @@ using BookActivity.Shared.Models;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -75,7 +74,7 @@ namespace BookActivity.Application.Implementation.Services
 
             BookByIdSpec specification = new(bookIds);
             PaginationModel paginationModel = new(take: bookIds.Length);
-            DbMultipleResultFilterModel<Book> filterModel = new(query => query.Where(specification), paginationModel);
+            DbMultipleResultFilterModel<Book> filterModel = new(specification, paginationModel);
 
             var books = await _bookRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
 

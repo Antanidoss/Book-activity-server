@@ -74,10 +74,6 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet.Remove(book);
         }
 
-        public void Update(Book book)
-        {
-            _dbSet.Update(book);
-        }
         public void Dispose()
         {
             _db.Dispose();

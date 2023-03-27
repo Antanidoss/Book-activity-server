@@ -7,7 +7,6 @@ using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
 using BookActivity.Shared.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,11 +15,11 @@ using System.Threading.Tasks;
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.BookService)]
-    public sealed class BookController : BaseController
+    public sealed class BookController : Controller
     {
         private readonly IBookService _bookService;
 
-        public BookController(IBookService bookService, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public BookController(IBookService bookService)
         {
             _bookService = bookService;
         }
@@ -40,9 +39,9 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetBooksByFilterMethod)]
-        public async Task<ApiResult<EntityListResult<BookDto>>> GetBooksByFilterAsync(GetBooksByFilterDto bookFilterModel)
+        public async Task<ApiResult<EntityListResult<BookDto>>> GetBooksByFilterAsync(GetBooksByFilterDto bookFilterModel, [FromServices] AppUserDto currentUser)
         {
-            bookFilterModel.UserId = GetCurrentUser()?.Id ?? Guid.Empty;
+            bookFilterModel.UserId = currentUser?.Id ?? Guid.Empty;
 
             return (await _bookService.GetByFilterAsync(bookFilterModel)
                 .ConfigureAwait(false))
@@ -50,9 +49,9 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpDelete(ApiConstants.RemoveBookMethod)]
-        public async Task<ActionResult> RemoveBookAsync(Guid bookId)
+        public async Task<ActionResult> RemoveBookAsync(Guid bookId, [FromServices] AppUserDto currentUser)
         {
-            return (await _bookService.RemoveActiveBookAsync(bookId, GetCurrentUser().Id)
+            return (await _bookService.RemoveActiveBookAsync(bookId, currentUser.Id)
                 .ConfigureAwait(false))
                 .ToActionResult();
         }

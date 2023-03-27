@@ -53,7 +53,7 @@ namespace BookActivity.Application.Implementation.Services
 
             ActiveBookByIdSpec specification = new(activeBookIds);
             PaginationModel paginationModel = new(take: activeBookIds.Length);
-            DbMultipleResultFilterModel<ActiveBook> filterModel = new(query => query.Where(specification), paginationModel, forUpdate: false);
+            DbMultipleResultFilterModel<ActiveBook> filterModel = new(specification, paginationModel);
 
             var activeBooks = await _activeBookRepository.GetByFilterAsync(filterModel)
                 .ConfigureAwait(false);
@@ -66,7 +66,7 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfNull(paginationModel);
 
             ActiveBookByUserIdSpec specification = new(currentUserId);
-            DbMultipleResultFilterModel<ActiveBook> filterModel = new(query => query.Where(specification), paginationModel, forUpdate: false);
+            DbMultipleResultFilterModel<ActiveBook> filterModel = new(specification, paginationModel);
 
             var activeBooks = await _activeBookRepository.GetByFilterAsync(filterModel)
                 .ConfigureAwait(false);

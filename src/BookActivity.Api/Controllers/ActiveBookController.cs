@@ -9,7 +9,6 @@ using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Shared.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,19 +18,19 @@ namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.ActiveBookService)]
     [Authorize]
-    public sealed class ActiveBookController : BaseController
+    public sealed class ActiveBookController : Controller
     {
         private readonly IActiveBookService _activeBookService;
 
-        public ActiveBookController(IActiveBookService activeBookService, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public ActiveBookController(IActiveBookService activeBookService)
         {
             _activeBookService = activeBookService;
         }
 
         [HttpPost(ApiConstants.AddActiveBookMethod)]
-        public async Task<ApiResult<Guid>> AddActiveBookAsync([FromBody] CreateActiveBookDto createActiveBookModel)
+        public async Task<ApiResult<Guid>> AddActiveBookAsync([FromBody] CreateActiveBookDto createActiveBookModel, [FromServices] AppUserDto currentUser)
         {
-            createActiveBookModel.UserId = GetCurrentUser().Id;
+            createActiveBookModel.UserId = currentUser.Id;
 
             return (await _activeBookService.AddActiveBookAsync(createActiveBookModel)
                 .ConfigureAwait(false))
@@ -39,9 +38,9 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.UpdateNumberPagesReadMethod)]
-        public async Task<ActionResult> UpdateNumberPagesReadAsync([FromBody] UpdateNumberPagesReadDto updateActiveBookModel)
+        public async Task<ActionResult> UpdateNumberPagesReadAsync([FromBody] UpdateNumberPagesReadDto updateActiveBookModel, [FromServices] AppUserDto currentUser)
         {
-            updateActiveBookModel.UserId = GetCurrentUser().Id;
+            updateActiveBookModel.UserId = currentUser.Id;
 
             return (await _activeBookService.UpdateActiveBookAsync(updateActiveBookModel)
                 .ConfigureAwait(false))
@@ -73,10 +72,10 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetActiveBooksByFilterMethod)]
-        public async Task<ApiResult<EntityListResult<SelectedActiveBook>>> GetActiveBooksByFilterAsync(GetActiveBookByFilterDto filterModel)
+        public async Task<ApiResult<EntityListResult<SelectedActiveBook>>> GetActiveBooksByFilterAsync(GetActiveBookByFilterDto filterModel, [FromServices] AppUserDto currentUser)
         {
             if (filterModel.UserId == Guid.Empty)
-                filterModel.UserId = GetCurrentUser().Id;
+                filterModel.UserId = currentUser.Id;
 
             return (await _activeBookService.GetByFilterAsync(filterModel)
                 .ConfigureAwait(false))
