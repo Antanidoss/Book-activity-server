@@ -9,7 +9,6 @@ using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Queries.AppUserQueries.GetUserProfileInfo;
 using BookActivity.Shared.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -17,11 +16,11 @@ using System.Threading.Tasks;
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.AppUserService)]
-    public sealed class AppUserController : BaseController
+    public sealed class AppUserController : Controller
     {
         private readonly IAppUserService _appUserService;
 
-        public AppUserController(IAppUserService appUserService, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor)
+        public AppUserController(IAppUserService appUserService)
         {
             _appUserService = appUserService;
         }
@@ -51,19 +50,17 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.SubscribeAppUserMethod)]
-        public async Task<ActionResult> SubscribeAppUserAsync([FromQuery] Guid subscribedUserId)
+        public async Task<ActionResult> SubscribeAppUserAsync([FromQuery] Guid subscribedUserId, [FromServices] AppUserDto currentUser)
         {
-            var currentUser = GetCurrentUser();
-
             return (await _appUserService.SubscribeAppUserAsync(currentUser.Id, subscribedUserId)
                 .ConfigureAwait(false))
                 .ToActionResult();
         }
 
         [HttpGet(ApiConstants.GetCurrentUserMethod)]
-        public ApiResult<AppUserDto> GetCurrentUserAsync()
+        public ApiResult<AppUserDto> GetCurrentUserAsync([FromServices] AppUserDto currentUser)
         {
-            return base.GetCurrentUser().ToApiResult();
+            return currentUser.ToApiResult();
         }
 
         [HttpPut(ApiConstants.UpdateUserMethod)]
@@ -81,10 +78,8 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpDelete(ApiConstants.UnsubscribeAppUserMethod)]
-        public async Task<ActionResult> UnsubscribeUserAsync([FromQuery] Guid unsubscribedUserId)
+        public async Task<ActionResult> UnsubscribeUserAsync([FromQuery] Guid unsubscribedUserId, [FromServices] AppUserDto currentUser)
         {
-            var currentUser = GetCurrentUser();
-
             return (await _appUserService.UnsubscribeAppUserAsync(currentUser.Id, unsubscribedUserId)
                 .ConfigureAwait(false))
                 .ToActionResult();

@@ -1,6 +1,7 @@
 using BookActivity.Api.Common.Extension;
 using BookActivity.Api.Middleware;
 using BookActivity.Application.Configuration;
+using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Domain.Hubs;
 using BookActivity.Infrastructure.Configuration;
 using BookActivity.Initialization;
@@ -9,6 +10,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,6 +40,14 @@ namespace BookActivity.Api
             });
 
             services.AddMediatR(typeof(Startup));
+
+            services.AddScoped(s =>
+            {
+                var httpContextAccessor = s.GetRequiredService<IHttpContextAccessor>();
+                var user = httpContextAccessor.HttpContext.Items["User"];
+
+                return user != null ? (user as AppUserDto) : null;
+            });
 
             AddInfastructure(services);
             AddApplication(services);
