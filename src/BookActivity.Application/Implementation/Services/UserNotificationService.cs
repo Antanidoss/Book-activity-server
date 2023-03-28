@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Read;
+using BookActivity.Domain.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.UserNotificationSpecs;
 using System;
 using System.Collections.Generic;
@@ -24,7 +26,8 @@ namespace BookActivity.Application.Implementation.Services
         public async Task<IEnumerable<UserNotificationDto>> GetUserNotificationsAsync(Guid userId)
         {
             UserNotificationByUserIdSpec specification = new(userId);
-            var notifications = await _userNotificationRepository.GetBySpecAsync(specification);
+            DbMultipleResultFilterModel<UserNotification> filterModel = new(specification);
+            var notifications = await _userNotificationRepository.GetByFilterAsync(filterModel);
 
             return _mapper.Map<IEnumerable<UserNotificationDto>>(notifications);
         }

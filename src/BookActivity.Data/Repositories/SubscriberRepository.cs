@@ -7,27 +7,27 @@ namespace BookActivity.Infrastructure.Data.Repositories
 {
     internal sealed class SubscriberRepository : ISubscriberRepository
     {
-        private readonly BookActivityContext _context;
+        private readonly BookActivityContext _db;
 
         public SubscriberRepository(BookActivityContext context)
         {
-            _context = context;
+            _db = context;
         }
 
-        public IUnitOfWork UnitOfWork => _context;
+        public IUnitOfWork UnitOfWork => _db;
 
         public void Add(Subscriber subscriber)
         {
-            _context.Subscribers.Add(subscriber);
+            _db.Subscribers.Add(subscriber);
         }
         public void Remove(Subscriber subscriber)
         {
-            _context.Subscribers.Remove(subscriber);
+            _db.Subscribers.Remove(subscriber);
         }
 
         public void Dispose()
         {
-            _context.Dispose();
+            _db.Dispose();
         }
     }
 }

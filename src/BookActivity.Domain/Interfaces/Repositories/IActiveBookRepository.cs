@@ -11,7 +11,6 @@ namespace BookActivity.Domain.Interfaces.Repositories
         Task<ActiveBook> GetByFilterAsync(DbSingleResultFilterModel<ActiveBook> filterModel);
         Task<int> GetCountByFilterAsync(DbMultipleResultFilterModel<ActiveBook> filterModel);
         void Add(ActiveBook activeBook);
-        void Update(ActiveBook activeBook);
         void Remove(ActiveBook activeBook);
     }
 }

@@ -1,4 +1,5 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Filters;
+using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookRatingSpecs;
 using FluentValidation.Results;
@@ -32,7 +33,8 @@ namespace BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating
                 return request.ValidationResult;
 
             BookRatingByIdSpec bookRatingByIdSpec = new(request.Id);
-            var bookRating = await _bookRatingRepository.GetBySpecAsync(bookRatingByIdSpec);
+            DbSingleResultFilterModel<BookRating> filterModel = new(bookRatingByIdSpec);
+            var bookRating = await _bookRatingRepository.GetByFilterAsync(filterModel);
             if (bookRating == null)
                 throw new ArgumentException($"Could not be found book rating by id: {request.Id}");
 
