@@ -1,8 +1,9 @@
-﻿using Antanidoss.Specification.Abstract;
+﻿using BookActivity.Domain.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
-using BookActivity.Infrastructure.Data.Validations;
+using BookActivity.Infrastructure.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System.Threading.Tasks;
@@ -23,13 +24,16 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = _db.Set<BookRating>();
         }
 
-        public async Task<BookRating> GetBySpecAsync(Specification<BookRating> specification)
+        public async Task<BookRating> GetByFilterAsync(DbSingleResultFilterModel<BookRating> filterModel)
         {
-            SpecificationValidator.ThrowExceptionIfNull(specification);
+            CommonValidator.ThrowExceptionIfNull(filterModel);
 
-            return await _dbSet
-                .AsNoTracking()
-                .FirstOrDefaultAsync(specification);
+            var query = _dbSet.IncludeMultiple(filterModel.Includes);
+
+            if (!filterModel.ForUpdate)
+                query = query.AsNoTracking();
+
+            return await query.FirstOrDefaultAsync(filterModel.Specification);
         }
 
         public void Dispose()

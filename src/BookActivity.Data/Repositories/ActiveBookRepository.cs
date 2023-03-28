@@ -78,13 +78,6 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet.Remove(activeBook);
         }
 
-        public void Update(ActiveBook activeBook)
-        {
-            CommonValidator.ThrowExceptionIfNull(activeBook);
-
-            _dbSet.Update(activeBook);
-        }
-
         public void Dispose()
         {
             _db.Dispose();

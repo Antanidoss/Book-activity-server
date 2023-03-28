@@ -35,13 +35,6 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet.Remove(bookNote);
         }
 
-        public void Update(BookNote bookNote)
-        {
-            CommonValidator.ThrowExceptionIfNull(bookNote);
-
-            _dbSet.Update(bookNote);
-        }
-
         public void Dispose()
         {
             _db.Dispose();

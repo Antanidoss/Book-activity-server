@@ -1,45 +1,54 @@
-﻿using Antanidoss.Specification.Abstract;
+﻿using BookActivity.Domain.Filters;
+using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
+using BookActivity.Infrastructure.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
     internal sealed class UserNotificationRepository : IUserNotificationRepository
     {
-        private readonly BookActivityContext _context;
+        private readonly BookActivityContext _db;
 
         private readonly DbSet<UserNotification> _dbSet;
 
         public UserNotificationRepository(BookActivityContext context)
         {
-            _context = context;
+            _db = context;
             _dbSet = context.UserNotifications;
         }
 
-        public IUnitOfWork UnitOfWork => _context;
+        public IUnitOfWork UnitOfWork => _db;
 
-        public async Task<IEnumerable<UserNotification>> GetBySpecAsync(Specification<UserNotification> specification)
+        public async Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<UserNotification, TResult> filterModel)
         {
-            return await _dbSet
-                .AsNoTracking()
-                .Where(specification)
-                .ToListAsync();
+            CommonValidator.ThrowExceptionIfNull(filterModel);
+
+            var query = _dbSet.IncludeMultiple(filterModel.Includes);
+
+            if (!filterModel.ForUpdate)
+                query = query.AsNoTracking();
+
+            if (typeof(TResult) == typeof(IEnumerable<UserNotification>))
+                query = query.ApplyPaginaton(filterModel.PaginationModel);
+
+            return await filterModel.Filter(query);
         }
 
         public void Add(UserNotification notification)
         {
-            _context.Add(notification);
+            _db.Add(notification);
         }
 
         public void Dispose()
         {
-            _context.Dispose();
+            _db.Dispose();
         }
     }
 }

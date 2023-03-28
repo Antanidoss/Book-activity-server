@@ -24,7 +24,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         private DbSet<AppUser> _dbSet;
 
-        private BookActivityContext _context;
+        private BookActivityContext _db;
 
         private readonly Expression<Func<AppUser, AppUser>> _baseSelectUser = a => new AppUser
         {
@@ -36,12 +36,12 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public AppUserRepository(UserManager<AppUser> userManager, BookActivityContext context)
         {
-            _context = context;
+            _db = context;
             _userManager = userManager;
             _dbSet = context.Users;
         }
 
-        public IUnitOfWork UnitOfWork => _context;
+        public IUnitOfWork UnitOfWork => _db;
 
         public async Task<TResult> GetByFilterAsync<TResult>(Func<IQueryable<AppUser>, Task<TResult>> filter, params Expression<Func<AppUser, object>>[] includes)
         {
@@ -118,7 +118,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public void Update(AppUser appUser)
         {
-            _context.Update(appUser);
+            _db.Update(appUser);
         }
 
         public void Dispose()
