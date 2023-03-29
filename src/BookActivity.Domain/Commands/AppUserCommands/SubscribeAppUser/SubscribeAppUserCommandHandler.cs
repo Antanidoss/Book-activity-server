@@ -1,6 +1,8 @@
 ﻿using BookActivity.Domain.Events.AppUserEvents;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using FluentValidation.Results;
 using MediatR;
@@ -45,14 +47,18 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
             subscriber.AddDomainEvent(new SubscribeAppUserEvent
             {
                 SubscribedUserId = request.SubscribedUserId,
-                UserNameWhoSubscribed = await _appUserRepository.GetByFilterAsync(
-                    async query => query.Where(userWhoSubscribedSpec).Select(u => u.UserName).First()),
+                UserNameWhoSubscribed = await _appUserRepository.GetByFilterAsync<string>(GetFilter(userWhoSubscribedSpec)),
             });
 
             _subscriberRepository.Add(subscriber);
             _subscriptionRepository.Add(new Subscription { UserIdWhoSubscribed = request.UserIdWhoSubscribed, SubscribedUserId = request.SubscribedUserId });
 
             return await Commit(_subscriberRepository.UnitOfWork);
+        }
+
+        private Func<IQueryable<AppUser>, string> GetFilter(AppUserByIdSpec userWhoSubscribedSpec)
+        {
+            return query => query.Where(userWhoSubscribedSpec).Select(u => u.UserName).First();
         }
     }
 }

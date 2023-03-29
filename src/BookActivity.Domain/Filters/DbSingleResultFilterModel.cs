@@ -15,5 +15,10 @@ namespace BookActivity.Domain.Filters
         {
             Specification = specification;
         }
+
+        public static implicit operator DbSingleResultFilterModel<TEntity>(Specification<TEntity> specification)
+        {
+            return new DbSingleResultFilterModel<TEntity>(specification);
+        }
     }
 }

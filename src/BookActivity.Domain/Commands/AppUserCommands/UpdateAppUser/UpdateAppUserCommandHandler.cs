@@ -1,4 +1,6 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Filters;
+using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using FluentValidation.Results;
 using MediatR;
@@ -24,7 +26,8 @@ namespace BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser
                 return request.ValidationResult;
 
             AppUserByIdSpec specification = new(request.AppUserId);
-            var user = await _appUserRepository.GetForUpdateBySpecAsync(specification, forAccountOperation: true).ConfigureAwait(false);
+            DbSingleResultFilterModel<AppUser> filterModel = new(specification, forUpdate: true);
+            var user = await _appUserRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
 
             user.AvatarImage = request.AvatarImage;
             user.UserName = request.Name;

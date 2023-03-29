@@ -25,7 +25,7 @@ namespace BookActivity.Domain.Queries.AppUserQueries.GetUserProfileInfo
         {
             var selectHandler = GetSelectHandler(request);
 
-            return await _appUserRepository.GetByFilterAsync(selectHandler);
+            return await _appUserRepository.GetByFilterAsync<AppUserProfileInfo>(selectHandler);
         }
 
         private Func<IQueryable<AppUser>, Task<AppUserProfileInfo>> GetSelectHandler(GetUserProfileInfoQuery filterModel)
