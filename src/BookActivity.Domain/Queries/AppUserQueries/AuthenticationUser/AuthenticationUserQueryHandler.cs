@@ -1,5 +1,6 @@
 ﻿using Ardalis.Result;
 using BookActivity.Domain.Constants;
+using BookActivity.Domain.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AppUserSpecs;
@@ -38,7 +39,8 @@ namespace BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser
         public async Task<Result<AuthenticationResult>> Handle(AuthenticationUserQuery request, CancellationToken cancellationToken)
         {
             AppUserByEmailSpec specification = new(request.Email);
-            var appUser = await _userRepository.GetBySpecAsync(specification, forAccountOperation: true).ConfigureAwait(false);
+            DbSingleResultFilterModel<AppUser> filterModel = new(specification, forUpdate: true);
+            var appUser = await _userRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
 
             if (appUser is null)
                 return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectEmail);

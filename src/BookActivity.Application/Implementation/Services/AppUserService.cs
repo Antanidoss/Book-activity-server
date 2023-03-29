@@ -87,7 +87,7 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfEmpty(appUserId, nameof(appUserId));
 
             AppUserByIdSpec specification = new(appUserId);
-            var appUser = await _appUserRepository.GetBySpecAsync(specification).ConfigureAwait(false);
+            var appUser = await _appUserRepository.GetByFilterAsync(specification).ConfigureAwait(false);
 
             return _mapper.Map<AppUserDto>(appUser);
         }

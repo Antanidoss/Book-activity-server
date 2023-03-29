@@ -10,6 +10,7 @@ using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
 using BookActivity.Shared.Models;
+using BookActivity.Domain.Filters;
 
 namespace BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter
 {
@@ -34,7 +35,8 @@ namespace BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter
                 throw new ArgumentNullException(nameof(request));
 
             var filterWithPagination = GetFilterWithPagination(request);
-            var users = await _appUserRepository.GetByFilterAsync(filterWithPagination).ConfigureAwait(false);
+            DbMultipleResultFilterModel<AppUser, IEnumerable<SelectedAppUser>> filterModel = new(filterWithPagination);
+            var users = await _appUserRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
 
             var usersCount = await _appUserRepository.GetCountByFilterAsync(GetFilter(request)).ConfigureAwait(false);
 

@@ -37,9 +37,12 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
         public async Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
         {
             BookByIdSpec bookByIdSpec = new(notification.BookId);
-            DbSingleResultFilterModel<Book> filterModel = new(bookByIdSpec, forUpdate: false);
-            var book = await _bookRepository.GetByFilterAsync(filterModel);
-            var user = await _appUserRepository.GetBySpecAsync(new AppUserByIdSpec(notification.UserId), true, u => u.Subscribers);
+            DbSingleResultFilterModel<Book> filterModelForBook = new(bookByIdSpec, forUpdate: false);
+            var book = await _bookRepository.GetByFilterAsync(filterModelForBook);
+
+            AppUserByIdSpec userByIdSpec = new(notification.UserId);
+            DbSingleResultFilterModel<AppUser> filterModelForUser = new(userByIdSpec, forUpdate: true, u => u.Subscribers);
+            var user = await _appUserRepository.GetByFilterAsync(filterModelForUser);
 
             string notificationMessage = $"{user.UserName} has made the book \"{book.Title}\" active";
 

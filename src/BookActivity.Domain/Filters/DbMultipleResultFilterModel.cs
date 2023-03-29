@@ -24,10 +24,30 @@ namespace BookActivity.Domain.Filters
         }
 
         public DbMultipleResultFilterModel(
+            Func<IQueryable<TEntity>, TResult> filter,
+            PaginationModel paginationModel = null,
+            bool forUpdate = false,
+            params Expression<Func<TEntity, object>>[] includes) : base(forUpdate, includes)
+        {
+            Filter = async query => filter(query);
+            PaginationModel = paginationModel;
+        }
+
+        public DbMultipleResultFilterModel(
             Func<IQueryable<TEntity>, Task<TResult>> filter,
             params Expression<Func<TEntity, object>>[] includes) : base(forUpdate: false, includes)
         {
             Filter = filter;
+        }
+
+        public static implicit operator DbMultipleResultFilterModel<TEntity, TResult>(Func<IQueryable<TEntity>, Task<TResult>> filter)
+        {
+            return new DbMultipleResultFilterModel<TEntity, TResult>(filter);
+        }
+
+        public static implicit operator DbMultipleResultFilterModel<TEntity, TResult>(Func<IQueryable<TEntity>, TResult> filter)
+        {
+            return new DbMultipleResultFilterModel<TEntity, TResult>(filter);
         }
     }
 
@@ -55,6 +75,16 @@ namespace BookActivity.Domain.Filters
             bool forUpdate = false,
             params Expression<Func<TEntity, object>>[] includes) : base(async query => query.Where(specification), paginationModel, forUpdate, includes)
         {
+        }
+
+        public static implicit operator DbMultipleResultFilterModel<TEntity>(Specification<TEntity> specification)
+        {
+            return new DbMultipleResultFilterModel<TEntity>(specification);
+        }
+
+        public static implicit operator DbMultipleResultFilterModel<TEntity>(Func<IQueryable<TEntity>, IQueryable<TEntity>> filter)
+        {
+            return new DbMultipleResultFilterModel<TEntity>(filter);
         }
     }
 }

@@ -1,18 +1,16 @@
 ﻿using Antanidoss.Specification.Abstract;
+using BookActivity.Domain.Filters;
 using BookActivity.Domain.Filters.Handlers;
-using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.Extensions;
-using BookActivity.Infrastructure.Data.Validations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -26,14 +24,6 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         private BookActivityContext _db;
 
-        private readonly Expression<Func<AppUser, AppUser>> _baseSelectUser = a => new AppUser
-        {
-            Id = a.Id,
-            AvatarImage = a.AvatarImage,
-            UserName = a.UserName,
-            Email = a.Email,
-        };
-
         public AppUserRepository(UserManager<AppUser> userManager, BookActivityContext context)
         {
             _db = context;
@@ -43,58 +33,42 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public IUnitOfWork UnitOfWork => _db;
 
-        public async Task<TResult> GetByFilterAsync<TResult>(Func<IQueryable<AppUser>, Task<TResult>> filter, params Expression<Func<AppUser, object>>[] includes)
+        public async Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<AppUser, TResult> filterModel)
         {
-            CommonValidator.ThrowExceptionIfNull(filter);
+            CommonValidator.ThrowExceptionIfNull(filterModel);
 
-            var query = _userManager.Users.AsNoTracking().IncludeMultiple(includes);
+            var query = _dbSet.IncludeMultiple(filterModel.Includes);
 
-            return await filter(query);
+            if (!filterModel.ForUpdate)
+                query = query.AsNoTracking();
+
+            if (typeof(TResult) == typeof(IEnumerable<ActiveBook>))
+                query = query.ApplyPaginaton(filterModel.PaginationModel);
+
+            return await filterModel.Filter(query);
         }
 
-        public async Task<IEnumerable<AppUser>> GetBySpecAsync(Specification<AppUser> specification, PaginationModel paginationModel, params Expression<Func<AppUser, object>>[] includes)
+        public async Task<AppUser> GetByFilterAsync(DbSingleResultFilterModel<AppUser> filterModel)
         {
-            SpecificationValidator.ThrowExceptionIfNull(specification);
-            CommonValidator.ThrowExceptionIfNull(paginationModel);
+            CommonValidator.ThrowExceptionIfNull(filterModel);
 
-            return await _dbSet
-                .AsNoTracking()
-                .IncludeMultiple(includes)
-                .Where(specification)
-                .ApplyPaginaton(paginationModel)
-                .Select(_baseSelectUser)
-                .ToListAsync();
+            var query = _dbSet.IncludeMultiple(filterModel.Includes);
+
+            if (!filterModel.ForUpdate)
+                query = query.AsNoTracking();
+
+            return await query.FirstOrDefaultAsync(filterModel.Specification);
         }
 
-        public async Task<AppUser> GetBySpecAsync(Specification<AppUser> specification, bool forAccountOperation, params Expression<Func<AppUser, object>>[] includes)
+        public async Task<int> GetCountByFilterAsync(DbMultipleResultFilterModel<AppUser> filterModel)
         {
-            SpecificationValidator.ThrowExceptionIfNull(specification);
+            CommonValidator.ThrowExceptionIfNull(filterModel);
 
-            var query = _dbSet.IncludeMultiple(includes);
+            var query = await filterModel.Filter(_dbSet);
 
-            if (!forAccountOperation)
-                query = query.Select(_baseSelectUser);
-
-            return await query.AsNoTracking().FirstOrDefaultAsync(specification);
-        }
-
-        public async Task<AppUser> GetForUpdateBySpecAsync(Specification<AppUser> specification, bool forAccountOperation = false, params Expression<Func<AppUser, object>>[] includes)
-        {
-            SpecificationValidator.ThrowExceptionIfNull(specification);
-
-            var query = _dbSet.IncludeMultiple(includes);
-
-            if (!forAccountOperation)
-                query = query.Select(_baseSelectUser);
-
-            return await query.FirstOrDefaultAsync(specification);
-        }
-
-        public async Task<int> GetCountByFilterAsync(Func<IQueryable<AppUser>, IQueryable<AppUser>> filter, int skip = 0)
-        {
-            CommonValidator.ThrowExceptionIfNull(filter);
-
-            return await filter(_userManager.Users).CountAsync();
+            return await query
+                .ApplyPaginaton(filterModel.PaginationModel)
+                .CountAsync();
         }
 
         public async Task<bool> CheckExistBySpecAsync(Specification<AppUser> specification)
@@ -107,18 +81,6 @@ namespace BookActivity.Infrastructure.Data.Repositories
             CommonValidator.ThrowExceptionIfNull(user);
 
             return await _userManager.CreateAsync(user, password);
-        }
-
-        public async Task<IdentityResult> UpdateAccountDataAsync(AppUser user)
-        {
-            CommonValidator.ThrowExceptionIfNull(user);
-
-            return await _userManager.UpdateAsync(user);
-        }
-
-        public void Update(AppUser appUser)
-        {
-            _db.Update(appUser);
         }
 
         public void Dispose()
