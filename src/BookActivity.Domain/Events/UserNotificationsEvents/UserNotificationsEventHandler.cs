@@ -6,7 +6,6 @@ using BookActivity.Domain.Interfaces.Hubs;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AppUserSpecs;
-using BookActivity.Domain.Specifications.BookSpecs;
 using MediatR;
 using System;
 using System.Threading;
@@ -20,15 +19,12 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
     {
         private readonly IUserNotificationRepository _userNotificationRepository;
 
-        private readonly IBookRepository _bookRepository;
-
         private readonly IUserNotificationsHub _userNotificationsHub;
 
         private readonly IAppUserRepository _appUserRepository;
 
-        public UserNotificationsEventHandler(IBookRepository bookRepository, IUserNotificationsHub userNotificationsHub, IUserNotificationRepository userNotificationRepository, IAppUserRepository appUserRepository)
+        public UserNotificationsEventHandler(IUserNotificationsHub userNotificationsHub, IUserNotificationRepository userNotificationRepository, IAppUserRepository appUserRepository)
         {
-            _bookRepository = bookRepository;
             _userNotificationsHub = userNotificationsHub;
             _userNotificationRepository = userNotificationRepository;
             _appUserRepository = appUserRepository;
@@ -36,22 +32,19 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
 
         public async Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
         {
-            BookByIdSpec bookByIdSpec = new(notification.BookId);
-            DbSingleResultFilterModel<Book> filterModelForBook = new(bookByIdSpec, forUpdate: false);
-            var book = await _bookRepository.GetByFilterAsync(filterModelForBook);
-
             AppUserByIdSpec userByIdSpec = new(notification.UserId);
             DbSingleResultFilterModel<AppUser> filterModelForUser = new(userByIdSpec, forUpdate: true, u => u.Subscribers);
             var user = await _appUserRepository.GetByFilterAsync(filterModelForUser);
 
-            string notificationMessage = $"{user.UserName} has made the book \"{book.Title}\" active";
+            string notificationMessage = $"{user.UserName} has made the book id \"{notification.BookId}\" active";
 
             foreach (var followedUser in user.Subscribers)
             {
-                _userNotificationRepository.Add(new UserNotification(notificationMessage, followedUser.UserIdWhoSubscribed));
+                UserNotification userNotification = new(notificationMessage, followedUser.UserIdWhoSubscribed) { Id = Guid.NewGuid() };
+                _userNotificationRepository.Add(userNotification);
 
                 await _userNotificationsHub.Send(new UserNotificationModel(
-                        Guid.Empty,
+                        userNotification.Id,
                         followedUser.UserIdWhoSubscribed,
                         notificationMessage
                     ));
@@ -62,8 +55,11 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
         {
             string notificationMessage = $"{notification.UserNameWhoSubscribed} has subscribed to you";
 
+            UserNotification userNotification = new(notificationMessage, notification.SubscribedUserId) { Id = Guid.NewGuid() };
+            _userNotificationRepository.Add(userNotification);
+
             await _userNotificationsHub.Send(new UserNotificationModel(
-                       Guid.Empty,
+                       userNotification.Id,
                        notification.SubscribedUserId,
                        notificationMessage
                    ));
