@@ -1,11 +1,11 @@
-using BookActivity.Api.Common.Extension;
+using BookActivity.Api.Common.Extensions;
 using BookActivity.Api.Middleware;
-using BookActivity.Application.Configuration;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Domain.Hubs;
-using BookActivity.Infrastructure.Configuration;
-using BookActivity.Initialization;
+using BookActivity.Infrastructure.Data.Intefaces;
+using BookActivity.Shared.Interfaces;
 using BookActivity.Shared.Models;
+using LinqKit;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +17,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace BookActivity.Api
@@ -48,10 +50,8 @@ namespace BookActivity.Api
                 return user != null ? (user as AppUserDto) : null;
             });
 
-            AddInfastructure(services);
-            AddApplication(services);
+            services.ConfigureModules(Configuration);
             AddAuthentication(services);
-            AddAppInitializer(services);
 
             services.Configure<TokenInfo>(Configuration.GetSection(typeof(TokenInfo).Name));
 
@@ -89,28 +89,10 @@ namespace BookActivity.Api
             });
         }
 
-        private void AddInfastructure(IServiceCollection services)
-        {
-            InfraModuleConfiguration infraModuleConfiguration = new();
-            infraModuleConfiguration.ConfigureDI(services, Configuration);
-        }
-
-        private void AddApplication(IServiceCollection services)
-        {
-            ApplicationModuleConfiguration appModuleConfiguration = new();
-            appModuleConfiguration.ConfigureDI(services, Configuration);
-        }
-
-        private void AddAppInitializer(IServiceCollection services)
-        {
-            AppInitializer appInitializerConfiguration = new();
-            appInitializerConfiguration.ConfigureDI(services, Configuration);
-        }
-
         private void CreateDatabasesIfNotExist(IApplicationBuilder app)
         {
             using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
-            InfraModuleConfiguration infraModuleConfiguration = new();
+            Infrastructure.Data.ModuleConfiguration infraModuleConfiguration = new();
             infraModuleConfiguration.CreateDatabasesIfNotExist(serviceScope);
         }
 
