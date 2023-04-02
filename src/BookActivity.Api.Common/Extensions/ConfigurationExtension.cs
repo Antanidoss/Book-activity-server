@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace BookActivity.Api.Common.Extension
+namespace BookActivity.Api.Common.Extensions
 {
     public static class ConfigurationExtension
     {

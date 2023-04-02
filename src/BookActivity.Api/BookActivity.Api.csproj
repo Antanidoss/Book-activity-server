@@ -12,8 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BookActivity.Api.Common\BookActivity.Api.Common.csproj" />
-    <ProjectReference Include="..\BookActivity.Application.Configuration\BookActivity.Application.Configuration.csproj" />
-    <ProjectReference Include="..\BookActivity.Infrastructure.Configuration\BookActivity.Infrastructure.Configuration.csproj" />
+    <ProjectReference Include="..\BookActivity.Application\BookActivity.Application.csproj" />
     <ProjectReference Include="..\BookActivity.Initialization\BookActivity.Initialization.csproj" />
   </ItemGroup>
 
