@@ -10,19 +10,19 @@ namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.BookRatingService)]
     [Authorize]
-    public class BookRatingController : Controller
+    public class BookRatingController : BaseController
     {
         private readonly IBookRatingService _bookRatingService;
 
-        public BookRatingController(IBookRatingService bookRatingService)
+        public BookRatingController(IBookRatingService bookRatingService, [FromServices] AppUserDto currentUser) : base(currentUser)
         {
             _bookRatingService = bookRatingService;
         }
 
         [HttpPut(ApiConstants.UpdateBookRatingMethod)]
-        public async Task UpdateBookRatingAsync([FromBody] UpdateBookRatingDto updateBookRating, [FromServices] AppUserDto currentUser)
+        public async Task UpdateBookRatingAsync([FromBody] UpdateBookRatingDto updateBookRating)
         {
-            updateBookRating.BookOpinion.UserId = currentUser.Id;
+            updateBookRating.BookOpinion.UserId = _currentUser.Id;
 
             await _bookRatingService.UpdateBookRatingAsync(updateBookRating).ConfigureAwait(false);
         }

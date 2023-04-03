@@ -10,7 +10,7 @@ namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.BookNoteService)]
     [Authorize]
-    public sealed class BookNoteController : Controller
+    public sealed class BookNoteController : BaseController
     {
         private readonly IBookNoteService _bookNoteService;
 

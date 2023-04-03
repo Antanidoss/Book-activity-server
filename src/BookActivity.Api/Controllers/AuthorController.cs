@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.AuthorService)]
-    public sealed class AuthorController : Controller
+    public sealed class AuthorController : BaseController
     {
         private readonly IAuthorService _authorService;
 
