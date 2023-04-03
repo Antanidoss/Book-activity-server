@@ -10,19 +10,19 @@ namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.ActiveBookStatisticService)]
     [Authorize]
-    public sealed class ActiveBookStatisticController : Controller
+    public sealed class ActiveBookStatisticController : BaseController
     {
         private readonly IActiveBookStatisticService _activeBookStatisticService;
 
-        public ActiveBookStatisticController(IActiveBookStatisticService activeBookStatisticService)
+        public ActiveBookStatisticController(IActiveBookStatisticService activeBookStatisticService, [FromServices] AppUserDto currentUser) : base(currentUser)
         {
             _activeBookStatisticService = activeBookStatisticService;
         }
 
         [HttpGet(ApiConstants.GetActiveBooksStaticMethod)]
-        public async Task<ActiveBooksStatistic> GetActiveBooksStatistics([FromServices] AppUserDto currentUser)
+        public async Task<ActiveBooksStatistic> GetActiveBooksStatistics()
         {
-            return await _activeBookStatisticService.GetActiveBookStatistics(currentUser.Id);
+            return await _activeBookStatisticService.GetActiveBookStatistics(_currentUser.Id);
         }
     }
 }

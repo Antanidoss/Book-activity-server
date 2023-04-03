@@ -16,11 +16,11 @@ using System.Threading.Tasks;
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.AppUserService)]
-    public sealed class AppUserController : Controller
+    public sealed class AppUserController : BaseController
     {
         private readonly IAppUserService _appUserService;
 
-        public AppUserController(IAppUserService appUserService)
+        public AppUserController(IAppUserService appUserService, [FromServices] AppUserDto currentUser = null) : base(currentUser)
         {
             _appUserService = appUserService;
         }
@@ -50,17 +50,17 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.SubscribeAppUserMethod)]
-        public async Task<ActionResult> SubscribeAppUserAsync([FromQuery] Guid subscribedUserId, [FromServices] AppUserDto currentUser)
+        public async Task<ActionResult> SubscribeAppUserAsync([FromQuery] Guid subscribedUserId)
         {
-            return (await _appUserService.SubscribeAppUserAsync(currentUser.Id, subscribedUserId)
+            return (await _appUserService.SubscribeAppUserAsync(_currentUser.Id, subscribedUserId)
                 .ConfigureAwait(false))
                 .ToActionResult();
         }
 
         [HttpGet(ApiConstants.GetCurrentUserMethod)]
-        public ApiResult<AppUserDto> GetCurrentUserAsync([FromServices] AppUserDto currentUser)
+        public ApiResult<AppUserDto> GetCurrentUserAsync()
         {
-            return currentUser.ToApiResult();
+            return _currentUser.ToApiResult();
         }
 
         [HttpPut(ApiConstants.UpdateUserMethod)]
@@ -78,9 +78,9 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpDelete(ApiConstants.UnsubscribeAppUserMethod)]
-        public async Task<ActionResult> UnsubscribeUserAsync([FromQuery] Guid unsubscribedUserId, [FromServices] AppUserDto currentUser)
+        public async Task<ActionResult> UnsubscribeUserAsync([FromQuery] Guid unsubscribedUserId)
         {
-            return (await _appUserService.UnsubscribeAppUserAsync(currentUser.Id, unsubscribedUserId)
+            return (await _appUserService.UnsubscribeAppUserAsync(_currentUser.Id, unsubscribedUserId)
                 .ConfigureAwait(false))
                 .ToActionResult();
         }

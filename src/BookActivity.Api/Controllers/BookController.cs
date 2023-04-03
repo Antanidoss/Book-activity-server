@@ -15,11 +15,11 @@ using System.Threading.Tasks;
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.BookService)]
-    public sealed class BookController : Controller
+    public sealed class BookController : BaseController
     {
         private readonly IBookService _bookService;
 
-        public BookController(IBookService bookService)
+        public BookController(IBookService bookService, [FromServices] AppUserDto currentUser = null) : base(currentUser)
         {
             _bookService = bookService;
         }
@@ -39,9 +39,9 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetBooksByFilterMethod)]
-        public async Task<ApiResult<EntityListResult<BookDto>>> GetBooksByFilterAsync(GetBooksByFilterDto bookFilterModel, [FromServices] AppUserDto currentUser)
+        public async Task<ApiResult<EntityListResult<BookDto>>> GetBooksByFilterAsync(GetBooksByFilterDto bookFilterModel)
         {
-            bookFilterModel.UserId = currentUser?.Id ?? Guid.Empty;
+            bookFilterModel.UserId = _currentUser?.Id ?? Guid.Empty;
 
             return (await _bookService.GetByFilterAsync(bookFilterModel)
                 .ConfigureAwait(false))
@@ -49,9 +49,9 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpDelete(ApiConstants.RemoveBookMethod)]
-        public async Task<ActionResult> RemoveBookAsync(Guid bookId, [FromServices] AppUserDto currentUser)
+        public async Task<ActionResult> RemoveBookAsync(Guid bookId)
         {
-            return (await _bookService.RemoveActiveBookAsync(bookId, currentUser.Id)
+            return (await _bookService.RemoveActiveBookAsync(bookId, _currentUser.Id)
                 .ConfigureAwait(false))
                 .ToActionResult();
         }

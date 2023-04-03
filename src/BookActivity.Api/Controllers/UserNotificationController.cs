@@ -10,19 +10,19 @@ namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.UserNotificationService)]
     [Authorize]
-    public class UserNotificationController : Controller
+    public class UserNotificationController : BaseController
     {
         private readonly IUserNotificationService _userNotificationService;
 
-        public UserNotificationController(IUserNotificationService userNotificationService)
+        public UserNotificationController(IUserNotificationService userNotificationService, [FromServices] AppUserDto currentUser) : base(currentUser)
         {
             _userNotificationService = userNotificationService;
         }
 
         [HttpGet(ApiConstants.GetUserNotifications)]
-        public async Task<IEnumerable<UserNotificationDto>> GetUserNotificationsAsync([FromServices] AppUserDto currentUser)
+        public async Task<IEnumerable<UserNotificationDto>> GetUserNotificationsAsync()
         {
-            return await _userNotificationService.GetUserNotificationsAsync(currentUser.Id);
+            return await _userNotificationService.GetUserNotificationsAsync(_currentUser.Id);
         }
     }
 }

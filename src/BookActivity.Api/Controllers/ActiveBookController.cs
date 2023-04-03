@@ -18,19 +18,19 @@ namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.ActiveBookService)]
     [Authorize]
-    public sealed class ActiveBookController : Controller
+    public sealed class ActiveBookController : BaseController
     {
         private readonly IActiveBookService _activeBookService;
 
-        public ActiveBookController(IActiveBookService activeBookService)
+        public ActiveBookController(IActiveBookService activeBookService, [FromServices] AppUserDto currentUser) : base(currentUser)
         {
             _activeBookService = activeBookService;
         }
 
         [HttpPost(ApiConstants.AddActiveBookMethod)]
-        public async Task<ApiResult<Guid>> AddActiveBookAsync([FromBody] CreateActiveBookDto createActiveBookModel, [FromServices] AppUserDto currentUser)
+        public async Task<ApiResult<Guid>> AddActiveBookAsync([FromBody] CreateActiveBookDto createActiveBookModel)
         {
-            createActiveBookModel.UserId = currentUser.Id;
+            createActiveBookModel.UserId = _currentUser.Id;
 
             return (await _activeBookService.AddActiveBookAsync(createActiveBookModel)
                 .ConfigureAwait(false))
@@ -38,9 +38,9 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.UpdateNumberPagesReadMethod)]
-        public async Task<ActionResult> UpdateNumberPagesReadAsync([FromBody] UpdateNumberPagesReadDto updateActiveBookModel, [FromServices] AppUserDto currentUser)
+        public async Task<ActionResult> UpdateNumberPagesReadAsync([FromBody] UpdateNumberPagesReadDto updateActiveBookModel)
         {
-            updateActiveBookModel.UserId = currentUser.Id;
+            updateActiveBookModel.UserId = _currentUser.Id;
 
             return (await _activeBookService.UpdateActiveBookAsync(updateActiveBookModel)
                 .ConfigureAwait(false))
@@ -72,10 +72,10 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetActiveBooksByFilterMethod)]
-        public async Task<ApiResult<EntityListResult<SelectedActiveBook>>> GetActiveBooksByFilterAsync(GetActiveBookByFilterDto filterModel, [FromServices] AppUserDto currentUser)
+        public async Task<ApiResult<EntityListResult<SelectedActiveBook>>> GetActiveBooksByFilterAsync(GetActiveBookByFilterDto filterModel)
         {
             if (filterModel.UserId == Guid.Empty)
-                filterModel.UserId = currentUser.Id;
+                filterModel.UserId = _currentUser.Id;
 
             return (await _activeBookService.GetByFilterAsync(filterModel)
                 .ConfigureAwait(false))
