@@ -1,6 +1,7 @@
 ﻿using BookActivity.Application.Interfaces.Services;
 using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -17,10 +18,13 @@ namespace BookActivity.Api.Middleware
 
         private readonly TokenInfo _tokenInfo;
 
-        public JwtMiddleware(RequestDelegate next, IOptions<TokenInfo> tokenInfo)
+        private readonly ILogger<JwtMiddleware> _logger;
+
+        public JwtMiddleware(RequestDelegate next, IOptions<TokenInfo> tokenInfo, ILogger<JwtMiddleware> logger)
         {
             _next = next;
             _tokenInfo = tokenInfo.Value;
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context, IAppUserService userService)
@@ -38,6 +42,7 @@ namespace BookActivity.Api.Middleware
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes(_tokenInfo.SecretKey);
+
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
@@ -54,9 +59,9 @@ namespace BookActivity.Api.Middleware
                 user.Token = jwtToken.RawData;
                 context.Items["User"] = user;
             }
-            catch
+            catch (Exception ex)
             {
-
+                _logger.LogError(new EventId(), ex, string.Empty);
             }
         }
     }
