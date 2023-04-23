@@ -2,10 +2,7 @@ using BookActivity.Api.Common.Extensions;
 using BookActivity.Api.Middleware;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Domain.Hubs;
-using BookActivity.Infrastructure.Data.Intefaces;
-using BookActivity.Shared.Interfaces;
 using BookActivity.Shared.Models;
-using LinqKit;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -17,8 +14,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 
 namespace BookActivity.Api
@@ -40,8 +35,6 @@ namespace BookActivity.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookActivity.Api", Version = "v1" });
             });
 
-            services.AddMediatR(typeof(Startup));
-
             services.AddScoped(s =>
             {
                 var httpContextAccessor = s.GetRequiredService<IHttpContextAccessor>();
@@ -50,11 +43,12 @@ namespace BookActivity.Api
                 return user != null ? (user as AppUserDto) : null;
             });
 
-            services.ConfigureModules(Configuration);
             AddAuthentication(services);
 
             services.Configure<TokenInfo>(Configuration.GetSection(typeof(TokenInfo).Name));
 
+            services.AddMediatR(typeof(Startup));
+            services.ConfigureModules(Configuration);
             services.AddCors();
             services.AddSignalR();
             services.AddLogging();
@@ -72,7 +66,7 @@ namespace BookActivity.Api
             CreateDatabasesIfNotExist(app);
 
             app.UseHttpsRedirection();
-            app.UseCors(x => x.WithOrigins(Configuration.GetValue<string>("ClientAddress"), "http://localhost:3001")
+            app.UseCors(x => x.WithOrigins(Configuration.GetValue<string>("ClientAddress"))
                               .AllowAnyMethod()
                               .AllowAnyHeader()
                               .AllowCredentials());
