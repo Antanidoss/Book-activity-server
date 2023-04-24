@@ -2,19 +2,15 @@ using BookActivity.Api.Common.Extensions;
 using BookActivity.Api.Middleware;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Domain.Hubs;
+using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Shared.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System;
 using System.Text;
+using HotChocolate;
 
 namespace BookActivity.Api
 {
@@ -44,6 +40,7 @@ namespace BookActivity.Api
             });
 
             AddAuthentication(services);
+            AddGraphQL(services);
 
             services.Configure<TokenInfo>(Configuration.GetSection(typeof(TokenInfo).Name));
 
@@ -52,6 +49,7 @@ namespace BookActivity.Api
             services.AddCors();
             services.AddSignalR();
             services.AddLogging();
+            services.AddEndpointsApiExplorer();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -74,12 +72,13 @@ namespace BookActivity.Api
             app.UseRouting();
             app.UseAuthorization();
             app.UseHttpLogging();
-
             app.UseMiddleware<JwtMiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<UserNotificationsHub>("/userNotificationsHub");
+                endpoints.MapGraphQL();
             });
         }
 
@@ -112,6 +111,20 @@ namespace BookActivity.Api
                     ClockSkew = TimeSpan.FromMinutes(2)
                 };
             });
+        }
+
+        private void AddGraphQL(IServiceCollection services)
+        {
+            services.Configure<KestrelServerOptions>(options =>
+            {
+                options.AllowSynchronousIO = true;
+            });
+            
+            services.AddGraphQLServer()
+                .AddQueryType<Query>()
+                .AddProjections()
+                .AddFiltering()
+                .AddSorting();
         }
     }
 }
