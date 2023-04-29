@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="HotChocolate.Data.EntityFramework" Version="12.5.0" />
+    <PackageReference Include="HotChocolate.Data.EntityFramework" Version="13.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
@@ -23,7 +23,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BookActivity.Domain.Core\BookActivity.Domain.Core.csproj" />
     <ProjectReference Include="..\BookActivity.Domain\BookActivity.Domain.csproj" />
-    <ProjectReference Include="..\BookActivity.Infrastructure\BookActivity.Infrastructure.csproj" />
     <ProjectReference Include="..\BookActivity.Shared\BookActivity.Shared.csproj" />
   </ItemGroup>
 

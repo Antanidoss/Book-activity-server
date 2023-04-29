@@ -6,22 +6,22 @@ using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Shared.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
-using HotChocolate;
 
 namespace BookActivity.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Environment = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment Environment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -40,7 +40,7 @@ namespace BookActivity.Api
             });
 
             AddAuthentication(services);
-            AddGraphQL(services);
+            AddGraphQL(services, Environment);
 
             services.Configure<TokenInfo>(Configuration.GetSection(typeof(TokenInfo).Name));
 
@@ -113,14 +113,10 @@ namespace BookActivity.Api
             });
         }
 
-        private void AddGraphQL(IServiceCollection services)
+        private void AddGraphQL(IServiceCollection services, IWebHostEnvironment env)
         {
-            services.Configure<KestrelServerOptions>(options =>
-            {
-                options.AllowSynchronousIO = true;
-            });
-            
             services.AddGraphQLServer()
+                .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = env.IsDevelopment())
                 .AddQueryType<Query>()
                 .AddProjections()
                 .AddFiltering()

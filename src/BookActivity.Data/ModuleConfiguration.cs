@@ -1,4 +1,5 @@
 ﻿using BookActivity.Domain.Core.Events;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
@@ -38,6 +39,7 @@ namespace BookActivity.Infrastructure.Data
             }).AddEntityFrameworkStores<BookActivityContext>().AddDefaultTokenProviders();
 
             services.AddScoped<IEventStore, EventStore>();
+            services.AddScoped<IMediatorHandler, InMemoryBus>();
 
             ConfigureRepositories(services);
 
