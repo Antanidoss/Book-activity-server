@@ -25,8 +25,6 @@ namespace BookActivity.Api.Common.Extensions
                 .Select(Activator.CreateInstance)
                 .Cast<IModuleConfiguration>();
 
-            LoadCommonAssemblies();
-
             foreach (var module in modules)
                 module.ConfigureDI(services, configuration);
         }
@@ -50,7 +48,6 @@ namespace BookActivity.Api.Common.Extensions
         private static void LoadCommonAssemblies()
         {
             Assembly.Load("BookActivity.Infrastructure.Data");
-            Assembly.Load("BookActivity.Infrastructure");
         }
     }
 }

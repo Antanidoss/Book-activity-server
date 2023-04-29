@@ -20,6 +20,7 @@ namespace BookActivity.Domain.Models
         public ActiveBook ActiveBook { get; private set; }
         public Guid ActiveBookId { get; private set; }
 
+        public BookNote() : base() { }
         public BookNote(string note, NoteColor noteColor, Guid activeBookId)
         {
             Note = note;
