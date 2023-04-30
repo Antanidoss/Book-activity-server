@@ -17,11 +17,7 @@
         public const string RemoveActiveBookMethod = "remove";
         public const string UpdateNumberPagesReadMethod = "updateNumberPagesRead";
         public const string UpdateBookNoteMethod = "updateBookNote";
-        public const string GetActiveBooksByIdsMethod = "getById";
-        public const string GetActiveBooksByUserIdMethod = "getByUserId";
         public const string GetActiveBookHistoryDataMethod = "getHistoryData";
-        public const string GetActiveBooksByPaginationMethod = "getHistoryData";
-        public const string GetActiveBooksByFilterMethod = "getActiveBooksByFilter";
 
         //Book methods
         public const string AddBookMethodMethod = "add";

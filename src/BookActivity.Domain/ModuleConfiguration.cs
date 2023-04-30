@@ -24,7 +24,6 @@ using BookActivity.Domain.Hubs;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Hubs;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic;
 using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
@@ -83,8 +82,6 @@ namespace BookActivity.Domain
 
             services.AddScoped<IRequestHandler<GetActiveBookStatisticQuery, ActiveBooksStatistic>, GetActiveBookStatisticQueryHandler>();
 
-            services.AddScoped<IRequestHandler<GetActiveBookByFilterQuery, EntityListResult<SelectedActiveBook>>, GetActiveBookByFilterQueryHandler>();
-
             services.AddScoped<IRequestHandler<GetUsersByFilterQuery, EntityListResult<SelectedAppUser>>, GetUsersByFilterQueryHandler>();
             services.AddScoped<IRequestHandler<AuthenticationUserQuery, Result<AuthenticationResult>>, AuthenticationUserQueryHandler>();
             services.AddScoped<IRequestHandler<GetUserProfileInfoQuery, AppUserProfileInfo>, GetUserProfileInfoQueryHandler>();
@@ -93,11 +90,9 @@ namespace BookActivity.Domain
         private void ConfigureFilterHandlers(IServiceCollection services)
         {
             services.AddScoped<IFilterHandler<Book, GetBooksByFilterQuery>, BookFilterHandler>();
-            services.AddScoped<IFilterHandler<ActiveBook, GetActiveBookByFilterQuery>, ActiveBookFilterHandler>();
             services.AddScoped<IFilterHandler<AppUser, GetUsersByFilterQuery>, AppUserFilterHandler>();
 
             services.AddScoped<IFilterSelectHandler<Book, IEnumerable<SelectedBook>, GetBooksByFilterQuery>, BookSelectFilterHandler>();
-            services.AddScoped<IFilterSelectHandler<ActiveBook, IEnumerable<SelectedActiveBook>, GetActiveBookByFilterQuery>, ActiveBookSelectFilterHandler>();
             services.AddScoped<IFilterSelectHandler<AppUser, IEnumerable<SelectedAppUser>, GetUsersByFilterQuery>, AppUserSelectFilterHandler>();
             services.AddScoped<IFilterSelectHandler<AppUser, AppUserProfileInfo, GetUserProfileInfoQuery>, AppUserSelectFilterHandler>();
         }

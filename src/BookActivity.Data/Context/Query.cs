@@ -12,6 +12,12 @@ namespace BookActivity.Infrastructure.Data.Context
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<ActiveBook> GetActiveBooks([Service] BookActivityContext context) => context.ActiveBooks;
+        public IQueryable<ActiveBook> GetActiveBooks([Service] BookActivityContext context, bool withFullRead = true)
+        {
+            if (!withFullRead)
+                return context.ActiveBooks.Where(a => a.TotalNumberPages != a.NumberPagesRead);
+
+            return context.ActiveBooks;
+        }
     }
 }
