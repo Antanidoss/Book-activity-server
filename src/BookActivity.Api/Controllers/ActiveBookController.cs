@@ -7,12 +7,7 @@ using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
-using BookActivity.Domain.Filters.Models;
-using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BookActivity.Api.Controllers
 {
@@ -53,33 +48,6 @@ namespace BookActivity.Api.Controllers
             return (await _activeBookService.RemoveActiveBookAsync(activeBookId)
                 .ConfigureAwait(false))
                 .ToActionResult();
-        }
-
-        [HttpGet(ApiConstants.GetActiveBooksByIdsMethod)]
-        public async Task<ApiResult<IEnumerable<ActiveBookDto>>> GetaActiveBooksByIdsAsync(Guid[] activeBookIds)
-        {
-            return (await _activeBookService.GetByActiveBookIdAsync(activeBookIds)
-                .ConfigureAwait(false))
-                .ToApiResult();
-        }
-
-        [HttpGet(ApiConstants.GetActiveBooksByUserIdMethod)]
-        public async Task<ApiResult<IEnumerable<ActiveBookDto>>> GetaActiveBooksByUserIdsAsync(Guid userId, PaginationModel paginationModel)
-        {
-            return (await _activeBookService.GetByUserIdAsync(paginationModel, userId)
-                .ConfigureAwait(false))
-                .ToApiResult();
-        }
-
-        [HttpGet(ApiConstants.GetActiveBooksByFilterMethod)]
-        public async Task<ApiResult<EntityListResult<SelectedActiveBook>>> GetActiveBooksByFilterAsync(GetActiveBookByFilterDto filterModel)
-        {
-            if (filterModel.UserId == Guid.Empty)
-                filterModel.UserId = _currentUser.Id;
-
-            return (await _activeBookService.GetByFilterAsync(filterModel)
-                .ConfigureAwait(false))
-                .ToApiResult();
         }
 
         [HttpGet(ApiConstants.GetActiveBookHistoryDataMethod)]

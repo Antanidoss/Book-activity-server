@@ -16,14 +16,11 @@ using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Queries.ActiveBookQueries.GetActiveBookByFilter;
 using BookActivity.Domain.Specifications.ActiveBookSpecs;
 using BookActivity.Domain.Validations;
-using BookActivity.Shared.Models;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -103,13 +100,6 @@ namespace BookActivity.Application.Implementation.Services
             }
 
             return activeBookHistoryDateList;
-        }
-
-        public async Task<EntityListResult<SelectedActiveBook>> GetByFilterAsync(GetActiveBookByFilterDto filterModel)
-        {
-            var query = _mapper.Map<GetActiveBookByFilterQuery>(filterModel);
-
-            return await _mediatorHandler.SendQuery(query);
         }
 
         public async Task<Result<Guid>> AddActiveBookAsync(CreateActiveBookDto createActiveBookModel)
