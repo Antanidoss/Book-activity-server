@@ -4,6 +4,7 @@ using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.EventSourcing;
+using BookActivity.Infrastructure.Data.Graphql;
 using BookActivity.Infrastructure.Data.Intefaces;
 using BookActivity.Infrastructure.Data.Repositories;
 using BookActivity.Infrastructure.Data.Repositories.EventSourcing;
@@ -42,6 +43,8 @@ namespace BookActivity.Infrastructure.Data
             services.AddScoped<IMediatorHandler, InMemoryBus>();
 
             ConfigureRepositories(services);
+
+            AddGraphQL(services);
 
             return services;
         }
@@ -82,6 +85,16 @@ namespace BookActivity.Infrastructure.Data
             services.AddScoped<IUserNotificationRepository, UserNotificationRepository>();
             services.AddScoped<ISubscriberRepository, SubscriberRepository>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+        }
+
+        private void AddGraphQL(IServiceCollection services)
+        {
+            services.AddGraphQLServer()
+                .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
+                .AddQueryType<Query>()
+                .AddProjections()
+                .AddFiltering()
+                .AddSorting();
         }
     }
 }

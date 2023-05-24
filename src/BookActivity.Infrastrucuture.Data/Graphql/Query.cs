@@ -1,10 +1,11 @@
 ﻿using BookActivity.Domain.Models;
+using BookActivity.Infrastructure.Data.Context;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
 using System.Linq;
 
-namespace BookActivity.Infrastructure.Data.Context
+namespace BookActivity.Infrastructure.Data.Graphql
 {
     public class Query
     {

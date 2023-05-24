@@ -1,7 +1,6 @@
 using BookActivity.Api.Common.Extensions;
 using BookActivity.Api.Middleware;
 using BookActivity.Application.Models.Dto.Read;
-using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Shared.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,7 +38,6 @@ namespace BookActivity.Api
             });
 
             AddAuthentication(services);
-            AddGraphQL(services, Environment);
 
             services.Configure<TokenInfo>(Configuration.GetSection(typeof(TokenInfo).Name));
 
@@ -109,16 +107,6 @@ namespace BookActivity.Api
                     ClockSkew = TimeSpan.FromMinutes(2)
                 };
             });
-        }
-
-        private void AddGraphQL(IServiceCollection services, IWebHostEnvironment env)
-        {
-            services.AddGraphQLServer()
-                .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = env.IsDevelopment())
-                .AddQueryType<Query>()
-                .AddProjections()
-                .AddFiltering()
-                .AddSorting();
         }
     }
 }
