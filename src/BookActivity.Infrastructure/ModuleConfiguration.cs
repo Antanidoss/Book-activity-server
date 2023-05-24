@@ -19,7 +19,7 @@ namespace BookActivity.Infrastructure
 
         public void ConfigureEndpoints(IEndpointRouteBuilder endpoints)
         {
-            endpoints.MapHub<UserNotificationsHub>("userNotificationsHub");
+            endpoints.MapHub<UserNotificationsHub>("/userNotificationsHub");
         }
 
         private void ConfigureHubs(IServiceCollection services)
