@@ -1,7 +1,6 @@
 using BookActivity.Api.Common.Extensions;
 using BookActivity.Api.Middleware;
 using BookActivity.Application.Models.Dto.Read;
-using BookActivity.Domain.Hubs;
 using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Shared.Models;
 using MediatR;
@@ -77,7 +76,6 @@ namespace BookActivity.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<UserNotificationsHub>("/userNotificationsHub");
                 endpoints.MapGraphQL();
             });
         }

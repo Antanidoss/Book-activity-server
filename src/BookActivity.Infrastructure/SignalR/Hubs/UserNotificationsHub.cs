@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BookActivity.Domain.Hubs
+namespace BookActivity.Infrastructure.SignalR.Hubs
 {
     public sealed class UserNotificationsHub : BaseHub, IUserNotificationsHub
     {
@@ -16,9 +16,9 @@ namespace BookActivity.Domain.Hubs
             _context = context;
         }
 
-        public async Task Send(UserNotificationModel notificationInfo)
+        public async Task Send<T>(T notificationInfo, Guid userId)
         {
-            var connectionIds = GetConnectionIdsByUserId(notificationInfo.OwnerNotificationUserId);
+            var connectionIds = GetConnectionIdsByUserId(userId);
 
             if (connectionIds == null || !connectionIds.Any())
                 return;
@@ -26,22 +26,6 @@ namespace BookActivity.Domain.Hubs
             await _context.Clients
                 .Clients(connectionIds)
                 .SendAsync("GetNotification", JsonConvert.SerializeObject(notificationInfo));
-        }
-    }
-
-    public sealed class UserNotificationModel
-    {
-        public readonly Guid NotificationId;
-
-        public readonly Guid OwnerNotificationUserId;
-
-        public readonly string MessageNotification;
-
-        public UserNotificationModel(Guid notificationId, Guid ownerNotificationUserId, string messageNotification)
-        {
-            NotificationId = notificationId;
-            OwnerNotificationUserId = ownerNotificationUserId;
-            MessageNotification = messageNotification;
         }
     }
 }

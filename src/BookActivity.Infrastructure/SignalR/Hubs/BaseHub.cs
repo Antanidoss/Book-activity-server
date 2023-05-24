@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BookActivity.Domain.Hubs
+namespace BookActivity.Infrastructure.SignalR.Hubs
 {
     public class BaseHub : Hub
     {
