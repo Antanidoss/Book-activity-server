@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BookActivity.Data\BookActivity.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\BookActivity.Infrastrucuture.Data\BookActivity.Infrastructure.Data.csproj" />
     <ProjectReference Include="..\BookActivity.Shared\BookActivity.Shared.csproj" />
   </ItemGroup>
 

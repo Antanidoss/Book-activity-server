@@ -1,10 +1,10 @@
 ﻿using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.AppUserEvents;
 using BookActivity.Domain.Filters;
-using BookActivity.Domain.Hubs;
 using BookActivity.Domain.Interfaces.Hubs;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Models.Notifications;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using MediatR;
 using System;
@@ -47,7 +47,7 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
                         userNotification.Id,
                         followedUser.UserIdWhoSubscribed,
                         notificationMessage
-                    ));
+                    ), followedUser.UserIdWhoSubscribed);
             }
         }
 
@@ -62,7 +62,7 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
                        userNotification.Id,
                        notification.SubscribedUserId,
                        notificationMessage
-                   ));
+                   ), notification.SubscribedUserId);
         }
     }
 }
