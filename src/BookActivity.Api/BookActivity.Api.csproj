@@ -14,6 +14,8 @@
   <ItemGroup>
     <ProjectReference Include="..\BookActivity.Api.Common\BookActivity.Api.Common.csproj" />
     <ProjectReference Include="..\BookActivity.Application\BookActivity.Application.csproj" />
+    <ProjectReference Include="..\BookActivity.Infrastructure\BookActivity.Infrastructure.csproj" />
+    <ProjectReference Include="..\BookActivity.Infrastrucuture.Data\BookActivity.Infrastructure.Data.csproj" />
     <ProjectReference Include="..\BookActivity.Initialization\BookActivity.Initialization.csproj" />
   </ItemGroup>
 

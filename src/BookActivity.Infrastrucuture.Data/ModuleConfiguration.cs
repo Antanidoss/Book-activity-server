@@ -40,7 +40,6 @@ namespace BookActivity.Infrastructure.Data
             }).AddEntityFrameworkStores<BookActivityContext>().AddDefaultTokenProviders();
 
             services.AddScoped<IEventStore, EventStore>();
-            services.AddScoped<IMediatorHandler, InMemoryBus>();
 
             ConfigureRepositories(services);
 

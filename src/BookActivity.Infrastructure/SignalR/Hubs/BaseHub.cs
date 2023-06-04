@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.SignalR.Hubs
 {
-    public class BaseHub : Hub
+    internal class BaseHub : Hub
     {
         protected static readonly ConcurrentDictionary<string, Guid> ConnectionInfos = new();
 

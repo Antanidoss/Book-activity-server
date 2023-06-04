@@ -1,4 +1,5 @@
-﻿using BookActivity.Domain.Interfaces.Hubs;
+﻿using BookActivity.Domain.Interfaces;
+using BookActivity.Domain.Interfaces.Hubs;
 using BookActivity.Infrastructure.SignalR.Hubs;
 using BookActivity.Shared.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +14,8 @@ namespace BookActivity.Infrastructure
         public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration Configuration)
         {
             ConfigureHubs(services);
+
+            services.AddScoped<IMediatorHandler, InMemoryBus>();
 
             return services;
         }
