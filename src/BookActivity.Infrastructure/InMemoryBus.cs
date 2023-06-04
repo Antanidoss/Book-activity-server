@@ -6,7 +6,7 @@ using MediatR;
 using NetDevPack.Messaging;
 using System.Threading.Tasks;
 
-namespace BookActivity.Infrastructure.Data
+namespace BookActivity.Infrastructure
 {
     internal sealed class InMemoryBus : IMediatorHandler
     {

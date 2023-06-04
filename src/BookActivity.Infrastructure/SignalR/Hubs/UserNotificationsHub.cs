@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.SignalR.Hubs
 {
-    public sealed class UserNotificationsHub : BaseHub, IUserNotificationsHub
+    internal sealed class UserNotificationsHub : BaseHub, IUserNotificationsHub
     {
         private readonly IHubContext<UserNotificationsHub> _context;
 
