@@ -48,6 +48,7 @@ namespace BookActivity.Api.Common.Extensions
         private static void LoadCommonAssemblies()
         {
             Assembly.Load("BookActivity.Infrastructure.Data");
+            Assembly.Load("BookActivity.Infrastructure");
         }
     }
 }
