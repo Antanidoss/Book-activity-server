@@ -27,7 +27,7 @@ namespace BookActivity.Domain.Commands.BookNoteCommands.AddBookNote
 
             _bookNoteRepository.Add(newBookNote);
 
-            return await Commit(_bookNoteRepository.UnitOfWork).ConfigureAwait(false);
+            return await Commit(_bookNoteRepository.UnitOfWork);
         }
     }
 }

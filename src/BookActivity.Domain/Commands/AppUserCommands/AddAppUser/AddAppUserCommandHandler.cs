@@ -29,7 +29,7 @@ namespace BookActivity.Domain.Commands.AppUserCommands.AddAppUser
                 Email = request.Email,
                 UserName = request.Name,
                 AvatarImage = request.AvatarImage
-            }, request.Password).ConfigureAwait(false);
+            }, request.Password);
 
             return createUserResult.ToValidationResult();
         }

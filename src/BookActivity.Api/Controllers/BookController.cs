@@ -33,9 +33,7 @@ namespace BookActivity.Api.Controllers
         [HttpGet(ApiConstants.GetBooksByIdsMethod)]
         public async Task<ApiResult<IEnumerable<BookDto>>> GetBooksByIdsAsync(Guid[] bookIds)
         {
-            return (await _bookService.GetByBookIdsAsync(bookIds)
-                .ConfigureAwait(false))
-                .ToApiResult();
+            return (await _bookService.GetByBookIdsAsync(bookIds)).ToApiResult();
         }
 
         [HttpGet(ApiConstants.GetBooksByFilterMethod)]
@@ -43,33 +41,25 @@ namespace BookActivity.Api.Controllers
         {
             bookFilterModel.UserId = _currentUser?.Id ?? Guid.Empty;
 
-            return (await _bookService.GetByFilterAsync(bookFilterModel)
-                .ConfigureAwait(false))
-                .ToApiResult();
+            return (await _bookService.GetByFilterAsync(bookFilterModel)).ToApiResult();
         }
 
         [HttpDelete(ApiConstants.RemoveBookMethod)]
         public async Task<ActionResult> RemoveBookAsync(Guid bookId)
         {
-            return (await _bookService.RemoveActiveBookAsync(bookId, _currentUser.Id)
-                .ConfigureAwait(false))
-                .ToActionResult();
+            return (await _bookService.RemoveActiveBookAsync(bookId, _currentUser.Id)).ToActionResult();
         }
 
         [HttpPut(ApiConstants.UpdateBookMethod)]
         public async Task<ActionResult> UpdateBookAsync(UpdateBookDto updateBookModel)
         {
-            return (await _bookService.UpdateBookAsync(updateBookModel)
-                .ConfigureAwait(false))
-                .ToActionResult();
+            return (await _bookService.UpdateBookAsync(updateBookModel)).ToActionResult();
         }
 
         [HttpGet(ApiConstants.GetBookHistoryDataMethod)]
         public async Task<ApiResult<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId)
         {
-            return (await _bookService.GetBookHistoryDataAsync(bookId)
-                .ConfigureAwait(false))
-                .ToApiResult();
+            return (await _bookService.GetBookHistoryDataAsync(bookId)).ToApiResult();
         }
     }
 }

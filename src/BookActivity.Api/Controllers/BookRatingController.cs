@@ -24,7 +24,7 @@ namespace BookActivity.Api.Controllers
         {
             updateBookRating.BookOpinion.UserId = _currentUser.Id;
 
-            await _bookRatingService.UpdateBookRatingAsync(updateBookRating).ConfigureAwait(false);
+            await _bookRatingService.UpdateBookRatingAsync(updateBookRating);
         }
     }
 }

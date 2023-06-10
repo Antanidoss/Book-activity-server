@@ -33,7 +33,7 @@ namespace BookActivity.Domain.Commands.BookCommands.AddBook
                 return request.ValidationResult;
 
             AuthorByIdSpec specification = new(request.AuthorIds.ToArray());
-            var authorCount = await _authorRepository.GetCountByFilterAsync(specification).ConfigureAwait(false);
+            var authorCount = await _authorRepository.GetCountByFilterAsync(specification);
 
             if (CommonValidator.IsLessThanOrEqualToZero(authorCount))
                 throw new NotFoundException(nameof(request.AuthorIds));
@@ -44,7 +44,7 @@ namespace BookActivity.Domain.Commands.BookCommands.AddBook
             newBook.AddDomainEvent(new AddBookEvent(newBook.Id, newBook.Title, newBook.Description, request.AuthorIds));
             _bookRepository.Add(newBook);
 
-            return await Commit(_bookRepository.UnitOfWork).ConfigureAwait(false);
+            return await Commit(_bookRepository.UnitOfWork);
         }
     }
 }

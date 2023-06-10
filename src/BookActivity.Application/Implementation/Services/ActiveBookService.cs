@@ -52,8 +52,7 @@ namespace BookActivity.Application.Implementation.Services
             PaginationModel paginationModel = new(take: activeBookIds.Length);
             DbMultipleResultFilterModel<ActiveBook> filterModel = new(specification, paginationModel);
 
-            var activeBooks = await _activeBookRepository.GetByFilterAsync(filterModel)
-                .ConfigureAwait(false);
+            var activeBooks = await _activeBookRepository.GetByFilterAsync(filterModel);
 
             return _mapper.Map<List<ActiveBookDto>>(activeBooks);
         }
@@ -65,8 +64,7 @@ namespace BookActivity.Application.Implementation.Services
             ActiveBookByUserIdSpec specification = new(currentUserId);
             DbMultipleResultFilterModel<ActiveBook> filterModel = new(specification, paginationModel);
 
-            var activeBooks = await _activeBookRepository.GetByFilterAsync(filterModel)
-                .ConfigureAwait(false);
+            var activeBooks = await _activeBookRepository.GetByFilterAsync(filterModel);
 
             return _mapper.Map<List<ActiveBookDto>>(activeBooks);
         }
@@ -76,7 +74,7 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfEmpty(activeBookId, nameof(activeBookId));
 
             List<ActiveBookHistoryData> activeBookHistoryDateList = new();
-            var storedEvents = await _eventStoreRepository.GetAllAsync(activeBookId).ConfigureAwait(false);
+            var storedEvents = await _eventStoreRepository.GetAllAsync(activeBookId);
 
             foreach (var storedEvent in storedEvents)
             {
@@ -106,7 +104,7 @@ namespace BookActivity.Application.Implementation.Services
         {
             var addActiveBookCommand = _mapper.Map<AddActiveBookCommand>(createActiveBookModel);
 
-            var validationResult = await _mediatorHandler.SendCommand(addActiveBookCommand).ConfigureAwait(false);
+            var validationResult = await _mediatorHandler.SendCommand(addActiveBookCommand);
 
             return validationResult.ToResult(addActiveBookCommand.Id);
         }
@@ -117,14 +115,14 @@ namespace BookActivity.Application.Implementation.Services
 
             RemoveActiveBookCommand removeActiveBookCommand = new() { Id = activeBookId };
 
-            return await _mediatorHandler.SendCommand(removeActiveBookCommand).ConfigureAwait(false);
+            return await _mediatorHandler.SendCommand(removeActiveBookCommand);
         }
 
         public async Task<ValidationResult> UpdateActiveBookAsync(UpdateNumberPagesReadDto updateActiveBookModel)
         {
             var updateActiveBookCommand = _mapper.Map<UpdateActiveBookCommand>(updateActiveBookModel);
 
-            return await _mediatorHandler.SendCommand(updateActiveBookCommand).ConfigureAwait(false);
+            return await _mediatorHandler.SendCommand(updateActiveBookCommand);
         }
     }
 }

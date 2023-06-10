@@ -37,7 +37,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook
             activeBook.AddDomainEvent(new RemoveActiveBookEvent(activeBook.Id));
             _activeBookRepository.Remove(activeBook);
 
-            return await Commit(_activeBookRepository.UnitOfWork).ConfigureAwait(false);
+            return await Commit(_activeBookRepository.UnitOfWork);
         }
     }
 }

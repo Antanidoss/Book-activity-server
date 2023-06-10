@@ -53,7 +53,7 @@ namespace BookActivity.Application.Implementation.Services
 
             SubscribeAppUserCommand subscribeAppUserCommand = new(subscribedUserId, currentUserId);
 
-            return await _mediatorHandler.SendCommand(subscribeAppUserCommand).ConfigureAwait(false);
+            return await _mediatorHandler.SendCommand(subscribeAppUserCommand);
         }
 
         public async Task<ValidationResult> UnsubscribeAppUserAsync(Guid currentUserId, Guid unsubscribedUserId)
@@ -63,14 +63,14 @@ namespace BookActivity.Application.Implementation.Services
 
             UnsubscribeAppUserCommand subscribeAppUserCommand = new(unsubscribedUserId, currentUserId);
 
-            return await _mediatorHandler.SendCommand(subscribeAppUserCommand).ConfigureAwait(false);
+            return await _mediatorHandler.SendCommand(subscribeAppUserCommand);
         }
 
         public async Task<ValidationResult> UpdateAsync(UpdateAppUserDto updateAppUserModel)
         {
             CommonValidator.ThrowExceptionIfEmpty(updateAppUserModel.UserId, nameof(updateAppUserModel.UserId));
 
-            return await _mediatorHandler.SendCommand(_mapper.Map<UpdateAppUserCommand>(updateAppUserModel)).ConfigureAwait(false);
+            return await _mediatorHandler.SendCommand(_mapper.Map<UpdateAppUserCommand>(updateAppUserModel));
         }
 
         public async Task<Result<AuthenticationResult>> AuthenticationAsync(AuthenticationModel authenticationModel)
@@ -79,7 +79,7 @@ namespace BookActivity.Application.Implementation.Services
 
             var query = _mapper.Map<AuthenticationUserQuery>(authenticationModel);
 
-            return await _mediatorHandler.SendQuery(query).ConfigureAwait(false);
+            return await _mediatorHandler.SendQuery(query);
         }
 
         public async Task<Result<AppUserDto>> FindByIdAsync(Guid appUserId)
@@ -87,7 +87,7 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfEmpty(appUserId, nameof(appUserId));
 
             AppUserByIdSpec specification = new(appUserId);
-            var appUser = await _appUserRepository.GetByFilterAsync(specification).ConfigureAwait(false);
+            var appUser = await _appUserRepository.GetByFilterAsync(specification);
 
             return _mapper.Map<AppUserDto>(appUser);
         }

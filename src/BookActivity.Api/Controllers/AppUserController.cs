@@ -28,33 +28,25 @@ namespace BookActivity.Api.Controllers
         [HttpPost(ApiConstants.AddUserMethod)]
         public async Task<IActionResult> AddAppUserAsync([FromForm] CreateAppUserDto appUserCreateDTO)
         {
-            return (await _appUserService.AddAsync(appUserCreateDTO)
-                .ConfigureAwait(false))
-                .ToActionResult();
+            return (await _appUserService.AddAsync(appUserCreateDTO)).ToActionResult();
         }
 
         [HttpGet(ApiConstants.GetUserByIdMethod)]
         public async Task<ApiResult<AppUserDto>> GetAppUserByIdAsync(Guid appUserId)
         {
-            return (await _appUserService.FindByIdAsync(appUserId)
-                .ConfigureAwait(false))
-                .ToApiResult();
+            return (await _appUserService.FindByIdAsync(appUserId)).ToApiResult();
         }
 
         [HttpPost(ApiConstants.AuthenticationMethod)]
         public async Task<ApiResult<AuthenticationResult>> AuthenticationAsync([FromBody] AuthenticationModel authenticationModel)
         {
-            return (await _appUserService.AuthenticationAsync(authenticationModel)
-                .ConfigureAwait(false))
-                .ToApiResult();
+            return (await _appUserService.AuthenticationAsync(authenticationModel)).ToApiResult();
         }
 
         [HttpPut(ApiConstants.SubscribeAppUserMethod)]
         public async Task<ActionResult> SubscribeAppUserAsync([FromQuery] Guid subscribedUserId)
         {
-            return (await _appUserService.SubscribeAppUserAsync(_currentUser.Id, subscribedUserId)
-                .ConfigureAwait(false))
-                .ToActionResult();
+            return (await _appUserService.SubscribeAppUserAsync(_currentUser.Id, subscribedUserId)).ToActionResult();
         }
 
         [HttpGet(ApiConstants.GetCurrentUserMethod)]
@@ -66,9 +58,7 @@ namespace BookActivity.Api.Controllers
         [HttpPut(ApiConstants.UpdateUserMethod)]
         public async Task<ActionResult> UpdateUserAsync([FromForm] UpdateAppUserDto updateAppUserModel)
         {
-            return (await _appUserService.UpdateAsync(updateAppUserModel)
-                .ConfigureAwait(false))
-                .ToActionResult();
+            return (await _appUserService.UpdateAsync(updateAppUserModel)).ToActionResult();
         }
 
         [HttpGet(ApiConstants.GetUserByFilterMethod)]
@@ -80,9 +70,7 @@ namespace BookActivity.Api.Controllers
         [HttpDelete(ApiConstants.UnsubscribeAppUserMethod)]
         public async Task<ActionResult> UnsubscribeUserAsync([FromQuery] Guid unsubscribedUserId)
         {
-            return (await _appUserService.UnsubscribeAppUserAsync(_currentUser.Id, unsubscribedUserId)
-                .ConfigureAwait(false))
-                .ToActionResult();
+            return (await _appUserService.UnsubscribeAppUserAsync(_currentUser.Id, unsubscribedUserId)).ToActionResult();
         }
 
         [HttpGet(ApiConstants.GetUserProfileInfoMethod)]

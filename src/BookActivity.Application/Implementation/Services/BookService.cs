@@ -58,14 +58,14 @@ namespace BookActivity.Application.Implementation.Services
 
             RemoveBookCommand removeBookCommand = new(bookId, userId);
 
-            return await _mediatorHandler.SendCommand(removeBookCommand).ConfigureAwait(false);
+            return await _mediatorHandler.SendCommand(removeBookCommand);
         }
 
         public async Task<ValidationResult> UpdateBookAsync(UpdateBookDto updateBookModel)
         {
             var updateBookCommand = _mapper.Map<UpdateBookCommand>(updateBookModel);
 
-            return await _mediatorHandler.SendCommand(updateBookCommand).ConfigureAwait(false);
+            return await _mediatorHandler.SendCommand(updateBookCommand);
         }
 
         public async Task<Result<IEnumerable<BookDto>>> GetByBookIdsAsync(Guid[] bookIds)
@@ -76,7 +76,7 @@ namespace BookActivity.Application.Implementation.Services
             PaginationModel paginationModel = new(take: bookIds.Length);
             DbMultipleResultFilterModel<Book> filterModel = new(specification, paginationModel);
 
-            var books = await _bookRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
+            var books = await _bookRepository.GetByFilterAsync(filterModel);
 
             return _mapper.Map<List<BookDto>>(books);
         }
@@ -95,7 +95,7 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfEmpty(bookId, nameof(bookId));
 
             List<BookHistoryData> bookHistoryDateList = new();
-            var storedEvents = await _eventStoreRepository.GetAllAsync(bookId).ConfigureAwait(false);
+            var storedEvents = await _eventStoreRepository.GetAllAsync(bookId);
 
             foreach (var storedEvent in storedEvents)
             {
