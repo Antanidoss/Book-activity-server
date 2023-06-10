@@ -24,17 +24,13 @@ namespace BookActivity.Api.Controllers
         [HttpPost(ApiConstants.AddAuthorMethod)]
         public async Task<ApiResult<Guid>> AddAuthorAsync(CreateAuthorDto createAuthor)
         {
-            return (await _authorService.AddAsync(createAuthor)
-                .ConfigureAwait(false))
-                .ToApiResult();
+            return (await _authorService.AddAsync(createAuthor)).ToApiResult();
         }
 
         [HttpGet(ApiConstants.GetAuthorByNameMethod)]
         public async Task<ApiResult<IEnumerable<AuthorDto>>> GetAuthorByNameAsync(string name, int take)
         {
-            return (await _authorService.GetAuthorsByNameAsync(name, take)
-                .ConfigureAwait(false))
-                .ToApiResult();
+            return (await _authorService.GetAuthorsByNameAsync(name, take)).ToApiResult();
         }
     }
 }

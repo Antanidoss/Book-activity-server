@@ -27,9 +27,7 @@ namespace BookActivity.Api.Controllers
         {
             createActiveBookModel.UserId = _currentUser.Id;
 
-            return (await _activeBookService.AddActiveBookAsync(createActiveBookModel)
-                .ConfigureAwait(false))
-                .ToApiResult();
+            return (await _activeBookService.AddActiveBookAsync(createActiveBookModel)).ToApiResult();
         }
 
         [HttpPut(ApiConstants.UpdateNumberPagesReadMethod)]
@@ -37,25 +35,19 @@ namespace BookActivity.Api.Controllers
         {
             updateActiveBookModel.UserId = _currentUser.Id;
 
-            return (await _activeBookService.UpdateActiveBookAsync(updateActiveBookModel)
-                .ConfigureAwait(false))
-                .ToActionResult();
+            return (await _activeBookService.UpdateActiveBookAsync(updateActiveBookModel)).ToActionResult();
         }
 
         [HttpDelete(ApiConstants.RemoveActiveBookMethod)]
         public async Task<ActionResult> RemoveActiveBookAsync([FromQuery] Guid activeBookId)
         {
-            return (await _activeBookService.RemoveActiveBookAsync(activeBookId)
-                .ConfigureAwait(false))
-                .ToActionResult();
+            return (await _activeBookService.RemoveActiveBookAsync(activeBookId)).ToActionResult();
         }
 
         [HttpGet(ApiConstants.GetActiveBookHistoryDataMethod)]
         public async Task<ApiResult<IEnumerable<ActiveBookHistoryData>>> GetActiveBookHistoryDataAsync(Guid activeBookId)
         {
-            return (await _activeBookService.GetActiveBookHistoryDataAsync(activeBookId)
-                .ConfigureAwait(false))
-                .ToApiResult();
+            return (await _activeBookService.GetActiveBookHistoryDataAsync(activeBookId)).ToApiResult();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace BookActivity.Domain.Commands.AuthorCommands.AddAuthor
 
             request.Id = newAuthor.Id;
 
-            return await Commit(_authorRepository.UnitOfWork).ConfigureAwait(false);
+            return await Commit(_authorRepository.UnitOfWork);
         }
     }
 }

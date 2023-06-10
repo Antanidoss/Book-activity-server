@@ -39,7 +39,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook
 
             activeBook.AddDomainEvent(new UpdateActiveBookEvent(activeBook.Id, activeBook.NumberPagesRead, prevNumberPagesRead, request.UserId));
 
-            return await Commit(_activeBookRepository.UnitOfWork).ConfigureAwait(false);
+            return await Commit(_activeBookRepository.UnitOfWork);
         }
     }
 }

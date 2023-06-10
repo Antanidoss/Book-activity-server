@@ -36,7 +36,7 @@ namespace BookActivity.Infrastructure.Data.Context
 
         public async Task<bool> Commit()
         {
-            await _mediatorHandler.PublishDomainEvents(this).ConfigureAwait(false);
+            await _mediatorHandler.PublishDomainEvents(this);
             var success = await SaveChangesAsync() > 0;
 
             return success;

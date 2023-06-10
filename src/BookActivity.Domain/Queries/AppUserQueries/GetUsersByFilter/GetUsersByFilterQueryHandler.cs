@@ -36,10 +36,10 @@ namespace BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter
 
             var filterWithPagination = GetFilterWithPagination(request);
             DbMultipleResultFilterModel<AppUser, IEnumerable<SelectedAppUser>> filterModel = new(filterWithPagination);
-            var users = await _appUserRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
+            var users = await _appUserRepository.GetByFilterAsync(filterModel);
 
             DbMultipleResultFilterModel<AppUser> filterModelForCount = new(GetFilter(request), new PaginationModel(request.Skip, request.Take));
-            var usersCount = await _appUserRepository.GetCountByFilterAsync(filterModelForCount).ConfigureAwait(false);
+            var usersCount = await _appUserRepository.GetCountByFilterAsync(filterModelForCount);
 
             return new EntityListResult<SelectedAppUser>(users, usersCount);
         }

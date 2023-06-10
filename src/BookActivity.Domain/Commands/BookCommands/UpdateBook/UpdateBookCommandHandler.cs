@@ -37,7 +37,7 @@ namespace BookActivity.Domain.Commands.BookCommands.UpdateBook
 
             updatedBook.AddDomainEvent(new UpdateBookEvent(updatedBook.Id, updatedBook.Title, updatedBook.Description, request.AuthorIds, request.UserId));
 
-            return await Commit(_bookRepository.UnitOfWork).ConfigureAwait(false);
+            return await Commit(_bookRepository.UnitOfWork);
         }
     }
 }

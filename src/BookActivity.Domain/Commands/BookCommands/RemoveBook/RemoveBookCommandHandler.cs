@@ -33,7 +33,7 @@ namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
             book.AddDomainEvent(new RemoveBookEvent(book.Id, request.UserId));
             _bookRepository.Remove(book);
 
-            return await Commit(_bookRepository.UnitOfWork).ConfigureAwait(false);
+            return await Commit(_bookRepository.UnitOfWork);
         }
     }
 }

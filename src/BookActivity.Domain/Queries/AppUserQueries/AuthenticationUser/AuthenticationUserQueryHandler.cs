@@ -40,17 +40,16 @@ namespace BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser
         {
             AppUserByEmailSpec specification = new(request.Email);
             DbSingleResultFilterModel<AppUser> filterModel = new(specification, forUpdate: true);
-            var appUser = await _userRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
+            var appUser = await _userRepository.GetByFilterAsync(filterModel);
 
             if (appUser is null)
                 return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectEmail);
 
-            var isCorrectPassword = await _userManager.CheckPasswordAsync(appUser, request.Password).ConfigureAwait(false);
+            var isCorrectPassword = await _userManager.CheckPasswordAsync(appUser, request.Password);
             if (!isCorrectPassword)
                 return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectPassword);
 
-            var signResult = await _signInManager.PasswordSignInAsync(appUser, request.Password, request.RememberMe, lockoutOnFailure: false)
-                .ConfigureAwait(false);
+            var signResult = await _signInManager.PasswordSignInAsync(appUser, request.Password, request.RememberMe, lockoutOnFailure: false);
 
             if (!signResult.Succeeded)
                 return Result<AuthenticationResult>.Error(ValidationErrorConstants.FailedSign);

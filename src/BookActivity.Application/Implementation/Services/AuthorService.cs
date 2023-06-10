@@ -45,7 +45,7 @@ namespace BookActivity.Application.Implementation.Services
         {
             AuthorByNameSpec authorByNameSpec = new(name);
             DbMultipleResultFilterModel<Author> filterModel = new(authorByNameSpec, new PaginationModel(take));
-            var authors = await _authorRepository.GetByFilterAsync(filterModel).ConfigureAwait(false);
+            var authors = await _authorRepository.GetByFilterAsync(filterModel);
 
             return new Result<IEnumerable<AuthorDto>>(_mapper.Map<IEnumerable<AuthorDto>>(authors));
         }
