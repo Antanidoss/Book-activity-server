@@ -22,7 +22,10 @@ namespace BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter
 
         private readonly IFilterSelectHandler<AppUser, IEnumerable<SelectedAppUser>, GetUsersByFilterQuery> _filterSelectHandler;
 
-        public GetUsersByFilterQueryHandler(IAppUserRepository appUserRepository, IFilterHandler<AppUser, GetUsersByFilterQuery> filterHandler, IFilterSelectHandler<AppUser, IEnumerable<SelectedAppUser>, GetUsersByFilterQuery> selectFilterHandler)
+        public GetUsersByFilterQueryHandler(
+            IAppUserRepository appUserRepository,
+            IFilterHandler<AppUser, GetUsersByFilterQuery> filterHandler,
+            IFilterSelectHandler<AppUser, IEnumerable<SelectedAppUser>, GetUsersByFilterQuery> selectFilterHandler)
         {
             _appUserRepository = appUserRepository;
             _filterHandler = filterHandler;

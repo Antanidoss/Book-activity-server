@@ -19,7 +19,10 @@ namespace BookActivity.Domain.Commands.AppUserCommands.UnsubscribeAppUser
 
         private readonly ISubscriptionRepository _subscriptionRepository;
 
-        public UnsubscribeAppUserCommandHandler(IAppUserRepository appUserRepository, ISubscriberRepository subscriberRepository, ISubscriptionRepository subscriptionRepository)
+        public UnsubscribeAppUserCommandHandler(
+            IAppUserRepository appUserRepository,
+            ISubscriberRepository subscriberRepository,
+            ISubscriptionRepository subscriptionRepository)
         {
             _appUserRepository = appUserRepository;
             _subscriberRepository = subscriberRepository;
@@ -33,14 +36,23 @@ namespace BookActivity.Domain.Commands.AppUserCommands.UnsubscribeAppUser
 
             AppUserByIdSpec unsubscribedUserSpec = new(request.UnsubscribedUserId);
             if (!(await _appUserRepository.CheckExistBySpecAsync(unsubscribedUserSpec)))
-                throw new Exception();
+                throw new Exception($"Failed to find user by id = {request.UnsubscribedUserId}");
 
             AppUserByIdSpec userWhoUnsubscribedSpec = new(request.UserIdWhoUnsubscribed);
             if (!(await _appUserRepository.CheckExistBySpecAsync(userWhoUnsubscribedSpec)))
-                throw new Exception();
+                throw new Exception($"Failed to find user by id = {request.UserIdWhoUnsubscribed}");
 
-            _subscriberRepository.Remove(new Subscriber { UserIdWhoSubscribed = request.UserIdWhoUnsubscribed, SubscribedUserId = request.UnsubscribedUserId });
-            _subscriptionRepository.Remove(new Subscription { UserIdWhoSubscribed = request.UserIdWhoUnsubscribed, SubscribedUserId = request.UnsubscribedUserId });
+            _subscriberRepository.Remove(new Subscriber
+            {
+                UserIdWhoSubscribed = request.UserIdWhoUnsubscribed,
+                SubscribedUserId = request.UnsubscribedUserId
+            });
+
+            _subscriptionRepository.Remove(new Subscription
+            {
+                UserIdWhoSubscribed = request.UserIdWhoUnsubscribed,
+                SubscribedUserId = request.UnsubscribedUserId
+            });
 
             return await Commit(_appUserRepository.UnitOfWork);
         }

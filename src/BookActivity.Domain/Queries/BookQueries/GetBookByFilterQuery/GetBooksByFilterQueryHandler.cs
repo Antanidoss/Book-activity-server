@@ -22,7 +22,10 @@ namespace BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery
 
         private readonly IFilterSelectHandler<Book, IEnumerable<SelectedBook>, GetBooksByFilterQuery> _filterSelectHandler;
 
-        public GetBooksByFilterQueryHandler(IBookRepository bookRepository, IFilterHandler<Book, GetBooksByFilterQuery> filterHandler, IFilterSelectHandler<Book, IEnumerable<SelectedBook>, GetBooksByFilterQuery> filterSelectHandler)
+        public GetBooksByFilterQueryHandler(
+            IBookRepository bookRepository,
+            IFilterHandler<Book, GetBooksByFilterQuery> filterHandler,
+            IFilterSelectHandler<Book, IEnumerable<SelectedBook>, GetBooksByFilterQuery> filterSelectHandler)
         {
             _bookRepository = bookRepository;
             _filterHandler = filterHandler;

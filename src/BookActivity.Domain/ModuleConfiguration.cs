@@ -21,7 +21,6 @@ using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Filters.SelectFilterHandlers;
 using BookActivity.Domain.Interfaces;
-using BookActivity.Domain.Interfaces.Hubs;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic;
