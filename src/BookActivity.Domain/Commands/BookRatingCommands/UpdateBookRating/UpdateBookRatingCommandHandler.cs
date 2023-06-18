@@ -35,6 +35,7 @@ namespace BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating
             BookRatingByIdSpec bookRatingByIdSpec = new(request.Id);
             DbSingleResultFilterModel<BookRating> filterModel = new(bookRatingByIdSpec);
             var bookRating = await _bookRatingRepository.GetByFilterAsync(filterModel);
+
             if (bookRating == null)
                 throw new ArgumentException($"Could not be found book rating by id: {request.Id}");
 

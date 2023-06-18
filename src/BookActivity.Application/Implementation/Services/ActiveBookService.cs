@@ -4,19 +4,14 @@ using BookActivity.Application.Extensions;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.Dto.Create;
-using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
 using BookActivity.Domain.Commands.ActiveBookCommands;
 using BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook;
 using BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook;
 using BookActivity.Domain.Events.ActiveBookEvent;
-using BookActivity.Domain.Filters;
-using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
-using BookActivity.Domain.Specifications.ActiveBookSpecs;
 using BookActivity.Domain.Validations;
 using FluentValidation.Results;
 using System;
@@ -42,31 +37,6 @@ namespace BookActivity.Application.Implementation.Services
             _activeBookRepository = activeBookRepository;
             _mapper = mapper;
             _eventStoreRepository = eventStoreRepository;
-        }
-
-        public async Task<Result<IEnumerable<ActiveBookDto>>> GetByActiveBookIdAsync(Guid[] activeBookIds)
-        {
-            CommonValidator.ThrowExceptionIfNullOrEmpty(activeBookIds);
-
-            ActiveBookByIdSpec specification = new(activeBookIds);
-            PaginationModel paginationModel = new(take: activeBookIds.Length);
-            DbMultipleResultFilterModel<ActiveBook> filterModel = new(specification, paginationModel);
-
-            var activeBooks = await _activeBookRepository.GetByFilterAsync(filterModel);
-
-            return _mapper.Map<List<ActiveBookDto>>(activeBooks);
-        }
-
-        public async Task<Result<IEnumerable<ActiveBookDto>>> GetByUserIdAsync(PaginationModel paginationModel, Guid currentUserId)
-        {
-            CommonValidator.ThrowExceptionIfNull(paginationModel);
-
-            ActiveBookByUserIdSpec specification = new(currentUserId);
-            DbMultipleResultFilterModel<ActiveBook> filterModel = new(specification, paginationModel);
-
-            var activeBooks = await _activeBookRepository.GetByFilterAsync(filterModel);
-
-            return _mapper.Map<List<ActiveBookDto>>(activeBooks);
         }
 
         public async Task<Result<IEnumerable<ActiveBookHistoryData>>> GetActiveBookHistoryDataAsync(Guid activeBookId)

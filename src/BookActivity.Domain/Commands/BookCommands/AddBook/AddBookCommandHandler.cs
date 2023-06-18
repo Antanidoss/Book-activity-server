@@ -1,6 +1,5 @@
 ﻿using BookActivity.Domain.Events.BookEvents;
 using BookActivity.Domain.Exceptions;
-using BookActivity.Domain.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AuthorSpecs;

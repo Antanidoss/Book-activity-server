@@ -21,7 +21,10 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
 
         private readonly ISubscriptionRepository _subscriptionRepository;
 
-        public SubscribeAppUserCommandHandler(IAppUserRepository appUserRepository, ISubscriberRepository subscriberRepository, ISubscriptionRepository subscriptionRepository)
+        public SubscribeAppUserCommandHandler(
+            IAppUserRepository appUserRepository,
+            ISubscriberRepository subscriberRepository,
+            ISubscriptionRepository subscriptionRepository)
         {
             _appUserRepository = appUserRepository;
             _subscriberRepository = subscriberRepository;
@@ -35,13 +38,18 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
 
             AppUserByIdSpec subscribedUserSpec = new(request.SubscribedUserId);
             if (!(await _appUserRepository.CheckExistBySpecAsync(subscribedUserSpec)))
-                throw new Exception();
+                throw new Exception($"Failed to find user by id = {request.SubscribedUserId}");
 
             AppUserByIdSpec userWhoSubscribedSpec = new(request.UserIdWhoSubscribed);
             if (!(await _appUserRepository.CheckExistBySpecAsync(userWhoSubscribedSpec)))
-                throw new Exception();
+                throw new Exception($"Failed to find user by id = {request.UserIdWhoSubscribed}");
 
-            Subscriber subscriber = new() { UserIdWhoSubscribed = request.UserIdWhoSubscribed, SubscribedUserId = request.SubscribedUserId };
+            Subscriber subscriber = new()
+            {
+                UserIdWhoSubscribed = request.UserIdWhoSubscribed,
+                SubscribedUserId = request.SubscribedUserId
+            };
+
             subscriber.AddDomainEvent(new SubscribeAppUserEvent
             {
                 SubscribedUserId = request.SubscribedUserId,
@@ -49,7 +57,11 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
             });
 
             _subscriberRepository.Add(subscriber);
-            _subscriptionRepository.Add(new Subscription { UserIdWhoSubscribed = request.UserIdWhoSubscribed, SubscribedUserId = request.SubscribedUserId });
+            _subscriptionRepository.Add(new Subscription
+            {
+                UserIdWhoSubscribed = request.UserIdWhoSubscribed,
+                SubscribedUserId = request.SubscribedUserId
+            });
 
             return await Commit(_subscriberRepository.UnitOfWork);
         }
