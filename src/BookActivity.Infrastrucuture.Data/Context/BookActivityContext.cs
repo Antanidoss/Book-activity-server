@@ -65,6 +65,10 @@ namespace BookActivity.Infrastructure.Data.Context
             modelBuilder.ApplyConfiguration(new AppUserConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriberConfiguration());
             modelBuilder.ApplyConfiguration(new SubscriptionConfiguration());
+            modelBuilder.ApplyConfiguration(new BookConfiguration());
+            modelBuilder.ApplyConfiguration(new AuthorConfiguration());
+            modelBuilder.ApplyConfiguration(new BookNoteConfiguration());
+            modelBuilder.ApplyConfiguration(new BookOpinionConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

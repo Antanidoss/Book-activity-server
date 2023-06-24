@@ -17,8 +17,6 @@ namespace BookActivity.Infrastructure.Data.Context.Configuration
                     .WithOne(s => s.SubscribedUser)
                     .HasForeignKey(s => s.SubscribedUserId)
                     .OnDelete(DeleteBehavior.ClientSetNull);
-            
-
         }
     }
 }
