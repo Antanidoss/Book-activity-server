@@ -90,7 +90,7 @@ namespace BookActivity.Initialization
                 "Led by programming expert Jeffrey Richter, a longtime consultant to the Microsoft .NET team - you’ll gain pragmatic " +
                 "insights for building robust, reliable, and responsive apps and components.",
                 GetImageData("CLR VIA C#.jpg"),
-                new List<BookAuthor>() {
+                new[] {
                     new BookAuthor { Author = new Author("Jeffrey", "Richter") }
                 }
             ));
@@ -105,7 +105,7 @@ namespace BookActivity.Initialization
                 "\r\n\r\nAnd she has a murdered father to avenge—if she can survive the killers all around her." +
                 "\r\n\r\nAn unforgettable family drama by two writers at the top of their craft.",
                 GetImageData("The House of Wolves.jpeg"),
-                new List<BookAuthor>() {
+                new[] {
                     new BookAuthor { Author = new Author("Mike", "Lupica") },
                     new BookAuthor { Author = new Author("James", "Patterson") },
                 }
@@ -118,7 +118,7 @@ namespace BookActivity.Initialization
                 "other by touching noses, chasing each other, and, of course, hugging and snuggling before bed. A sweet, gentle rhyme, perfect for sharing with a special little one that also includes a “To” and \"" +
                 "From” personalization page in the front of the book, making this heartwarming book an ideal gift.",
                 GetImageData("I Love You to the Moon and Back.jpg"),
-                new List<BookAuthor>() {
+                new[] {
                     new BookAuthor { Author = new Author("Amelia", "Hepworth") }
                 }
             ));
@@ -129,7 +129,7 @@ namespace BookActivity.Initialization
                 "coffin as the world watched in sorrow—and horror. As Princess Diana was laid to rest, billions wondered what Prince William " +
                 "and Prince Harry must be thinking and feeling—and how their lives would play out from that point on.",
                 GetImageData("Spare.jpeg"),
-                new List<BookAuthor>() {
+                new[] {
                     new BookAuthor { Author = new Author("Henry", "Charles") }
                 }
             ));
@@ -144,7 +144,7 @@ namespace BookActivity.Initialization
                 "\r\n\r\nTheo Faber is a criminal psychotherapist who has waited a long time for the opportunity to work with Alicia. His determination to get her to talk and unravel " +
                 "the mystery of why she shot her husband takes him down a twisting path into his own motivations―a search for the truth that threatens to consume him....",
                 GetImageData("The Silent Patient.jpeg"),
-                new List<BookAuthor>() {
+                new[] {
                     new BookAuthor { Author = new Author("Alex", "Michaelides") }
                 }
             ));
@@ -153,7 +153,7 @@ namespace BookActivity.Initialization
                 "The Subtle Art of Not Giving a F*ck: A Counterintuitive",
                 "In this generation-defining self-help guide, a superstar blogger cuts through the crap to show us how to stop trying to be \"positive\" all the time so that we can truly become better, happier people.",
                 GetImageData("The Subtle Art of Not Giving.jpeg"),
-                new List<BookAuthor>() {
+                new[] {
                     new BookAuthor { Author = new Author("Mark", "Manson") }
                 }
             ));
@@ -163,7 +163,7 @@ namespace BookActivity.Initialization
                 "Meet Ove. He’s a curmudgeon—the kind of man who points at people he dislikes as if they were burglars caught outside his bedroom window. He has staunch principles, strict routines, and a short fuse. " +
                 "People call him “the bitter neighbor from hell.” But must Ove be bitter just because he doesn’t walk around with a smile plastered to his face all the time?",
                 GetImageData("A Man Called Ove A Novel.jpg"),
-                new List<BookAuthor>() {
+                new[] {
                     new BookAuthor { Author = new Author("Henning", "Koch") },
                     new BookAuthor { Author = new Author("Fredrik", "Backman") }
                 }
@@ -174,7 +174,7 @@ namespace BookActivity.Initialization
                 "The Sea-Wolf is a 1904 psychological adventure novel by American writer Jack London. The book's protagonist, Humphrey van Weyden, is a literary critic who is a survivor of an ocean collision and who comes under " +
                 "the dominance of Wolf Larsen, the powerful and amoral sea captain who rescues him.",
                 GetImageData("The Sea-Wolf.jpg"),
-                new List<BookAuthor>() {
+                new[] {
                     new BookAuthor { Author = new Author("Jack", "London") }
                 }
             ));
