@@ -1,5 +1,4 @@
 ﻿using BookActivity.Domain.Core.Events;
-using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
@@ -12,7 +11,6 @@ using BookActivity.Shared.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -24,8 +22,12 @@ namespace BookActivity.Infrastructure.Data
     {
         public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration Configuration)
         {
-            string deffaultConnection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<BookActivityContext>(option => option.UseSqlServer(deffaultConnection).LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging());
+            services.AddDbContext<BookActivityContext>(option =>
+            {
+                option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                    .LogTo(Console.WriteLine, LogLevel.Information)
+                    .EnableSensitiveDataLogging();
+            });
 
             string eventStoreConnection = Configuration.GetConnectionString("EventStoreConnection");
             services.AddDbContext<BookActivityEventStoreContext>(option => option.UseSqlServer(eventStoreConnection));
@@ -56,7 +58,7 @@ namespace BookActivity.Infrastructure.Data
 
         private void CreateDatabasesIfNotExist(DbContext context, IServiceProvider serviceProvider)
         {
-            if ((context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
+            if (context.Database.CanConnect())
                 return;
 
             context.Database.EnsureCreated();
