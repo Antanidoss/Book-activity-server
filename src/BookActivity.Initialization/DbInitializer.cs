@@ -178,6 +178,53 @@ namespace BookActivity.Initialization
                     new BookAuthor { Author = new Author("Jack", "London") }
                 }
             ));
+
+            context.Books.Add(new Book(
+                "Lady Tan's Circle of Women: A Novel Kindle Edition",
+                "According to Confucius, “an educated woman is a worthless woman,” but Tan Yunxian—born into an elite family, yet haunted by death, separations, and loneliness—is being raised by her grandparents to be of use. " +
+                "Her grandmother is one of only a handful of female doctors in China, and she teaches Yunxian the pillars of Chinese medicine, the Four Examinations—looking, listening, touching, and asking—something " +
+                "a man can never do with a female patient.",
+                GetImageData("Lady Tan's Circle of Women.jpg"),
+                new[] {
+                    new BookAuthor { Author = new Author("Lisa", "See") }
+                }
+            ));
+
+            context.Books.Add(new Book(
+                "Good Night, Irene: A Novel Kindle Edition",
+                "This “powerful, uplifting, and deeply personal novel” (Kristin Hannah, #1 NYT bestselling author of The Four Winds), at once “a heart-wrenching wartime drama” (Christina Baker Kline, #1 NYT bestselling author of Orphan Train) " +
+                "and “a moving and graceful tribute to heroic women” (Publishers Weekly, starred review), asks the question: What if a friendship forged on the front lines of war defines a life forever?",
+                GetImageData("Good Night Irene.jpg"),
+                new[] {
+                    new BookAuthor { Author = new Author("Luis", "Alberto") }
+                }
+            ));
+
+            context.Books.Add(new Book(
+                "The Wager: A Tale of Shipwreck, Mutiny and Murder",
+                "On January 28, 1742, a ramshackle vessel of patched-together wood and cloth washed up on the coast of Brazil. Inside were thirty emaciated men, barely alive, and they had an extraordinary tale to tell. They were " +
+                "survivors of His Majesty’s Ship the Wager, a British vessel that had left England in 1740 on a secret mission during an imperial war with Spain. While the Wager had been chasing a Spanish treasure-filled galleon known as “the prize of " +
+                "all the oceans,” it had wrecked on a desolate island off the coast of Patagonia. The men, after being marooned for months and facing starvation, built the flimsy craft and sailed for more than a hundred days, " +
+                "traversing nearly 3,000 miles of storm-wracked seas. They were greeted as heroes.",
+                GetImageData("The Wager.jpg"),
+                new[] {
+                    new BookAuthor { Author = new Author("David", "Grann") }
+                }
+            ));
+
+            context.Books.Add(new Book(
+                "King: A Life Kindle Edition",
+                "Vividly written and exhaustively researched, Jonathan Eig’s King: A Life is the first major biography in decades of the civil rights icon Martin Luther King Jr.—and the first to include recently declassified FBI files. " +
+                "In this revelatory new portrait of the preacher and activist who shook the world, the bestselling biographer gives us an intimate view of the courageous and often emotionally troubled human being who demanded " +
+                "peaceful protest for his movement but was rarely at peace with himself. He casts fresh light on the King family’s origins as well as MLK’s complex relationships with his wife, father, and fellow activists. " +
+                "King reveals a minister wrestling with his own human frailties and dark moods, a citizen hunted by his own government, and a man determined to fight for justice even if it proved to be a fight to the death. " +
+                "As he follows MLK from the classroom to the pulpit to the streets of Birmingham, Selma, and Memphis, Eig dramatically re-creates the journey of a man who recast American race relations and became our only " +
+                "modern-day founding father—as well as the nation’s most mourned martyr.",
+                GetImageData("King a life.jpg"),
+                new[] {
+                    new BookAuthor { Author = new Author("Jonathan", "Eig") }
+                }
+            ));
         }
 
         private byte[] GetImageData(string imageName)
