@@ -41,7 +41,7 @@ namespace BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery
             DbMultipleResultFilterModel<Book, IEnumerable<SelectedBook>> filterModel = new(filterWithPagination, b => b.BookRating.BookOpinions);
             var books = await _bookRepository.GetByFilterAsync(filterModel);
 
-            DbMultipleResultFilterModel<Book> filterModelForCount = new(GetFilter(request), new PaginationModel(request.Skip, request.Take));
+            DbMultipleResultFilterModel<Book> filterModelForCount = new(GetFilter(request));
             var booksCount = await _bookRepository.GetCountByFilterAsync(filterModelForCount);
 
             return new EntityListResult<SelectedBook>(books, booksCount);

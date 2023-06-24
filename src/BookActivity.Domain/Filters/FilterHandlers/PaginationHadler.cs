@@ -28,6 +28,9 @@ namespace BookActivity.Domain.Filters.Handlers
 
         public static IQueryable<AppUser> ApplyPaginaton(this IQueryable<AppUser> query, PaginationModel paginationModel, bool withDefaultOrder = true)
         {
+            if (paginationModel == null)
+                return ApplyPaginaton(query, skip: 0, withDefaultOrder);
+
             return (withDefaultOrder ? query.OrderBy(e => e.Id) : query)
                 .Skip(() => paginationModel.Skip.Value)
                 .Take(() => paginationModel.Take.Value);
