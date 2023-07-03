@@ -32,7 +32,7 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
 
         public async Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
         {
-            AppUserByIdSpec userByIdSpec = new(notification.UserId);
+            AppUserByIdSpec userByIdSpec = new(notification.UserId.Value);
             DbSingleResultFilterModel<AppUser> filterModelForUser = new(userByIdSpec, forUpdate: true, u => u.Subscribers);
             var user = await _appUserRepository.GetByFilterAsync(filterModelForUser);
 

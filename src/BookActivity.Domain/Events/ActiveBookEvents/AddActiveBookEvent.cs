@@ -11,10 +11,9 @@ namespace BookActivity.Domain.Events.ActiveBookEvent
 
         public readonly int NumberPagesRead;
 
-        public AddActiveBookEvent(Guid activeBookId, int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId)
+        public AddActiveBookEvent(Guid activeBookId, int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId) : base(userId)
         {
             AggregateId = activeBookId;
-            UserId = userId;
             BookId = bookId;
             TotalNumberPages = totalNumberPages;
             NumberPagesRead = numberPagesRead;

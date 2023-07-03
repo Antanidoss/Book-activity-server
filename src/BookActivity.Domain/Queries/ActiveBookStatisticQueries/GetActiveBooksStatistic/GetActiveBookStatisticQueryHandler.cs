@@ -1,5 +1,4 @@
-﻿using Antanidoss.Specification.Builders;
-using BookActivity.Domain.Constants;
+﻿using BookActivity.Domain.Constants;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Specifications.StoredEventSpecs;
@@ -39,6 +38,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
                 AveragePagesReadPerMouth = CalculateAveragePagesReadPerMouth(usersReadInfos),
                 AveragePagesReadPerWeek = CalculateAveragePagesReadPerWeek(usersReadInfos),
                 AmountDaysOfReads = GetAmountDaysOfReads(usersReadInfos),
+                NumberOfPagesReadPerDay = GetСalendarStatistics(usersReadInfos)
             };
 
             return activeBookStatistics;
@@ -47,7 +47,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
         private int CalculateAveragePagesReadPerDay(IEnumerable<UpdateActiveBookEvent> userReadInfos)
         {
             return (int)userReadInfos
-                .GroupBy(i => new { i.Timestamp.Year, i.Timestamp.Month, i.Timestamp.Day })
+                .GroupBy(i => i.Timestamp.Date)
                 .SelectMany(g => g.Select(i => i.CountPagesRead))
                 .Average();
         }
@@ -71,8 +71,16 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
         private int GetAmountDaysOfReads(IEnumerable<UpdateActiveBookEvent> userReadInfos)
         {
             return userReadInfos
-                .GroupBy(i => new { i.Timestamp.Year, i.Timestamp.Month, i.Timestamp.Day })
+                .GroupBy(i => i.Timestamp.Date)
                 .Count();
+        }
+
+        private IEnumerable<(int CountPagesRead, DateTime Date)> GetСalendarStatistics(IEnumerable<UpdateActiveBookEvent> userReadInfos)
+        {
+            return userReadInfos
+                .OrderBy(u => u.Timestamp)
+                .GroupBy(u => u.Timestamp.Date)
+                .Select(g => (g.Sum(u => u.CountPagesRead), g.Key));
         }
     }
 }

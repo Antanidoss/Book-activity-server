@@ -14,12 +14,11 @@ namespace BookActivity.Domain.Events.ActiveBookEvent
 
         public UpdateActiveBookEvent() { }
 
-        public UpdateActiveBookEvent(Guid activeBookId, int newNumberPagesRead, int prevNumberPagesRead, Guid userId)
+        public UpdateActiveBookEvent(Guid activeBookId, int newNumberPagesRead, int prevNumberPagesRead, Guid userId) : base(userId)
         {
             AggregateId = activeBookId;
             NumberPagesRead = newNumberPagesRead;
             CountPagesRead = newNumberPagesRead - prevNumberPagesRead;
-            UserId = userId;
         }
     }
 }
