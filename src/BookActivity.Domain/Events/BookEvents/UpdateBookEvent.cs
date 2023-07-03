@@ -11,13 +11,12 @@ namespace BookActivity.Domain.Events.BookEvents
         public IEnumerable<Guid> AuthorIds { get; private set; }
         public bool IsPublic { get; private set; }
 
-        public UpdateBookEvent(Guid bookId, string title, string description, IEnumerable<Guid> authorIds, Guid userId)
+        public UpdateBookEvent(Guid bookId, string title, string description, IEnumerable<Guid> authorIds, Guid userId) : base(userId)
         {
             AggregateId = bookId;
             Title = title;
             Description = description;
             AuthorIds = authorIds;
-            UserId = userId;
         }
     }
 }

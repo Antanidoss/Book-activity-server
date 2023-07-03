@@ -9,11 +9,10 @@ namespace BookActivity.Domain.Core.Events
         public string Data { get; protected set; }
 
         protected StoredEvent() { }
-        public StoredEvent(Event @event, string data)
+        public StoredEvent(Event @event, string data) : base(@event.UserId)
         {
             AggregateId = @event.AggregateId;
             MessageType = @event.MessageType;
-            UserId = @event.UserId;
             Data = data;
         }
     }

@@ -5,10 +5,9 @@ namespace BookActivity.Domain.Events.BookEvents
 {
     public class RemoveBookEvent : Event
     {
-        public RemoveBookEvent(Guid bookId, Guid userId)
+        public RemoveBookEvent(Guid bookId, Guid userId) : base(userId)
         {
             AggregateId = bookId;
-            UserId = userId;
         }
     }
 }
