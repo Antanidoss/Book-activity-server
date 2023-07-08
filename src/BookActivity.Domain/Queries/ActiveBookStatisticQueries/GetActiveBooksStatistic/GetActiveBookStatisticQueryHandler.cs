@@ -38,7 +38,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
                 AveragePagesReadPerMouth = CalculateAveragePagesReadPerMouth(usersReadInfos),
                 AveragePagesReadPerWeek = CalculateAveragePagesReadPerWeek(usersReadInfos),
                 AmountDaysOfReads = GetAmountDaysOfReads(usersReadInfos),
-                NumberOfPagesReadPerDay = GetСalendarStatistics(usersReadInfos)
+                ReadingCalendar = GetСalendarStatistics(usersReadInfos)
             };
 
             return activeBookStatistics;
@@ -75,12 +75,12 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
                 .Count();
         }
 
-        private IEnumerable<(int CountPagesRead, DateTime Date)> GetСalendarStatistics(IEnumerable<UpdateActiveBookEvent> userReadInfos)
+        private IEnumerable<NumberOfPagesReadPerDay> GetСalendarStatistics(IEnumerable<UpdateActiveBookEvent> userReadInfos)
         {
             return userReadInfos
-                .OrderBy(u => u.Timestamp)
+                .OrderBy(u => u.Timestamp.Date)
                 .GroupBy(u => u.Timestamp.Date)
-                .Select(g => (g.Sum(u => u.CountPagesRead), g.Key));
+                .Select(g => new NumberOfPagesReadPerDay { CountPagesRead = g.Sum(u => u.CountPagesRead), Date = g.Key.ToString("dd-MM-yyyy") });
         }
     }
 }
