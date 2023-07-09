@@ -27,7 +27,8 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
             var specificatione = new StoredEventByMessageTypeSpec(EventMessageTypeConstants.UpdateActiveBook) & new StoredEventByUserIdSpec(request.AppUserId);
 
             var usersReadInfos = (await _eventStoreRepository.GetBySpecificationAsync(specificatione))
-                .Select(e => JsonSerializer.Deserialize<UpdateActiveBookEvent>(e.Data));
+                .Select(e => JsonSerializer.Deserialize<UpdateActiveBookEvent>(e.Data))
+                .Where(i => i.CountPagesRead > 0);
 
             if (usersReadInfos == null || !usersReadInfos.Any())
                 return new();
@@ -48,7 +49,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
         {
             return (int)userReadInfos
                 .GroupBy(i => i.Timestamp.Date)
-                .SelectMany(g => g.Select(i => i.CountPagesRead))
+                .Select(g => g.Sum(i => i.CountPagesRead))
                 .Average();
         }
 
@@ -56,7 +57,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
         {
             return (int)userReadInfos
                 .GroupBy(i => new { i.Timestamp.Year, i.Timestamp.Month })
-                .SelectMany(g => g.Select(i => i.CountPagesRead))
+                .Select(g => g.Sum(i => i.CountPagesRead))
                 .Average();
         }
 
@@ -64,7 +65,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
         {
             return (int)userReadInfos
                 .GroupBy(i => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(i.Timestamp, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday))
-                .SelectMany(g => g.Select(i => i.CountPagesRead))
+                .Select(g => g.Sum(i => i.CountPagesRead))
                 .Average();
         }
 
