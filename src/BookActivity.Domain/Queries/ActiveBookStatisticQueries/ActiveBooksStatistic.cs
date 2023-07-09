@@ -9,7 +9,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries
         public float AveragePagesReadPerDay { get; set; }
         public float AveragePagesReadPerWeek { get; set; }
         public float AveragePagesReadPerMouth { get; set; }
-        public int AmountDaysOfReads { get; set; }
+        public int NumberPagesReadPerYear { get; set; }
     }
 
     public class NumberOfPagesReadPerDay

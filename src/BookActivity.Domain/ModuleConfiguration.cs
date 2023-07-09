@@ -1,4 +1,5 @@
 ﻿using Ardalis.Result;
+using BookActivity.Domain.Cache;
 using BookActivity.Domain.Commands.ActiveBookCommands;
 using BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook;
 using BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook;
@@ -14,6 +15,7 @@ using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
 using BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating;
 using BookActivity.Domain.Events.ActiveBookEvent;
+using BookActivity.Domain.Events.ActiveBookStatisticEvents;
 using BookActivity.Domain.Events.AppUserEvents;
 using BookActivity.Domain.Events.UserNotificationsEvents;
 using BookActivity.Domain.Filters.FilterHandlers;
@@ -46,6 +48,7 @@ namespace BookActivity.Domain
             ConfigureQueryHandlers(services);
             ConfigureEventHandlers(services);
             ConfigureFilterHandlers(services);
+            ConfigureMemoryCache(services);
 
             return services;
         }
@@ -98,6 +101,15 @@ namespace BookActivity.Domain
         {
             services.AddScoped<INotificationHandler<AddActiveBookEvent>, UserNotificationsEventHandler>();
             services.AddScoped<INotificationHandler<SubscribeAppUserEvent>, UserNotificationsEventHandler>();
+
+            services.AddScoped<INotificationHandler<AddActiveBookEvent>, ActiveBookStatisticEventHandler>();
+            services.AddScoped<INotificationHandler<UpdateActiveBookEvent>, ActiveBookStatisticEventHandler>();
+        }
+
+        private void ConfigureMemoryCache(IServiceCollection services)
+        {
+            services.AddMemoryCache();
+            services.AddSingleton<ActiveBookStatisticCache>();
         }
     }
 }
