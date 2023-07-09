@@ -1,4 +1,5 @@
-﻿using BookActivity.Domain.Constants;
+﻿using BookActivity.Domain.Cache;
+using BookActivity.Domain.Constants;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Specifications.StoredEventSpecs;
@@ -16,16 +17,21 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
     internal sealed class GetActiveBookStatisticQueryHandler : IRequestHandler<GetActiveBookStatisticQuery, ActiveBooksStatistic>
     {
         private readonly IEventStoreRepository _eventStoreRepository;
+        private readonly ActiveBookStatisticCache _cache;
 
-        public GetActiveBookStatisticQueryHandler(IEventStoreRepository eventStoreRepository)
+        public GetActiveBookStatisticQueryHandler(IEventStoreRepository eventStoreRepository, ActiveBookStatisticCache cache)
         {
             _eventStoreRepository = eventStoreRepository;
+            _cache = cache;
         }
 
         public async Task<ActiveBooksStatistic> Handle(GetActiveBookStatisticQuery request, CancellationToken cancellationToken)
         {
-            var specificatione = new StoredEventByMessageTypeSpec(EventMessageTypeConstants.UpdateActiveBook) & new StoredEventByUserIdSpec(request.AppUserId);
+            var activeBookStatistics = _cache.Get(request.AppUserId);
+            if (activeBookStatistics != null)
+                return activeBookStatistics;
 
+            var specificatione = new StoredEventByMessageTypeSpec(EventMessageTypeConstants.UpdateActiveBook) & new StoredEventByUserIdSpec(request.AppUserId);
             var usersReadInfos = (await _eventStoreRepository.GetBySpecificationAsync(specificatione))
                 .Select(e => JsonSerializer.Deserialize<UpdateActiveBookEvent>(e.Data))
                 .Where(i => i.CountPagesRead > 0);
@@ -33,14 +39,16 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
             if (usersReadInfos == null || !usersReadInfos.Any())
                 return new();
 
-            ActiveBooksStatistic activeBookStatistics = new()
+            activeBookStatistics = new()
             {
                 AveragePagesReadPerDay = CalculateAveragePagesReadPerDay(usersReadInfos),
-                AveragePagesReadPerMouth = CalculateAveragePagesReadPerMouth(usersReadInfos),
                 AveragePagesReadPerWeek = CalculateAveragePagesReadPerWeek(usersReadInfos),
-                AmountDaysOfReads = GetAmountDaysOfReads(usersReadInfos),
+                AveragePagesReadPerMouth = CalculateAveragePagesReadPerMouth(usersReadInfos),
+                NumberPagesReadPerYear = GetAmountDaysOfReads(usersReadInfos),
                 ReadingCalendar = GetСalendarStatistics(usersReadInfos)
             };
+
+            _cache.Add(request.AppUserId, activeBookStatistics);
 
             return activeBookStatistics;
         }
@@ -71,9 +79,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
 
         private int GetAmountDaysOfReads(IEnumerable<UpdateActiveBookEvent> userReadInfos)
         {
-            return userReadInfos
-                .GroupBy(i => i.Timestamp.Date)
-                .Count();
+            return userReadInfos.Sum(i => i.CountPagesRead);
         }
 
         private IEnumerable<NumberOfPagesReadPerDay> GetСalendarStatistics(IEnumerable<UpdateActiveBookEvent> userReadInfos)
