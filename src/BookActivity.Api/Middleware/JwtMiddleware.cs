@@ -1,4 +1,5 @@
 ﻿using BookActivity.Application.Interfaces.Services;
+using BookActivity.Shared;
 using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -57,7 +58,7 @@ namespace BookActivity.Api.Middleware
 
                 var user = (await userService.FindByIdAsync(Guid.Parse(userId))).Value;
                 user.Token = jwtToken.RawData;
-                context.Items["User"] = user;
+                context.Items["User"] = new CurrentUser { Id = user.Id, UserName = user.UserName };
             }
             catch (Exception ex)
             {

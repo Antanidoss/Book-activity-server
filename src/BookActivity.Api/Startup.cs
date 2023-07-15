@@ -1,6 +1,7 @@
 using BookActivity.Api.Common.Extensions;
 using BookActivity.Api.Middleware;
 using BookActivity.Application.Models.Dto.Read;
+using BookActivity.Shared;
 using BookActivity.Shared.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -34,7 +35,7 @@ namespace BookActivity.Api
                 var httpContextAccessor = s.GetRequiredService<IHttpContextAccessor>();
                 var user = httpContextAccessor.HttpContext.Items["User"];
 
-                return user != null ? (user as AppUserDto) : null;
+                return user != null ? (user as CurrentUser) : null;
             });
 
             AddAuthentication(services);
