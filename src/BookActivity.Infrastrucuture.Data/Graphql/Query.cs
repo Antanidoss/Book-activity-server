@@ -38,10 +38,5 @@ namespace BookActivity.Infrastructure.Data.Graphql
 
             return context.Books;
         }
-
-        //public bool CheckIsActiveBook([Service] BookActivityContext context, Guid bookId, Guid userId)
-        //{
-        //    return context.ActiveBooks.Any(a => a.UserId == userId && a.BookId == bookId);
-        //}
     }
 }

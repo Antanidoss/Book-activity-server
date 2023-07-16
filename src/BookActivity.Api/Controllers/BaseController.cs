@@ -1,13 +1,13 @@
-﻿using BookActivity.Application.Models.Dto.Read;
+﻿using BookActivity.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookActivity.Api.Controllers
 {
     public class BaseController : Controller
     {
-        protected AppUserDto _currentUser;
+        protected CurrentUser _currentUser;
 
-        public BaseController(AppUserDto currentUser)
+        public BaseController(CurrentUser currentUser)
         {
             _currentUser = currentUser;
         }

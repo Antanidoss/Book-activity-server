@@ -2,6 +2,7 @@
 using BookActivity.Api.Common.Constants;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Read;
+using BookActivity.Shared;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace BookActivity.Api.Controllers
     {
         private readonly IUserNotificationService _userNotificationService;
 
-        public UserNotificationController(IUserNotificationService userNotificationService, [FromServices] AppUserDto currentUser) : base(currentUser)
+        public UserNotificationController(IUserNotificationService userNotificationService, CurrentUser currentUser) : base(currentUser)
         {
             _userNotificationService = userNotificationService;
         }

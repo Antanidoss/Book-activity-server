@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
 
 namespace BookActivity.Api.Attributes
 {
@@ -10,11 +8,8 @@ namespace BookActivity.Api.Attributes
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var user = context.HttpContext.Items["User"];
-            if (user == null)
-            {
+            if (context.HttpContext.Items["User"] == null)
                 context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
-            }
         }
     }
 }

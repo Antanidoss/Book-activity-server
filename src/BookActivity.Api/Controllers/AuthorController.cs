@@ -5,9 +5,6 @@ using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Create;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BookActivity.Api.Controllers
 {
