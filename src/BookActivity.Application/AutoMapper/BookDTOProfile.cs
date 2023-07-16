@@ -7,7 +7,6 @@ using BookActivity.Domain.Commands.BookCommands.AddBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery;
 
 namespace BookActivity.Application.AutoMapper
 {
@@ -18,7 +17,6 @@ namespace BookActivity.Application.AutoMapper
             CreateMap<Book, BookDto>();
             CreateMap<BookDto, Book>();
             CreateMap<SelectedBook, BookDto>();
-            CreateMap<GetBooksByFilterDto, GetBooksByFilterQuery>();
             CreateMap<UpdateBookDto, UpdateBookCommand>();
 
             CreateMap<CreateBookDto, AddBookCommand>()

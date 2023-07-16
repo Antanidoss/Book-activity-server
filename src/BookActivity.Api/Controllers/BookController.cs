@@ -3,11 +3,9 @@ using BookActivity.Api.Common.Extansions;
 using BookActivity.Api.Common.Models;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Create;
-using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
 using BookActivity.Shared;
-using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookActivity.Api.Controllers
@@ -26,20 +24,6 @@ namespace BookActivity.Api.Controllers
         public async Task AddBookAsync([FromForm] CreateBookDto createBookModel)
         {
             await _bookService.AddActiveBookAsync(createBookModel);
-        }
-
-        [HttpGet(ApiConstants.GetBooksByIdsMethod)]
-        public async Task<ApiResult<IEnumerable<BookDto>>> GetBooksByIdsAsync(Guid[] bookIds)
-        {
-            return (await _bookService.GetByBookIdsAsync(bookIds)).ToApiResult();
-        }
-
-        [HttpGet(ApiConstants.GetBooksByFilterMethod)]
-        public async Task<ApiResult<EntityListResult<BookDto>>> GetBooksByFilterAsync(GetBooksByFilterDto bookFilterModel)
-        {
-            bookFilterModel.UserId = _currentUser?.Id ?? Guid.Empty;
-
-            return (await _bookService.GetByFilterAsync(bookFilterModel)).ToApiResult();
         }
 
         [HttpDelete(ApiConstants.RemoveBookMethod)]

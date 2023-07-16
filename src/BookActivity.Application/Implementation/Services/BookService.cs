@@ -3,22 +3,15 @@ using AutoMapper;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.Dto.Create;
-using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
 using BookActivity.Domain.Commands.BookCommands.AddBook;
 using BookActivity.Domain.Commands.BookCommands.RemoveBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Events.BookEvents;
-using BookActivity.Domain.Filters;
-using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
-using BookActivity.Domain.Queries.BookQueries.GetBookByFilterQuery;
-using BookActivity.Domain.Specifications.BookSpecs;
 using BookActivity.Domain.Validations;
-using BookActivity.Shared.Models;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
@@ -66,28 +59,6 @@ namespace BookActivity.Application.Implementation.Services
             var updateBookCommand = _mapper.Map<UpdateBookCommand>(updateBookModel);
 
             return await _mediatorHandler.SendCommand(updateBookCommand);
-        }
-
-        public async Task<Result<IEnumerable<BookDto>>> GetByBookIdsAsync(Guid[] bookIds)
-        {
-            CommonValidator.ThrowExceptionIfNullOrEmpty(bookIds);
-
-            BookByIdSpec specification = new(bookIds);
-            PaginationModel paginationModel = new(take: bookIds.Length);
-            DbMultipleResultFilterModel<Book> filterModel = new(specification, paginationModel);
-
-            var books = await _bookRepository.GetByFilterAsync(filterModel);
-
-            return _mapper.Map<List<BookDto>>(books);
-        }
-
-        public async Task<Result<EntityListResult<BookDto>>> GetByFilterAsync(GetBooksByFilterDto bookFilterModel)
-        {
-            var query = _mapper.Map<GetBooksByFilterQuery>(bookFilterModel);
-
-            var result = await _mediatorHandler.SendQuery(query);
-
-            return new Result<EntityListResult<BookDto>>(result.CopyWithNewEntityType(_mapper.Map<List<BookDto>>(result.Entities)));
         }
 
         public async Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId)

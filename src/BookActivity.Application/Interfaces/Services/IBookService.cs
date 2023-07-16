@@ -1,9 +1,7 @@
 ﻿using Ardalis.Result;
 using BookActivity.Application.Models.Dto.Create;
-using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
-using BookActivity.Shared.Models;
 using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
@@ -16,8 +14,6 @@ namespace BookActivity.Application.Interfaces.Services
         Task<ValidationResult> AddActiveBookAsync(CreateBookDto createBookModel);
         Task<ValidationResult> RemoveActiveBookAsync(Guid bookId, Guid userId);
         Task<ValidationResult> UpdateBookAsync(UpdateBookDto updateBookModel);
-        Task<Result<IEnumerable<BookDto>>> GetByBookIdsAsync(Guid[] bookIds);
-        Task<Result<EntityListResult<BookDto>>> GetByFilterAsync(GetBooksByFilterDto bookFilterModel);
         Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId);
     }
 }

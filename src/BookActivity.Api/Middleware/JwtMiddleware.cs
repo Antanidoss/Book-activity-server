@@ -1,15 +1,10 @@
 ﻿using BookActivity.Application.Interfaces.Services;
 using BookActivity.Shared;
 using BookActivity.Shared.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BookActivity.Api.Middleware
 {
@@ -58,7 +53,12 @@ namespace BookActivity.Api.Middleware
 
                 var user = (await userService.FindByIdAsync(Guid.Parse(userId))).Value;
                 user.Token = jwtToken.RawData;
-                context.Items["User"] = new CurrentUser { Id = user.Id, UserName = user.UserName };
+                context.Items["User"] = new CurrentUser
+                {
+                    Id = user.Id,
+                    UserName = user.UserName,
+                    AvatarImage = user.AvatarImage
+                };
             }
             catch (Exception ex)
             {
