@@ -1,4 +1,6 @@
-﻿namespace BookActivity.Shared.Models
+﻿using System.Collections.Generic;
+
+namespace BookActivity.Shared.Models
 {
     public sealed class EntityListResult<TEntity> where TEntity : class
     {

@@ -21,9 +21,7 @@
 
         //Book methods
         public const string AddBookMethodMethod = "add";
-        public const string GetBooksByIdsMethod = "getByIds";
         public const string GetBooksMethod = "get";
-        public const string GetBooksByFilterMethod = "getByFilter";
         public const string RemoveBookMethod = "remove";
         public const string UpdateBookMethod = "update";
         public const string GetBookHistoryDataMethod = "getHistoryData";
