@@ -4,7 +4,6 @@ using BookActivity.Api.Common.Extansions;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Create;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace BookActivity.Api.Controllers
 {

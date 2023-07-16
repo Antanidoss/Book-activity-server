@@ -8,10 +8,9 @@ using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Queries.AppUserQueries.GetUserProfileInfo;
+using BookActivity.Shared;
 using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace BookActivity.Api.Controllers
 {
@@ -20,7 +19,7 @@ namespace BookActivity.Api.Controllers
     {
         private readonly IAppUserService _appUserService;
 
-        public AppUserController(IAppUserService appUserService, [FromServices] AppUserDto currentUser = null) : base(currentUser)
+        public AppUserController(IAppUserService appUserService, CurrentUser currentUser = null) : base(currentUser)
         {
             _appUserService = appUserService;
         }
@@ -50,7 +49,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetCurrentUserMethod)]
-        public ApiResult<AppUserDto> GetCurrentUserAsync()
+        public ApiResult<CurrentUser> GetCurrentUserAsync()
         {
             return _currentUser.ToApiResult();
         }

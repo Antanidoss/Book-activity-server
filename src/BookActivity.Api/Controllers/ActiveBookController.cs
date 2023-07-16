@@ -4,9 +4,9 @@ using BookActivity.Api.Common.Extansions;
 using BookActivity.Api.Common.Models;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Create;
-using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
+using BookActivity.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookActivity.Api.Controllers
@@ -17,7 +17,7 @@ namespace BookActivity.Api.Controllers
     {
         private readonly IActiveBookService _activeBookService;
 
-        public ActiveBookController(IActiveBookService activeBookService, [FromServices] AppUserDto currentUser) : base(currentUser)
+        public ActiveBookController(IActiveBookService activeBookService, CurrentUser currentUser) : base(currentUser)
         {
             _activeBookService = activeBookService;
         }

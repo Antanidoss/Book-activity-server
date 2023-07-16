@@ -1,10 +1,9 @@
 ﻿using BookActivity.Api.Attributes;
 using BookActivity.Api.Common.Constants;
 using BookActivity.Application.Interfaces.Services;
-using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries;
+using BookActivity.Shared;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace BookActivity.Api.Controllers
 {
@@ -14,7 +13,7 @@ namespace BookActivity.Api.Controllers
     {
         private readonly IActiveBookStatisticService _activeBookStatisticService;
 
-        public ActiveBookStatisticController(IActiveBookStatisticService activeBookStatisticService, [FromServices] AppUserDto currentUser) : base(currentUser)
+        public ActiveBookStatisticController(IActiveBookStatisticService activeBookStatisticService, CurrentUser currentUser) : base(currentUser)
         {
             _activeBookStatisticService = activeBookStatisticService;
         }

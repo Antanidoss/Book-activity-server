@@ -1,10 +1,9 @@
 ﻿using BookActivity.Api.Attributes;
 using BookActivity.Api.Common.Constants;
 using BookActivity.Application.Interfaces.Services;
-using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
+using BookActivity.Shared;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace BookActivity.Api.Controllers
 {
@@ -14,7 +13,7 @@ namespace BookActivity.Api.Controllers
     {
         private readonly IBookRatingService _bookRatingService;
 
-        public BookRatingController(IBookRatingService bookRatingService, [FromServices] AppUserDto currentUser) : base(currentUser)
+        public BookRatingController(IBookRatingService bookRatingService, CurrentUser currentUser) : base(currentUser)
         {
             _bookRatingService = bookRatingService;
         }
