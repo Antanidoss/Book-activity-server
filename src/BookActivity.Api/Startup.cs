@@ -76,6 +76,7 @@ namespace BookActivity.Api
             {
                 endpoints.MapControllers();
                 endpoints.MapGraphQL();
+                Infrastructure.ModuleConfiguration.ConfigureSignalREndpoints(endpoints);
             });
         }
 
