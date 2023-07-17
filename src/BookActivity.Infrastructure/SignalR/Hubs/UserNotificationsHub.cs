@@ -1,4 +1,5 @@
 ﻿using BookActivity.Domain.Interfaces.Hubs;
+using BookActivity.Domain.Models.Notifications;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System;
@@ -16,7 +17,7 @@ namespace BookActivity.Infrastructure.SignalR.Hubs
             _context = context;
         }
 
-        public async Task Send<T>(T notificationInfo, Guid userId)
+        public async Task Send(UserNotificationModel notificationInfo, Guid userId)
         {
             var connectionIds = GetConnectionIdsByUserId(userId);
 

@@ -2,7 +2,7 @@
 
 namespace BookActivity.Domain.Models.Notifications
 {
-    internal sealed class UserNotificationModel
+    public sealed class UserNotificationModel
     {
         public readonly Guid NotificationId;
 

@@ -1,4 +1,5 @@
 ﻿using BookActivity.Shared.Interfaces;
+using LinqKit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,14 +15,12 @@ namespace BookActivity.Api.Common.Extensions
             LoadAssemblies();
 
             var moduleConfigurationType = typeof(IModuleConfiguration);
-            var modules = AppDomain.CurrentDomain.GetAssemblies()
+            AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes())
                 .Where(t => moduleConfigurationType.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
                 .Select(Activator.CreateInstance)
-                .Cast<IModuleConfiguration>();
-
-            foreach (var module in modules)
-                module.ConfigureDI(services, configuration);
+                .Cast<IModuleConfiguration>()
+                .ForEach(m => m.ConfigureDI(services, configuration));
         }
 
         private static void LoadAssemblies()

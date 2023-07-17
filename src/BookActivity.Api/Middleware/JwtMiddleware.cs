@@ -57,7 +57,8 @@ namespace BookActivity.Api.Middleware
                 {
                     Id = user.Id,
                     UserName = user.UserName,
-                    AvatarImage = user.AvatarImage
+                    AvatarImage = user.AvatarImage,
+                    Token = user.Token
                 };
             }
             catch (Exception ex)

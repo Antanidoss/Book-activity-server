@@ -20,7 +20,7 @@ namespace BookActivity.Infrastructure
             return services;
         }
 
-        public void ConfigureEndpoints(IEndpointRouteBuilder endpoints)
+        public static void ConfigureSignalREndpoints(IEndpointRouteBuilder endpoints)
         {
             endpoints.MapHub<UserNotificationsHub>("/userNotificationsHub");
         }
