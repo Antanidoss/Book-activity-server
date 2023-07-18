@@ -8,11 +8,11 @@ namespace BookActivity.Infrastructure.SignalR.Hubs
 {
     internal class BaseHub : Hub
     {
-        protected static readonly ConcurrentDictionary<string, Guid> ConnectionInfos = new();
+        protected static ConcurrentDictionary<string, Guid> ConnectionInfos = new();
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            ConnectionInfos.Keys.Remove(Context.ConnectionId);
+            ConnectionInfos.TryRemove(Context.ConnectionId, out Guid _);
 
             await base.OnDisconnectedAsync(exception);
         }
