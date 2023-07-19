@@ -96,7 +96,8 @@ namespace BookActivity.Infrastructure.Data
                 .AddProjections()
                 .AddFiltering()
                 .AddSorting()
-                .AddTypeExtension<BookExtensions>();
+                .AddTypeExtension<BookExtensions>()
+                .AddTypeExtension<UserExtensions>();
         }
     }
 }

@@ -19,9 +19,9 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpGet(ApiConstants.GetActiveBooksStaticMethod)]
-        public async Task<ActiveBooksStatistic> GetActiveBooksStatistics()
+        public async Task<ActiveBooksStatistic> GetActiveBooksStatistics(Guid? userId)
         {
-            return await _activeBookStatisticService.GetActiveBookStatistics(_currentUser.Id);
+            return await _activeBookStatisticService.GetActiveBookStatistics(userId ?? _currentUser.Id);
         }
     }
 }
