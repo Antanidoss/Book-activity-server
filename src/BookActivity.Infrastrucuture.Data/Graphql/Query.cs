@@ -1,4 +1,5 @@
 ﻿using BookActivity.Domain.Models;
+using BookActivity.Domain.Specifications.AppUserSpecs;
 using BookActivity.Domain.Specifications.BookSpecs;
 using BookActivity.Infrastructure.Data.Context;
 using HotChocolate;
@@ -37,6 +38,20 @@ namespace BookActivity.Infrastructure.Data.Graphql
             }
 
             return context.Books;
+        }
+
+        [UseOffsetPaging(IncludeTotalCount = true)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<AppUser> GetUsers([Service] BookActivityContext context)
+        {
+            return context.Users;
+        }
+
+        public AppUser GetUserById([Service] BookActivityContext context, Guid userId)
+        {
+            return context.Users.FirstOrDefault(new AppUserByIdSpec(userId));
         }
     }
 }

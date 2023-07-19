@@ -10,7 +10,7 @@ using System.Linq;
 namespace BookActivity.Infrastructure.Data.Graphql
 {
     [ExtendObjectType(typeof(Book))]
-    public class BookExtensions
+    public sealed class BookExtensions
     {
         public bool GetIsActiveBook([Parent] Book book, [FromServices] BookActivityContext context, [FromServices] IServiceProvider serviceProvider)
         {
