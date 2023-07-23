@@ -12,7 +12,7 @@ namespace BookActivity.Domain.Models
         /// <summary>
         /// Note color
         /// </summary>
-        public NoteColor NoteColor { get; set; }
+        public string NoteColor { get; set; }
 
         /// <summary>
         /// Relation of book note with the active book
@@ -21,19 +21,11 @@ namespace BookActivity.Domain.Models
         public Guid ActiveBookId { get; private set; }
 
         public BookNote() : base() { }
-        public BookNote(string note, NoteColor noteColor, Guid activeBookId)
+        public BookNote(string note, string noteColor, Guid activeBookId)
         {
             Note = note;
             NoteColor = noteColor;
             ActiveBookId = activeBookId;
         }
-    }
-
-    public enum NoteColor
-    {
-        White,
-        Red,
-        Blue,
-        Grean
     }
 }

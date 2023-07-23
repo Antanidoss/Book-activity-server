@@ -6,6 +6,6 @@ namespace BookActivity.Application.Models.Dto.Create
     {
         public Guid ActiveBookId { get; set; }
         public string Note { get; set; }
-        public NoteColor NoteColor { get; set; }
+        public string NoteColor { get; set; }
     }
 }
