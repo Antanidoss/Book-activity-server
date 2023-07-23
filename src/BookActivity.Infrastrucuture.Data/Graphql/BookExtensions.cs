@@ -20,5 +20,10 @@ namespace BookActivity.Infrastructure.Data.Graphql
 
             return context.ActiveBooks.Any(a => a.UserId == user.Id && a.BookId == book.Id);
         }
+
+        public int GetBookOpinionsCount([Parent] Book book, [FromServices] BookActivityContext context)
+        {
+            return context.BookOpinions.Where(b => b.BookRating.BookId == book.Id).Count();
+        }
     }
 }
