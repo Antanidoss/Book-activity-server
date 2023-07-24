@@ -25,5 +25,11 @@ namespace BookActivity.Infrastructure.Data.Graphql
         {
             return context.BookOpinions.Where(b => b.BookRating.BookId == book.Id).Count();
         }
+
+        [BindMember(nameof(Book.ImageData))]
+        public string GetImageDataBase64([Parent] Book book)
+        {
+            return Convert.ToBase64String(book.ImageData);
+        }
     }
 }
