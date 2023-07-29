@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Interfaces.Repositories
 {
-    public interface IBookRepository : IRepository<Book>
+    public interface IBookRepository : IRepository<Book>, IITransactionRepository
     {
         Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<Book, TResult> filterModel);
         Task<Book> GetByFilterAsync(DbSingleResultFilterModel<Book> filterModel);

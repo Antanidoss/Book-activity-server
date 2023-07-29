@@ -3,22 +3,20 @@ using BookActivity.Domain.Models;
 using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NetDevPack.Data;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
-    internal sealed class BookOpinionRepository : IBookOpinionRepository
+    internal sealed class BookOpinionRepository : BaseRepository, IBookOpinionRepository
     {
-        private readonly BookActivityContext _db;
-
         private readonly DbSet<BookOpinion> _dbSet;
 
-        public IUnitOfWork UnitOfWork => _db;
+        public IUnitOfWork UnitOfWork => Context;
 
-        public BookOpinionRepository(BookActivityContext context)
+        public BookOpinionRepository(BookActivityContext context, ILogger logger) : base(context, logger)
         {
-            _db = context;
-            _dbSet = _db.Set<BookOpinion>();
+            _dbSet = Context.Set<BookOpinion>();
         }
 
         public void Add(BookOpinion bookOpinion)
@@ -30,7 +28,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public void Dispose()
         {
-            _db.Dispose();
+            Context.Dispose();
         }
     }
 }

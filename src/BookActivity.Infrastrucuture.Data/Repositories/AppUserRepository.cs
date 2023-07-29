@@ -8,30 +8,26 @@ using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NetDevPack.Data;
-using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
-    internal sealed class AppUserRepository : IAppUserRepository
+    internal sealed class AppUserRepository : BaseRepository, IAppUserRepository
     {
         private readonly UserManager<AppUser> _userManager;
 
         private DbSet<AppUser> _dbSet;
 
-        private BookActivityContext _db;
+        public IUnitOfWork UnitOfWork => Context;
 
-        public AppUserRepository(UserManager<AppUser> userManager, BookActivityContext context)
+        public AppUserRepository(UserManager<AppUser> userManager, BookActivityContext context, ILogger logger) : base(context, logger)
         {
-            _db = context;
             _userManager = userManager;
             _dbSet = context.Users;
         }
-
-        public IUnitOfWork UnitOfWork => _db;
 
         public async Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<AppUser, TResult> filterModel)
         {
@@ -85,6 +81,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public void Dispose()
         {
+            Context.Dispose();
             _userManager.Dispose();
         }
     }

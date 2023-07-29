@@ -3,22 +3,20 @@ using BookActivity.Domain.Models;
 using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NetDevPack.Data;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
-    internal sealed class BookNoteRepository : IBookNoteRepository
+    internal sealed class BookNoteRepository : BaseRepository, IBookNoteRepository
     {
-        private readonly BookActivityContext _db;
-
         private readonly DbSet<BookNote> _dbSet;
 
-        public IUnitOfWork UnitOfWork => _db;
+        public IUnitOfWork UnitOfWork => Context;
 
-        public BookNoteRepository(BookActivityContext context)
+        public BookNoteRepository(BookActivityContext context, ILogger logger) : base(context, logger)
         {
-            _db = context;
-            _dbSet = _db.Set<BookNote>();
+            _dbSet = Context.Set<BookNote>();
         }
 
         public void Add(BookNote bookNote)
@@ -37,7 +35,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public void Dispose()
         {
-            _db.Dispose();
+            Context.Dispose();
         }
     }
 }

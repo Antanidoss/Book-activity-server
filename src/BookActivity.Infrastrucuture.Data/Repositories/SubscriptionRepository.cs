@@ -1,33 +1,29 @@
 ﻿using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
+using Microsoft.Extensions.Logging;
 using NetDevPack.Data;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
-    internal sealed class SubscriptionRepository : ISubscriptionRepository
+    internal sealed class SubscriptionRepository : BaseRepository, ISubscriptionRepository
     {
-        private readonly BookActivityContext _db;
+        public SubscriptionRepository(BookActivityContext context, ILogger logger) : base(context, logger) { }
 
-        public SubscriptionRepository(BookActivityContext context)
-        {
-            _db = context;
-        }
-
-        public IUnitOfWork UnitOfWork => _db;
+        public IUnitOfWork UnitOfWork => Context;
 
         public void Add(Subscription subscription)
         {
-            _db.Subscriptions.Add(subscription);
+            Context.Subscriptions.Add(subscription);
         }
         public void Remove(Subscription subscription)
         {
-            _db.Subscriptions.Remove(subscription);
+            Context.Subscriptions.Remove(subscription);
         }
 
         public void Dispose()
         {
-            _db.Dispose();
+            Context.Dispose();
         }
     }
 }

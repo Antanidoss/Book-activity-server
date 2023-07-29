@@ -5,23 +5,21 @@ using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NetDevPack.Data;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
-    internal sealed class BookRatingRepositiory : IBookRatingRepository
+    internal sealed class BookRatingRepositiory : BaseRepository, IBookRatingRepository
     {
-        private readonly BookActivityContext _db;
-
         private readonly DbSet<BookRating> _dbSet;
 
-        public IUnitOfWork UnitOfWork => _db;
+        public IUnitOfWork UnitOfWork => Context;
 
-        public BookRatingRepositiory(BookActivityContext context)
+        public BookRatingRepositiory(BookActivityContext context, ILogger logger) : base(context, logger)
         {
-            _db = context;
-            _dbSet = _db.Set<BookRating>();
+            _dbSet = Context.Set<BookRating>();
         }
 
         public async Task<BookRating> GetByFilterAsync(DbSingleResultFilterModel<BookRating> filterModel)
@@ -38,7 +36,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public void Dispose()
         {
-            _db.Dispose();
+            Context.Dispose();
         }
     }
 }
