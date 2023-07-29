@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Interfaces.Repositories
 {
-    public interface IUserNotificationRepository : IRepository<UserNotification>, IITransactionRepository
+    public interface IUserNotificationRepository : IRepository<UserNotification>
     {
         Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<UserNotification, TResult> filterModel);
 

@@ -6,22 +6,24 @@ using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using NetDevPack.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
-    internal sealed class ActiveBookRepository : BaseRepository, IActiveBookRepository
+    internal sealed class ActiveBookRepository : IActiveBookRepository
     {
+        private readonly BookActivityContext _db;
+
         private readonly DbSet<ActiveBook> _dbSet;
 
-        public IUnitOfWork UnitOfWork => Context;
+        public IUnitOfWork UnitOfWork => _db;
 
-        public ActiveBookRepository(BookActivityContext context, ILogger logger) : base(context, logger)
+        public ActiveBookRepository(BookActivityContext context)
         {
-            _dbSet = Context.Set<ActiveBook>();
+            _db = context;
+            _dbSet = _db.Set<ActiveBook>();
         }
 
         public async Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<ActiveBook, TResult> filterModel)
@@ -78,7 +80,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public void Dispose()
         {
-            Context.Dispose();
+            _db.Dispose();
         }
     }
 }
