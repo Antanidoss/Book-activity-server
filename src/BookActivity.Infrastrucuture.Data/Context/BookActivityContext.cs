@@ -116,11 +116,10 @@ namespace BookActivity.Infrastructure.Data.Context
                 .SelectMany(x => x.Entity.DomainEvents)
                 .ToList();
 
-            domainEntities.ToList().ForEach(entity => entity.Entity.ClearDomainEvents());
+            foreach (var domainEntity in domainEntities)
+                domainEntity.Entity.ClearDomainEvents();
 
-            var tasks = domainEvents.Select(async (domainEvent) => {
-                await mediator.PublishEvent(domainEvent as Event);
-            });
+            var tasks = domainEvents.Select(async (domainEvent) => await mediator.PublishEvent(domainEvent as Event));
 
             await Task.WhenAll(tasks);
         }

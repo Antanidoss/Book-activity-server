@@ -6,25 +6,23 @@ using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NetDevPack.Data;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
-    internal sealed class UserNotificationRepository : IUserNotificationRepository
+    internal sealed class UserNotificationRepository : BaseRepository, IUserNotificationRepository
     {
-        private readonly BookActivityContext _db;
-
         private readonly DbSet<UserNotification> _dbSet;
 
-        public UserNotificationRepository(BookActivityContext context)
+        public UserNotificationRepository(BookActivityContext context, ILogger logger) : base(context, logger)
         {
-            _db = context;
             _dbSet = context.UserNotifications;
         }
 
-        public IUnitOfWork UnitOfWork => _db;
+        public IUnitOfWork UnitOfWork => Context;
 
         public async Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<UserNotification, TResult> filterModel)
         {
@@ -43,12 +41,12 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public void Add(UserNotification notification)
         {
-            _db.Add(notification);
+            Context.Add(notification);
         }
 
         public void Dispose()
         {
-            _db.Dispose();
+            Context.Dispose();
         }
     }
 }

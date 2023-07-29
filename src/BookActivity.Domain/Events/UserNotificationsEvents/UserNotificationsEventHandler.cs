@@ -32,37 +32,43 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
 
         public async Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
         {
-            AppUserByIdSpec userByIdSpec = new(notification.UserId.Value);
-            DbSingleResultFilterModel<AppUser> filterModelForUser = new(userByIdSpec, forUpdate: true, u => u.Subscribers);
-            var user = await _appUserRepository.GetByFilterAsync(filterModelForUser);
-
-            string notificationMessage = $"{user.UserName} has made the book id \"{notification.BookId}\" active";
-
-            foreach (var followedUser in user.Subscribers)
+            _userNotificationRepository.InTransaction(async () =>
             {
-                UserNotification userNotification = new(notificationMessage, followedUser.UserIdWhoSubscribed) { Id = Guid.NewGuid() };
-                _userNotificationRepository.Add(userNotification);
+                AppUserByIdSpec userByIdSpec = new(notification.UserId.Value);
+                DbSingleResultFilterModel<AppUser> filterModelForUser = new(userByIdSpec, forUpdate: true, u => u.Subscribers);
+                var user = await _appUserRepository.GetByFilterAsync(filterModelForUser);
 
-                await _userNotificationsHub.Send(new UserNotificationModel(
-                        userNotification.Id,
-                        followedUser.UserIdWhoSubscribed,
-                        notificationMessage
-                    ), followedUser.UserIdWhoSubscribed);
-            }
+                var notificationMessage = $"{user.UserName} has made the book id \"{notification.BookId}\" active";
+
+                foreach (var followedUser in user.Subscribers)
+                {
+                    UserNotification userNotification = new(notificationMessage, followedUser.UserIdWhoSubscribed) { Id = Guid.NewGuid() };
+                    _userNotificationRepository.Add(userNotification);
+
+                    await _userNotificationsHub.Send(new UserNotificationModel(
+                            userNotification.Id,
+                            followedUser.UserIdWhoSubscribed,
+                            notificationMessage
+                        ), followedUser.UserIdWhoSubscribed);
+                }
+            });
         }
 
         public async Task Handle(SubscribeAppUserEvent notification, CancellationToken cancellationToken)
         {
-            string notificationMessage = $"{notification.UserNameWhoSubscribed} has subscribed to you";
+            _userNotificationRepository.InTransaction(async () =>
+            {
+                var notificationMessage = $"{notification.UserNameWhoSubscribed} has subscribed to you";
 
-            UserNotification userNotification = new(notificationMessage, notification.SubscribedUserId) { Id = Guid.NewGuid() };
-            _userNotificationRepository.Add(userNotification);
+                UserNotification userNotification = new(notificationMessage, notification.SubscribedUserId) { Id = Guid.NewGuid() };
+                _userNotificationRepository.Add(userNotification);
 
-            await _userNotificationsHub.Send(new UserNotificationModel(
-                       userNotification.Id,
-                       notification.SubscribedUserId,
-                       notificationMessage
-                   ), notification.SubscribedUserId);
+                await _userNotificationsHub.Send(new UserNotificationModel(
+                           userNotification.Id,
+                           notification.SubscribedUserId,
+                           notificationMessage
+                       ), notification.SubscribedUserId);
+            });
         }
     }
 }
