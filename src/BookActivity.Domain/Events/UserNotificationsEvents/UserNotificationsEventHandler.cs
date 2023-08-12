@@ -1,4 +1,4 @@
-﻿using BookActivity.Domain.Events.ActiveBookEvent;
+﻿using BookActivity.Domain.Events.ActiveBookEvents;
 using BookActivity.Domain.Events.AppUserEvents;
 using BookActivity.Domain.Filters;
 using BookActivity.Domain.Interfaces.Hubs;
@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Events.UserNotificationsEvents
 {
-    internal sealed class UserNotificationsEventHandler :
-        INotificationHandler<AddActiveBookEvent>,
+    public sealed class UserNotificationsEventHandler :
+        INotificationHandler<AddActiveBookAfterOperationEvent>,
         INotificationHandler<SubscribeAppUserEvent>
     {
         private readonly IUserNotificationRepository _userNotificationRepository;
@@ -30,7 +30,7 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
             _appUserRepository = appUserRepository;
         }
 
-        public async Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(AddActiveBookAfterOperationEvent notification, CancellationToken cancellationToken)
         {
             AppUserByIdSpec userByIdSpec = new(notification.UserId.Value);
             DbSingleResultFilterModel<AppUser> filterModelForUser = new(userByIdSpec, forUpdate: true, u => u.Subscribers);

@@ -15,6 +15,7 @@ using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
 using BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating;
 using BookActivity.Domain.Events.ActiveBookEvent;
+using BookActivity.Domain.Events.ActiveBookEvents;
 using BookActivity.Domain.Events.ActiveBookStatisticEvents;
 using BookActivity.Domain.Events.AppUserEvents;
 using BookActivity.Domain.Events.UserNotificationsEvents;
@@ -93,7 +94,7 @@ namespace BookActivity.Domain
 
         private void ConfigureEventHandlers(IServiceCollection services)
         {
-            services.AddScoped<INotificationHandler<AddActiveBookEvent>, UserNotificationsEventHandler>();
+            services.AddScoped<INotificationHandler<AddActiveBookAfterOperationEvent>, UserNotificationsEventHandler>();
             services.AddScoped<INotificationHandler<SubscribeAppUserEvent>, UserNotificationsEventHandler>();
 
             services.AddScoped<INotificationHandler<AddActiveBookEvent>, ActiveBookStatisticEventHandler>();

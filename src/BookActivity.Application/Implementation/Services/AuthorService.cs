@@ -36,7 +36,7 @@ namespace BookActivity.Application.Implementation.Services
         {
             var addAuthorCommand = _mapper.Map<AddAuthorCommand>(createAuthor);
 
-            var validationResult = await _mediatorHandler.SendCommand(addAuthorCommand);
+            var validationResult = await _mediatorHandler.SendCommandAsync(addAuthorCommand);
 
             return validationResult.ToResult(addAuthorCommand.Id);
         }

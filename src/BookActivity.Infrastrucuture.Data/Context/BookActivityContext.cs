@@ -36,8 +36,33 @@ namespace BookActivity.Infrastructure.Data.Context
 
         public async Task<bool> Commit()
         {
-            await _mediatorHandler.PublishDomainEvents(this);
+            var domainEntities = ChangeTracker
+                .Entries<Entity>()
+                .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any());
+
+            var domainEvents = domainEntities
+                .SelectMany(x => x.Entity.DomainEvents)
+                .Cast<Event>()
+                .ToList();
+
+            var tasks = domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.BeforeOperation).Select(async e =>
+            {
+                await _mediatorHandler.PublishEventAsync(e);
+            });
+
+            await Task.WhenAll(tasks);
+
             var success = await SaveChangesAsync() > 0;
+
+            tasks = domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation).Select(async e =>
+            {
+                await _mediatorHandler.PublishEventAsync(e);
+            });
+
+            await Task.WhenAll(tasks);
+
+            foreach (var domainEntity in domainEntities)
+                domainEntity.Entity.ClearDomainEvents();
 
             return success;
         }
@@ -98,31 +123,6 @@ namespace BookActivity.Infrastructure.Data.Context
                 if (timeOfUpdate == null || DateTime.Parse(timeOfUpdate.ToString()).Year < DateTime.UtcNow.Year)
                     entry.Property(nameof(BaseEntity.TimeOfUpdate)).CurrentValue = DateTime.UtcNow;
             }
-        }
-    }
-
-    public static class MediatorExtension
-    {
-        /// <summary>
-        /// Sends events to all handlers
-        /// </summary>
-        public static async Task PublishDomainEvents<T>(this IMediatorHandler mediator, T ctx) where T : DbContext
-        {
-            var domainEntities = ctx.ChangeTracker
-                .Entries<Entity>()
-                .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any());
-
-            var domainEvents = domainEntities
-                .SelectMany(x => x.Entity.DomainEvents)
-                .ToList();
-
-            domainEntities.ToList().ForEach(entity => entity.Entity.ClearDomainEvents());
-
-            var tasks = domainEvents.Select(async (domainEvent) => {
-                await mediator.PublishEvent(domainEvent as Event);
-            });
-
-            await Task.WhenAll(tasks);
         }
     }
 }

@@ -7,8 +7,8 @@ namespace BookActivity.Domain.Interfaces
 {
     public interface IMediatorHandler
     {
-        Task PublishEvent<T>(T @event) where T : Core.Events.Event;
-        Task<ValidationResult> SendCommand<T>(T command) where T : Command;
-        Task<TResult> SendQuery<TResult>(Query<TResult> query);
+        Task PublishEventAsync<T>(T @event) where T : Core.Events.Event;
+        Task<ValidationResult> SendCommandAsync<T>(T command) where T : Command;
+        Task<TResult> SendQueryAsync<TResult>(Query<TResult> query);
     }
 }

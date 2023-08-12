@@ -11,6 +11,9 @@ namespace BookActivity.Domain.Core.Events
         [JsonInclude]
         public new DateTime Timestamp { get; private set; }
 
+        [JsonIgnore]
+        public virtual WhenCallHandler WhenCallHandler { get; }
+
         public Event() { }
 
         public Event(Guid? userId)
@@ -18,5 +21,11 @@ namespace BookActivity.Domain.Core.Events
             UserId = userId;
             Timestamp = DateTime.Now;
         }
+    }
+
+    public enum WhenCallHandler
+    {
+        BeforeOperation,
+        AfterOperation,
     }
 }

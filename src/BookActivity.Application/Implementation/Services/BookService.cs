@@ -42,7 +42,7 @@ namespace BookActivity.Application.Implementation.Services
         {
             var addBookCommand = _mapper.Map<AddBookCommand>(createBookModel);
 
-            return await _mediatorHandler.SendCommand(addBookCommand);
+            return await _mediatorHandler.SendCommandAsync(addBookCommand);
         }
 
         public async Task<ValidationResult> RemoveActiveBookAsync(Guid bookId, Guid userId)
@@ -51,14 +51,14 @@ namespace BookActivity.Application.Implementation.Services
 
             RemoveBookCommand removeBookCommand = new(bookId, userId);
 
-            return await _mediatorHandler.SendCommand(removeBookCommand);
+            return await _mediatorHandler.SendCommandAsync(removeBookCommand);
         }
 
         public async Task<ValidationResult> UpdateBookAsync(UpdateBookDto updateBookModel)
         {
             var updateBookCommand = _mapper.Map<UpdateBookCommand>(updateBookModel);
 
-            return await _mediatorHandler.SendCommand(updateBookCommand);
+            return await _mediatorHandler.SendCommandAsync(updateBookCommand);
         }
 
         public async Task<Result<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId)

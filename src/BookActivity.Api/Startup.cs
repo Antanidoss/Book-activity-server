@@ -1,6 +1,5 @@
 using BookActivity.Api.Common.Extensions;
 using BookActivity.Api.Middleware;
-using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Shared;
 using BookActivity.Shared.Models;
 using MediatR;

@@ -33,7 +33,7 @@ namespace BookActivity.Application.Implementation.Services
                 BookOpinion = _mapper.Map<BookOpinion>(updateBookRating.BookOpinion)
             };
 
-            return await _mediatorHandler.SendCommand(updateBookRatingCommand);
+            return await _mediatorHandler.SendCommandAsync(updateBookRatingCommand);
         }
     }
 }
