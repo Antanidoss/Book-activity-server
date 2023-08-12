@@ -24,7 +24,7 @@ namespace BookActivity.Application.Implementation.Services
         {
             var addBookNoteCommand = _mapper.Map<AddBookNoteCommand>(createBookNotemodel);
 
-            return await _mediatorHandler.SendCommand(addBookNoteCommand);
+            return await _mediatorHandler.SendCommandAsync(addBookNoteCommand);
         }
     }
 }

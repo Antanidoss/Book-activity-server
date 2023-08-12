@@ -20,7 +20,7 @@ namespace BookActivity.Application.Implementation.Services
         {
             var query = new GetActiveBookStatisticQuery(userId);
 
-            return await _mediator.SendQuery(query);
+            return await _mediator.SendQueryAsync(query);
         }
     }
 }

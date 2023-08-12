@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using BookActivity.Domain.Events.ActiveBookEvent;
+using BookActivity.Domain.Events.ActiveBookEvents;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using FluentValidation.Results;
@@ -26,16 +27,18 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
 
             ActiveBook activeBook = new(request.TotalNumberPages, request.NumberPagesRead, request.BookId, request.UserId);
 
-            activeBook.AddDomainEvent(new AddActiveBookEvent(
+            _activeBookRepository.Add(activeBook);
+
+            request.Id = activeBook.Id;
+
+            var addActiveBookEvent = new AddActiveBookEvent(
                 activeBook.Id,
                 activeBook.TotalNumberPages,
                 activeBook.NumberPagesRead,
                 activeBook.BookId,
-                activeBook.UserId));
+                activeBook.UserId);
 
-            _activeBookRepository.Add(activeBook);
-
-            request.Id = activeBook.Id;
+            activeBook.AddDomainEvent(new AddActiveBookAfterOperationEvent(addActiveBookEvent));
 
             return await Commit(_activeBookRepository.UnitOfWork);
         }

@@ -43,7 +43,7 @@ namespace BookActivity.Application.Implementation.Services
         {
             var addAppUserCommand = _mapper.Map<AddAppUserCommand>(appUserCreateDTO);
 
-            return await _mediatorHandler.SendCommand(addAppUserCommand);
+            return await _mediatorHandler.SendCommandAsync(addAppUserCommand);
         }
 
         public async Task<ValidationResult> SubscribeAppUserAsync(Guid currentUserId, Guid subscribedUserId)
@@ -53,7 +53,7 @@ namespace BookActivity.Application.Implementation.Services
 
             SubscribeAppUserCommand subscribeAppUserCommand = new(subscribedUserId, currentUserId);
 
-            return await _mediatorHandler.SendCommand(subscribeAppUserCommand);
+            return await _mediatorHandler.SendCommandAsync(subscribeAppUserCommand);
         }
 
         public async Task<ValidationResult> UnsubscribeAppUserAsync(Guid currentUserId, Guid unsubscribedUserId)
@@ -63,14 +63,14 @@ namespace BookActivity.Application.Implementation.Services
 
             UnsubscribeAppUserCommand subscribeAppUserCommand = new(unsubscribedUserId, currentUserId);
 
-            return await _mediatorHandler.SendCommand(subscribeAppUserCommand);
+            return await _mediatorHandler.SendCommandAsync(subscribeAppUserCommand);
         }
 
         public async Task<ValidationResult> UpdateAsync(UpdateAppUserDto updateAppUserModel)
         {
             CommonValidator.ThrowExceptionIfEmpty(updateAppUserModel.UserId, nameof(updateAppUserModel.UserId));
 
-            return await _mediatorHandler.SendCommand(_mapper.Map<UpdateAppUserCommand>(updateAppUserModel));
+            return await _mediatorHandler.SendCommandAsync(_mapper.Map<UpdateAppUserCommand>(updateAppUserModel));
         }
 
         public async Task<Result<AuthenticationResult>> AuthenticationAsync(AuthenticationModel authenticationModel)
@@ -79,7 +79,7 @@ namespace BookActivity.Application.Implementation.Services
 
             var query = _mapper.Map<AuthenticationUserQuery>(authenticationModel);
 
-            return await _mediatorHandler.SendQuery(query);
+            return await _mediatorHandler.SendQueryAsync(query);
         }
 
         public async Task<Result<AppUserDto>> FindByIdAsync(Guid appUserId)
@@ -96,14 +96,14 @@ namespace BookActivity.Application.Implementation.Services
         {
             var query = _mapper.Map<GetUsersByFilterQuery>(filterModel);
 
-            return await _mediatorHandler.SendQuery(query);
+            return await _mediatorHandler.SendQueryAsync(query);
         }
 
         public async Task<AppUserProfileInfo> GetUserProfileInfoAsync(Guid userId)
         {
             GetUserProfileInfoQuery query = new() { UserId = userId };
 
-            return await _mediatorHandler.SendQuery(query);
+            return await _mediatorHandler.SendQueryAsync(query);
         }
     }
 }

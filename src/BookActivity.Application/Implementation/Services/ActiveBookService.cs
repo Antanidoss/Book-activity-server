@@ -74,7 +74,7 @@ namespace BookActivity.Application.Implementation.Services
         {
             var addActiveBookCommand = _mapper.Map<AddActiveBookCommand>(createActiveBookModel);
 
-            var validationResult = await _mediatorHandler.SendCommand(addActiveBookCommand);
+            var validationResult = await _mediatorHandler.SendCommandAsync(addActiveBookCommand);
 
             return validationResult.ToResult(addActiveBookCommand.Id);
         }
@@ -85,14 +85,14 @@ namespace BookActivity.Application.Implementation.Services
 
             RemoveActiveBookCommand removeActiveBookCommand = new() { Id = activeBookId };
 
-            return await _mediatorHandler.SendCommand(removeActiveBookCommand);
+            return await _mediatorHandler.SendCommandAsync(removeActiveBookCommand);
         }
 
         public async Task<ValidationResult> UpdateActiveBookAsync(UpdateNumberPagesReadDto updateActiveBookModel)
         {
             var updateActiveBookCommand = _mapper.Map<UpdateActiveBookCommand>(updateActiveBookModel);
 
-            return await _mediatorHandler.SendCommand(updateActiveBookCommand);
+            return await _mediatorHandler.SendCommandAsync(updateActiveBookCommand);
         }
     }
 }
