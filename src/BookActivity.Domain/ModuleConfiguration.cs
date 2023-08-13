@@ -97,7 +97,7 @@ namespace BookActivity.Domain
             services.AddScoped<INotificationHandler<AddActiveBookAfterOperationEvent>, UserNotificationsEventHandler>();
             services.AddScoped<INotificationHandler<SubscribeAppUserEvent>, UserNotificationsEventHandler>();
 
-            services.AddScoped<INotificationHandler<AddActiveBookEvent>, ActiveBookStatisticEventHandler>();
+            services.AddScoped<INotificationHandler<AddActiveBookAfterOperationEvent>, ActiveBookStatisticEventHandler>();
             services.AddScoped<INotificationHandler<UpdateActiveBookEvent>, ActiveBookStatisticEventHandler>();
         }
 
