@@ -45,21 +45,15 @@ namespace BookActivity.Infrastructure.Data.Context
                 .Cast<Event>()
                 .ToList();
 
-            var tasks = domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.BeforeOperation).Select(async e =>
-            {
-                await _mediatorHandler.PublishEventAsync(e);
-            });
+            using CancellationTokenSource cancellationTokenSource = new();
+            var cancellationToken = cancellationTokenSource.Token;
 
-            await Task.WhenAll(tasks);
+            await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.BeforeOperation), cancellationToken);
 
             var success = await SaveChangesAsync() > 0;
 
-            tasks = domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation).Select(async e =>
-            {
-                await _mediatorHandler.PublishEventAsync(e);
-            });
-
-            await Task.WhenAll(tasks);
+            if (success)
+                await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation), cancellationToken);
 
             foreach (var domainEntity in domainEntities)
                 domainEntity.Entity.ClearDomainEvents();

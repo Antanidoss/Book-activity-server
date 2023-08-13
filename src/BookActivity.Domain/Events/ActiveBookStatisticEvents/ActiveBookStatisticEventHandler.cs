@@ -1,5 +1,6 @@
 ﻿using BookActivity.Domain.Cache;
 using BookActivity.Domain.Events.ActiveBookEvent;
+using BookActivity.Domain.Events.ActiveBookEvents;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 namespace BookActivity.Domain.Events.ActiveBookStatisticEvents
 {
     internal sealed class ActiveBookStatisticEventHandler :
-        INotificationHandler<AddActiveBookEvent>,
+        INotificationHandler<AddActiveBookAfterOperationEvent>,
         INotificationHandler<UpdateActiveBookEvent>
     {
         private readonly ActiveBookStatisticCache _cache;
@@ -17,8 +18,10 @@ namespace BookActivity.Domain.Events.ActiveBookStatisticEvents
             _cache = cache;
         }
 
-        public Task Handle(AddActiveBookEvent notification, CancellationToken cancellationToken)
+        public Task Handle(AddActiveBookAfterOperationEvent notification, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             _cache.Remove(notification.UserId.Value);
 
             return Task.CompletedTask;
@@ -26,6 +29,8 @@ namespace BookActivity.Domain.Events.ActiveBookStatisticEvents
 
         public Task Handle(UpdateActiveBookEvent notification, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             _cache.Remove(notification.UserId.Value);
 
             return Task.CompletedTask;

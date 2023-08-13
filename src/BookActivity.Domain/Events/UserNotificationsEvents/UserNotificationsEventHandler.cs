@@ -32,6 +32,8 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
 
         public async Task Handle(AddActiveBookAfterOperationEvent notification, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             AppUserByIdSpec userByIdSpec = new(notification.UserId.Value);
             DbSingleResultFilterModel<AppUser> filterModelForUser = new(userByIdSpec, forUpdate: true, u => u.Subscribers);
             var user = await _appUserRepository.GetByFilterAsync(filterModelForUser);
@@ -53,6 +55,8 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
 
         public async Task Handle(SubscribeAppUserEvent notification, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             string notificationMessage = $"{notification.UserNameWhoSubscribed} has subscribed to you";
 
             UserNotification userNotification = new(notificationMessage, notification.SubscribedUserId) { Id = Guid.NewGuid() };
