@@ -25,7 +25,6 @@ namespace BookActivity.Infrastructure.Data
             services.AddDbContext<BookActivityContext>(option =>
             {
                 option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
-                    .LogTo(Console.WriteLine, LogLevel.Information)
                     .EnableSensitiveDataLogging();
             });
 

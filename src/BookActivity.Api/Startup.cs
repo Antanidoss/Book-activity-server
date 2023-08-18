@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Text;
 
 namespace BookActivity.Api
@@ -70,6 +71,7 @@ namespace BookActivity.Api
             app.UseAuthorization();
             app.UseHttpLogging();
             app.UseMiddleware<JwtMiddleware>();
+            app.UseSerilogRequestLogging();
 
             app.UseEndpoints(endpoints =>
             {
