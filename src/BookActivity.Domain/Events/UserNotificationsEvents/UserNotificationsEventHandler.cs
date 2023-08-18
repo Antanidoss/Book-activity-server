@@ -51,6 +51,8 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
                         notificationMessage
                     ), followedUser.UserIdWhoSubscribed);
             }
+
+            await _userNotificationRepository.UnitOfWork.Commit();
         }
 
         public async Task Handle(SubscribeAppUserEvent notification, CancellationToken cancellationToken)
@@ -67,6 +69,8 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
                        notification.SubscribedUserId,
                        notificationMessage
                    ), notification.SubscribedUserId);
+
+            await _userNotificationRepository.UnitOfWork.Commit();
         }
     }
 }
