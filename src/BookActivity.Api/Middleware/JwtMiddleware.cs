@@ -3,6 +3,7 @@ using BookActivity.Shared;
 using BookActivity.Shared.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
@@ -14,13 +15,10 @@ namespace BookActivity.Api.Middleware
 
         private readonly TokenInfo _tokenInfo;
 
-        private readonly ILogger<JwtMiddleware> _logger;
-
-        public JwtMiddleware(RequestDelegate next, IOptions<TokenInfo> tokenInfo, ILogger<JwtMiddleware> logger)
+        public JwtMiddleware(RequestDelegate next, IOptions<TokenInfo> tokenInfo)
         {
             _next = next;
             _tokenInfo = tokenInfo.Value;
-            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context, IAppUserService userService)
@@ -63,7 +61,7 @@ namespace BookActivity.Api.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError(new EventId(), ex, string.Empty);
+                Log.Error(ex, string.Empty);
             }
         }
     }
