@@ -3,11 +3,8 @@ using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Queries;
 using FluentValidation.Results;
 using MediatR;
-using Microsoft.Extensions.Logging;
 using NetDevPack.Messaging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,35 +16,21 @@ namespace BookActivity.Infrastructure
 
         private readonly IEventStore _eventStore;
 
-        private readonly ILogger<InMemoryBus> _logger;
-
-        public InMemoryBus(IMediator mediator, IEventStore eventStore, ILogger<InMemoryBus> logger)
+        public InMemoryBus(IMediator mediator, IEventStore eventStore)
         {
             _mediator = mediator;
             _eventStore = eventStore;
-            _logger = logger;
         }
 
         public async Task PublishEventsAsync<T>(IEnumerable<T> events, CancellationToken cancellationToken = default) where T : Domain.Core.Events.Event
         {
-            Parallel.ForEach(events, async e =>
+            foreach (var e in events)
             {
                 if (!e.MessageType.Equals("DomainNotification"))
                     _eventStore?.Save(e);
 
-                try
-                {
-                    await _mediator.Publish(e, cancellationToken);
-                }
-                catch (OperationCanceledException ex)
-                {
-                    _logger.LogError(ex, null);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, null);
-                }
-            });
+                await _mediator.Publish(e, cancellationToken);
+            }
         }
 
         public async Task<ValidationResult> SendCommandAsync<T>(T command, CancellationToken cancellationToken = default) where T : Command
