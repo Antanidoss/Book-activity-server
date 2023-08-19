@@ -11,6 +11,8 @@ using System.Threading;
 using BookActivity.Domain.Core.Events;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Infrastructure.Data.Context.Configuration;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BookActivity.Infrastructure.Data.Context
 {
@@ -53,10 +55,18 @@ namespace BookActivity.Infrastructure.Data.Context
             var success = await SaveChangesAsync() > 0;
 
             if (success)
-                await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation), cancellationToken);
+            {
+                ThreadPool.QueueUserWorkItem(async _ =>
+                {
+                    await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation), cancellationToken);
 
-            foreach (var domainEntity in domainEntities)
-                domainEntity.Entity.ClearDomainEvents();
+                    ClearDomainEvents(domainEntities);
+                });
+            }
+            else
+            {
+                ClearDomainEvents(domainEntities);
+            }
 
             return success;
         }
@@ -117,6 +127,12 @@ namespace BookActivity.Infrastructure.Data.Context
                 if (timeOfUpdate == null || DateTime.Parse(timeOfUpdate.ToString()).Year < DateTime.UtcNow.Year)
                     entry.Property(nameof(BaseEntity.TimeOfUpdate)).CurrentValue = DateTime.UtcNow;
             }
+        }
+
+        private void ClearDomainEvents(IEnumerable<EntityEntry<Entity>> entities)
+        {
+            foreach (var domainEntity in entities)
+                domainEntity.Entity.ClearDomainEvents();
         }
     }
 }
