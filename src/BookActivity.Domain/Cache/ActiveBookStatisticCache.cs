@@ -21,9 +21,8 @@ namespace BookActivity.Domain.Cache
 
         public ActiveBooksStatistic Get(Guid userId)
         {
-            ActiveBooksStatistic statistic;
             var key = GetActiveBookStatisticCacheKey(userId);
-            _cache.TryGetValue(key, out statistic);
+            _cache.TryGetValue(key, out ActiveBooksStatistic statistic);
 
             return statistic;
         }
