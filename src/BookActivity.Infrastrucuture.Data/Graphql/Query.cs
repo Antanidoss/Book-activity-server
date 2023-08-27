@@ -2,6 +2,7 @@
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using BookActivity.Domain.Specifications.BookSpecs;
 using BookActivity.Infrastructure.Data.Context;
+using BookActivity.Shared;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
@@ -16,12 +17,16 @@ namespace BookActivity.Infrastructure.Data.Graphql
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<ActiveBook> GetActiveBooks([Service] BookActivityContext context, bool withFullRead = true)
+        public IQueryable<ActiveBook> GetActiveBooks([Service] BookActivityContext context, [Service] CurrentUser curUser, Guid? userId, bool withFullRead = true)
         {
-            if (!withFullRead)
-                return context.ActiveBooks.Where(a => a.TotalNumberPages != a.NumberPagesRead);
+            var query = userId.HasValue
+                ? context.ActiveBooks.Where(a => a.UserId == userId)
+                : context.ActiveBooks.Where(a => a.UserId == curUser.Id);
 
-            return context.ActiveBooks;
+            if (!withFullRead)
+                query = query.Where(a => a.TotalNumberPages != a.NumberPagesRead);
+
+            return query;
         }
 
         [UseOffsetPaging(IncludeTotalCount = true)]

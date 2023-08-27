@@ -1,5 +1,6 @@
 ﻿using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
+using BookActivity.Shared;
 using HotChocolate;
 using HotChocolate.Types;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,14 @@ namespace BookActivity.Infrastructure.Data.Graphql
         public int GetSubscriptionsCount([Parent] AppUser user, [FromServices] BookActivityContext context)
         {
             return context.Subscriptions.Where(s => s.UserIdWhoSubscribed == user.Id).Count();
+        }
+
+        public bool GetIsSubscribed([Parent] AppUser user, [FromServices] BookActivityContext context, [FromServices] CurrentUser curUser)
+        {
+            if (user.Id == curUser.Id)
+                return false;
+
+            return context.Subscriptions.Any(s => s.SubscribedUserId == user.Id && s.UserIdWhoSubscribed == curUser.Id);
         }
     }
 }
