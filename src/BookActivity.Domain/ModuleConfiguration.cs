@@ -14,6 +14,7 @@ using BookActivity.Domain.Commands.BookCommands.RemoveBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
 using BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating;
+using BookActivity.Domain.Commands.UserNotificationCommands.RemoveUserNotifications;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.ActiveBookEvents;
 using BookActivity.Domain.Events.ActiveBookStatisticEvents;
@@ -73,6 +74,7 @@ namespace BookActivity.Domain
 
             services.AddScoped<IRequestHandler<UpdateBookRatingCommand, ValidationResult>, UpdateBookRatingCommandHandler>();
 
+            services.AddScoped<IRequestHandler<RemoveUserNotificationsCommand, ValidationResult>, RemoveUserNotificationsCommandHandler>();
         }
 
         private void ConfigureQueryHandlers(IServiceCollection services)

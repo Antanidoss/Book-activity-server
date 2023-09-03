@@ -8,5 +8,7 @@ namespace BookActivity.Application.Interfaces.Services
     public  interface IUserNotificationService
     {
         Task<IEnumerable<UserNotificationDto>> GetUserNotificationsAsync(Guid userId);
+
+        Task RemoveUserNotifications(IEnumerable<Guid> userNotificationIds);
     }
 }

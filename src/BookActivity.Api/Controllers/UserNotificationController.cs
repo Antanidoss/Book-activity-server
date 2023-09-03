@@ -4,8 +4,6 @@ using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Shared;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BookActivity.Api.Controllers
 {
@@ -20,10 +18,16 @@ namespace BookActivity.Api.Controllers
             _userNotificationService = userNotificationService;
         }
 
-        [HttpGet(ApiConstants.GetUserNotifications)]
+        [HttpGet(ApiConstants.GetUserNotificationsMethod)]
         public async Task<IEnumerable<UserNotificationDto>> GetUserNotificationsAsync()
         {
             return await _userNotificationService.GetUserNotificationsAsync(_currentUser.Id);
+        }
+
+        [HttpDelete(ApiConstants.RemoveUserNotificationsMethod)]
+        public async Task RemoveUserNotifications(IEnumerable<Guid> userNotificationIds)
+        {
+            await _userNotificationService.RemoveUserNotifications(userNotificationIds);
         }
     }
 }
