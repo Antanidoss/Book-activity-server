@@ -1,4 +1,5 @@
-﻿using BookActivity.Domain.Filters;
+﻿using Antanidoss.Specification.Abstract;
+using BookActivity.Domain.Filters;
 using BookActivity.Domain.Filters.Handlers;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
@@ -8,6 +9,7 @@ using BookActivity.Infrastructure.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 using NetDevPack.Data;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
@@ -46,9 +48,17 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _db.Add(notification);
         }
 
+        public void RemoveRange(Specification<UserNotification> specification)
+        {
+            var userNotifications = _dbSet.Where(specification);
+
+            _dbSet.RemoveRange(userNotifications);
+        }
+
         public void Dispose()
         {
             _db.Dispose();
         }
+
     }
 }

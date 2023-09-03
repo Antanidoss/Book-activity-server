@@ -1,4 +1,5 @@
-﻿using BookActivity.Domain.Filters;
+﻿using Antanidoss.Specification.Abstract;
+using BookActivity.Domain.Filters;
 using BookActivity.Domain.Models;
 using NetDevPack.Data;
 using System.Threading.Tasks;
@@ -10,5 +11,7 @@ namespace BookActivity.Domain.Interfaces.Repositories
         Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<UserNotification, TResult> filterModel);
 
         void Add(UserNotification notification);
+
+        void RemoveRange(Specification<UserNotification> specification);
     }
 }

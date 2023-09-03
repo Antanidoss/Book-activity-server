@@ -51,6 +51,7 @@
         public const string GetActiveBooksStaticMethod = "getActiveBooksStatic";
 
         //UserNotification methods
-        public const string GetUserNotifications = "get";
+        public const string GetUserNotificationsMethod = "get";
+        public const string RemoveUserNotificationsMethod = "remove";
     }
 }

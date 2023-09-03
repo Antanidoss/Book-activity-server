@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Read;
+using BookActivity.Domain.Commands.UserNotificationCommands.RemoveUserNotifications;
 using BookActivity.Domain.Filters;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.UserNotificationSpecs;
@@ -17,10 +19,13 @@ namespace BookActivity.Application.Implementation.Services
 
         private readonly IMapper _mapper;
 
-        public UserNotificationService(IUserNotificationRepository userNotificationRepository, IMapper mapper)
+        private readonly IMediatorHandler _mediatorHandler;
+
+        public UserNotificationService(IUserNotificationRepository userNotificationRepository, IMapper mapper, IMediatorHandler mediatorHandler)
         {
             _userNotificationRepository = userNotificationRepository;
             _mapper = mapper;
+            _mediatorHandler = mediatorHandler;
         }
 
         public async Task<IEnumerable<UserNotificationDto>> GetUserNotificationsAsync(Guid userId)
@@ -30,6 +35,13 @@ namespace BookActivity.Application.Implementation.Services
             var notifications = await _userNotificationRepository.GetByFilterAsync(filterModel);
 
             return _mapper.Map<IEnumerable<UserNotificationDto>>(notifications);
+        }
+
+        public async Task RemoveUserNotifications(IEnumerable<Guid> userNotificationIds)
+        {
+            RemoveUserNotificationsCommand command = new(userNotificationIds);
+
+            await _mediatorHandler.SendCommandAsync(command);
         }
     }
 }
