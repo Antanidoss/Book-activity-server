@@ -30,6 +30,7 @@ using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStati
 using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
 using BookActivity.Domain.Queries.AppUserQueries.GetUserProfileInfo;
 using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
+using BookActivity.Domain.Queries.OcrQueries.GetTextOnImage;
 using BookActivity.Shared.Interfaces;
 using BookActivity.Shared.Models;
 using FluentValidation.Results;
@@ -84,6 +85,8 @@ namespace BookActivity.Domain
             services.AddScoped<IRequestHandler<GetUsersByFilterQuery, EntityListResult<SelectedAppUser>>, GetUsersByFilterQueryHandler>();
             services.AddScoped<IRequestHandler<AuthenticationUserQuery, Result<AuthenticationResult>>, AuthenticationUserQueryHandler>();
             services.AddScoped<IRequestHandler<GetUserProfileInfoQuery, AppUserProfileInfo>, GetUserProfileInfoQueryHandler>();
+
+            services.AddScoped<IRequestHandler<GetTextOnImageQuery, string>, GetTextOnImageQueryHandler>();
         }
 
         private void ConfigureFilterHandlers(IServiceCollection services)
