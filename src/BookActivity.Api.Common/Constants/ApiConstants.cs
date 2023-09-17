@@ -11,6 +11,7 @@
         public const string BookRatingService = "bookRating";
         public const string ActiveBookStatisticService = "activeBookStatistic";
         public const string UserNotificationService = "userNotification";
+        public const string OcrService = "ocr";
 
         //ActiveBook methods
         public const string AddActiveBookMethod = "add";
@@ -53,5 +54,8 @@
         //UserNotification methods
         public const string GetUserNotificationsMethod = "get";
         public const string RemoveUserNotificationsMethod = "remove";
+
+        //Ocr methods
+        public const string GetTextOnImageMethod = "get";
     }
 }
