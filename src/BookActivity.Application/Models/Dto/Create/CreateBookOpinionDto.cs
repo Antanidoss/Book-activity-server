@@ -2,7 +2,7 @@
 
 namespace BookActivity.Application.Models.Dto.Create
 {
-    public class CreateBookOpinionDto
+    public class CreateBookOpinionDto : BaseCreateDto
     {
         [System.Text.Json.Serialization.JsonIgnore]
         public Guid UserId { get; set; }
