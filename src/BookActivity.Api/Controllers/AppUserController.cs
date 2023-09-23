@@ -7,7 +7,6 @@ using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Queries.AppUserQueries.GetUserProfileInfo;
 using BookActivity.Shared;
 using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -25,15 +24,9 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPost(ApiConstants.AddUserMethod)]
-        public async Task<IActionResult> AddAppUserAsync([FromForm] CreateAppUserDto appUserCreateDTO)
+        public async Task<IActionResult> AddAsync([FromForm] CreateAppUserDto appUserCreateDTO)
         {
             return (await _appUserService.AddAsync(appUserCreateDTO)).ToActionResult();
-        }
-
-        [HttpGet(ApiConstants.GetUserByIdMethod)]
-        public async Task<ApiResult<AppUserDto>> GetAppUserByIdAsync(Guid appUserId)
-        {
-            return (await _appUserService.FindByIdAsync(appUserId)).ToApiResult();
         }
 
         [HttpPost(ApiConstants.AuthenticationMethod)]
@@ -45,7 +38,7 @@ namespace BookActivity.Api.Controllers
         [HttpPut(ApiConstants.SubscribeAppUserMethod)]
         public async Task<ActionResult> SubscribeAppUserAsync([FromQuery] Guid subscribedUserId)
         {
-            return (await _appUserService.SubscribeAppUserAsync(_currentUser.Id, subscribedUserId)).ToActionResult();
+            return (await _appUserService.SubscribeAsync(_currentUser.Id, subscribedUserId)).ToActionResult();
         }
 
         [HttpGet(ApiConstants.GetCurrentUserMethod)]
@@ -55,27 +48,21 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.UpdateUserMethod)]
-        public async Task<ActionResult> UpdateUserAsync([FromForm] UpdateAppUserDto updateAppUserModel)
+        public async Task<ActionResult> UpdateAsync([FromForm] UpdateAppUserDto updateAppUserModel)
         {
             return (await _appUserService.UpdateAsync(updateAppUserModel)).ToActionResult();
         }
 
         [HttpGet(ApiConstants.GetUserByFilterMethod)]
-        public async Task<EntityListResult<SelectedAppUser>> GetUsersByFilterAsync(GetUsersByFilterDto filterModel)
+        public async Task<EntityListResult<SelectedAppUser>> GetByFilterAsync(GetUsersByFilterDto filterModel)
         {
-            return await _appUserService.GetAppUserByFilter(filterModel);
+            return await _appUserService.GetByFilterAsync(filterModel);
         }
 
         [HttpDelete(ApiConstants.UnsubscribeAppUserMethod)]
-        public async Task<ActionResult> UnsubscribeUserAsync([FromQuery] Guid unsubscribedUserId)
+        public async Task<ActionResult> UnsubscribeAsync([FromQuery] Guid unsubscribedUserId)
         {
-            return (await _appUserService.UnsubscribeAppUserAsync(_currentUser.Id, unsubscribedUserId)).ToActionResult();
-        }
-
-        [HttpGet(ApiConstants.GetUserProfileInfoMethod)]
-        public async Task<AppUserProfileInfo> GetUserProfileInfoAsync([FromQuery] Guid userId)
-        {
-            return await _appUserService.GetUserProfileInfoAsync(userId);
+            return (await _appUserService.UnsubscribeAsync(_currentUser.Id, unsubscribedUserId)).ToActionResult();
         }
     }
 }

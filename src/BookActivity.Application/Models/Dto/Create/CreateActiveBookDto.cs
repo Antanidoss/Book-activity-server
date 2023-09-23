@@ -11,5 +11,10 @@ namespace BookActivity.Application.Models.Dto.Create
         [System.Text.Json.Serialization.JsonIgnore]
         public Guid UserId { get; set; }
         public bool IsPublic { get; set; }
+
+        public override void Validate()
+        {
+            
+        }
     }
 }

@@ -34,6 +34,8 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<Result<Guid>> AddAsync(CreateAuthorDto createAuthor)
         {
+            createAuthor.Validate();
+
             var addAuthorCommand = _mapper.Map<AddAuthorCommand>(createAuthor);
 
             var validationResult = await _mediatorHandler.SendCommandAsync(addAuthorCommand);

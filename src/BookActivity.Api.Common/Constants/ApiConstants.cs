@@ -29,14 +29,12 @@
 
         //AppUser methods
         public const string AddUserMethod = "add";
-        public const string GetUserByIdMethod = "getById";
         public const string AuthenticationMethod = "authentication";
         public const string SubscribeAppUserMethod = "subscribeUser";
         public const string GetCurrentUserMethod = "getCurrentUser";
         public const string UpdateUserMethod = "update";
-        public const string GetUserByFilterMethod = "getUsersByFilter";
+        public const string GetUserByFilterMethod = "getByFilter";
         public const string UnsubscribeAppUserMethod = "unsubscribe";
-        public const string GetUserProfileInfoMethod = "getUserProfileInfo";
 
         //BookNote methods
         public const string AddBookNoteMethod = "add";

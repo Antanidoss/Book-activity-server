@@ -40,6 +40,8 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<ValidationResult> AddActiveBookAsync(CreateBookDto createBookModel)
         {
+            createBookModel.Validate();
+
             var addBookCommand = _mapper.Map<AddBookCommand>(createBookModel);
 
             return await _mediatorHandler.SendCommandAsync(addBookCommand);

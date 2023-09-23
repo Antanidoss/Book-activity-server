@@ -1,7 +1,7 @@
 ﻿namespace BookActivity.Application.Models.Dto.Create
 {
-    public class BaseCreateDto
+    public abstract class BaseCreateDto
     {
-        public virtual bool IsValid() => true;
+        public abstract void Validate();
     }
 }
