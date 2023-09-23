@@ -22,6 +22,8 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<ValidationResult> AddBookNoteAsync(CreateBookNoteDto createBookNotemodel)
         {
+            createBookNotemodel.Validate();
+
             var addBookNoteCommand = _mapper.Map<AddBookNoteCommand>(createBookNotemodel);
 
             return await _mediatorHandler.SendCommandAsync(addBookNoteCommand);

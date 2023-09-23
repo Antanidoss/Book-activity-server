@@ -49,14 +49,13 @@ namespace BookActivity.Api.Middleware
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = jwtToken.Claims.First(x => x.Type == "userId").Value.ToString();
 
-                var user = (await userService.FindByIdAsync(Guid.Parse(userId))).Value;
-                user.Token = jwtToken.RawData;
+                var user = (await userService.GetByIdAsync(Guid.Parse(userId))).Value;
                 context.Items["User"] = new CurrentUser
                 {
                     Id = user.Id,
                     UserName = user.UserName,
                     AvatarImage = user.AvatarImage,
-                    Token = user.Token
+                    Token = jwtToken.RawData
                 };
             }
             catch (Exception ex)

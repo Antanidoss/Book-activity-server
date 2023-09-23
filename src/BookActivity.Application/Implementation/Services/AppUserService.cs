@@ -13,7 +13,6 @@ using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
-using BookActivity.Domain.Queries.AppUserQueries.GetUserProfileInfo;
 using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using BookActivity.Domain.Validations;
@@ -39,14 +38,16 @@ namespace BookActivity.Application.Implementation.Services
             _appUserRepository = appUserRepository;
         }
 
-        public async Task<ValidationResult> AddAsync(CreateAppUserDto appUserCreateDTO)
+        public async Task<ValidationResult> AddAsync(CreateAppUserDto appUserCreateDto)
         {
-            var addAppUserCommand = _mapper.Map<AddAppUserCommand>(appUserCreateDTO);
+            appUserCreateDto.Validate();
+
+            var addAppUserCommand = _mapper.Map<AddAppUserCommand>(appUserCreateDto);
 
             return await _mediatorHandler.SendCommandAsync(addAppUserCommand);
         }
 
-        public async Task<ValidationResult> SubscribeAppUserAsync(Guid currentUserId, Guid subscribedUserId)
+        public async Task<ValidationResult> SubscribeAsync(Guid currentUserId, Guid subscribedUserId)
         {
             CommonValidator.ThrowExceptionIfEmpty(currentUserId, nameof(currentUserId));
             CommonValidator.ThrowExceptionIfEmpty(subscribedUserId, nameof(subscribedUserId));
@@ -56,7 +57,7 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendCommandAsync(subscribeAppUserCommand);
         }
 
-        public async Task<ValidationResult> UnsubscribeAppUserAsync(Guid currentUserId, Guid unsubscribedUserId)
+        public async Task<ValidationResult> UnsubscribeAsync(Guid currentUserId, Guid unsubscribedUserId)
         {
             CommonValidator.ThrowExceptionIfEmpty(currentUserId, nameof(currentUserId));
             CommonValidator.ThrowExceptionIfEmpty(unsubscribedUserId, nameof(unsubscribedUserId));
@@ -82,7 +83,14 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendQueryAsync(query);
         }
 
-        public async Task<Result<AppUserDto>> FindByIdAsync(Guid appUserId)
+        public async Task<EntityListResult<SelectedAppUser>> GetByFilterAsync(GetUsersByFilterDto filterModel)
+        {
+            var query = _mapper.Map<GetUsersByFilterQuery>(filterModel);
+
+            return await _mediatorHandler.SendQueryAsync(query);
+        }
+
+        public async Task<Result<AppUserDto>> GetByIdAsync(Guid appUserId)
         {
             CommonValidator.ThrowExceptionIfEmpty(appUserId, nameof(appUserId));
 
@@ -90,20 +98,6 @@ namespace BookActivity.Application.Implementation.Services
             var appUser = await _appUserRepository.GetByFilterAsync(specification);
 
             return _mapper.Map<AppUserDto>(appUser);
-        }
-
-        public async Task<EntityListResult<SelectedAppUser>> GetAppUserByFilter(GetUsersByFilterDto filterModel)
-        {
-            var query = _mapper.Map<GetUsersByFilterQuery>(filterModel);
-
-            return await _mediatorHandler.SendQueryAsync(query);
-        }
-
-        public async Task<AppUserProfileInfo> GetUserProfileInfoAsync(Guid userId)
-        {
-            GetUserProfileInfoQuery query = new() { UserId = userId };
-
-            return await _mediatorHandler.SendQueryAsync(query);
         }
     }
 }
