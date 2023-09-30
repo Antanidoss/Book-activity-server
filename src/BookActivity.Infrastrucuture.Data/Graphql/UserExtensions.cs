@@ -4,6 +4,7 @@ using BookActivity.Shared;
 using HotChocolate;
 using HotChocolate.Types;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
 
 namespace BookActivity.Infrastructure.Data.Graphql
@@ -27,6 +28,30 @@ namespace BookActivity.Infrastructure.Data.Graphql
                 return false;
 
             return context.Subscriptions.Any(s => s.SubscribedUserId == user.Id && s.UserIdWhoSubscribed == curUser.Id);
+        }
+
+        public bool GetIsSubscription([Parent] AppUser user, [FromServices] BookActivityContext context, [FromServices] CurrentUser curUser)
+        {
+            if (user.Id == curUser.Id)
+                return false;
+
+            return context.Subscriptions.Any(s => s.SubscribedUserId == user.Id && s.UserIdWhoSubscribed == curUser.Id);
+        }
+
+        public int GetBookOpinionCount([Parent] AppUser user, [FromServices] BookActivityContext context)
+        {
+            return context.BookOpinions.Where(o => o.UserId == user.Id).Count();
+        }
+
+        public int GetActiveBookCount([Parent] AppUser user, [FromServices] BookActivityContext context)
+        {
+            return context.ActiveBooks.Where(o => o.UserId == user.Id).Count();
+        }
+
+        [BindMember(nameof(AppUser.AvatarImage))]
+        public string GetAvatarDataBase64([Parent] AppUser user)
+        {
+            return Convert.ToBase64String(user.AvatarImage);
         }
     }
 }

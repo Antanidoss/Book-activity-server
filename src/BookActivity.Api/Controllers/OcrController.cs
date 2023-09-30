@@ -1,4 +1,6 @@
 ﻿using BookActivity.Api.Common.Constants;
+using BookActivity.Api.Common.Extansions;
+using BookActivity.Api.Common.Models;
 using BookActivity.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +17,9 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPost(ApiConstants.GetTextOnImageMethod)]
-        public async Task<string> GetTextOnImageAsync(IFormFile image)
+        public async Task<ApiResult<string>> GetTextOnImageAsync(IFormFile image)
         {
-            return await _ocrService.GetTextOnImageAsync(image);
+            return (await _ocrService.GetTextOnImageAsync(image)).ToApiResult();
         }
     }
 }
