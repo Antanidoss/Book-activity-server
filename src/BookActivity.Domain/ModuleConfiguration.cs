@@ -20,15 +20,9 @@ using BookActivity.Domain.Events.ActiveBookEvents;
 using BookActivity.Domain.Events.ActiveBookStatisticEvents;
 using BookActivity.Domain.Events.AppUserEvents;
 using BookActivity.Domain.Events.UserNotificationsEvents;
-using BookActivity.Domain.Filters.FilterHandlers;
-using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Filters.SelectFilterHandlers;
-using BookActivity.Domain.Interfaces;
-using BookActivity.Domain.Models;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic;
 using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
-using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
 using BookActivity.Domain.Queries.OcrQueries.GetTextOnImage;
 using BookActivity.Shared.Interfaces;
 using BookActivity.Shared.Models;
@@ -36,7 +30,6 @@ using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
 
 namespace BookActivity.Domain
 {
@@ -47,7 +40,6 @@ namespace BookActivity.Domain
             ConfigureCommandHandlers(services);
             ConfigureQueryHandlers(services);
             ConfigureEventHandlers(services);
-            ConfigureFilterHandlers(services);
             ConfigureMemoryCache(services);
 
             return services;
@@ -81,17 +73,9 @@ namespace BookActivity.Domain
         {
             services.AddScoped<IRequestHandler<GetActiveBookStatisticQuery, ActiveBooksStatistic>, GetActiveBookStatisticQueryHandler>();
 
-            services.AddScoped<IRequestHandler<GetUsersByFilterQuery, EntityListResult<SelectedAppUser>>, GetUsersByFilterQueryHandler>();
             services.AddScoped<IRequestHandler<AuthenticationUserQuery, Result<AuthenticationResult>>, AuthenticationUserQueryHandler>();
 
             services.AddScoped<IRequestHandler<GetTextOnImageQuery, string>, GetTextOnImageQueryHandler>();
-        }
-
-        private void ConfigureFilterHandlers(IServiceCollection services)
-        {
-            services.AddScoped<IFilterHandler<AppUser, GetUsersByFilterQuery>, AppUserFilterHandler>();
-
-            services.AddScoped<IFilterSelectHandler<AppUser, IEnumerable<SelectedAppUser>, GetUsersByFilterQuery>, AppUserSelectFilterHandler>();
         }
 
         private void ConfigureEventHandlers(IServiceCollection services)

@@ -33,7 +33,6 @@
         public const string SubscribeAppUserMethod = "subscribeUser";
         public const string GetCurrentUserMethod = "getCurrentUser";
         public const string UpdateUserMethod = "update";
-        public const string GetUserByFilterMethod = "getByFilter";
         public const string UnsubscribeAppUserMethod = "unsubscribe";
 
         //BookNote methods
