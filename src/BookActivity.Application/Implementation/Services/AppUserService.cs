@@ -9,11 +9,9 @@ using BookActivity.Domain.Commands.AppUserCommands.AddAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.UnsubscribeAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser;
-using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
-using BookActivity.Domain.Queries.AppUserQueries.GetUsersByFilter;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using BookActivity.Domain.Validations;
 using BookActivity.Shared.Models;
@@ -79,13 +77,6 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfNull(authenticationModel);
 
             var query = _mapper.Map<AuthenticationUserQuery>(authenticationModel);
-
-            return await _mediatorHandler.SendQueryAsync(query);
-        }
-
-        public async Task<EntityListResult<SelectedAppUser>> GetByFilterAsync(GetUsersByFilterDto filterModel)
-        {
-            var query = _mapper.Map<GetUsersByFilterQuery>(filterModel);
 
             return await _mediatorHandler.SendQueryAsync(query);
         }

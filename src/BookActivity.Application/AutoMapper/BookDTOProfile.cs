@@ -16,7 +16,6 @@ namespace BookActivity.Application.AutoMapper
         {
             CreateMap<Book, BookDto>();
             CreateMap<BookDto, Book>();
-            CreateMap<SelectedBook, BookDto>();
             CreateMap<UpdateBookDto, UpdateBookCommand>();
 
             CreateMap<CreateBookDto, AddBookCommand>()

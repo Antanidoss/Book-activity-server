@@ -53,12 +53,6 @@ namespace BookActivity.Api.Controllers
             return (await _appUserService.UpdateAsync(updateAppUserModel)).ToActionResult();
         }
 
-        [HttpGet(ApiConstants.GetUserByFilterMethod)]
-        public async Task<EntityListResult<SelectedAppUser>> GetByFilterAsync(GetUsersByFilterDto filterModel)
-        {
-            return await _appUserService.GetByFilterAsync(filterModel);
-        }
-
         [HttpDelete(ApiConstants.UnsubscribeAppUserMethod)]
         public async Task<ActionResult> UnsubscribeAsync([FromQuery] Guid unsubscribedUserId)
         {
