@@ -55,18 +55,9 @@ namespace BookActivity.Infrastructure.Data.Context
             var success = await SaveChangesAsync() > 0;
 
             if (success)
-            {
-                ThreadPool.QueueUserWorkItem(async _ =>
-                {
-                    await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation), cancellationToken);
+                await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation), cancellationToken);
 
-                    ClearDomainEvents(domainEntities);
-                });
-            }
-            else
-            {
-                ClearDomainEvents(domainEntities);
-            }
+            ClearDomainEvents(domainEntities);
 
             return success;
         }
