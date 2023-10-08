@@ -20,8 +20,8 @@ using BookActivity.Domain.Events.ActiveBookEvents;
 using BookActivity.Domain.Events.ActiveBookStatisticEvents;
 using BookActivity.Domain.Events.AppUserEvents;
 using BookActivity.Domain.Events.UserNotificationsEvents;
-using BookActivity.Domain.Queries.ActiveBookStatisticQueries;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic;
+using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatisticByDay;
 using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
 using BookActivity.Domain.Queries.OcrQueries.GetTextOnImage;
 using BookActivity.Shared.Interfaces;
@@ -30,6 +30,7 @@ using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 
 namespace BookActivity.Domain
 {
@@ -72,6 +73,7 @@ namespace BookActivity.Domain
         private void ConfigureQueryHandlers(IServiceCollection services)
         {
             services.AddScoped<IRequestHandler<GetActiveBookStatisticQuery, ActiveBooksStatistic>, GetActiveBookStatisticQueryHandler>();
+            services.AddScoped<IRequestHandler<GetActiveBooksStatisticByDayQuery, IEnumerable<ActiveBookStatisticByDay>>, GetActiveBooksStatisticByDayQueryHandler>();
 
             services.AddScoped<IRequestHandler<AuthenticationUserQuery, Result<AuthenticationResult>>, AuthenticationUserQueryHandler>();
 

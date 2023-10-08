@@ -14,6 +14,9 @@ namespace BookActivity.Domain.Core.Events
         [JsonIgnore]
         public virtual WhenCallHandler WhenCallHandler { get; }
 
+        [JsonInclude]
+        public new Guid AggregateId { get; protected set; }
+
         public Event() { }
 
         public Event(Guid? userId)
