@@ -47,6 +47,7 @@
 
         //ActiveBookStatistic methods
         public const string GetActiveBooksStaticMethod = "getActiveBooksStatic";
+        public const string GetActiveBooksStatisticByDayMethod = "getActiveBooksStatisticByDay";
 
         //UserNotification methods
         public const string GetUserNotificationsMethod = "get";

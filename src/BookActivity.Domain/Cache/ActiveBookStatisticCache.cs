@@ -1,4 +1,4 @@
-﻿using BookActivity.Domain.Queries.ActiveBookStatisticQueries;
+﻿using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 

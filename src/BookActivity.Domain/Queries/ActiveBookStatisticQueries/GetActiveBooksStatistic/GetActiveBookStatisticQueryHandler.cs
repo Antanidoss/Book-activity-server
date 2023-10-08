@@ -31,8 +31,8 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
             if (activeBookStatistics != null)
                 return activeBookStatistics;
 
-            var specificatione = new StoredEventByMessageTypeSpec(EventMessageTypeConstants.UpdateActiveBook) & new StoredEventByUserIdSpec(request.AppUserId);
-            var usersReadInfos = (await _eventStoreRepository.GetBySpecificationAsync(specificatione))
+            var specification = new StoredEventByMessageTypeSpec(EventMessageTypeConstants.UpdateActiveBook) & new StoredEventByUserIdSpec(request.AppUserId);
+            var usersReadInfos = (await _eventStoreRepository.GetBySpecificationAsync(specification))
                 .Select(e => JsonSerializer.Deserialize<UpdateActiveBookEvent>(e.Data))
                 .Where(i => i.CountPagesRead > 0);
 

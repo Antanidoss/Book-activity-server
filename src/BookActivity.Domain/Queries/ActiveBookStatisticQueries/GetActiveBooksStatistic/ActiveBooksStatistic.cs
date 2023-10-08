@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries
+namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic
 {
     public sealed class ActiveBooksStatistic
     {
