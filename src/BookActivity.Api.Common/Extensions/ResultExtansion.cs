@@ -32,7 +32,7 @@ namespace BookActivity.Api.Common.Extansions
 
             foreach (var error in errors)
             {
-                result += error.ErrorMessage + "/n";
+                result += error.ErrorMessage + "\n";
             }
 
             return result;
