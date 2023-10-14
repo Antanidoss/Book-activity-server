@@ -2,6 +2,7 @@
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.ActiveBookEvents;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,7 +23,8 @@ namespace BookActivity.Domain.Events.ActiveBookStatisticEvents
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            _cache.Remove(notification.UserId.Value);
+            _cache.RemoveActiveBookStatistic(notification.UserId.Value);
+            _cache.RemoveActiveBookStatisticByDay(notification.UserId.Value, DateTime.Now);
 
             return Task.CompletedTask;
         }
@@ -31,7 +33,8 @@ namespace BookActivity.Domain.Events.ActiveBookStatisticEvents
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            _cache.Remove(notification.UserId.Value);
+            _cache.RemoveActiveBookStatistic(notification.UserId.Value);
+            _cache.RemoveActiveBookStatisticByDay(notification.UserId.Value, DateTime.Now);
 
             return Task.CompletedTask;
         }

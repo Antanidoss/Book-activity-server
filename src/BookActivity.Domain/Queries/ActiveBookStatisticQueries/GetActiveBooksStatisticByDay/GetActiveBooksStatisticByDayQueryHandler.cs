@@ -31,11 +31,15 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
 
         public async Task<IEnumerable<ActiveBookStatisticByDay>> Handle(GetActiveBooksStatisticByDayQuery request, CancellationToken cancellationToken)
         {
+            var activeBooksStatisticByDay = _cache.GetActiveBookStatisticByDay(request.AppUserId, request.Day);
+            if (activeBooksStatisticByDay != null)
+                return activeBooksStatisticByDay;
+
             var specification = new StoredEventByMessageTypeSpec(EventMessageTypeConstants.UpdateActiveBook)
                 & new StoredEventByUserIdSpec(request.AppUserId)
                 & new StoredEventByDateCreate(request.Day);
 
-            return (await _eventStoreRepository.GetBySpecificationAsync(specification))
+            activeBooksStatisticByDay = (await _eventStoreRepository.GetBySpecificationAsync(specification))
                 .Select(@event => JsonSerializer.Deserialize<UpdateActiveBookEvent>(@event.Data))
                 .GroupBy(@event => @event.AggregateId)
                 .Select(async groupping =>
@@ -48,11 +52,15 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
                     {
                         BookId = book?.Id ?? Guid.Empty,
                         BookTitle = book?.Title,
-                        BookImageData = book != null ? Convert.ToBase64String(book?.ImageData) : null,
                         CountPagesRead = groupping.Sum(i => i.CountPagesRead)
                     };
                 })
-                .Select(task => task.Result);
+                .Select(task => task.Result)
+                .ToArray();
+
+            _cache.AddActiveBookStatisticByDay(request.AppUserId, request.Day, activeBooksStatisticByDay);
+
+            return activeBooksStatisticByDay;
         }
     }
 }

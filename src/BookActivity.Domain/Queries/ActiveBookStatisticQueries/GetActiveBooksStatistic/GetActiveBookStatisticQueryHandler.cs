@@ -27,7 +27,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
 
         public async Task<ActiveBooksStatistic> Handle(GetActiveBookStatisticQuery request, CancellationToken cancellationToken)
         {
-            var activeBookStatistics = _cache.Get(request.AppUserId);
+            var activeBookStatistics = _cache.GetActiveBookStatistic(request.AppUserId);
             if (activeBookStatistics != null)
                 return activeBookStatistics;
 
@@ -48,7 +48,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
                 ReadingCalendar = GetСalendarStatistics(usersReadInfos)
             };
 
-            _cache.Add(request.AppUserId, activeBookStatistics);
+            _cache.AddActiveBookStatistic(request.AppUserId, activeBookStatistics);
 
             return activeBookStatistics;
         }
