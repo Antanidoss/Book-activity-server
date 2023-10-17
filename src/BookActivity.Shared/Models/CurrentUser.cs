@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BookActivity.Shared
+namespace BookActivity.Shared.Models
 {
     public class CurrentUser
     {

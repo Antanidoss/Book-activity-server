@@ -5,11 +5,9 @@ namespace BookActivity.Domain.Events.ActiveBookEvent
 {
     public class AddActiveBookEvent : Event
     {
-        public readonly Guid BookId;
-
-        public readonly int TotalNumberPages;
-
-        public readonly int NumberPagesRead;
+        public Guid BookId { get; private set; }
+        public int TotalNumberPages { get; private set; }
+        public int NumberPagesRead { get; private set; }
 
         public AddActiveBookEvent(Guid activeBookId, int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId) : base(userId)
         {

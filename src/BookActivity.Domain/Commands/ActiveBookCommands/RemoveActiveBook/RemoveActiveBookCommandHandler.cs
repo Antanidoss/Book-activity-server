@@ -34,7 +34,8 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook
             if (activeBook is null)
                 AddError(ValidationErrorConstants.GetEnitityNotFoundMessage(nameof(ActiveBook)));
 
-            activeBook.AddDomainEvent(new RemoveActiveBookEvent(activeBook.Id, request.UserId));
+            RemoveActiveBookEvent removeActiveBookEvent = new(activeBook.Id, request.UserId);
+            activeBook.AddDomainEvent(removeActiveBookEvent);
             _activeBookRepository.Remove(activeBook);
 
             return await Commit(_activeBookRepository.UnitOfWork);

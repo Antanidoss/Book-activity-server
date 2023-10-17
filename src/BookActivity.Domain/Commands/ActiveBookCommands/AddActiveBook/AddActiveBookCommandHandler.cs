@@ -15,9 +15,12 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
     {
         private readonly IActiveBookRepository _activeBookRepository;
 
-        public AddActiveBookCommandHandler(IActiveBookRepository activeBookRepository)
+        private readonly IEventStoreRepository _eventStoreRepository;
+
+        public AddActiveBookCommandHandler(IActiveBookRepository activeBookRepository, IEventStoreRepository eventStoreRepository)
         {
             _activeBookRepository = activeBookRepository;
+            _eventStoreRepository = eventStoreRepository;
         }
 
         public async Task<ValidationResult> Handle(AddActiveBookCommand request, CancellationToken cancellationToken)
@@ -31,7 +34,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
 
             request.Id = activeBook.Id;
 
-            var addActiveBookEvent = new AddActiveBookEvent(
+            AddActiveBookEvent addActiveBookEvent = new(
                 activeBook.Id,
                 activeBook.TotalNumberPages,
                 activeBook.NumberPagesRead,
@@ -39,6 +42,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
                 activeBook.UserId);
 
             activeBook.AddDomainEvent(new AddActiveBookAfterOperationEvent(addActiveBookEvent));
+            await _eventStoreRepository.SaveAsync(addActiveBookEvent);
 
             return await Commit(_activeBookRepository.UnitOfWork);
         }

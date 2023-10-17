@@ -1,7 +1,7 @@
 ﻿using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
 using BookActivity.Infrastructure.Data.Intefaces;
-using BookActivity.Shared;
+using BookActivity.Shared.Helpers;
 using Microsoft.AspNetCore.Identity;
 
 namespace BookActivity.Initialization
@@ -229,7 +229,7 @@ namespace BookActivity.Initialization
 
         private byte[] GetImageData(string imageName)
         {
-            var imagePath = Path.Combine(AssemblyHelper.AssemblyDirectory, "Images", imageName);
+            var imagePath = Path.Combine(AssemblyHelper.CurrentAssemblyDirectory, "Images", imageName);
 
             return File.ReadAllBytes(imagePath);
         }

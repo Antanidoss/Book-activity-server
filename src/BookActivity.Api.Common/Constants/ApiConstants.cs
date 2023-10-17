@@ -18,14 +18,12 @@
         public const string RemoveActiveBookMethod = "remove";
         public const string UpdateNumberPagesReadMethod = "updateNumberPagesRead";
         public const string UpdateBookNoteMethod = "updateBookNote";
-        public const string GetActiveBookHistoryDataMethod = "getHistoryData";
 
         //Book methods
         public const string AddBookMethodMethod = "add";
         public const string GetBooksMethod = "get";
         public const string RemoveBookMethod = "remove";
         public const string UpdateBookMethod = "update";
-        public const string GetBookHistoryDataMethod = "getHistoryData";
 
         //AppUser methods
         public const string AddUserMethod = "add";

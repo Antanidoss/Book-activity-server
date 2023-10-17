@@ -5,7 +5,7 @@ using BookActivity.Api.Common.Models;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatisticByDay;
-using BookActivity.Shared;
+using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookActivity.Api.Controllers

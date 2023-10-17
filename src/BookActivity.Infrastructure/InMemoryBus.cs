@@ -1,5 +1,4 @@
-﻿using BookActivity.Domain.Core.Events;
-using BookActivity.Domain.Interfaces;
+﻿using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Queries;
 using FluentValidation.Results;
 using MediatR;
@@ -14,21 +13,15 @@ namespace BookActivity.Infrastructure
     {
         private readonly IMediator _mediator;
 
-        private readonly IEventStore _eventStore;
-
-        public InMemoryBus(IMediator mediator, IEventStore eventStore)
+        public InMemoryBus(IMediator mediator)
         {
             _mediator = mediator;
-            _eventStore = eventStore;
         }
 
         public async Task PublishEventsAsync<T>(IEnumerable<T> events, CancellationToken cancellationToken = default) where T : Domain.Core.Events.Event
         {
             foreach (var e in events)
             {
-                if (!e.MessageType.Equals("DomainNotification"))
-                    _eventStore?.Save(e);
-
                 await _mediator.Publish(e, cancellationToken);
             }
         }

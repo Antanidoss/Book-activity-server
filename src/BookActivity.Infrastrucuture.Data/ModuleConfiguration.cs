@@ -1,8 +1,6 @@
-﻿using BookActivity.Domain.Core.Events;
-using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
-using BookActivity.Infrastructure.Data.EventSourcing;
 using BookActivity.Infrastructure.Data.Graphql;
 using BookActivity.Infrastructure.Data.Intefaces;
 using BookActivity.Infrastructure.Data.Repositories;
@@ -13,7 +11,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
+using MongoDB.Bson.Serialization.Conventions;
 
 namespace BookActivity.Infrastructure.Data
 {
@@ -27,8 +30,13 @@ namespace BookActivity.Infrastructure.Data
                     .EnableSensitiveDataLogging();
             });
 
-            string eventStoreConnection = Configuration.GetConnectionString("EventStoreConnection");
-            services.AddDbContext<BookActivityEventStoreContext>(option => option.UseSqlServer(eventStoreConnection));
+            services.AddSingleton(new MongoClient(Configuration.GetConnectionString("EventStoreConnection")).GetDatabase("BookActivityEvent"));
+
+            var objectSerializer = new ObjectSerializer(type => ObjectSerializer.DefaultAllowedTypes(type) || type.FullName.Contains("BookActivity"));
+            BsonSerializer.RegisterSerializer(objectSerializer);
+            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+            var conventionPack = new ConventionPack { new IgnoreExtraElementsConvention(true) };
+            ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
 
             services.AddIdentity<AppUser, AppRole>(option =>
             {
@@ -38,8 +46,6 @@ namespace BookActivity.Infrastructure.Data
                 option.Password.RequireUppercase = false;
                 option.Password.RequireLowercase = false;
             }).AddEntityFrameworkStores<BookActivityContext>().AddDefaultTokenProviders();
-
-            services.AddScoped<IEventStore, EventStore>();
 
             ConfigureRepositories(services);
 
@@ -51,7 +57,6 @@ namespace BookActivity.Infrastructure.Data
         public void CreateDatabasesIfNotExist(IServiceScope serviceScope)
         {
             CreateDatabasesIfNotExist(serviceScope.ServiceProvider.GetRequiredService<BookActivityContext>(), serviceScope.ServiceProvider);
-            CreateDatabasesIfNotExist(serviceScope.ServiceProvider.GetRequiredService<BookActivityEventStoreContext>(), serviceScope.ServiceProvider);
         }
 
         private void CreateDatabasesIfNotExist(DbContext context, IServiceProvider serviceProvider)

@@ -1,11 +1,9 @@
 ﻿using BookActivity.Api.Common.Constants;
 using BookActivity.Api.Common.Extansions;
-using BookActivity.Api.Common.Models;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Application.Models.Dto.Update;
-using BookActivity.Application.Models.HistoryData;
-using BookActivity.Shared;
+using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookActivity.Api.Controllers
@@ -36,12 +34,6 @@ namespace BookActivity.Api.Controllers
         public async Task<ActionResult> UpdateBookAsync(UpdateBookDto updateBookModel)
         {
             return (await _bookService.UpdateBookAsync(updateBookModel)).ToActionResult();
-        }
-
-        [HttpGet(ApiConstants.GetBookHistoryDataMethod)]
-        public async Task<ApiResult<IEnumerable<BookHistoryData>>> GetBookHistoryDataAsync(Guid bookId)
-        {
-            return (await _bookService.GetBookHistoryDataAsync(bookId)).ToApiResult();
         }
     }
 }

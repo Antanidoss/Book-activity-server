@@ -11,7 +11,6 @@ namespace BookActivity.Application.Interfaces.Services
 {
     public interface IActiveBookService
     {
-        Task<Result<IEnumerable<ActiveBookHistoryData>>> GetActiveBookHistoryDataAsync(Guid activeBookId);
         Task<Result<Guid>> AddActiveBookAsync(CreateActiveBookDto createActiveBookModel);
         Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId);
         Task<ValidationResult> UpdateActiveBookAsync(UpdateNumberPagesReadDto updateActiveBookModel);

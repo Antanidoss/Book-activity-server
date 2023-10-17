@@ -6,7 +6,7 @@ using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Application.Models.HistoryData;
-using BookActivity.Shared;
+using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookActivity.Api.Controllers
@@ -42,12 +42,6 @@ namespace BookActivity.Api.Controllers
         public async Task<ActionResult> RemoveActiveBookAsync([FromQuery] Guid activeBookId)
         {
             return (await _activeBookService.RemoveActiveBookAsync(activeBookId)).ToActionResult();
-        }
-
-        [HttpGet(ApiConstants.GetActiveBookHistoryDataMethod)]
-        public async Task<ApiResult<IEnumerable<ActiveBookHistoryData>>> GetActiveBookHistoryDataAsync(Guid activeBookId)
-        {
-            return (await _activeBookService.GetActiveBookHistoryDataAsync(activeBookId)).ToApiResult();
         }
     }
 }

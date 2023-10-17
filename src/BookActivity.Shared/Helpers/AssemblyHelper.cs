@@ -2,11 +2,11 @@
 using System.IO;
 using System.Reflection;
 
-namespace BookActivity.Shared
+namespace BookActivity.Shared.Helpers
 {
     public static class AssemblyHelper
     {
-        public static string AssemblyDirectory
+        public static string CurrentAssemblyDirectory
         {
             get
             {

@@ -2,7 +2,7 @@
 using BookActivity.Api.Common.Constants;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Update;
-using BookActivity.Shared;
+using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookActivity.Api.Controllers

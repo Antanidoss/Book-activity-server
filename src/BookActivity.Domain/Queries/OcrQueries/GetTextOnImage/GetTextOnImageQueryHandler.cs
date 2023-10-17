@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using TesseractOCR.Enums;
 using TesseractOCR;
 using System.IO;
-using BookActivity.Shared;
+using BookActivity.Shared.Helpers;
 
 namespace BookActivity.Domain.Queries.OcrQueries.GetTextOnImage
 {
@@ -19,7 +19,7 @@ namespace BookActivity.Domain.Queries.OcrQueries.GetTextOnImage
                 tempImagePath = Path.ChangeExtension(tempImagePath, request.ImageExtension);
                 await File.WriteAllBytesAsync(tempImagePath, request.ImageContent);
 
-                using var engine = new Engine(Path.Combine(AssemblyHelper.AssemblyDirectory, "tessdata"), Language.Russian, EngineMode.Default);
+                using var engine = new Engine(Path.Combine(AssemblyHelper.CurrentAssemblyDirectory, "tessdata"), Language.Russian, EngineMode.Default);
                 using var img = TesseractOCR.Pix.Image.LoadFromFile(tempImagePath);
                 using var page = engine.Process(img);
 
