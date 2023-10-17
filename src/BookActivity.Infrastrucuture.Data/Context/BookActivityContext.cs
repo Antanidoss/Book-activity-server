@@ -54,10 +54,11 @@ namespace BookActivity.Infrastructure.Data.Context
 
             var success = await SaveChangesAsync() > 0;
 
+            ClearDomainEvents(domainEntities);
+
             if (success)
                 await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation), cancellationToken);
 
-            ClearDomainEvents(domainEntities);
 
             return success;
         }

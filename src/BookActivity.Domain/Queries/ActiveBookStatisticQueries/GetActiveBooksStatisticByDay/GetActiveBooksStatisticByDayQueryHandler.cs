@@ -5,12 +5,10 @@ using BookActivity.Domain.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookSpecs;
-using BookActivity.Domain.Specifications.StoredEventSpecs;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,12 +33,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
             if (activeBooksStatisticByDay != null)
                 return activeBooksStatisticByDay;
 
-            var specification = new StoredEventByMessageTypeSpec(EventMessageTypeConstants.UpdateActiveBook)
-                & new StoredEventByUserIdSpec(request.AppUserId)
-                & new StoredEventByDateCreate(request.Day);
-
-            activeBooksStatisticByDay = (await _eventStoreRepository.GetBySpecificationAsync(specification))
-                .Select(@event => JsonSerializer.Deserialize<UpdateActiveBookEvent>(@event.Data))
+            activeBooksStatisticByDay = (await _eventStoreRepository.GetBySpecificationAsync<UpdateActiveBookEvent>(EventMessageTypeConstants.UpdateActiveBook, ("UserId", request.AppUserId.ToString()), ("Timestamp", request.Day.Date.ToString())))
                 .GroupBy(@event => @event.AggregateId)
                 .Select(async groupping =>
                 {

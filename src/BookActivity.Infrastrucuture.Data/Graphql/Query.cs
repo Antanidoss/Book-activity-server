@@ -2,7 +2,7 @@
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using BookActivity.Domain.Specifications.BookSpecs;
 using BookActivity.Infrastructure.Data.Context;
-using BookActivity.Shared;
+using BookActivity.Shared.Models;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;

@@ -1,6 +1,6 @@
 ﻿using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
-using BookActivity.Shared;
+using BookActivity.Shared.Models;
 using HotChocolate;
 using HotChocolate.Types;
 using Microsoft.AspNetCore.Mvc;

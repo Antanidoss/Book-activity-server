@@ -1,4 +1,4 @@
-﻿using BookActivity.Shared;
+﻿using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookActivity.Api.Controllers

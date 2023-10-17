@@ -7,7 +7,6 @@ using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Filters.Models;
-using BookActivity.Shared;
 using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
