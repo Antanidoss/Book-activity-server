@@ -1,6 +1,6 @@
-﻿using LinqKit;
+﻿using BookActivity.Domain.Core;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
-using NetDevPack.Domain;
 using System;
 using System.Linq;
 using System.Linq.Expressions;

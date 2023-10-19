@@ -1,15 +1,15 @@
 ﻿using System.Linq;
 using System.Data.Entity;
-using NetDevPack.Domain;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Core;
 
 namespace BookActivity.Domain.Filters.Handlers
 {
     public static class PaginationHadler
     {
         public static IQueryable<TEntity> ApplyPaginaton<TEntity>(this IQueryable<TEntity> query, PaginationModel paginationModel, bool withDefaultOrder = true)
-            where TEntity : Entity
+            where TEntity : BaseEntity
         {
             if (paginationModel == null)
                 return ApplyPaginaton(query, skip: 0, withDefaultOrder);
@@ -20,7 +20,7 @@ namespace BookActivity.Domain.Filters.Handlers
         }
 
         public static IQueryable<TEntity> ApplyPaginaton<TEntity>(this IQueryable<TEntity> query, int skip, bool withDefaultOrder = true)
-           where TEntity : Entity
+           where TEntity : BaseEntity
         {
             return (withDefaultOrder ? query.OrderBy(e => e.Id) : query)
                 .Skip(() => skip);

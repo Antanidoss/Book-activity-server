@@ -17,26 +17,19 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Driver.Linq;
 
 namespace BookActivity.Infrastructure.Data
 {
     public sealed class ModuleConfiguration : IModuleConfiguration
     {
-        public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration Configuration)
+        public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<BookActivityContext>(option =>
             {
-                option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                option.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
                     .EnableSensitiveDataLogging();
             });
-
-            services.AddSingleton(new MongoClient(Configuration.GetConnectionString("EventStoreConnection")).GetDatabase("BookActivityEvent"));
-
-            var objectSerializer = new ObjectSerializer(type => ObjectSerializer.DefaultAllowedTypes(type) || type.FullName.Contains("BookActivity"));
-            BsonSerializer.RegisterSerializer(objectSerializer);
-            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
-            var conventionPack = new ConventionPack { new IgnoreExtraElementsConvention(true) };
-            ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
 
             services.AddIdentity<AppUser, AppRole>(option =>
             {
@@ -48,8 +41,8 @@ namespace BookActivity.Infrastructure.Data
             }).AddEntityFrameworkStores<BookActivityContext>().AddDefaultTokenProviders();
 
             ConfigureRepositories(services);
-
-            AddGraphQL(services);
+            ConfigureMongoDb(services, configuration);
+            ConfigureGraphQL(services);
 
             return services;
         }
@@ -91,7 +84,7 @@ namespace BookActivity.Infrastructure.Data
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
         }
 
-        private void AddGraphQL(IServiceCollection services)
+        private void ConfigureGraphQL(IServiceCollection services)
         {
             services.AddGraphQLServer()
                 .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
@@ -101,6 +94,27 @@ namespace BookActivity.Infrastructure.Data
                 .AddSorting()
                 .AddTypeExtension<BookExtensions>()
                 .AddTypeExtension<UserExtensions>();
+        }
+
+        private void ConfigureMongoDb(IServiceCollection services, IConfiguration configuration)
+        {
+            var connectionString = configuration.GetConnectionString("EventStoreConnection");
+            MongoClientSettings settings = MongoClientSettings.FromConnectionString(connectionString);
+            settings.LinqProvider = LinqProvider.V3;
+
+            services.AddSingleton(new MongoClient(settings).GetDatabase("BookActivityEvent"));
+
+            ObjectSerializer objectSerializer = new(type => ObjectSerializer.DefaultAllowedTypes(type) || type.FullName.Contains(nameof(BookActivity)));
+            BsonSerializer.RegisterSerializer(objectSerializer);
+
+            GuidSerializer guidSerializer = new(BsonType.String);
+            BsonSerializer.RegisterSerializer(guidSerializer);
+
+            DateTimeSerializer dateTimeSerializer = new(BsonType.DateTime);
+            BsonSerializer.RegisterSerializer(dateTimeSerializer);
+
+            ConventionPack conventionPack = new() { new IgnoreExtraElementsConvention(true) };
+            ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
         }
     }
 }

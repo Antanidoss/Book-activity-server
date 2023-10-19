@@ -13,6 +13,7 @@ using BookActivity.Domain.Interfaces;
 using BookActivity.Infrastructure.Data.Context.Configuration;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using BookActivity.Domain.Core;
 
 namespace BookActivity.Infrastructure.Data.Context
 {
