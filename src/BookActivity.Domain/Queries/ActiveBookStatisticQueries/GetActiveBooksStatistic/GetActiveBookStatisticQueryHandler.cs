@@ -1,8 +1,8 @@
 ﻿using BookActivity.Domain.Cache;
 using BookActivity.Domain.Constants;
-using BookActivity.Domain.Core.Events;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Specifications.EventSpecs;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,11 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
             if (activeBookStatistics != null)
                 return activeBookStatistics;
 
-            var usersReadInfos = (await _eventStoreRepository.GetBySpecificationAsync<UpdateActiveBookEvent>(EventMessageTypeConstants.UpdateActiveBook, (nameof(Event.UserId), $"UUID('{request.AppUserId}')")))
+            var specification = new EventByUserIdSpec<UpdateActiveBookEvent>(request.AppUserId);
+
+            var a = (await _eventStoreRepository.GetBySpecificationAsync(EventMessageTypeConstants.UpdateActiveBook, specification));
+
+            var usersReadInfos = (await _eventStoreRepository.GetBySpecificationAsync(EventMessageTypeConstants.UpdateActiveBook, specification))
                 .Where(i => i.CountPagesRead > 0);
 
             if (usersReadInfos == null || !usersReadInfos.Any())

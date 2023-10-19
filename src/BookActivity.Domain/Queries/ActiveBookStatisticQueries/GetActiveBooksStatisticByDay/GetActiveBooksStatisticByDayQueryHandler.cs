@@ -1,11 +1,14 @@
 ﻿using BookActivity.Domain.Cache;
 using BookActivity.Domain.Constants;
+using BookActivity.Domain.Core.Events;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookSpecs;
+using BookActivity.Domain.Specifications.EventSpecs;
 using MediatR;
+using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +36,10 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
             if (activeBooksStatisticByDay != null)
                 return activeBooksStatisticByDay;
 
-            activeBooksStatisticByDay = (await _eventStoreRepository.GetBySpecificationAsync<UpdateActiveBookEvent>(EventMessageTypeConstants.UpdateActiveBook, ("UserId", request.AppUserId.ToString()), ("Timestamp", request.Day.Date.ToString())))
+            var specification = new EventByUserIdSpec<UpdateActiveBookEvent>(request.AppUserId) & new EventByDateCreateSpec<UpdateActiveBookEvent>(request.Day);
+
+            activeBooksStatisticByDay = (await _eventStoreRepository.GetBySpecificationAsync(EventMessageTypeConstants.UpdateActiveBook, specification))
+                .Cast<UpdateActiveBookEvent>()
                 .GroupBy(@event => @event.AggregateId)
                 .Select(async groupping =>
                 {

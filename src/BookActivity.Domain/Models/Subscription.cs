@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookActivity.Domain.Core;
+using System;
 
 namespace BookActivity.Domain.Models
 {

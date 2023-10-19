@@ -11,9 +11,8 @@ namespace BookActivity.Domain.Events.BookEvents
         public IEnumerable<Guid> AuthorIds { get; private set; }
         public bool IsPublic { get; private set; }
 
-        public AddBookEvent(Guid bookId, string title, string description, IEnumerable<Guid> authorIds)
+        public AddBookEvent(Guid bookId, string title, string description, IEnumerable<Guid> authorIds) : base(Guid.Empty, bookId)
         {
-            AggregateId = bookId;
             Title = title;
             Description = description;
             AuthorIds = authorIds;

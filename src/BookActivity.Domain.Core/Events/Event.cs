@@ -1,20 +1,41 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MediatR;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
 
 namespace BookActivity.Domain.Core.Events
 {
     [BsonIgnoreExtraElements]
-    public class Event : NetDevPack.Messaging.Event
+    public class Event : INotification
     {
         public Guid? UserId { get; private set; }
 
         public virtual WhenCallHandler WhenCallHandler { get; }
 
-        public Event() { }
+        public DateTime Timestamp { get; private set; }
 
-        public Event(Guid? userId) : base()
+        public string MessageType { get; private set; }
+
+        public Guid AggregateId { get; private set; }
+
+        public Event()
+        {
+            Timestamp = DateTime.UtcNow;
+            MessageType = GetType().Name;
+        }
+
+        public Event(Guid? userId, Guid aggregateId)
         {
             UserId = userId;
+            AggregateId = aggregateId;
+            Timestamp = DateTime.UtcNow;
+            MessageType = GetType().Name;
+        }
+
+        public Event(Guid? userId)
+        {
+            UserId = userId;
+            Timestamp = DateTime.UtcNow;
+            MessageType = GetType().Name;
         }
     }
 

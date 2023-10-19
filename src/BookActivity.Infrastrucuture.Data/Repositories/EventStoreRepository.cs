@@ -1,10 +1,10 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
+﻿using Antanidoss.Specification.Abstract;
+using BookActivity.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
+using MongoDB.Driver.Linq;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
@@ -18,30 +18,18 @@ namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
             _db = db;
         }
 
-        public async Task<IList<TEvent>> GetAllAsync<TEvent>(string messageType, Guid aggregateId) where TEvent : Domain.Core.Events.Event
+        public async Task<IList<TEvent>> GetBySpecificationAsync<TEvent>(string eventType, Specification<TEvent> specification) where TEvent : Domain.Core.Events.Event
         {
-            var events = _db.GetCollection<TEvent>(messageType);
+            var events = _db.GetCollection<TEvent>(eventType);
 
-            var filter = new BsonDocument { { "AggregateId", aggregateId.ToString() } };
+            var a = events
+                .AsQueryable()
+                .ToList();
 
-            return await events.Find(filter).ToListAsync();
-        }
-
-        public async Task<IList<TEvent>> GetBySpecificationAsync<TEvent>(string messageType, params (string Name, string Value)[] filter) where TEvent : Domain.Core.Events.Event
-        {
-            var events = _db.GetCollection<TEvent>(messageType);
-
-            var a = events.ToJson();
-            
-            BsonDocument bsomFilter = new()
-            {
-                new BsonElement("CountPagesRead", new BsonInt32(34))
-            };
-
-
-            //bsomFilter.AddRange(filter.Select(f => new BsonElement(f.Name, f.Value)));
-
-            return await events.Find(bsomFilter).ToListAsync();
+            return events
+                .AsQueryable()
+                .Where(specification)
+                .ToList();
         }
 
         public async Task SaveAsync<TEvent>(TEvent @event) where TEvent : Domain.Core.Events.Event

@@ -5,9 +5,6 @@ namespace BookActivity.Domain.Events.ActiveBookEvent
 {
     public sealed class RemoveActiveBookEvent : Event
     {
-        public RemoveActiveBookEvent(Guid activeBookId, Guid userId) : base(userId)
-        {
-            AggregateId = activeBookId;
-        }
+        public RemoveActiveBookEvent(Guid activeBookId, Guid userId) : base(userId, activeBookId) {}
     }
 }
