@@ -1,5 +1,6 @@
 ﻿using Antanidoss.Specification.Abstract;
 using BookActivity.Domain.Core.Events;
+using MongoDB.Driver.Linq;
 using System;
 using System.Linq.Expressions;
 
@@ -16,7 +17,7 @@ namespace BookActivity.Domain.Specifications.EventSpecs
 
         public override Expression<Func<TEvent, bool>> ToExpression()
         {
-            return e => e.Timestamp.Date == _dateCreated.Date;
+            return e => e.Timestamp.Truncate(DateTimeUnit.Year) == _dateCreated.Date.Truncate(DateTimeUnit.Year);
         }
     }
 }
