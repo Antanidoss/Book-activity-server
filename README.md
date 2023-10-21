@@ -15,12 +15,13 @@
 - Entity Framework Core 6
 - Identity
 - AutoMapper
-- MediatoR
+- MediatR
 - .NET DevPack
 - .NET DevPack.Identity
 - FluentValidator
 - Swagger
 - SignalR
+- MongoDB
 
 # Architecture:
 - Full architecture with responsibility separation concerns, SOLID and Clean Code
@@ -39,11 +40,13 @@
 ---
 #### 2. At the root directory, restore required packages by running:
 ### `dotnet restore`
+
+#### 3. Change connection strings in appsettings.Development.json
 ---
-#### 3. Next, build the solution by running:
+#### 4. Next, build the solution by running:
 ### `dotnet build`
 ---
-#### 4. Once the front end has started, within the \src\BookActivity.Api directory, launch the back end by running:
+#### 5. Once the front end has started, within the \src\BookActivity.Api directory, launch the back end by running:
 ### `dotnet run`
 ---
-#### 5. Copy the address and go to the site
+#### 6. Copy the address and go to the site
