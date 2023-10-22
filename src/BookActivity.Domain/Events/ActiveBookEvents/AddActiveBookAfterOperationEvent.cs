@@ -1,4 +1,4 @@
-﻿using BookActivity.Domain.Core.Events;
+﻿using BookActivity.Domain.Core;
 using BookActivity.Domain.Events.ActiveBookEvent;
 
 namespace BookActivity.Domain.Events.ActiveBookEvents

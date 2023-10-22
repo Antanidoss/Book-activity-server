@@ -8,7 +8,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
-using BookActivity.Domain.Core.Events;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Infrastructure.Data.Context.Configuration;
 using System.Collections.Generic;

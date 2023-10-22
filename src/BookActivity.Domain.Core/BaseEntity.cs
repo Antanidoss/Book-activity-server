@@ -1,5 +1,4 @@
-﻿using BookActivity.Domain.Core.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace BookActivity.Domain.Core
@@ -18,6 +17,9 @@ namespace BookActivity.Domain.Core
         /// </summary>
         public DateTime TimeOfUpdate { get; set; }
 
+        /// <summary>
+        /// Domain entity events
+        /// </summary>
         public IReadOnlyCollection<Event> DomainEvents => _domainEvents?.AsReadOnly();
         private List<Event> _domainEvents;
 

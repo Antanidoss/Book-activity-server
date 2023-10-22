@@ -1,7 +1,4 @@
-﻿using BookActivity.Domain.Core.Events;
-using BookActivity.Domain.Events.ActiveBookEvent;
-using BookActivity.Domain.Events.AppUserEvents;
-using BookActivity.Domain.Interfaces;
+﻿using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Hubs;
 using BookActivity.Infrastructure.SignalR.Hubs;
 using BookActivity.Shared.Interfaces;

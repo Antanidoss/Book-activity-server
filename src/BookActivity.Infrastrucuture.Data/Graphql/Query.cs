@@ -54,6 +54,18 @@ namespace BookActivity.Infrastructure.Data.Graphql
             return context.Users;
         }
 
+
+        [UseOffsetPaging(IncludeTotalCount = true)]
+        [UseProjection]
+        [UseFiltering]
+        [UseSorting]
+        public IQueryable<BookNote> GetBookNotes([Service] BookActivityContext context, [Service] CurrentUser curUser, Guid? userId)
+        {
+            userId = userId ?? curUser.Id;
+
+            return context.BookNotes.Where(n => n.ActiveBook.UserId == userId);
+        }
+
         public AppUser GetUserById([Service] BookActivityContext context, Guid userId)
         {
             return context.Users.FirstOrDefault(new AppUserByIdSpec(userId));

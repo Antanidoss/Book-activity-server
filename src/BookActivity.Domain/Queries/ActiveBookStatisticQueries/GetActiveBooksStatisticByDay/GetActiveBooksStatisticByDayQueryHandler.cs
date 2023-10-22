@@ -1,6 +1,5 @@
 ﻿using BookActivity.Domain.Cache;
 using BookActivity.Domain.Constants;
-using BookActivity.Domain.Core.Events;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Filters;
 using BookActivity.Domain.Interfaces.Repositories;
@@ -8,7 +7,6 @@ using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookSpecs;
 using BookActivity.Domain.Specifications.EventSpecs;
 using MediatR;
-using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
 using System.Linq;
