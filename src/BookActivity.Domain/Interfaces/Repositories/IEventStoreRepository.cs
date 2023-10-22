@@ -1,5 +1,5 @@
 ﻿using Antanidoss.Specification.Abstract;
-using BookActivity.Domain.Core.Events;
+using BookActivity.Domain.Core;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

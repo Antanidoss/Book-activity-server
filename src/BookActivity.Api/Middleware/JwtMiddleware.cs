@@ -1,5 +1,4 @@
 ﻿using BookActivity.Application.Interfaces.Services;
-using BookActivity.Shared;
 using BookActivity.Shared.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -54,8 +53,7 @@ namespace BookActivity.Api.Middleware
                 {
                     Id = user.Id,
                     UserName = user.UserName,
-                    AvatarImage = user.AvatarImage,
-                    Token = jwtToken.RawData
+                    AvatarImage = user.AvatarImage
                 };
             }
             catch (Exception ex)

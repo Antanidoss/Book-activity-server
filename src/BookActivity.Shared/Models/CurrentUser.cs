@@ -7,6 +7,5 @@ namespace BookActivity.Shared.Models
         public Guid Id { get; set; }
         public string UserName { get; set; }
         public byte[] AvatarImage { get; set; }
-        public string Token { get; set; }
     }
 }

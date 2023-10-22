@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 
-namespace BookActivity.Domain.Core.Events
+namespace BookActivity.Domain.Core
 {
     [BsonIgnoreExtraElements]
     public class Event : INotification

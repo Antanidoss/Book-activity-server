@@ -1,10 +1,9 @@
 ﻿using Antanidoss.Specification.Abstract;
+using BookActivity.Domain.Core;
 using BookActivity.Domain.Interfaces.Repositories;
-using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
@@ -18,7 +17,7 @@ namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
             _db = db;
         }
 
-        public async Task<IList<TEvent>> GetBySpecificationAsync<TEvent>(string eventType, Specification<TEvent> specification) where TEvent : Domain.Core.Events.Event
+        public async Task<IList<TEvent>> GetBySpecificationAsync<TEvent>(string eventType, Specification<TEvent> specification) where TEvent : Event
         {
             var events = _db.GetCollection<TEvent>(eventType);
 
@@ -32,7 +31,7 @@ namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
                 .ToList();
         }
 
-        public async Task SaveAsync<TEvent>(TEvent @event) where TEvent : Domain.Core.Events.Event
+        public async Task SaveAsync<TEvent>(TEvent @event) where TEvent : Event
         {
             var collection = _db.GetCollection<TEvent>(@event.MessageType);
 

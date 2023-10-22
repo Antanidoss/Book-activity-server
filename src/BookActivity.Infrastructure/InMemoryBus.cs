@@ -18,7 +18,7 @@ namespace BookActivity.Infrastructure
             _mediator = mediator;
         }
 
-        public async Task PublishEventsAsync<T>(IEnumerable<T> events, CancellationToken cancellationToken = default) where T : Domain.Core.Events.Event
+        public async Task PublishEventsAsync<T>(IEnumerable<T> events, CancellationToken cancellationToken = default) where T : Domain.Core.Event
         {
             foreach (var e in events)
             {
