@@ -21,12 +21,18 @@ namespace BookActivity.Domain.Models
         public ActiveBook ActiveBook { get; private set; }
         public Guid ActiveBookId { get; private set; }
 
+        /// <summary>
+        /// Note text color
+        /// </summary>
+        public string NoteTextColor { get; set; }
+
         public BookNote() : base() { }
-        public BookNote(string note, string noteColor, Guid activeBookId)
+        public BookNote(string note, string noteColor, Guid activeBookId, string noteTextColor)
         {
             Note = note;
             NoteColor = noteColor;
             ActiveBookId = activeBookId;
+            NoteTextColor = noteTextColor;
         }
     }
 }

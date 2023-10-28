@@ -23,7 +23,7 @@ namespace BookActivity.Domain.Commands.BookNoteCommands.AddBookNote
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            BookNote newBookNote = new(request.Note, request.NoteColor, request.ActiveBookId);
+            BookNote newBookNote = new(request.Note, request.NoteColor, request.ActiveBookId, request.NoteTextColor);
 
             _bookNoteRepository.Add(newBookNote);
 
