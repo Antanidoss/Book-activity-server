@@ -9,5 +9,6 @@ namespace BookActivity.Domain.Commands.BookNoteCommands
         public Guid ActiveBookId { get; set; }
         public string Note { get; set; }
         public string NoteColor { get; set; }
+        public string NoteTextColor { get; set; }
     }
 }
