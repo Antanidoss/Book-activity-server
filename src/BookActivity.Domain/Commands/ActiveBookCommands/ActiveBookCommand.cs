@@ -10,6 +10,5 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands
         public int NumberPagesRead { get; set; }
         public Guid BookId { get; set; }
         public Guid UserId { get; set; }
-        public bool IsPublic { get; set; }
     }
 }

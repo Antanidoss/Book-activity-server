@@ -9,7 +9,6 @@ namespace BookActivity.Domain.Events.BookEvents
         public string Title { get; set; }
         public string Description { get; private set; }
         public IEnumerable<Guid> AuthorIds { get; private set; }
-        public bool IsPublic { get; private set; }
 
         public UpdateBookEvent(Guid bookId, string title, string description, IEnumerable<Guid> authorIds, Guid userId) : base(userId, bookId)
         {
