@@ -8,8 +8,7 @@ namespace BookActivity.Infrastructure.Data.Context.Configuration
     {
         public void Configure(EntityTypeBuilder<Subscription> builder)
         {
-            builder.Ignore(s => s.Id)
-                .HasKey(s => new { s.SubscribedUserId, s.UserIdWhoSubscribed });
+            builder.Ignore(s => s.Id).HasKey(s => new { s.SubscribedUserId, s.UserIdWhoSubscribed });
         }
     }
 }
