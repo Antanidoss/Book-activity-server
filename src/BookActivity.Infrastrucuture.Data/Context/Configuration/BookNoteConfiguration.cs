@@ -8,7 +8,9 @@ namespace BookActivity.Infrastructure.Data.Context.Configuration
     {
         public void Configure(EntityTypeBuilder<BookNote> builder)
         {
-            builder.Property(n => n.Note).HasMaxLength(300).IsRequired();
+            builder.Property(n => n.Note).HasMaxLength(3000).IsRequired();
+            builder.Property(n => n.NoteColor).HasMaxLength(7).IsRequired();
+            builder.Property(n => n.NoteTextColor).HasMaxLength(7).IsRequired();
         }
     }
 }

@@ -10,8 +10,8 @@ namespace BookActivity.Infrastructure.Data.Context.Configuration
         {
             builder.HasIndex(x => x.Title).IsUnique();
 
-            builder.Property(x => x.Title).IsRequired();
-            builder.Property(x => x.Description).IsRequired();
+            builder.Property(x => x.Title).HasMaxLength(100).IsRequired();
+            builder.Property(x => x.Description).HasMaxLength(5000).IsRequired();
             builder.Property(x => x.ImageData).IsRequired();
         }
     }
