@@ -1,7 +1,6 @@
 ﻿using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.Context;
-using BookActivity.Infrastructure.Data.Graphql;
 using BookActivity.Infrastructure.Data.Intefaces;
 using BookActivity.Infrastructure.Data.Repositories;
 using BookActivity.Infrastructure.Data.Repositories.EventSourcing;
@@ -18,6 +17,8 @@ using MongoDB.Driver;
 using System;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver.Linq;
+using BookActivity.Infrastructure.Data.Graphql.Extensions;
+using BookActivity.Infrastructure.Data.Graphql.Queries;
 
 namespace BookActivity.Infrastructure.Data
 {
@@ -88,7 +89,11 @@ namespace BookActivity.Infrastructure.Data
         {
             services.AddGraphQLServer()
                 .ModifyRequestOptions(opt => opt.IncludeExceptionDetails = true)
-                .AddQueryType<Query>()
+                .AddQueryType(q => q.Name("Query"))
+                .AddType<BookQuery>()
+                .AddType<BookNoteQuery>()
+                .AddType<ActiveBookQuery>()
+                .AddType<UserQuery>()
                 .AddProjections()
                 .AddFiltering()
                 .AddSorting()
