@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 
-namespace BookActivity.Infrastructure.Data.Graphql
+namespace BookActivity.Infrastructure.Data.Graphql.Extensions
 {
     [ExtendObjectType(typeof(AppUser))]
     public sealed class UserExtensions
