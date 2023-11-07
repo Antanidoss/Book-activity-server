@@ -2,7 +2,7 @@
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Domain.Commands.UserNotificationCommands.RemoveUserNotifications;
-using BookActivity.Domain.Filters;
+using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;

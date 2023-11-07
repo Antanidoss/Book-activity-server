@@ -1,5 +1,5 @@
 ﻿using BookActivity.Domain.Models;
-using BookActivity.Infrastructure.Data.Context;
+using BookActivity.Infrastructure.Data.EF;
 using BookActivity.Shared.Models;
 using HotChocolate;
 using HotChocolate.Types;

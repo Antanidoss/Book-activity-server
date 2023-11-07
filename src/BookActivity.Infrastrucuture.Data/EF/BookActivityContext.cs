@@ -9,12 +9,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using BookActivity.Domain.Interfaces;
-using BookActivity.Infrastructure.Data.Context.Configuration;
+using BookActivity.Infrastructure.Data.EF.Configuration;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using BookActivity.Domain.Core;
 
-namespace BookActivity.Infrastructure.Data.Context
+namespace BookActivity.Infrastructure.Data.EF
 {
     public sealed class BookActivityContext : IdentityDbContext<AppUser, AppRole, Guid>, IUnitOfWork
     {

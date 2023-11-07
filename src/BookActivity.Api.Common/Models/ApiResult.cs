@@ -10,5 +10,11 @@
             Result = result;
             Success = success;
         }
+
+        public ApiResult(string errorMessage)
+        {
+            ErrorMessage = errorMessage;
+            Success = false;
+        }
     }
 }

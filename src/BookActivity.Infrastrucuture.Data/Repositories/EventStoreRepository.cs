@@ -21,10 +21,6 @@ namespace BookActivity.Infrastructure.Data.Repositories.EventSourcing
         {
             var events = _db.GetCollection<TEvent>(eventType);
 
-            var a = events
-                .AsQueryable()
-                .ToList();
-
             return events
                 .AsQueryable()
                 .Where(specification)

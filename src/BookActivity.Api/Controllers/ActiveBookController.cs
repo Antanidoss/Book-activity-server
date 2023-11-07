@@ -22,6 +22,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPost(ApiConstants.AddActiveBookMethod)]
+        [DtoValidator]
         public async Task<ApiResult<Guid>> AddActiveBookAsync([FromBody] CreateActiveBookDto createActiveBookModel)
         {
             createActiveBookModel.UserId = _currentUser.Id;
@@ -30,6 +31,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.UpdateNumberPagesReadMethod)]
+        [DtoValidator]
         public async Task<ActionResult> UpdateNumberPagesReadAsync([FromBody] UpdateNumberPagesReadDto updateActiveBookModel)
         {
             updateActiveBookModel.UserId = _currentUser.Id;

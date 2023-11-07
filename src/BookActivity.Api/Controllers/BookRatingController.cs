@@ -19,6 +19,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.UpdateBookRatingMethod)]
+        [DtoValidator]
         public async Task UpdateBookRatingAsync([FromBody] UpdateBookRatingDto updateBookRating)
         {
             updateBookRating.BookOpinion.UserId = _currentUser.Id;
