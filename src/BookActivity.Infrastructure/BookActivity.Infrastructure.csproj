@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NetDevPack" Version="6.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\BookActivity.Domain.Core\BookActivity.Domain.Core.csproj" />
     <ProjectReference Include="..\BookActivity.Domain\BookActivity.Domain.csproj" />
     <ProjectReference Include="..\BookActivity.Shared\BookActivity.Shared.csproj" />

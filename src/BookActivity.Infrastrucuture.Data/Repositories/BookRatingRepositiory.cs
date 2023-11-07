@@ -1,11 +1,11 @@
 ﻿using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.EF;
 using BookActivity.Infrastructure.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
-using NetDevPack.Data;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories

@@ -1,8 +1,9 @@
-﻿using BookActivity.Domain.Interfaces;
+﻿using BookActivity.Domain.Commands;
+using BookActivity.Domain.Core;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Queries;
 using FluentValidation.Results;
 using MediatR;
-using NetDevPack.Messaging;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace BookActivity.Infrastructure
             _mediator = mediator;
         }
 
-        public async Task PublishEventsAsync<T>(IEnumerable<T> events, CancellationToken cancellationToken = default) where T : Domain.Core.Event
+        public async Task PublishEventsAsync<T>(IEnumerable<T> events, CancellationToken cancellationToken = default) where T : Event
         {
             foreach (var e in events)
             {

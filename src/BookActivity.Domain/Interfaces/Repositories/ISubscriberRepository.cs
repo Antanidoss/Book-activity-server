@@ -1,5 +1,4 @@
 ﻿using BookActivity.Domain.Models;
-using NetDevPack.Data;
 
 namespace BookActivity.Domain.Interfaces.Repositories
 {

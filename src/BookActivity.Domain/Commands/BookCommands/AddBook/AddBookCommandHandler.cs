@@ -6,7 +6,6 @@ using BookActivity.Domain.Specifications.AuthorSpecs;
 using BookActivity.Domain.Validations;
 using FluentValidation.Results;
 using MediatR;
-using NetDevPack.Messaging;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

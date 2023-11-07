@@ -1,5 +1,4 @@
 ﻿using BookActivity.Domain.Models;
-using NetDevPack.Data;
 using System.Threading.Tasks;
 using BookActivity.Domain.Filters.Models;
 

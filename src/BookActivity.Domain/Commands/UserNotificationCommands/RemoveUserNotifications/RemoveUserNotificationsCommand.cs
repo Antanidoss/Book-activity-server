@@ -1,5 +1,4 @@
-﻿using NetDevPack.Messaging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace BookActivity.Domain.Commands.UserNotificationCommands.RemoveUserNotifications

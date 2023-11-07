@@ -6,7 +6,6 @@ using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using FluentValidation.Results;
 using MediatR;
-using NetDevPack.Messaging;
 
 namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
 {
