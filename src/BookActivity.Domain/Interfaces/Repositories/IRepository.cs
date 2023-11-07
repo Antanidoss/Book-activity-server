@@ -1,5 +1,4 @@
 ﻿using BookActivity.Domain.Core;
-using NetDevPack.Data;
 using System;
 
 namespace BookActivity.Domain.Interfaces.Repositories

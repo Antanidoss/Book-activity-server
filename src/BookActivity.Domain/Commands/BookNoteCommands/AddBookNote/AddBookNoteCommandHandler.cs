@@ -2,7 +2,6 @@
 using BookActivity.Domain.Models;
 using FluentValidation.Results;
 using MediatR;
-using NetDevPack.Messaging;
 using System.Threading;
 using System.Threading.Tasks;
 

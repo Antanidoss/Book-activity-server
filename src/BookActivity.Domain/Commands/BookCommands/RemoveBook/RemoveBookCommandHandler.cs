@@ -3,7 +3,6 @@ using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Specifications.BookSpecs;
 using FluentValidation.Results;
 using MediatR;
-using NetDevPack.Messaging;
 using System.Threading.Tasks;
 using System.Threading;
 using BookActivity.Domain.Models;

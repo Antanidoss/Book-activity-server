@@ -1,5 +1,4 @@
-﻿using NetDevPack.Messaging;
-using System;
+﻿using System;
 
 namespace BookActivity.Domain.Commands.BookNoteCommands
 {

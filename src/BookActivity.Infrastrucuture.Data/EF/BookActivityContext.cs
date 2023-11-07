@@ -1,10 +1,7 @@
 ﻿using BookActivity.Domain.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using NetDevPack.Data;
-using NetDevPack.Domain;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
@@ -13,6 +10,7 @@ using BookActivity.Infrastructure.Data.EF.Configuration;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using BookActivity.Domain.Core;
+using FluentValidation.Results;
 
 namespace BookActivity.Infrastructure.Data.EF
 {
@@ -39,7 +37,7 @@ namespace BookActivity.Infrastructure.Data.EF
         public async Task<bool> Commit()
         {
             var domainEntities = ChangeTracker
-                .Entries<Entity>()
+                .Entries<BaseEntity>()
                 .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any());
 
             var domainEvents = domainEntities
@@ -80,7 +78,6 @@ namespace BookActivity.Infrastructure.Data.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<ValidationResult>();
-            modelBuilder.Ignore<NetDevPack.Messaging.Event>();
             modelBuilder.Ignore<Event>();
 
             modelBuilder.ApplyConfiguration(new AppUserConfiguration());
@@ -121,7 +118,7 @@ namespace BookActivity.Infrastructure.Data.EF
             }
         }
 
-        private void ClearDomainEvents(IEnumerable<EntityEntry<Entity>> entities)
+        private void ClearDomainEvents(IEnumerable<EntityEntry<BaseEntity>> entities)
         {
             foreach (var domainEntity in entities)
                 domainEntity.Entity.ClearDomainEvents();

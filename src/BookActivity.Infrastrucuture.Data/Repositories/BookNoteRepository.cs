@@ -1,9 +1,9 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Interfaces;
+using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Validations;
 using BookActivity.Infrastructure.Data.EF;
 using Microsoft.EntityFrameworkCore;
-using NetDevPack.Data;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {

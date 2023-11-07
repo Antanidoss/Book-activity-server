@@ -1,5 +1,4 @@
 ﻿using BookActivity.Domain.Commands.ActiveBookCommands.Validations;
-using NetDevPack.Messaging;
 using System;
 
 namespace BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook
