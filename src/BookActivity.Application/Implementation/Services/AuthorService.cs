@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BookActivity.Domain.Interfaces;
-using BookActivity.Domain.Filters;
 using BookActivity.Domain.Models;
 
 namespace BookActivity.Application.Implementation.Services

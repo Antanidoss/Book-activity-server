@@ -1,11 +1,10 @@
 ﻿using Antanidoss.Specification.Abstract;
-using BookActivity.Domain.Filters.Models;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace BookActivity.Domain.Filters
+namespace BookActivity.Domain.Filters.Models
 {
     public class DbMultipleResultFilterModel<TEntity, TResult> : DbFilterModel<TEntity> where TEntity : class
     {

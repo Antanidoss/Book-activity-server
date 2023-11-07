@@ -1,6 +1,6 @@
 ﻿using BookActivity.Domain.Events.ActiveBookEvents;
 using BookActivity.Domain.Events.AppUserEvents;
-using BookActivity.Domain.Filters;
+using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Hubs;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;

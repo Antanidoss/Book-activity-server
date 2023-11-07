@@ -1,4 +1,4 @@
-﻿using BookActivity.Domain.Filters;
+﻿using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookRatingSpecs;

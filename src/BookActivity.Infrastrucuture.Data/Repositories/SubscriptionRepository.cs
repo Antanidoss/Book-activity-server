@@ -1,6 +1,6 @@
 ﻿using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
-using BookActivity.Infrastructure.Data.Context;
+using BookActivity.Infrastructure.Data.EF;
 using NetDevPack.Data;
 
 namespace BookActivity.Infrastructure.Data.Repositories

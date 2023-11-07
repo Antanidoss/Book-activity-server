@@ -1,5 +1,5 @@
 ﻿using BookActivity.Domain.Models;
-using BookActivity.Infrastructure.Data.Context;
+using BookActivity.Infrastructure.Data.EF;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 

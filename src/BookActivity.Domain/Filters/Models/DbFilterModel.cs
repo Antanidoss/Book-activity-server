@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace BookActivity.Domain.Filters
+namespace BookActivity.Domain.Filters.Models
 {
     public abstract class DbFilterModel<TEntity> where TEntity : class
     {

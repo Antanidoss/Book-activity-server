@@ -2,11 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BookActivity.Infrastructure.Data.Context.Configuration
+namespace BookActivity.Infrastructure.Data.EF.Configuration
 {
-    internal sealed class SubscriberConfiguration : IEntityTypeConfiguration<Subscriber>
+    internal sealed class SubscriptionConfiguration : IEntityTypeConfiguration<Subscription>
     {
-        public void Configure(EntityTypeBuilder<Subscriber> builder)
+        public void Configure(EntityTypeBuilder<Subscription> builder)
         {
             builder.Ignore(s => s.Id).HasKey(s => new { s.SubscribedUserId, s.UserIdWhoSubscribed });
         }

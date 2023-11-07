@@ -6,8 +6,8 @@ using MediatR;
 using NetDevPack.Messaging;
 using System.Threading.Tasks;
 using System.Threading;
-using BookActivity.Domain.Filters;
 using BookActivity.Domain.Models;
+using BookActivity.Domain.Filters.Models;
 
 namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
 {

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BookActivity.Infrastructure.Data.Context.Configuration
+namespace BookActivity.Infrastructure.Data.EF.Configuration
 {
     internal sealed class AuthorConfiguration : IEntityTypeConfiguration<Author>
     {

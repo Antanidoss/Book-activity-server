@@ -1,4 +1,5 @@
-﻿using BookActivity.Api.Common.Constants;
+﻿using BookActivity.Api.Attributes;
+using BookActivity.Api.Common.Constants;
 using BookActivity.Api.Common.Extansions;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Create;
@@ -19,6 +20,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPost(ApiConstants.AddActiveBookMethod)]
+        [DtoValidator]
         public async Task AddBookAsync([FromForm] CreateBookDto createBookModel)
         {
             await _bookService.AddActiveBookAsync(createBookModel);
@@ -31,6 +33,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.UpdateBookMethod)]
+        [DtoValidator]
         public async Task<ActionResult> UpdateBookAsync(UpdateBookDto updateBookModel)
         {
             return (await _bookService.UpdateBookAsync(updateBookModel)).ToActionResult();

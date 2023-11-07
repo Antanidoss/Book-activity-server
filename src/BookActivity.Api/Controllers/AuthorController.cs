@@ -5,6 +5,7 @@ using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Create;
 using Microsoft.AspNetCore.Mvc;
+using BookActivity.Api.Attributes;
 
 namespace BookActivity.Api.Controllers
 {
@@ -19,6 +20,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPost(ApiConstants.AddAuthorMethod)]
+        [DtoValidator]
         public async Task<ApiResult<Guid>> AddAuthorAsync(CreateAuthorDto createAuthor)
         {
             return (await _authorService.AddAsync(createAuthor)).ToApiResult();

@@ -1,6 +1,6 @@
 ﻿using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookSpecs;
-using BookActivity.Infrastructure.Data.Context;
+using BookActivity.Infrastructure.Data.EF;
 using HotChocolate.Data;
 using HotChocolate.Types;
 using HotChocolate;
