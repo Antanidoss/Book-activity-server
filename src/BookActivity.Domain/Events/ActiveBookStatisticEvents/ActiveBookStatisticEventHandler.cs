@@ -24,7 +24,7 @@ namespace BookActivity.Domain.Events.ActiveBookStatisticEvents
             cancellationToken.ThrowIfCancellationRequested();
 
             _cache.RemoveActiveBookStatistic(notification.UserId.Value);
-            _cache.RemoveActiveBookStatisticByDay(notification.UserId.Value, DateTime.Now);
+            _cache.RemoveActiveBookStatisticByDay(notification.UserId.Value, DateTime.Now.Date);
 
             return Task.CompletedTask;
         }
@@ -34,7 +34,7 @@ namespace BookActivity.Domain.Events.ActiveBookStatisticEvents
             cancellationToken.ThrowIfCancellationRequested();
 
             _cache.RemoveActiveBookStatistic(notification.UserId.Value);
-            _cache.RemoveActiveBookStatisticByDay(notification.UserId.Value, DateTime.Now);
+            _cache.RemoveActiveBookStatisticByDay(notification.UserId.Value, DateTime.Now.Date);
 
             return Task.CompletedTask;
         }

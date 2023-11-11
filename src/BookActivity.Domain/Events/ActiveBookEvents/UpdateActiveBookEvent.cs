@@ -1,6 +1,5 @@
 ﻿using BookActivity.Domain.Core;
 using System;
-using System.Text.Json.Serialization;
 
 namespace BookActivity.Domain.Events.ActiveBookEvent
 {

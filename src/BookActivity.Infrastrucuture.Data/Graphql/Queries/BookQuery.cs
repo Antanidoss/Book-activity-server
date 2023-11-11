@@ -28,11 +28,13 @@ namespace BookActivity.Infrastructure.Data.Graphql.Queries
             return context.Books;
         }
 
-        public Book GetBookById([Service] BookActivityContext context, Guid bookId)
+        [UseProjection]
+        [OneOf]
+        public IQueryable<Book> GetBookById([Service] BookActivityContext context, Guid bookId)
         {
             BookByIdSpec specification = new(bookId);
 
-            return context.Books.FirstOrDefault(specification);
+            return context.Books.Where(specification);
         }
     }
 }

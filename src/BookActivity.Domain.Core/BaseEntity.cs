@@ -6,20 +6,8 @@ namespace BookActivity.Domain.Core
     public class BaseEntity : IAggregateRoot
     {
         public Guid Id { get; set; }
-
-        /// <summary>
-        /// Time of creation entity
-        /// </summary>
         public DateTime TimeOfCreation { get; set; }
-
-        /// <summary>
-        /// Time of update entity
-        /// </summary>
         public DateTime TimeOfUpdate { get; set; }
-
-        /// <summary>
-        /// Domain entity events
-        /// </summary>
         public IReadOnlyCollection<Event> DomainEvents => _domainEvents?.AsReadOnly();
         private List<Event> _domainEvents;
 

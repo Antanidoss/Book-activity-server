@@ -1,6 +1,5 @@
 ﻿using BookActivity.Domain.Core;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BookActivity.Domain.Models
 {
@@ -41,7 +40,7 @@ namespace BookActivity.Domain.Models
         {
             Title = title;
             Description = description;
-            BookAuthors = bookAuthors.ToList();
+            BookAuthors = bookAuthors;
             ImageData = imageData;
             BookRating = new();
         }
