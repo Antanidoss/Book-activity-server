@@ -1,12 +1,9 @@
 using BookActivity.Api.Common.Extensions;
 using BookActivity.Api.Middleware;
 using BookActivity.Shared.Models;
-using MediatR;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
-using System.Text;
+using System.Reflection;
 
 namespace BookActivity.Api
 {
@@ -37,11 +34,9 @@ namespace BookActivity.Api
                 return user != null ? (user as CurrentUser) : null;
             });
 
-            AddAuthentication(services);
-
+            services.ConfigureAuthentication(Configuration);
             services.Configure<TokenInfo>(Configuration.GetSection(typeof(TokenInfo).Name));
-
-            services.AddMediatR(typeof(Startup));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
             services.ConfigureModules(Configuration);
             services.AddCors();
             services.AddSignalR();
@@ -71,7 +66,6 @@ namespace BookActivity.Api
             app.UseHttpLogging();
             app.UseMiddleware<JwtMiddleware>();
             app.UseSerilogRequestLogging();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
@@ -85,30 +79,6 @@ namespace BookActivity.Api
             using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
             Infrastructure.Data.ModuleConfiguration infraModuleConfiguration = new();
             infraModuleConfiguration.CreateDatabasesIfNotExist(serviceScope);
-        }
-
-        private void AddAuthentication(IServiceCollection services)
-        {
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = true;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidIssuer = "BookActivityServer",
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSecretKey())),
-                    ValidAudience = "BookActivityClient",
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.FromMinutes(2)
-                };
-            });
         }
     }
 }

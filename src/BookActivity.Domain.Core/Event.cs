@@ -1,20 +1,14 @@
 ﻿using MediatR;
-using MongoDB.Bson.Serialization.Attributes;
 using System;
 
 namespace BookActivity.Domain.Core
 {
-    [BsonIgnoreExtraElements]
     public class Event : INotification
     {
         public Guid? UserId { get; private set; }
-
         public virtual WhenCallHandler WhenCallHandler { get; }
-
         public DateTime Timestamp { get; private set; }
-
         public string MessageType { get; private set; }
-
         public Guid AggregateId { get; private set; }
 
         public Event()

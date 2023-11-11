@@ -7,7 +7,6 @@ using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.BookSpecs;
 using BookActivity.Domain.Specifications.EventSpecs;
 using MediatR;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -47,8 +46,8 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
 
                     return new ActiveBookStatisticByDay
                     {
-                        BookId = book?.Id ?? Guid.Empty,
-                        BookTitle = book?.Title,
+                        BookId = book.Id,
+                        BookTitle = book.Title,
                         CountPagesRead = groupping.Sum(i => i.CountPagesRead)
                     };
                 })
