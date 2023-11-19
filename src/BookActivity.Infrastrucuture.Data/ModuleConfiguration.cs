@@ -98,7 +98,8 @@ namespace BookActivity.Infrastructure.Data
                 .AddFiltering()
                 .AddSorting()
                 .AddTypeExtension<BookExtensions>()
-                .AddTypeExtension<UserExtensions>();
+                .AddTypeExtension<UserExtensions>()
+                .AddTypeExtension<BookRatingExtensions>();
         }
 
         private void ConfigureMongoDb(IServiceCollection services, IConfiguration configuration)

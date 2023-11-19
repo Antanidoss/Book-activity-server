@@ -29,7 +29,6 @@ namespace BookActivity.Infrastructure.Data.Graphql.Queries
         }
 
         [UseProjection]
-        [OneOf]
         public IQueryable<Book> GetBookById([Service] BookActivityContext context, Guid bookId)
         {
             BookByIdSpec specification = new(bookId);

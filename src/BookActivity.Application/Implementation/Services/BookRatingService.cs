@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using BookActivity.Application.Interfaces.Services;
+﻿using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating;
 using BookActivity.Domain.Interfaces;
@@ -14,12 +13,9 @@ namespace BookActivity.Application.Implementation.Services
     {
         private readonly IMediatorHandler _mediatorHandler;
 
-        private readonly IMapper _mapper;
-
-        public BookRatingService(IMediatorHandler mediatorHandler, IMapper mapper)
+        public BookRatingService(IMediatorHandler mediatorHandler)
         {
             _mediatorHandler = mediatorHandler;
-            _mapper = mapper;
         }
 
         public async Task<ValidationResult> UpdateBookRatingAsync(UpdateBookRatingDto updateBookRating)
@@ -30,7 +26,7 @@ namespace BookActivity.Application.Implementation.Services
             UpdateBookRatingCommand updateBookRatingCommand = new()
             {
                 Id = updateBookRating.BookRatingId,
-                BookOpinion = _mapper.Map<BookOpinion>(updateBookRating.BookOpinion)
+                BookOpinion = new BookOpinion(updateBookRating.Grade, updateBookRating.Description, updateBookRating.UserId)
             };
 
             return await _mediatorHandler.SendCommandAsync(updateBookRatingCommand);
