@@ -22,7 +22,7 @@ namespace BookActivity.Api.Controllers
         [DtoValidator]
         public async Task UpdateBookRatingAsync([FromBody] UpdateBookRatingDto updateBookRating)
         {
-            updateBookRating.BookOpinion.UserId = _currentUser.Id;
+            updateBookRating.UserId = _currentUser.Id;
 
             await _bookRatingService.UpdateBookRatingAsync(updateBookRating);
         }
