@@ -12,15 +12,12 @@ namespace BookActivity.Domain.Models
 
         public IList<BookOpinion> BookOpinions { get; set; }
 
-        public float CalculateAverageRating()
+        public float GetAverageRating()
         {
-            if (BookOpinions == null)
-                return -1;
-
-            if (!BookOpinions.Any())
+            if (BookOpinions == null || !BookOpinions.Any())
                 return 0;
 
-            return BookOpinions.Count() / BookOpinions.Sum(o => o.Grade) * 100;
+            return BookOpinions.Average(b => b.Grade);
         }
     }
 }
