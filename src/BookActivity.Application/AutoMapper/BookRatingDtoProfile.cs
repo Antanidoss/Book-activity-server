@@ -9,7 +9,7 @@ namespace BookActivity.Application.AutoMapper
         public BookRatingDtoProfile()
         {
             CreateMap<BookRating, BookRatingDto>()
-                .ForMember(b => b.AverageRating, conf => conf.MapFrom(b => b.CalculateAverageRating()));
+                .ForMember(b => b.AverageRating, conf => conf.MapFrom(b => b.GetAverageRating()));
         }
     }
 }

@@ -94,6 +94,8 @@ namespace BookActivity.Infrastructure.Data
                 .AddType<BookNoteQuery>()
                 .AddType<ActiveBookQuery>()
                 .AddType<UserQuery>()
+                .AddType<BookRatingQuery>()
+                .AddType<BookOpinionQuery>()
                 .AddProjections()
                 .AddFiltering()
                 .AddSorting()
