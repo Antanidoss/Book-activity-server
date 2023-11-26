@@ -1,5 +1,6 @@
 ﻿using BookActivity.Domain.Core;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BookActivity.Domain.Models
 {
@@ -33,7 +34,7 @@ namespace BookActivity.Domain.Models
         /// <summary>
         /// Relation of book with the book rating
         /// </summary>
-        public BookRating BookRating { get; set; }
+        public ICollection<BookOpinion> BookOpinions { get; set; }
 
         public Book() : base() { }
         public Book(string title, string description, byte[] imageData, IEnumerable<BookAuthor> bookAuthors)
@@ -42,7 +43,14 @@ namespace BookActivity.Domain.Models
             Description = description;
             BookAuthors = bookAuthors;
             ImageData = imageData;
-            BookRating = new();
+        }
+
+        public float GetAverageRating()
+        {
+            if (BookOpinions == null || !BookOpinions.Any())
+                return 0;
+
+            return BookOpinions.Average(b => b.Grade);
         }
     }
 }

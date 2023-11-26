@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Application.Interfaces.Services
 {
-    public interface IBookRatingService
+    public interface IBookOpinionService
     {
-        Task<ValidationResult> UpdateBookRatingAsync(UpdateBookRatingDto updateBookRating);
+        Task<ValidationResult> AddBookOpinionAsync(AddBookOpinionDto addBookOpinionDto);
     }
 }
