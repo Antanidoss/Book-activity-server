@@ -13,7 +13,7 @@ using BookActivity.Domain.Commands.BookCommands.AddBook;
 using BookActivity.Domain.Commands.BookCommands.RemoveBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
-using BookActivity.Domain.Commands.BookRatingCommands.UpdateBookRating;
+using BookActivity.Domain.Commands.BookOpinionCommads.AddBookOpinion;
 using BookActivity.Domain.Commands.UserNotificationCommands.RemoveUserNotifications;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.ActiveBookEvents;
@@ -65,7 +65,7 @@ namespace BookActivity.Domain
 
             services.AddScoped<IRequestHandler<AddAuthorCommand, ValidationResult>, AddAuthorCommandHandler>();
 
-            services.AddScoped<IRequestHandler<UpdateBookRatingCommand, ValidationResult>, UpdateBookRatingCommandHandler>();
+            services.AddScoped<IRequestHandler<AddBookOpinionCommand, ValidationResult>, AddBookOpinionCommandHandler>();
 
             services.AddScoped<IRequestHandler<RemoveUserNotificationsCommand, ValidationResult>, RemoveUserNotificationsCommandHandler>();
         }

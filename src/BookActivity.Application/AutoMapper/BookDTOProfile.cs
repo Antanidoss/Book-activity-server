@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using BookActivity.Application.Extensions;
 using BookActivity.Application.Models.Dto.Create;
-using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Commands.BookCommands.AddBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
-using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Models;
 
 namespace BookActivity.Application.AutoMapper
 {
@@ -14,8 +11,6 @@ namespace BookActivity.Application.AutoMapper
     {
         public BookDtoProfile()
         {
-            CreateMap<Book, BookDto>();
-            CreateMap<BookDto, Book>();
             CreateMap<UpdateBookDto, UpdateBookCommand>();
 
             CreateMap<CreateBookDto, AddBookCommand>()

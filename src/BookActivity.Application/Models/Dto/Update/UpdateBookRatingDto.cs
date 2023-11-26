@@ -2,9 +2,9 @@
 
 namespace BookActivity.Application.Models.Dto.Update
 {
-    public sealed class UpdateBookRatingDto : BaseDto
+    public sealed class AddBookOpinionDto : BaseDto
     {
-        public Guid BookRatingId { get; set; }
+        public Guid BookId { get; set; }
 
         [System.Text.Json.Serialization.JsonIgnore]
         public Guid UserId { get; set; }

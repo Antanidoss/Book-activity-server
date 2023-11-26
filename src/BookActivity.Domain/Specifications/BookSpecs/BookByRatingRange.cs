@@ -20,7 +20,7 @@ namespace BookActivity.Domain.Specifications.BookSpecs
 
         public override Expression<Func<Book, bool>> ToExpression()
         {
-            return b => _averageRatingFrom <= b.BookRating.BookOpinions.Average(o => o.Grade) && _averageRatingTo >= b.BookRating.BookOpinions.Average(o => o.Grade);
+            return b => _averageRatingFrom <= b.GetAverageRating() && _averageRatingTo >= b.GetAverageRating();
         }
     }
 }

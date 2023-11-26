@@ -78,7 +78,6 @@ namespace BookActivity.Infrastructure.Data
             services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<IAppUserRepository, AppUserRepository>();
             services.AddScoped<IBookNoteRepository, BookNoteRepository>();
-            services.AddScoped<IBookRatingRepository, BookRatingRepositiory>();
             services.AddScoped<IBookOpinionRepository, BookOpinionRepository>();
             services.AddScoped<IUserNotificationRepository, UserNotificationRepository>();
             services.AddScoped<ISubscriberRepository, SubscriberRepository>();
@@ -94,14 +93,12 @@ namespace BookActivity.Infrastructure.Data
                 .AddType<BookNoteQuery>()
                 .AddType<ActiveBookQuery>()
                 .AddType<UserQuery>()
-                .AddType<BookRatingQuery>()
                 .AddType<BookOpinionQuery>()
                 .AddProjections()
                 .AddFiltering()
                 .AddSorting()
                 .AddTypeExtension<BookExtensions>()
-                .AddTypeExtension<UserExtensions>()
-                .AddTypeExtension<BookRatingExtensions>();
+                .AddTypeExtension<UserExtensions>();
         }
 
         private void ConfigureMongoDb(IServiceCollection services, IConfiguration configuration)

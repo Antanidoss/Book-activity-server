@@ -25,7 +25,7 @@ namespace BookActivity.Application
             services.AddScoped<IAppUserService, AppUserService>();
             services.AddScoped<IBookNoteService, BookNoteService>();
             services.AddScoped<IAuthorService, AuthorService>();
-            services.AddScoped<IBookRatingService, BookRatingService>();
+            services.AddScoped<IBookOpinionService, BookOpinionService>();
             services.AddScoped<IActiveBookStatisticService, ActiveBookStatisticService>();
             services.AddScoped<IUserNotificationService, UserNotificationService>();
             services.AddScoped<IOcrService, OcrService>();
@@ -48,7 +48,6 @@ namespace BookActivity.Application
             mapperConfigureExpression.AddProfile(new BookNoteDtoProfile());
             mapperConfigureExpression.AddProfile(new AuthorDtoProfile());
             mapperConfigureExpression.AddProfile(new BookOpinionDtoProfile());
-            mapperConfigureExpression.AddProfile(new BookRatingDtoProfile());
             mapperConfigureExpression.AddProfile(new UserNotificationDtoProfile());
         }
     }

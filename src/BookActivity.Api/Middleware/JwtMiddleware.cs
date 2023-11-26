@@ -49,6 +49,9 @@ namespace BookActivity.Api.Middleware
                 var userId = jwtToken.Claims.First(x => x.Type == "userId").Value.ToString();
 
                 var user = (await userService.GetByIdAsync(Guid.Parse(userId))).Value;
+                if (user == null)
+                    return;
+
                 context.Items["User"] = new CurrentUser
                 {
                     Id = user.Id,

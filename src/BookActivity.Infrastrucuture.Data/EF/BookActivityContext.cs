@@ -22,7 +22,6 @@ namespace BookActivity.Infrastructure.Data.EF
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookOpinion> BookOpinions { get; set; }
         public DbSet<BookNote> BookNotes { get; set; }
-        public DbSet<BookRating> BookRatings { get; set; }
         public DbSet<UserNotification> UserNotifications { get; set; }
         public DbSet<Subscriber> Subscribers { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
@@ -56,7 +55,6 @@ namespace BookActivity.Infrastructure.Data.EF
 
             if (success)
                 await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation), cancellationToken);
-
 
             return success;
         }
