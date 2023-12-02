@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using BookActivity.Domain.Core;
 using FluentValidation.Results;
+using Microsoft.Extensions.Configuration;
+using BookActivity.Shared.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace BookActivity.Infrastructure.Data.EF
 {
@@ -27,10 +30,12 @@ namespace BookActivity.Infrastructure.Data.EF
         public DbSet<Subscription> Subscriptions { get; set; }
 
         private readonly IMediatorHandler _mediatorHandler;
+        private readonly IConfiguration _configuration;
 
-        public BookActivityContext(DbContextOptions<BookActivityContext> options, IMediatorHandler mediatorHandler) : base(options)
+        public BookActivityContext(IMediatorHandler mediatorHandler, IConfiguration configuration) : base()
         {
             _mediatorHandler = mediatorHandler;
+            _configuration = configuration;
         }
 
         public async Task<bool> Commit()
@@ -87,6 +92,14 @@ namespace BookActivity.Infrastructure.Data.EF
             modelBuilder.ApplyConfiguration(new BookOpinionConfiguration());
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        //TODO: Logs doesn't work
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder
+                .UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
+                .EnableSensitiveDataLogging(_configuration.GetUseSqlLogs());
         }
 
         private void UpdateCreationAndUpdateTime()

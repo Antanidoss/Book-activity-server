@@ -19,6 +19,7 @@ using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver.Linq;
 using BookActivity.Infrastructure.Data.Graphql.Extensions;
 using BookActivity.Infrastructure.Data.Graphql.Queries;
+using HotChocolate.Data;
 
 namespace BookActivity.Infrastructure.Data
 {
@@ -26,11 +27,7 @@ namespace BookActivity.Infrastructure.Data
     {
         public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<BookActivityContext>(option =>
-            {
-                option.UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
-                    .EnableSensitiveDataLogging();
-            });
+            services.AddTransient<BookActivityContext>();
 
             services.AddIdentity<AppUser, AppRole>(option =>
             {
