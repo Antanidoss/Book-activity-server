@@ -24,4 +24,8 @@
     <ProjectReference Include="..\BookActivity.Initialization\BookActivity.Initialization.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="logs\" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
-﻿using BookActivity.Shared.Interfaces;
+﻿using BookActivity.Shared.Extensions;
+using BookActivity.Shared.Interfaces;
 using LinqKit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
