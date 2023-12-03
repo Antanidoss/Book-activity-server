@@ -19,7 +19,6 @@ using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver.Linq;
 using BookActivity.Infrastructure.Data.Graphql.Extensions;
 using BookActivity.Infrastructure.Data.Graphql.Queries;
-using HotChocolate.Data;
 
 namespace BookActivity.Infrastructure.Data
 {
@@ -91,6 +90,7 @@ namespace BookActivity.Infrastructure.Data
                 .AddType<ActiveBookQuery>()
                 .AddType<UserQuery>()
                 .AddType<BookOpinionQuery>()
+                .AddType<AuthorQuery>()
                 .AddProjections()
                 .AddFiltering()
                 .AddSorting()

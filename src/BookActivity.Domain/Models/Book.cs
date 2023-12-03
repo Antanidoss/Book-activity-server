@@ -41,7 +41,7 @@ namespace BookActivity.Domain.Models
         {
             Title = title;
             Description = description;
-            BookAuthors = bookAuthors;
+            BookAuthors = bookAuthors.ToList();
             ImageData = imageData;
         }
 
