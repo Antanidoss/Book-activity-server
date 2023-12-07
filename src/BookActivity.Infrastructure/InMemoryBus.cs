@@ -21,10 +21,7 @@ namespace BookActivity.Infrastructure
 
         public async Task PublishEventsAsync<T>(IEnumerable<T> events, CancellationToken cancellationToken = default) where T : Event
         {
-            foreach (var e in events)
-            {
-                await _mediator.Publish(e, cancellationToken);
-            }
+            await Parallel.ForEachAsync(events, async (e, _) => await _mediator.Publish(e, cancellationToken));
         }
 
         public async Task<ValidationResult> SendCommandAsync<T>(T command, CancellationToken cancellationToken = default) where T : Command
