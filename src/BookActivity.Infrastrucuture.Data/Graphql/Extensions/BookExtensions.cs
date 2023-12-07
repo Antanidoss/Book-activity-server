@@ -54,7 +54,7 @@ namespace BookActivity.Infrastructure.Data.Graphql.Extensions
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public IQueryable<BookOpinion> GetBookOpinions([Service] BookActivityContext context, [Parent] Book book)
+        public IQueryable<BookOpinion> GetBookOpinions([Service(ServiceKind.Synchronized)] BookActivityContext context, [Parent] Book book)
         {
             return context.BookOpinions.Where(b => b.BookId == book.Id);
         }

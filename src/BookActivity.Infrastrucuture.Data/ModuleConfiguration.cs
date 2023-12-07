@@ -26,7 +26,7 @@ namespace BookActivity.Infrastructure.Data
     {
         public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<BookActivityContext>();
+            services.AddScoped<BookActivityContext>();
 
             services.AddIdentity<AppUser, AppRole>(option =>
             {
