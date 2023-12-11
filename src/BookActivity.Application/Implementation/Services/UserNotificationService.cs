@@ -37,9 +37,9 @@ namespace BookActivity.Application.Implementation.Services
             return _mapper.Map<IEnumerable<UserNotificationDto>>(notifications);
         }
 
-        public async Task RemoveUserNotifications(IEnumerable<Guid> userNotificationIds)
+        public async Task RemoveUserNotifications(Guid notificationId)
         {
-            RemoveUserNotificationsCommand command = new(userNotificationIds);
+            RemoveUserNotificationsCommand command = new(notificationId);
 
             await _mediatorHandler.SendCommandAsync(command);
         }

@@ -25,9 +25,9 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpDelete(ApiConstants.RemoveUserNotificationsMethod)]
-        public async Task RemoveUserNotifications(IEnumerable<Guid> userNotificationIds)
+        public async Task RemoveUserNotifications(Guid notificationId)
         {
-            await _userNotificationService.RemoveUserNotifications(userNotificationIds);
+            await _userNotificationService.RemoveUserNotifications(notificationId);
         }
     }
 }

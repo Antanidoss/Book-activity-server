@@ -69,6 +69,8 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
                        notification.SubscribedUserId,
                        notificationMessage
                    ), notification.SubscribedUserId);
+
+            await _userNotificationRepository.UnitOfWork.Commit();
         }
     }
 }

@@ -9,6 +9,6 @@ namespace BookActivity.Application.Interfaces.Services
     {
         Task<IEnumerable<UserNotificationDto>> GetUserNotificationsAsync(Guid userId);
 
-        Task RemoveUserNotifications(IEnumerable<Guid> userNotificationIds);
+        Task RemoveUserNotifications(Guid notificationId);
     }
 }

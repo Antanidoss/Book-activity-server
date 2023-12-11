@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace BookActivity.Domain.Commands.UserNotificationCommands.RemoveUserNotifications
 {
     public sealed class RemoveUserNotificationsCommand : Command
     {
-        public readonly IEnumerable<Guid> UserNotificationIds;
+        public readonly Guid[] UserNotificationIds;
 
-        public RemoveUserNotificationsCommand(IEnumerable<Guid> userNotificationIds)
+        public RemoveUserNotificationsCommand(params Guid[] userNotificationIds)
         {
             UserNotificationIds = userNotificationIds;
         }
