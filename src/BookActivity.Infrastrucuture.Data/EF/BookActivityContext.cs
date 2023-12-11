@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 using System.Threading;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Infrastructure.Data.EF.Configuration;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using BookActivity.Domain.Core;
 using FluentValidation.Results;
 using Microsoft.Extensions.Configuration;
 using BookActivity.Shared.Extensions;
-using Microsoft.Extensions.Logging;
 
 namespace BookActivity.Infrastructure.Data.EF
 {
@@ -42,7 +40,7 @@ namespace BookActivity.Infrastructure.Data.EF
         {
             var domainEntities = ChangeTracker
                 .Entries<BaseEntity>()
-                .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any());
+                .Where(x => x.State != EntityState.Unchanged && x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any());
 
             var domainEvents = domainEntities
                 .SelectMany(x => x.Entity.DomainEvents)
@@ -55,8 +53,6 @@ namespace BookActivity.Infrastructure.Data.EF
             await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.BeforeOperation), cancellationToken);
 
             var success = await SaveChangesAsync() > 0;
-
-            ClearDomainEvents(domainEntities);
 
             if (success)
                 await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation), cancellationToken);
@@ -127,12 +123,6 @@ namespace BookActivity.Infrastructure.Data.EF
                 if (timeOfUpdate == null || DateTime.Parse(timeOfUpdate.ToString()).Year < DateTime.UtcNow.Year)
                     entry.Property(nameof(BaseEntity.TimeOfUpdate)).CurrentValue = DateTime.UtcNow;
             }
-        }
-
-        private void ClearDomainEvents(IEnumerable<EntityEntry<BaseEntity>> entities)
-        {
-            foreach (var domainEntity in entities)
-                domainEntity.Entity.ClearDomainEvents();
         }
     }
 }
