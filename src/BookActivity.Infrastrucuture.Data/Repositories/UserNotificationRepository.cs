@@ -43,9 +43,9 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await filterModel.Filter(query);
         }
 
-        public void Add(UserNotification notification)
+        public async ValueTask AddAsync(UserNotification notification)
         {
-            _db.Add(notification);
+            await _db.AddAsync(notification);
         }
 
         public void RemoveRange(Specification<UserNotification> specification)

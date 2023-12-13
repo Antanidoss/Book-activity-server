@@ -29,7 +29,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
 
             ActiveBook activeBook = new(request.TotalNumberPages, request.NumberPagesRead, request.BookId, request.UserId);
 
-            _activeBookRepository.Add(activeBook);
+            await _activeBookRepository.AddAsync(activeBook, cancellationToken);
 
             request.Id = activeBook.Id;
 

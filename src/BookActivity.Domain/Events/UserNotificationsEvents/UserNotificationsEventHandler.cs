@@ -36,14 +36,14 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
 
             AppUserByIdSpec userByIdSpec = new(notification.UserId.Value);
             DbSingleResultFilterModel<AppUser> filterModelForUser = new(userByIdSpec, forUpdate: true, u => u.Subscribers);
-            var user = await _appUserRepository.GetByFilterAsync(filterModelForUser);
+            var user = await _appUserRepository.GetByFilterAsync(filterModelForUser, cancellationToken);
 
             string notificationMessage = $"{user.UserName} has made the book id \"{notification.BookId}\" active";
 
             foreach (var followedUser in user.Subscribers)
             {
                 UserNotification userNotification = new(notificationMessage, followedUser.UserIdWhoSubscribed) { Id = Guid.NewGuid() };
-                _userNotificationRepository.Add(userNotification);
+                await _userNotificationRepository.AddAsync(userNotification);
 
                 await _userNotificationsHub.Send(new UserNotificationModel(
                         userNotification.Id,
@@ -62,7 +62,7 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
             string notificationMessage = $"{notification.UserNameWhoSubscribed} has subscribed to you";
 
             UserNotification userNotification = new(notificationMessage, notification.SubscribedUserId) { Id = Guid.NewGuid() };
-            _userNotificationRepository.Add(userNotification);
+            await _userNotificationRepository.AddAsync(userNotification);
 
             await _userNotificationsHub.Send(new UserNotificationModel(
                        userNotification.Id,

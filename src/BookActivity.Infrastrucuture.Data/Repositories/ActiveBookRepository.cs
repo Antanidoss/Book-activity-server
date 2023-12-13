@@ -8,6 +8,7 @@ using BookActivity.Infrastructure.Data.EF;
 using BookActivity.Infrastructure.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
@@ -26,7 +27,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
             _dbSet = _db.Set<ActiveBook>();
         }
 
-        public async Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<ActiveBook, TResult> filterModel)
+        public async Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<ActiveBook, TResult> filterModel, CancellationToken cancellationToken = default)
         {
             CommonValidator.ThrowExceptionIfNull(filterModel);
 
@@ -41,7 +42,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await filterModel.Filter(query);
         }
 
-        public async Task<ActiveBook> GetByFilterAsync(DbSingleResultFilterModel<ActiveBook> filterModel)
+        public async Task<ActiveBook> GetByFilterAsync(DbSingleResultFilterModel<ActiveBook> filterModel, CancellationToken cancellationToken = default)
         {
             CommonValidator.ThrowExceptionIfNull(filterModel);
 
@@ -53,7 +54,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await query.FirstOrDefaultAsync(filterModel.Specification);
         }
 
-        public async Task<int> GetCountByFilterAsync(DbMultipleResultFilterModel<ActiveBook> filterModel)
+        public async Task<int> GetCountByFilterAsync(DbMultipleResultFilterModel<ActiveBook> filterModel, CancellationToken cancellationToken = default)
         {
             CommonValidator.ThrowExceptionIfNull(filterModel);
 
@@ -61,14 +62,14 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
             return await query
                 .ApplyPaginaton(filterModel.PaginationModel)
-                .CountAsync();
+                .CountAsync(cancellationToken);
         }
 
-        public void Add(ActiveBook activeBook)
+        public async Task AddAsync(ActiveBook activeBook, CancellationToken cancellationToken = default)
         {
             CommonValidator.ThrowExceptionIfNull(activeBook);
 
-            _dbSet.Add(activeBook);
+            await _dbSet.AddAsync(activeBook, cancellationToken);
         }
 
         public void Remove(ActiveBook activeBook)

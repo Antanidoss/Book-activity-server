@@ -10,6 +10,7 @@ using BookActivity.Infrastructure.Data.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
@@ -31,7 +32,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public IUnitOfWork UnitOfWork => _db;
 
-        public async Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<AppUser, TResult> filterModel)
+        public async Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<AppUser, TResult> filterModel, CancellationToken cancellationToken = default)
         {
             CommonValidator.ThrowExceptionIfNull(filterModel);
 
@@ -46,7 +47,7 @@ namespace BookActivity.Infrastructure.Data.Repositories
             return await filterModel.Filter(query);
         }
 
-        public async Task<AppUser> GetByFilterAsync(DbSingleResultFilterModel<AppUser> filterModel)
+        public async Task<AppUser> GetByFilterAsync(DbSingleResultFilterModel<AppUser> filterModel, CancellationToken cancellationToken = default)
         {
             CommonValidator.ThrowExceptionIfNull(filterModel);
 
@@ -55,10 +56,10 @@ namespace BookActivity.Infrastructure.Data.Repositories
             if (!filterModel.ForUpdate)
                 query = query.AsNoTracking();
 
-            return await query.FirstOrDefaultAsync(filterModel.Specification);
+            return await query.FirstOrDefaultAsync(filterModel.Specification, cancellationToken);
         }
 
-        public async Task<int> GetCountByFilterAsync(DbMultipleResultFilterModel<AppUser> filterModel)
+        public async Task<int> GetCountByFilterAsync(DbMultipleResultFilterModel<AppUser> filterModel, CancellationToken cancellationToken = default)
         {
             CommonValidator.ThrowExceptionIfNull(filterModel);
 
@@ -66,17 +67,19 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
             return await query
                 .ApplyPaginaton(filterModel.PaginationModel)
-                .CountAsync();
+                .CountAsync(cancellationToken);
         }
 
-        public async Task<bool> CheckExistBySpecAsync(Specification<AppUser> specification)
+        public async Task<bool> CheckExistBySpecAsync(Specification<AppUser> specification, CancellationToken cancellationToken = default)
         {
-            return await _dbSet.AnyAsync(specification);
+            return await _dbSet.AnyAsync(specification, cancellationToken);
         }
 
-        public async Task<IdentityResult> Addasync(AppUser user, string password)
+        public async Task<IdentityResult> Addasync(AppUser user, string password, CancellationToken cancellationToken = default)
         {
             CommonValidator.ThrowExceptionIfNull(user);
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             return await _userManager.CreateAsync(user, password);
         }
