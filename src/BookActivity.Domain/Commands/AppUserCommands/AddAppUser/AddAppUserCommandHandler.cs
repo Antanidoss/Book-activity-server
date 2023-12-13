@@ -28,7 +28,7 @@ namespace BookActivity.Domain.Commands.AppUserCommands.AddAppUser
                 Email = request.Email,
                 UserName = request.Name,
                 AvatarImage = request.AvatarImage
-            }, request.Password);
+            }, request.Password, cancellationToken);
 
             return createUserResult.ToValidationResult();
         }

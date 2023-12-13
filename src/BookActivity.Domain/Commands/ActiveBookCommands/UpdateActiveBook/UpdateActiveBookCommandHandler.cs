@@ -30,7 +30,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook
 
             ActiveBookByIdSpec specification = new(request.Id);
             DbSingleResultFilterModel<ActiveBook> filterModel = new(specification, forUpdate: true);
-            var activeBook = await _activeBookRepository.GetByFilterAsync(filterModel);
+            var activeBook = await _activeBookRepository.GetByFilterAsync(filterModel, cancellationToken);
 
             if (activeBook is null)
                 AddError(ValidationErrorConstants.GetEnitityNotFoundMessage(nameof(ActiveBook)));

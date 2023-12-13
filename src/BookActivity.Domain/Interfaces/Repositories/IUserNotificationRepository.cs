@@ -9,7 +9,7 @@ namespace BookActivity.Domain.Interfaces.Repositories
     {
         Task<TResult> GetByFilterAsync<TResult>(DbMultipleResultFilterModel<UserNotification, TResult> filterModel);
 
-        void Add(UserNotification notification);
+        ValueTask AddAsync(UserNotification notification);
 
         void RemoveRange(Specification<UserNotification> specification);
     }

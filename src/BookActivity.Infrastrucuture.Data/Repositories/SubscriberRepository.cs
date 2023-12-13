@@ -2,6 +2,8 @@
 using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.EF;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.Data.Repositories
 {
@@ -16,9 +18,9 @@ namespace BookActivity.Infrastructure.Data.Repositories
 
         public IUnitOfWork UnitOfWork => _db;
 
-        public void Add(Subscriber subscriber)
+        public async Task AddAsync(Subscriber subscriber, CancellationToken cancellationToken = default)
         {
-            _db.Subscribers.Add(subscriber);
+            await _db.Subscribers.AddAsync(subscriber, cancellationToken);
         }
         public void Remove(Subscriber subscriber)
         {

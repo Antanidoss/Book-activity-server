@@ -26,7 +26,7 @@ namespace BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser
 
             AppUserByIdSpec specification = new(request.AppUserId);
             DbSingleResultFilterModel<AppUser> filterModel = new(specification, forUpdate: true);
-            var user = await _appUserRepository.GetByFilterAsync(filterModel);
+            var user = await _appUserRepository.GetByFilterAsync(filterModel, cancellationToken);
 
             user.AvatarImage = request.AvatarImage;
             user.UserName = request.Name;
