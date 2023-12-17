@@ -16,7 +16,7 @@ namespace BookActivity.Domain.Specifications.UserNotificationSpecs
 
         public override Expression<Func<UserNotification, bool>> ToExpression()
         {
-            return u => u.UserId == _userId;
+            return u => u.ToUserId == _userId;
         }
     }
 }

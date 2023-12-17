@@ -49,7 +49,7 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
                 SubscribedUserId = request.SubscribedUserId
             };
 
-            subscriber.AddDomainEvent(new SubscribeAppUserEvent(request.SubscribedUserId, await _appUserRepository.GetByFilterAsync<string>(GetFilter(userWhoSubscribedSpec))));
+            subscriber.AddDomainEvent(new SubscribeAppUserEvent(request.SubscribedUserId, request.UserIdWhoSubscribed, await _appUserRepository.GetByFilterAsync<string>(GetFilter(userWhoSubscribedSpec))));
 
             await _subscriberRepository.AddAsync(subscriber, cancellationToken);
             await _subscriptionRepository.AddAsync(new Subscription

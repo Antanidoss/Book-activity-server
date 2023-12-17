@@ -1,27 +1,20 @@
-﻿using BookActivity.Domain.Core;
-using System;
+﻿using System;
 
 namespace BookActivity.Domain.Models
 {
-    public sealed class UserNotification : BaseEntity
+    public sealed class UserNotification : Notification
     {
-        /// <summary>
-        /// Notification Description
-        /// </summary>
-        public string Description { get; private set; }
-
         /// <summary>
         /// Relation of user notification with the user
         /// </summary>
-        public AppUser User { get; private set; }
-        public Guid UserId { get; private set; }
+        public AppUser FromUser { get; private set; }
+        public Guid FromUserId { get; private set; }
 
         private UserNotification() : base() { }
 
-        public UserNotification(string description, Guid userId)
+        public UserNotification(string description, Guid toUserId, Guid fromUserId) : base(description, toUserId)
         {
-            Description = description;
-            UserId = userId;
+            FromUserId = fromUserId;
         }
     }
 }

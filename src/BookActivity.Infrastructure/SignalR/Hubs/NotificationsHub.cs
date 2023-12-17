@@ -1,23 +1,22 @@
 ﻿using BookActivity.Domain.Interfaces.Hubs;
-using BookActivity.Domain.Models.Notifications;
+using BookActivity.Domain.Models.SendNotificationModels;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Infrastructure.SignalR.Hubs
 {
-    internal sealed class UserNotificationsHub : BaseHub, IUserNotificationsHub
+    internal sealed class NotificationsHub : BaseHub, INotificationsHub
     {
-        private readonly IHubContext<UserNotificationsHub> _context;
+        private readonly IHubContext<NotificationsHub> _context;
 
-        public UserNotificationsHub(IHubContext<UserNotificationsHub> context)
+        public NotificationsHub(IHubContext<NotificationsHub> context)
         {
             _context = context;
         }
 
-        public async Task SendAsync(UserNotificationModel notificationInfo)
+        public async Task SendAsync(NotificationModel notificationInfo)
         {
             var connectionIds = GetConnectionIdsByUserId(notificationInfo.ToUserId);
 

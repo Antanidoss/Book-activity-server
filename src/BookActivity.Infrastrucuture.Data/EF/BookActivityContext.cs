@@ -23,6 +23,7 @@ namespace BookActivity.Infrastructure.Data.EF
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookOpinion> BookOpinions { get; set; }
         public DbSet<BookNote> BookNotes { get; set; }
+        public DbSet<AppUser> Notifications { get; set; }
         public DbSet<UserNotification> UserNotifications { get; set; }
         public DbSet<Subscriber> Subscribers { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
@@ -86,6 +87,7 @@ namespace BookActivity.Infrastructure.Data.EF
             modelBuilder.ApplyConfiguration(new AuthorConfiguration());
             modelBuilder.ApplyConfiguration(new BookNoteConfiguration());
             modelBuilder.ApplyConfiguration(new BookOpinionConfiguration());
+            modelBuilder.ApplyConfiguration(new NotificationConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
