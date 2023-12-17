@@ -6,6 +6,6 @@ namespace BookActivity.Domain.Interfaces.Hubs
 {
     public interface IUserNotificationsHub
     {
-        Task Send(UserNotificationModel notificationInfo, Guid userId);
+        Task SendAsync(UserNotificationModel notificationInfo);
     }
 }

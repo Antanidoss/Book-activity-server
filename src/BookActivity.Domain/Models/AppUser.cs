@@ -25,7 +25,7 @@ namespace BookActivity.Domain.Models
         /// <summary>
         /// Relation of user with the notifications
         /// </summary>
-        public ICollection<UserNotification> UserNotifications { get; set; }
+        public ICollection<Notification> Notifications { get; set; }
 
         /// <summary>
         /// Relation of user with the active books
