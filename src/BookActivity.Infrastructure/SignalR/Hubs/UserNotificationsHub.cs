@@ -2,7 +2,6 @@
 using BookActivity.Domain.Models.Notifications;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,7 +25,7 @@ namespace BookActivity.Infrastructure.SignalR.Hubs
 
             await _context.Clients
                 .Clients(connectionIds)
-                .SendAsync("GetNotification", JsonConvert.SerializeObject(notificationInfo));
+                .SendAsync("GetUserNotification", JsonConvert.SerializeObject(notificationInfo));
         }
     }
 }
