@@ -9,14 +9,14 @@ namespace BookActivity.Api
 {
     public class Startup
     {
+        public readonly IConfiguration Configuration;
+        public readonly IWebHostEnvironment Environment;
+
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
             Environment = env;
         }
-
-        public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Environment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -31,7 +31,7 @@ namespace BookActivity.Api
                 var httpContextAccessor = s.GetRequiredService<IHttpContextAccessor>();
                 var user = httpContextAccessor.HttpContext.Items["User"];
 
-                return user != null ? (user as CurrentUser) : null;
+                return user as CurrentUser;
             });
 
             services.ConfigureAuthentication(Configuration);

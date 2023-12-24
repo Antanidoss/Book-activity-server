@@ -9,6 +9,7 @@ using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.UserNotificationSpecs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BookActivity.Application.Implementation.Services
@@ -32,7 +33,7 @@ namespace BookActivity.Application.Implementation.Services
         {
             UserNotificationByUserIdSpec specification = new(userId);
             DbMultipleResultFilterModel<UserNotification> filterModel = new(specification);
-            var notifications = await _userNotificationRepository.GetByFilterAsync(filterModel);
+            var notifications = (await _userNotificationRepository.GetByFilterAsync(filterModel)).ToList();
 
             return _mapper.Map<IEnumerable<UserNotificationDto>>(notifications);
         }

@@ -23,10 +23,14 @@ namespace BookActivity.Infrastructure.Data.EF
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookOpinion> BookOpinions { get; set; }
         public DbSet<BookNote> BookNotes { get; set; }
-        public DbSet<AppUser> Notifications { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         public DbSet<UserNotification> UserNotifications { get; set; }
         public DbSet<Subscriber> Subscribers { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
+        public DbSet<BookNoteLike> BookNoteLikes { get; set; }
+        public DbSet<BookNoteDislike> BookNoteDislikes { get; set; }
+        public DbSet<BookOpinionLike> BookOpinionLikes { get; set; }
+        public DbSet<BookOpinionDislike> BookOpinionDislikes { get; set; }
 
         private readonly IMediatorHandler _mediatorHandler;
         private readonly IConfiguration _configuration;

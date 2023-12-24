@@ -11,6 +11,9 @@ namespace BookActivity.Infrastructure.Data.EF.Configuration
             builder.Property(o => o.Description).HasMaxLength(1000).IsRequired();
             builder.Property(o => o.Grade).HasMaxLength(BookOpinion.GradeMax);
             builder.Ignore(s => s.Id).HasKey(o => new { o.BookId, o.UserId });
+
+            builder.HasMany(o => o.Likes).WithOne(l => l.BookOpinion).OnDelete(DeleteBehavior.NoAction);
+            builder.HasMany(o => o.Dislikes).WithOne(l => l.BookOpinion).OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

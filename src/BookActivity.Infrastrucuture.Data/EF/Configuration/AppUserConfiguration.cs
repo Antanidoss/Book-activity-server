@@ -17,6 +17,22 @@ namespace BookActivity.Infrastructure.Data.EF.Configuration
                     .WithOne(s => s.SubscribedUser)
                     .HasForeignKey(s => s.SubscribedUserId)
                     .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.HasMany(o => o.BookNoteLikes)
+                .WithOne(l => l.User)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.HasMany(o => o.BookNoteDislikes)
+               .WithOne(l => l.User)
+               .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.HasMany(o => o.BookOpinionLikes)
+               .WithOne(l => l.User)
+               .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.HasMany(o => o.BookOpinionDislikes)
+               .WithOne(l => l.User)
+               .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

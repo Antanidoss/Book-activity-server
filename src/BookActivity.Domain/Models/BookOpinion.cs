@@ -1,31 +1,19 @@
 ﻿using BookActivity.Domain.Core;
 using System;
+using System.Collections.Generic;
 
 namespace BookActivity.Domain.Models
 {
     public sealed class BookOpinion : BaseEntity
     {
-        /// <summary>
-        /// User rating of the book
-        /// </summary>
         public float Grade { get; set; }
-
-        /// <summary>
-        /// Opinion Description
-        /// </summary>
         public string Description { get; set; }
-
-        /// <summary>
-        /// Relation of opinion with the user
-        /// </summary>
         public AppUser User { get; private set; }
         public Guid UserId { get; private set; }
-
-        /// <summary>
-        /// Relation of book opinion with the book
-        /// </summary>
         public Book Book { get; set; }
         public Guid BookId { get; set; }
+        public ICollection<BookOpinionLike> Likes { get; private set; }
+        public ICollection<BookOpinionDislike> Dislikes { get; private set; }
 
         public const int GradeMin = 0;
         public const int GradeMax = 5;
