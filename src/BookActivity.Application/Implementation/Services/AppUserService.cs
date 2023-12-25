@@ -3,7 +3,6 @@ using AutoMapper;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models;
 using BookActivity.Application.Models.Dto.Create;
-using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Commands.AppUserCommands.AddAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser;
@@ -11,11 +10,10 @@ using BookActivity.Domain.Commands.AppUserCommands.UnsubscribeAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
-using BookActivity.Domain.Specifications.AppUserSpecs;
+using BookActivity.Domain.Queries.AppUserQueries.GetCurrentUser;
 using BookActivity.Domain.Validations;
 using BookActivity.Shared.Models;
 using FluentValidation.Results;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -24,16 +22,12 @@ namespace BookActivity.Application.Implementation.Services
     internal class AppUserService : IAppUserService
     {
         private readonly IMapper _mapper;
-
         private readonly IMediatorHandler _mediatorHandler;
 
-        private readonly IDbContext _efContext;
-
-        public AppUserService(IMapper mapper, IMediatorHandler mediatorHandler, IDbContext efContext)
+        public AppUserService(IMapper mapper, IMediatorHandler mediatorHandler)
         {
             _mapper = mapper;
             _mediatorHandler = mediatorHandler;
-            _efContext = efContext;
         }
 
         public async Task<ValidationResult> AddAsync(CreateAppUserDto appUserCreateDto)
@@ -81,14 +75,13 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendQueryAsync(query);
         }
 
-        public async Task<Result<AppUserDto>> GetByIdAsync(Guid appUserId)
+        public async Task<CurrentUser> GetCurrentUserByIdAsync(Guid userId)
         {
-            CommonValidator.ThrowExceptionIfEmpty(appUserId, nameof(appUserId));
+            CommonValidator.ThrowExceptionIfEmpty(userId, nameof(userId));
 
-            AppUserByIdSpec specification = new(appUserId);
-            var appUser = await _efContext.Users.FirstOrDefaultAsync(specification);
+            var query = new GetCurrentUserQuery(userId);
 
-            return _mapper.Map<AppUserDto>(appUser);
+            return await _mediatorHandler.SendQueryAsync(query);
         }
     }
 }

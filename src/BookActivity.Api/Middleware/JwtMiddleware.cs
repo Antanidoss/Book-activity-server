@@ -11,7 +11,6 @@ namespace BookActivity.Api.Middleware
     internal sealed class JwtMiddleware
     {
         private readonly RequestDelegate _next;
-
         private readonly TokenInfo _tokenInfo;
 
         public JwtMiddleware(RequestDelegate next, IOptions<TokenInfo> tokenInfo)
@@ -47,10 +46,7 @@ namespace BookActivity.Api.Middleware
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
                 var userId = jwtToken.Claims.First(x => x.Type == "userId").Value.ToString();
-
-                var user = (await userService.GetByIdAsync(Guid.Parse(userId))).Value;
-                if (user == null)
-                    return;
+                var user = await userService.GetCurrentUserByIdAsync(Guid.Parse(userId));
 
                 context.Items["User"] = new CurrentUser
                 {
