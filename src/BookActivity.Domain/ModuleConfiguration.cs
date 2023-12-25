@@ -23,6 +23,7 @@ using BookActivity.Domain.Events.UserNotificationsEvents;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatisticByDay;
 using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
+using BookActivity.Domain.Queries.AppUserQueries.GetCurrentUser;
 using BookActivity.Domain.Queries.OcrQueries.GetTextOnImage;
 using BookActivity.Shared.Interfaces;
 using BookActivity.Shared.Models;
@@ -76,6 +77,7 @@ namespace BookActivity.Domain
             services.AddScoped<IRequestHandler<GetActiveBooksStatisticByDayQuery, IEnumerable<ActiveBookStatisticByDay>>, GetActiveBooksStatisticByDayQueryHandler>();
 
             services.AddScoped<IRequestHandler<AuthenticationUserQuery, Result<AuthenticationResult>>, AuthenticationUserQueryHandler>();
+            services.AddScoped<IRequestHandler<GetCurrentUserQuery, CurrentUser>, GetCurrentUserQueryHandler>();
 
             services.AddScoped<IRequestHandler<GetTextOnImageQuery, string>, GetTextOnImageQueryHandler>();
         }
@@ -93,6 +95,7 @@ namespace BookActivity.Domain
         {
             services.AddMemoryCache();
             services.AddSingleton<ActiveBookStatisticCache>();
+            services.AddSingleton<UserCache>();
         }
     }
 }
