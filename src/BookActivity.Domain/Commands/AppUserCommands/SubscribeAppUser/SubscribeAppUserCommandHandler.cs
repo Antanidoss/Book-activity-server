@@ -1,10 +1,10 @@
 ﻿using BookActivity.Domain.Events.AppUserEvents;
-using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using FluentValidation.Results;
 using MediatR;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,20 +14,11 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
     internal sealed class SubscribeAppUserCommandHandler : CommandHandler,
         IRequestHandler<SubscribeAppUserCommand, ValidationResult>
     {
-        private readonly IAppUserRepository _appUserRepository;
+        private readonly IDbContext _efContext;
 
-        private readonly ISubscriberRepository _subscriberRepository;
-
-        private readonly ISubscriptionRepository _subscriptionRepository;
-
-        public SubscribeAppUserCommandHandler(
-            IAppUserRepository appUserRepository,
-            ISubscriberRepository subscriberRepository,
-            ISubscriptionRepository subscriptionRepository)
+        public SubscribeAppUserCommandHandler(IDbContext efContext)
         {
-            _appUserRepository = appUserRepository;
-            _subscriberRepository = subscriberRepository;
-            _subscriptionRepository = subscriptionRepository;
+            _efContext = efContext;
         }
 
         public async Task<ValidationResult> Handle(SubscribeAppUserCommand request, CancellationToken cancellationToken)
@@ -35,35 +26,24 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            AppUserByIdSpec subscribedUserSpec = new(request.SubscribedUserId);
-            if (!(await _appUserRepository.CheckExistBySpecAsync(subscribedUserSpec)))
-                throw new Exception($"Failed to find user by id = {request.SubscribedUserId}");
-
-            AppUserByIdSpec userWhoSubscribedSpec = new(request.UserIdWhoSubscribed);
-            if (!(await _appUserRepository.CheckExistBySpecAsync(userWhoSubscribedSpec)))
-                throw new Exception($"Failed to find user by id = {request.UserIdWhoSubscribed}");
-
             Subscriber subscriber = new()
             {
                 UserIdWhoSubscribed = request.UserIdWhoSubscribed,
                 SubscribedUserId = request.SubscribedUserId
             };
 
-            subscriber.AddDomainEvent(new SubscribeAppUserEvent(request.SubscribedUserId, request.UserIdWhoSubscribed, await _appUserRepository.GetByFilterAsync<string>(GetFilter(userWhoSubscribedSpec))));
+            AppUserByIdSpec specification = new(request.UserIdWhoSubscribed);
+            var userName = await _efContext.Users.Where(specification).Select(u => u.UserName).FirstAsync();
+            subscriber.AddDomainEvent(new SubscribeAppUserEvent(request.SubscribedUserId, request.UserIdWhoSubscribed, userName));
 
-            await _subscriberRepository.AddAsync(subscriber, cancellationToken);
-            await _subscriptionRepository.AddAsync(new Subscription
+            await _efContext.Subscribers.AddAsync(subscriber, cancellationToken);
+            await _efContext.Subscriptions.AddAsync(new Subscription
             {
                 UserIdWhoSubscribed = request.UserIdWhoSubscribed,
                 SubscribedUserId = request.SubscribedUserId
             }, cancellationToken);
 
-            return await Commit(_subscriberRepository.UnitOfWork);
-        }
-
-        private Func<IQueryable<AppUser>, string> GetFilter(AppUserByIdSpec userWhoSubscribedSpec)
-        {
-            return query => query.Where(userWhoSubscribedSpec).Select(u => u.UserName).First();
+            return await Commit(_efContext);
         }
     }
 }

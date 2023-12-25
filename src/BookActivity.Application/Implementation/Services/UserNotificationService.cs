@@ -2,11 +2,9 @@
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Domain.Commands.UserNotificationCommands.RemoveUserNotifications;
-using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Interfaces;
-using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.UserNotificationSpecs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,24 +14,21 @@ namespace BookActivity.Application.Implementation.Services
 {
     internal sealed class UserNotificationService : IUserNotificationService
     {
-        private readonly IUserNotificationRepository _userNotificationRepository;
-
+        private readonly IMediatorHandler _mediatorHandler;
+        private readonly IDbContext _efContext;
         private readonly IMapper _mapper;
 
-        private readonly IMediatorHandler _mediatorHandler;
-
-        public UserNotificationService(IUserNotificationRepository userNotificationRepository, IMapper mapper, IMediatorHandler mediatorHandler)
+        public UserNotificationService(IMediatorHandler mediatorHandler, IDbContext efContext, IMapper mapper)
         {
-            _userNotificationRepository = userNotificationRepository;
-            _mapper = mapper;
             _mediatorHandler = mediatorHandler;
+            _efContext = efContext;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<UserNotificationDto>> GetUserNotificationsAsync(Guid userId)
         {
             UserNotificationByUserIdSpec specification = new(userId);
-            DbMultipleResultFilterModel<UserNotification> filterModel = new(specification);
-            var notifications = (await _userNotificationRepository.GetByFilterAsync(filterModel)).ToList();
+            var notifications = await _efContext.UserNotifications.Where(specification).ToListAsync();
 
             return _mapper.Map<IEnumerable<UserNotificationDto>>(notifications);
         }

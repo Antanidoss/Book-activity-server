@@ -1,12 +1,12 @@
 ﻿using Ardalis.Result;
 using BookActivity.Domain.Constants;
-using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using BookActivity.Shared.Models;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -20,17 +20,14 @@ namespace BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser
 {
     internal sealed class AuthenticationUserQueryHandler : IRequestHandler<AuthenticationUserQuery, Result<AuthenticationResult>>
     {
-        private readonly IAppUserRepository _userRepository;
-
+        private readonly IDbContext _efContext;
         private readonly UserManager<AppUser> _userManager;
-
         private readonly SignInManager<AppUser> _signInManager;
-
         private readonly TokenInfo _tokenInfo;
 
-        public AuthenticationUserQueryHandler(IAppUserRepository userRepository, UserManager<AppUser> userManger, IOptions<TokenInfo> tokenInfo, SignInManager<AppUser> signInManager)
+        public AuthenticationUserQueryHandler(IDbContext efContext, UserManager<AppUser> userManger, IOptions<TokenInfo> tokenInfo, SignInManager<AppUser> signInManager)
         {
-            _userRepository = userRepository;
+            _efContext = efContext;
             _userManager = userManger;
             _tokenInfo = tokenInfo.Value;
             _signInManager = signInManager;
@@ -39,8 +36,7 @@ namespace BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser
         public async Task<Result<AuthenticationResult>> Handle(AuthenticationUserQuery request, CancellationToken cancellationToken)
         {
             AppUserByEmailSpec specification = new(request.Email);
-            DbSingleResultFilterModel<AppUser> filterModel = new(specification, forUpdate: true);
-            var appUser = await _userRepository.GetByFilterAsync(filterModel);
+            var appUser = await _efContext.Users.FirstOrDefaultAsync(specification);
 
             if (appUser is null)
                 return Result<AuthenticationResult>.Error(ValidationErrorConstants.IncorrectEmail);

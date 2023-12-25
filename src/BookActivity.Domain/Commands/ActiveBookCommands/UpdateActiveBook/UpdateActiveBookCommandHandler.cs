@@ -1,11 +1,12 @@
 ﻿using BookActivity.Domain.Constants;
 using BookActivity.Domain.Events.ActiveBookEvent;
-using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.ActiveBookSpecs;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,13 +15,13 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook
     internal sealed class UpdateActiveBookCommandHandler : CommandHandler,
         IRequestHandler<UpdateActiveBookCommand, ValidationResult>
     {
-        private readonly IActiveBookRepository _activeBookRepository;
-        private readonly IEventStoreRepository _eventStoreRepository;
+        private readonly IDbContext _efContext;
+        private readonly IMongoDatabase _mongoContext;
 
-        public UpdateActiveBookCommandHandler(IActiveBookRepository activeBookRepository, IEventStoreRepository eventStoreRepository)
+        public UpdateActiveBookCommandHandler(IDbContext efContext, IMongoDatabase mongoContext)
         {
-            _activeBookRepository = activeBookRepository;
-            _eventStoreRepository = eventStoreRepository;
+            _efContext = efContext;
+            _mongoContext = mongoContext;
         }
 
         public async Task<ValidationResult> Handle(UpdateActiveBookCommand request, CancellationToken cancellationToken)
@@ -29,8 +30,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook
                 return request.ValidationResult;
 
             ActiveBookByIdSpec specification = new(request.Id);
-            DbSingleResultFilterModel<ActiveBook> filterModel = new(specification, forUpdate: true);
-            var activeBook = await _activeBookRepository.GetByFilterAsync(filterModel, cancellationToken);
+            var activeBook = await _efContext.ActiveBooks.FirstOrDefaultAsync(specification, cancellationToken);
 
             if (activeBook is null)
                 AddError(ValidationErrorConstants.GetEnitityNotFoundMessage(nameof(ActiveBook)));
@@ -40,9 +40,9 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook
 
             UpdateActiveBookEvent updateActiveBookEvent = new(activeBook.Id, activeBook.NumberPagesRead, prevNumberPagesRead, request.UserId);
             activeBook.AddDomainEvent(updateActiveBookEvent);
-            await _eventStoreRepository.SaveAsync(updateActiveBookEvent);
+            await _mongoContext.GetCollection<UpdateActiveBookEvent>(EventMessageTypeConstants.UpdateActiveBook).InsertOneAsync(updateActiveBookEvent);
 
-            return await Commit(_activeBookRepository.UnitOfWork);
+            return await Commit(_efContext);
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using BookActivity.Domain.Events.BookEvents;
-using BookActivity.Domain.Exceptions;
-using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Specifications.AuthorSpecs;
-using BookActivity.Domain.Validations;
 using FluentValidation.Results;
 using MediatR;
 using System.Linq;
@@ -15,14 +12,11 @@ namespace BookActivity.Domain.Commands.BookCommands.AddBook
     internal sealed class AddBookCommandHandler : CommandHandler,
         IRequestHandler<AddBookCommand, ValidationResult>
     {
-        private readonly IBookRepository _bookRepository;
+        private readonly IDbContext _efContext;
 
-        private readonly IAuthorRepository _authorRepository;
-
-        public AddBookCommandHandler(IBookRepository bookRepository, IAuthorRepository authorRepository)
+        public AddBookCommandHandler(IDbContext efContext)
         {
-            _bookRepository = bookRepository;
-            _authorRepository = authorRepository;
+            _efContext = efContext;
         }
 
         public async Task<ValidationResult> Handle(AddBookCommand request, CancellationToken cancellationToken)
@@ -30,19 +24,13 @@ namespace BookActivity.Domain.Commands.BookCommands.AddBook
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            AuthorByIdSpec specification = new(request.AuthorIds.ToArray());
-            var authorCount = await _authorRepository.GetCountByFilterAsync(specification);
-
-            if (CommonValidator.IsLessThanOrEqualToZero(authorCount))
-                throw new NotFoundException(nameof(request.AuthorIds));
-
             var bookAuthor = request.AuthorIds.Select(a => new BookAuthor { AuthorId = a });
             Book newBook = new(request.Title, request.Description, request.ImageData, bookAuthor);
 
             newBook.AddDomainEvent(new AddBookEvent(newBook.Id, newBook.Title, newBook.Description, request.AuthorIds));
-            _bookRepository.Add(newBook);
+            await _efContext.Books.AddAsync(newBook);
 
-            return await Commit(_bookRepository.UnitOfWork);
+            return await Commit(_efContext);
         }
     }
 }

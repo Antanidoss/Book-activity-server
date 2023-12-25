@@ -1,4 +1,4 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
 using FluentValidation.Results;
 using MediatR;
@@ -10,11 +10,11 @@ namespace BookActivity.Domain.Commands.AuthorCommands.AddAuthor
     internal sealed class AddAuthorCommandHandler : CommandHandler,
         IRequestHandler<AddAuthorCommand, ValidationResult>
     {
-        private readonly IAuthorRepository _authorRepository;
+        private readonly IDbContext _efContext;
 
-        public AddAuthorCommandHandler(IAuthorRepository authorRepository)
+        public AddAuthorCommandHandler(IDbContext efContext)
         {
-            _authorRepository = authorRepository;
+            _efContext = efContext;
         }
 
         public async Task<ValidationResult> Handle(AddAuthorCommand request, CancellationToken cancellationToken)
@@ -24,11 +24,11 @@ namespace BookActivity.Domain.Commands.AuthorCommands.AddAuthor
 
             Author newAuthor = new(request.FirstName, request.Surname);
 
-            _authorRepository.Add(newAuthor);
+            await _efContext.Authors.AddAsync(newAuthor, cancellationToken);
 
             request.Id = newAuthor.Id;
 
-            return await Commit(_authorRepository.UnitOfWork);
+            return await Commit(_efContext);
         }
     }
 }

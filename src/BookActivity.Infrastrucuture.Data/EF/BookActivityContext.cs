@@ -15,7 +15,7 @@ using BookActivity.Shared.Extensions;
 
 namespace BookActivity.Infrastructure.Data.EF
 {
-    public sealed class BookActivityContext : IdentityDbContext<AppUser, AppRole, Guid>, IUnitOfWork
+    public sealed class BookActivityContext : IdentityDbContext<AppUser, AppRole, Guid>, IDbContext
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<ActiveBook> ActiveBooks { get; set; }

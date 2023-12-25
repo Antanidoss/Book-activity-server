@@ -1,4 +1,4 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
 using FluentValidation.Results;
 using MediatR;
@@ -10,11 +10,11 @@ namespace BookActivity.Domain.Commands.BookNoteCommands.AddBookNote
     internal sealed class AddBookNoteCommandHandler : CommandHandler,
          IRequestHandler<AddBookNoteCommand, ValidationResult>
     {
-        private readonly IBookNoteRepository _bookNoteRepository;
+        private readonly IDbContext _efContext;
 
-        public AddBookNoteCommandHandler(IBookNoteRepository bookNoteRepository)
+        public AddBookNoteCommandHandler(IDbContext efContext)
         {
-            _bookNoteRepository = bookNoteRepository;
+            _efContext = efContext;
         }
 
         public async Task<ValidationResult> Handle(AddBookNoteCommand request, CancellationToken cancellationToken)
@@ -24,9 +24,9 @@ namespace BookActivity.Domain.Commands.BookNoteCommands.AddBookNote
 
             BookNote newBookNote = new(request.Note, request.NoteColor, request.ActiveBookId, request.NoteTextColor);
 
-            _bookNoteRepository.Add(newBookNote);
+            await _efContext.BookNotes.AddAsync(newBookNote);
 
-            return await Commit(_bookNoteRepository.UnitOfWork);
+            return await Commit(_efContext);
         }
     }
 }

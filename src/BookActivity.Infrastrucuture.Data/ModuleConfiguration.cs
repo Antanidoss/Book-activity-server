@@ -1,9 +1,6 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
+﻿using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.EF;
 using BookActivity.Infrastructure.Data.Intefaces;
-using BookActivity.Infrastructure.Data.Repositories;
-using BookActivity.Infrastructure.Data.Repositories.EventSourcing;
 using BookActivity.Shared.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +16,7 @@ using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver.Linq;
 using BookActivity.Infrastructure.Data.Graphql.Extensions;
 using BookActivity.Infrastructure.Data.Graphql.Queries;
+using BookActivity.Domain.Interfaces;
 
 namespace BookActivity.Infrastructure.Data
 {
@@ -26,6 +24,7 @@ namespace BookActivity.Infrastructure.Data
     {
         public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<IDbContext, BookActivityContext>();
             services.AddScoped<BookActivityContext>();
 
             services.AddIdentity<AppUser, AppRole>(option =>
@@ -37,7 +36,6 @@ namespace BookActivity.Infrastructure.Data
                 option.Password.RequireLowercase = false;
             }).AddEntityFrameworkStores<BookActivityContext>().AddDefaultTokenProviders();
 
-            ConfigureRepositories(services);
             ConfigureMongoDb(services, configuration);
             ConfigureGraphQL(services);
 
@@ -46,7 +44,7 @@ namespace BookActivity.Infrastructure.Data
 
         public void CreateDatabasesIfNotExist(IServiceScope serviceScope)
         {
-            CreateDatabasesIfNotExist(serviceScope.ServiceProvider.GetRequiredService<BookActivityContext>(), serviceScope.ServiceProvider);
+            CreateDatabasesIfNotExist(serviceScope.ServiceProvider.GetRequiredService<IDbContext>() as DbContext, serviceScope.ServiceProvider);
         }
 
         private void CreateDatabasesIfNotExist(DbContext context, IServiceProvider serviceProvider)
@@ -64,20 +62,6 @@ namespace BookActivity.Infrastructure.Data
                     initializer.InitializeAsync(context as BookActivityContext, serviceProvider.GetRequiredService<UserManager<AppUser>>()).GetAwaiter().GetResult();
                 }
             }
-        }
-
-        private void ConfigureRepositories(IServiceCollection services)
-        {
-            services.AddScoped<IActiveBookRepository, ActiveBookRepository>();
-            services.AddScoped<IBookRepository, BookRepository>();
-            services.AddScoped<IEventStoreRepository, EventStoreRepository>();
-            services.AddScoped<IAuthorRepository, AuthorRepository>();
-            services.AddScoped<IAppUserRepository, AppUserRepository>();
-            services.AddScoped<IBookNoteRepository, BookNoteRepository>();
-            services.AddScoped<IBookOpinionRepository, BookOpinionRepository>();
-            services.AddScoped<IUserNotificationRepository, UserNotificationRepository>();
-            services.AddScoped<ISubscriberRepository, SubscriberRepository>();
-            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
         }
 
         private void ConfigureGraphQL(IServiceCollection services)

@@ -1,9 +1,6 @@
-﻿using BookActivity.Domain.Constants;
-using BookActivity.Domain.Events.ActiveBookEvent;
-using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Events.ActiveBookEvent;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Specifications.ActiveBookSpecs;
 using FluentValidation.Results;
 using MediatR;
 using System.Threading;
@@ -14,11 +11,11 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook
     internal sealed class RemoveActiveBookCommandHandler : CommandHandler,
         IRequestHandler<RemoveActiveBookCommand, ValidationResult>
     {
-        private readonly IActiveBookRepository _activeBookRepository;
+        private readonly IDbContext _efContext;
 
-        public RemoveActiveBookCommandHandler(IActiveBookRepository activeBookRepository)
+        public RemoveActiveBookCommandHandler(IDbContext efContext)
         {
-            _activeBookRepository = activeBookRepository;
+            _efContext = efContext;
         }
 
         public async Task<ValidationResult> Handle(RemoveActiveBookCommand request, CancellationToken cancellationToken)
@@ -26,18 +23,14 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            ActiveBookByIdSpec specification = new(request.Id);
-            DbSingleResultFilterModel<ActiveBook> filterModel = new(specification, forUpdate: true);
-            var activeBook = await _activeBookRepository.GetByFilterAsync(filterModel, cancellationToken);
-
-            if (activeBook is null)
-                AddError(ValidationErrorConstants.GetEnitityNotFoundMessage(nameof(ActiveBook)));
+            ActiveBook activeBook = new() { Id = request.Id };
+            _efContext.ActiveBooks.Attach(activeBook);
+            _efContext.ActiveBooks.Remove(activeBook);
 
             RemoveActiveBookEvent removeActiveBookEvent = new(activeBook.Id, request.UserId);
             activeBook.AddDomainEvent(removeActiveBookEvent);
-            _activeBookRepository.Remove(activeBook);
 
-            return await Commit(_activeBookRepository.UnitOfWork);
+            return await Commit(_efContext);
         }
     }
 }

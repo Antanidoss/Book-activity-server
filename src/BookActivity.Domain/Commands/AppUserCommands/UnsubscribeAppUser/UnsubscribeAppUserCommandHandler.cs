@@ -1,9 +1,7 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Specifications.AppUserSpecs;
 using FluentValidation.Results;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,20 +10,11 @@ namespace BookActivity.Domain.Commands.AppUserCommands.UnsubscribeAppUser
     internal sealed class UnsubscribeAppUserCommandHandler : CommandHandler,
         IRequestHandler<UnsubscribeAppUserCommand, ValidationResult>
     {
-        private readonly IAppUserRepository _appUserRepository;
+        private readonly IDbContext _efContext;
 
-        private readonly ISubscriberRepository _subscriberRepository;
-
-        private readonly ISubscriptionRepository _subscriptionRepository;
-
-        public UnsubscribeAppUserCommandHandler(
-            IAppUserRepository appUserRepository,
-            ISubscriberRepository subscriberRepository,
-            ISubscriptionRepository subscriptionRepository)
+        public UnsubscribeAppUserCommandHandler(IDbContext efContext)
         {
-            _appUserRepository = appUserRepository;
-            _subscriberRepository = subscriberRepository;
-            _subscriptionRepository = subscriptionRepository;
+            _efContext = efContext;
         }
 
         public async Task<ValidationResult> Handle(UnsubscribeAppUserCommand request, CancellationToken cancellationToken)
@@ -33,27 +22,19 @@ namespace BookActivity.Domain.Commands.AppUserCommands.UnsubscribeAppUser
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            AppUserByIdSpec unsubscribedUserSpec = new(request.UnsubscribedUserId);
-            if (!(await _appUserRepository.CheckExistBySpecAsync(unsubscribedUserSpec)))
-                throw new Exception($"Failed to find user by id = {request.UnsubscribedUserId}");
-
-            AppUserByIdSpec userWhoUnsubscribedSpec = new(request.UserIdWhoUnsubscribed);
-            if (!(await _appUserRepository.CheckExistBySpecAsync(userWhoUnsubscribedSpec)))
-                throw new Exception($"Failed to find user by id = {request.UserIdWhoUnsubscribed}");
-
-            _subscriberRepository.Remove(new Subscriber
+            _efContext.Subscribers.Remove(new Subscriber
             {
                 UserIdWhoSubscribed = request.UserIdWhoUnsubscribed,
                 SubscribedUserId = request.UnsubscribedUserId
             });
 
-            _subscriptionRepository.Remove(new Subscription
+            _efContext.Subscriptions.Remove(new Subscription
             {
                 UserIdWhoSubscribed = request.UserIdWhoUnsubscribed,
                 SubscribedUserId = request.UnsubscribedUserId
             });
 
-            return await Commit(_appUserRepository.UnitOfWork);
+            return await Commit(_efContext);
         }
     }
 }

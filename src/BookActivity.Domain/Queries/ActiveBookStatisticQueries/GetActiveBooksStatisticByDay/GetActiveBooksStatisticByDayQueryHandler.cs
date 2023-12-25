@@ -1,13 +1,13 @@
 ﻿using BookActivity.Domain.Cache;
 using BookActivity.Domain.Constants;
 using BookActivity.Domain.Events.ActiveBookEvent;
-using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Specifications.BookSpecs;
 using BookActivity.Domain.Specifications.EventSpecs;
 using MediatR;
+using MongoDB.Driver;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,15 +16,15 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
 {
     internal sealed class GetActiveBooksStatisticByDayQueryHandler : IRequestHandler<GetActiveBooksStatisticByDayQuery, IEnumerable<ActiveBookStatisticByDay>>
     {
-        private readonly IEventStoreRepository _eventStoreRepository;
         private readonly ActiveBookStatisticCache _cache;
-        private readonly IBookRepository _bookRepository;
+        private readonly IMongoDatabase _mongoDbContext;
+        private readonly IDbContext _efDbContext;
 
-        public GetActiveBooksStatisticByDayQueryHandler(IEventStoreRepository eventStoreRepository, ActiveBookStatisticCache cache, IBookRepository bookRepository)
+        public GetActiveBooksStatisticByDayQueryHandler(ActiveBookStatisticCache cache, IMongoDatabase mongoDbContext, IDbContext efDbContext)
         {
-            _eventStoreRepository = eventStoreRepository;
             _cache = cache;
-            _bookRepository = bookRepository;
+            _mongoDbContext = mongoDbContext;
+            _efDbContext = efDbContext;
         }
 
         public async Task<IEnumerable<ActiveBookStatisticByDay>> Handle(GetActiveBooksStatisticByDayQuery request, CancellationToken cancellationToken)
@@ -35,14 +35,15 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
 
             var specification = new EventByUserIdSpec<UpdateActiveBookEvent>(request.AppUserId) & new EventByDateCreateSpec<UpdateActiveBookEvent>(request.Day);
 
-            activeBooksStatisticByDay = (await _eventStoreRepository.GetBySpecificationAsync(EventMessageTypeConstants.UpdateActiveBook, specification))
-                .Cast<UpdateActiveBookEvent>()
+            activeBooksStatisticByDay = _mongoDbContext.GetCollection<UpdateActiveBookEvent>(EventMessageTypeConstants.UpdateActiveBook)
+                .AsQueryable()
+                .Where(specification)
                 .GroupBy(@event => @event.AggregateId)
+                .ToArray()
                 .Select(async groupping =>
                 {
                     BookByActiveBookIdSpec bookByActiveBookIdSpec = new(groupping.Key);
-                    DbSingleResultFilterModel<Book> filterModel = new(bookByActiveBookIdSpec, includes: b => b.ActiveBooks);
-                    var book = await _bookRepository.GetByFilterAsync(bookByActiveBookIdSpec);
+                    var book = await _efDbContext.Books.Where(bookByActiveBookIdSpec).Select(b => new { b.Id, b.Title }).FirstAsync();
 
                     return new ActiveBookStatisticByDay
                     {

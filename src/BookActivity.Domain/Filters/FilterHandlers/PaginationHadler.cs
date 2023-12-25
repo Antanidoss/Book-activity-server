@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using System.Data.Entity;
+﻿using BookActivity.Domain.Core;
 using BookActivity.Domain.Filters.Models;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Core;
+using System.Data.Entity;
+using System.Linq;
 
 namespace BookActivity.Domain.Filters.Handlers
 {

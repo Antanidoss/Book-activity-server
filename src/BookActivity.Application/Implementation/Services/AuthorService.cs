@@ -6,7 +6,6 @@ using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Domain.Commands.AuthorCommands.AddAuthor;
 using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Specifications.AuthorSpecs;
 using System;
 using System.Collections.Generic;
@@ -19,16 +18,12 @@ namespace BookActivity.Application.Implementation.Services
     internal sealed class AuthorService : IAuthorService
     {
         private readonly IMapper _mapper;
-
         private readonly IMediatorHandler _mediatorHandler;
 
-        private readonly IAuthorRepository _authorRepository;
-
-        public AuthorService(IMediatorHandler mediatorHandler, IMapper mapper, IAuthorRepository authorRepository)
+        public AuthorService(IMediatorHandler mediatorHandler, IMapper mapper)
         {
             _mediatorHandler = mediatorHandler;
             _mapper = mapper;
-            _authorRepository = authorRepository;
         }
 
         public async Task<Result<Guid>> AddAsync(CreateAuthorDto createAuthor)
@@ -40,15 +35,6 @@ namespace BookActivity.Application.Implementation.Services
             var validationResult = await _mediatorHandler.SendCommandAsync(addAuthorCommand);
 
             return validationResult.ToResult(addAuthorCommand.Id);
-        }
-
-        public async Task<Result<IEnumerable<AuthorDto>>> GetAuthorsByNameAsync(string name, int take)
-        {
-            AuthorByNameSpec authorByNameSpec = new(name);
-            DbMultipleResultFilterModel<Author> filterModel = new(authorByNameSpec, new PaginationModel(take));
-            var authors = await _authorRepository.GetByFilterAsync(filterModel);
-
-            return new Result<IEnumerable<AuthorDto>>(_mapper.Map<IEnumerable<AuthorDto>>(authors));
         }
     }
 }

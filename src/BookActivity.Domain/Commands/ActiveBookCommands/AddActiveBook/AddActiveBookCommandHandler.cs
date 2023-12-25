@@ -1,25 +1,26 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using BookActivity.Domain.Constants;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.ActiveBookEvents;
-using BookActivity.Domain.Interfaces.Repositories;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
 using FluentValidation.Results;
 using MediatR;
+using MongoDB.Driver;
 
 namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
 {
     internal sealed class AddActiveBookCommandHandler : CommandHandler,
         IRequestHandler<AddActiveBookCommand, ValidationResult>
     {
-        private readonly IActiveBookRepository _activeBookRepository;
+        private readonly IDbContext _efContext;
+        private readonly IMongoDatabase _mongoContext;
 
-        private readonly IEventStoreRepository _eventStoreRepository;
-
-        public AddActiveBookCommandHandler(IActiveBookRepository activeBookRepository, IEventStoreRepository eventStoreRepository)
+        public AddActiveBookCommandHandler(IDbContext efContext, IMongoDatabase mongoContext)
         {
-            _activeBookRepository = activeBookRepository;
-            _eventStoreRepository = eventStoreRepository;
+            _efContext = efContext;
+            _mongoContext = mongoContext;
         }
 
         public async Task<ValidationResult> Handle(AddActiveBookCommand request, CancellationToken cancellationToken)
@@ -29,7 +30,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
 
             ActiveBook activeBook = new(request.TotalNumberPages, request.NumberPagesRead, request.BookId, request.UserId);
 
-            await _activeBookRepository.AddAsync(activeBook, cancellationToken);
+            await _efContext.ActiveBooks.AddAsync(activeBook, cancellationToken);
 
             request.Id = activeBook.Id;
 
@@ -41,9 +42,9 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
                 activeBook.UserId);
 
             activeBook.AddDomainEvent(new AddActiveBookAfterOperationEvent(addActiveBookEvent));
-            await _eventStoreRepository.SaveAsync(addActiveBookEvent);
+            await _mongoContext.GetCollection<AddActiveBookEvent>(EventMessageTypeConstants.AddActiveBook).InsertOneAsync(addActiveBookEvent);
 
-            return await Commit(_activeBookRepository.UnitOfWork);
+            return await Commit(_efContext);
         }
     }
 }
