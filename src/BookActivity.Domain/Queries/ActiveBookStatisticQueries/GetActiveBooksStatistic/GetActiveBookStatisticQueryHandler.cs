@@ -1,9 +1,9 @@
 ﻿using BookActivity.Domain.Cache;
 using BookActivity.Domain.Constants;
 using BookActivity.Domain.Events.ActiveBookEvent;
-using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Specifications.EventSpecs;
 using MediatR;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -15,13 +15,13 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
 {
     internal sealed class GetActiveBookStatisticQueryHandler : IRequestHandler<GetActiveBookStatisticQuery, ActiveBooksStatistic>
     {
-        private readonly IEventStoreRepository _eventStoreRepository;
         private readonly ActiveBookStatisticCache _cache;
+        private readonly IMongoDatabase _mongoDbContext;
 
-        public GetActiveBookStatisticQueryHandler(IEventStoreRepository eventStoreRepository, ActiveBookStatisticCache cache)
+        public GetActiveBookStatisticQueryHandler(ActiveBookStatisticCache cache, IMongoDatabase mongoDbContext)
         {
-            _eventStoreRepository = eventStoreRepository;
             _cache = cache;
+            _mongoDbContext = mongoDbContext;
         }
 
         public async Task<ActiveBooksStatistic> Handle(GetActiveBookStatisticQuery request, CancellationToken cancellationToken)
@@ -32,10 +32,11 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
 
             var specification = new EventByUserIdSpec<UpdateActiveBookEvent>(request.AppUserId);
 
-            var a = (await _eventStoreRepository.GetBySpecificationAsync(EventMessageTypeConstants.UpdateActiveBook, specification));
-
-            var usersReadInfos = (await _eventStoreRepository.GetBySpecificationAsync(EventMessageTypeConstants.UpdateActiveBook, specification))
-                .Where(i => i.CountPagesRead > 0);
+            var usersReadInfos = _mongoDbContext.GetCollection<UpdateActiveBookEvent>(EventMessageTypeConstants.UpdateActiveBook)
+                .AsQueryable()
+                .Where(specification)
+                .Where(i => i.CountPagesRead > 0)
+                .ToArray();
 
             if (usersReadInfos == null || !usersReadInfos.Any())
                 return new();
@@ -45,7 +46,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
                 AveragePagesReadPerDay = CalculateAveragePagesReadPerDay(usersReadInfos),
                 AveragePagesReadPerWeek = CalculateAveragePagesReadPerWeek(usersReadInfos),
                 AveragePagesReadPerMouth = CalculateAveragePagesReadPerMouth(usersReadInfos),
-                NumberPagesReadPerYear = GetAmountDaysOfReads(usersReadInfos),
+                NumberPagesReadPerYear = CalculateAveragePagesReadPerMouth(usersReadInfos),
                 ReadingCalendar = GetСalendarStatistics(usersReadInfos)
             };
 
@@ -56,31 +57,26 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
 
         private int CalculateAveragePagesReadPerDay(IEnumerable<UpdateActiveBookEvent> userReadInfos)
         {
-            return (int)userReadInfos
+            return (int)(userReadInfos
                 .GroupBy(i => i.Timestamp.Date)
                 .Select(g => g.Sum(i => i.CountPagesRead))
-                .Average();
+                .Average());
         }
 
         private int CalculateAveragePagesReadPerMouth(IEnumerable<UpdateActiveBookEvent> userReadInfos)
         {
-            return (int)userReadInfos
+            return (int)(userReadInfos
                 .GroupBy(i => new { i.Timestamp.Year, i.Timestamp.Month })
                 .Select(g => g.Sum(i => i.CountPagesRead))
-                .Average();
+                .Average());
         }
 
         private int CalculateAveragePagesReadPerWeek(IEnumerable<UpdateActiveBookEvent> userReadInfos)
         {
-            return (int)userReadInfos
+            return (int)(userReadInfos
                 .GroupBy(i => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(i.Timestamp, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday))
                 .Select(g => g.Sum(i => i.CountPagesRead))
-                .Average();
-        }
-
-        private int GetAmountDaysOfReads(IEnumerable<UpdateActiveBookEvent> userReadInfos)
-        {
-            return userReadInfos.Sum(i => i.CountPagesRead);
+                .Average());
         }
 
         private IEnumerable<NumberOfPagesReadPerDay> GetСalendarStatistics(IEnumerable<UpdateActiveBookEvent> userReadInfos)

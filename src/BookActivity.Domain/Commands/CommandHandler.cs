@@ -18,9 +18,9 @@ namespace BookActivity.Domain.Commands
             ValidationResult.Errors.Add(new ValidationFailure(string.Empty, mensagem));
         }
 
-        protected async Task<ValidationResult> Commit(IUnitOfWork uow, string message)
+        protected async Task<ValidationResult> Commit(IDbContext dbContext, string message)
         {
-            if (!(await uow.Commit()))
+            if (!(await dbContext.Commit()))
             {
                 AddError(message);
             }
@@ -28,9 +28,9 @@ namespace BookActivity.Domain.Commands
             return ValidationResult;
         }
 
-        protected async Task<ValidationResult> Commit(IUnitOfWork uow)
+        protected async Task<ValidationResult> Commit(IDbContext dbContext)
         {
-            return await Commit(uow, "There was an error saving data").ConfigureAwait(continueOnCapturedContext: false);
+            return await Commit(dbContext, "There was an error saving data").ConfigureAwait(continueOnCapturedContext: false);
         }
     }
 }

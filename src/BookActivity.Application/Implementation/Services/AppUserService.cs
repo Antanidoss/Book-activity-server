@@ -10,12 +10,12 @@ using BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.UnsubscribeAppUser;
 using BookActivity.Domain.Commands.AppUserCommands.UpdateAppUser;
 using BookActivity.Domain.Interfaces;
-using BookActivity.Domain.Interfaces.Repositories;
 using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using BookActivity.Domain.Validations;
 using BookActivity.Shared.Models;
 using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -27,13 +27,13 @@ namespace BookActivity.Application.Implementation.Services
 
         private readonly IMediatorHandler _mediatorHandler;
 
-        private readonly IAppUserRepository _appUserRepository;
+        private readonly IDbContext _efContext;
 
-        public AppUserService(IMapper mapper, IMediatorHandler mediatorHandler, IAppUserRepository appUserRepository)
+        public AppUserService(IMapper mapper, IMediatorHandler mediatorHandler, IDbContext efContext)
         {
             _mapper = mapper;
             _mediatorHandler = mediatorHandler;
-            _appUserRepository = appUserRepository;
+            _efContext = efContext;
         }
 
         public async Task<ValidationResult> AddAsync(CreateAppUserDto appUserCreateDto)
@@ -86,7 +86,7 @@ namespace BookActivity.Application.Implementation.Services
             CommonValidator.ThrowExceptionIfEmpty(appUserId, nameof(appUserId));
 
             AppUserByIdSpec specification = new(appUserId);
-            var appUser = await _appUserRepository.GetByFilterAsync(specification);
+            var appUser = await _efContext.Users.FirstOrDefaultAsync(specification);
 
             return _mapper.Map<AppUserDto>(appUser);
         }

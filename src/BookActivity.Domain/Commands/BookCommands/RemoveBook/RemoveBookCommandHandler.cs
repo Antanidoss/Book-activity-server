@@ -1,23 +1,20 @@
-﻿using BookActivity.Domain.Events.BookEvents;
-using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Specifications.BookSpecs;
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 using MediatR;
 using System.Threading.Tasks;
 using System.Threading;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Filters.Models;
+using BookActivity.Domain.Interfaces;
 
 namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
 {
     internal sealed class RemoveBookCommandHandler : CommandHandler,
         IRequestHandler<RemoveBookCommand, ValidationResult>
     {
-        private readonly IBookRepository _bookRepository;
+        private readonly IDbContext _efContext;
 
-        public RemoveBookCommandHandler(IBookRepository bookRepository)
+        public RemoveBookCommandHandler(IDbContext efContext)
         {
-            _bookRepository = bookRepository;
+            _efContext = efContext;
         }
 
         public async Task<ValidationResult> Handle(RemoveBookCommand request, CancellationToken cancellationToken)
@@ -25,14 +22,11 @@ namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            BookByIdSpec bookByIdSpec = new(request.BookId);
-            DbSingleResultFilterModel<Book> filterModel = new(bookByIdSpec, forUpdate: false);
-            var book = await _bookRepository.GetByFilterAsync(filterModel);
+            Book book = new() { Id = request.BookId };
+            _efContext.Books.Attach(book);
+            _efContext.Books.Remove(book);
 
-            book.AddDomainEvent(new RemoveBookEvent(book.Id, request.UserId));
-            _bookRepository.Remove(book);
-
-            return await Commit(_bookRepository.UnitOfWork);
+            return await Commit(_efContext);
         }
     }
 }

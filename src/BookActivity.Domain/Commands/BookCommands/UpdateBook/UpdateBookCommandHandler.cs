@@ -1,10 +1,9 @@
 ﻿using BookActivity.Domain.Events.BookEvents;
-using BookActivity.Domain.Filters.Models;
-using BookActivity.Domain.Interfaces.Repositories;
-using BookActivity.Domain.Models;
+using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Specifications.BookSpecs;
 using FluentValidation.Results;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -13,11 +12,11 @@ namespace BookActivity.Domain.Commands.BookCommands.UpdateBook
     internal sealed class UpdateBookCommandHandler : CommandHandler,
         IRequestHandler<UpdateBookCommand, ValidationResult>
     {
-        private readonly IBookRepository _bookRepository;
+        private readonly IDbContext _efContext;
 
-        public UpdateBookCommandHandler(IBookRepository bookRepository)
+        public UpdateBookCommandHandler(IDbContext efContext)
         {
-            _bookRepository = bookRepository;
+            _efContext = efContext;
         }
 
         public async Task<ValidationResult> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
@@ -26,16 +25,15 @@ namespace BookActivity.Domain.Commands.BookCommands.UpdateBook
                 return request.ValidationResult;
 
             BookByIdSpec bookByIdSpec = new(request.BookId);
-            DbSingleResultFilterModel<Book> filterModel = new(bookByIdSpec, forUpdate: true);
-            var updatedBook = await _bookRepository.GetByFilterAsync(filterModel);
+            var book = await _efContext.Books.FirstAsync(bookByIdSpec);
 
-            updatedBook.Title = request.Title;
-            updatedBook.Description = request.Description;
-            updatedBook.ImageData = request.ImageData;
+            book.Title = request.Title;
+            book.Description = request.Description;
+            book.ImageData = request.ImageData;
 
-            updatedBook.AddDomainEvent(new UpdateBookEvent(updatedBook.Id, updatedBook.Title, updatedBook.Description, request.AuthorIds, request.UserId));
+            book.AddDomainEvent(new UpdateBookEvent(book.Id, book.Title, book.Description, request.AuthorIds, request.UserId));
 
-            return await Commit(_bookRepository.UnitOfWork);
+            return await Commit(_efContext);
         }
     }
 }

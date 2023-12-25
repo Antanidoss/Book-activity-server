@@ -1,7 +1,9 @@
-﻿using BookActivity.Domain.Interfaces.Repositories;
+﻿using BookActivity.Domain.Interfaces;
+using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.UserNotificationSpecs;
 using FluentValidation.Results;
 using MediatR;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,20 +12,21 @@ namespace BookActivity.Domain.Commands.UserNotificationCommands.RemoveUserNotifi
     internal class RemoveUserNotificationsCommandHandler : CommandHandler,
         IRequestHandler<RemoveUserNotificationsCommand, ValidationResult>
     {
-        private readonly IUserNotificationRepository _userNotificationRepository;
+        private readonly IDbContext _efContext;
 
-        public RemoveUserNotificationsCommandHandler(IUserNotificationRepository userNotificationRepository)
+        public RemoveUserNotificationsCommandHandler(IDbContext efContext)
         {
-            _userNotificationRepository = userNotificationRepository;
+            _efContext = efContext;
         }
 
         public async Task<ValidationResult> Handle(RemoveUserNotificationsCommand request, CancellationToken cancellationToken)
         {
             UserNotificationByIdsSpec specification = new(request.UserNotificationIds);
 
-            _userNotificationRepository.RemoveRange(specification);
+            var userNotifications = request.UserNotificationIds.Select(n => new UserNotification { Id = n });
+            _efContext.UserNotifications.RemoveRange(userNotifications);
 
-            return await Commit(_userNotificationRepository.UnitOfWork);
+            return await Commit(_efContext);
         }
     }
 }
