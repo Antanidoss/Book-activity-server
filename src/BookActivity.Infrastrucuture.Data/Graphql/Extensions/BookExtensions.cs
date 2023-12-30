@@ -44,10 +44,7 @@ namespace BookActivity.Infrastructure.Data.Graphql.Extensions
             userId = userId ?? serviceProvider.GetService<CurrentUser>()?.Id;
 
             return userId != null && context.Books
-                .Include(b => b.BookOpinions)
-                .Where(b => b.Id == book.Id)
-                .Select(r => r.BookOpinions.Any(o => o.UserId == userId.Value))
-                .First();
+                .Any(b => b.Id == book.Id && b.BookOpinions.Any(o => o.UserId == userId.Value));
         }
 
         [UseOffsetPaging(IncludeTotalCount = true)]
