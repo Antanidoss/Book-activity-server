@@ -79,6 +79,7 @@ namespace BookActivity.Infrastructure.Data
                 .AddFiltering()
                 .AddSorting()
                 .AddTypeExtension<BookExtensions>()
+                .AddTypeExtension<BookOpinionExtensions>()
                 .AddTypeExtension<UserExtensions>();
         }
 
