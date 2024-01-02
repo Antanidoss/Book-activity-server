@@ -15,12 +15,12 @@ namespace BookActivity.Infrastructure.Data.EF.Configuration
             builder.HasMany(o => o.Likes)
                 .WithOne(l => l.BookOpinion)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasForeignKey(o => new { o.BookId, o.UserId });
+                .HasForeignKey(o => new { o.BookId, o.UserIdOpinion });
 
             builder.HasMany(o => o.Dislikes)
                 .WithOne(l => l.BookOpinion)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasForeignKey(o => new { o.BookId, o.UserId });
+                .HasForeignKey(o => new { o.BookId, o.UserIdWhoDislike });
         }
     }
 }

@@ -14,6 +14,9 @@ using BookActivity.Domain.Commands.BookCommands.RemoveBook;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Commands.BookNoteCommands.AddBookNote;
 using BookActivity.Domain.Commands.BookOpinionCommads.AddBookOpinion;
+using BookActivity.Domain.Commands.BookOpinionCommads.AddDislike;
+using BookActivity.Domain.Commands.BookOpinionCommads.RemoveDislike;
+using BookActivity.Domain.Commands.BookOpinionCommads.RemoveLike;
 using BookActivity.Domain.Commands.UserNotificationCommands.RemoveUserNotifications;
 using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.ActiveBookEvents;
@@ -67,6 +70,9 @@ namespace BookActivity.Domain
             services.AddScoped<IRequestHandler<AddAuthorCommand, ValidationResult>, AddAuthorCommandHandler>();
 
             services.AddScoped<IRequestHandler<AddBookOpinionCommand, ValidationResult>, AddBookOpinionCommandHandler>();
+            services.AddScoped<IRequestHandler<AddDislikeCommand, ValidationResult>, AddDislikeCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveDislikeCommand, ValidationResult>, RemoveDislikeCommandHandler>();
+            services.AddScoped<IRequestHandler<RemoveLikeCommand, ValidationResult>, RemoveLikeCommandHandler>();
 
             services.AddScoped<IRequestHandler<RemoveUserNotificationsCommand, ValidationResult>, RemoveUserNotificationsCommandHandler>();
         }

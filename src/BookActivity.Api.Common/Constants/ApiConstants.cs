@@ -40,8 +40,12 @@
         public const string AddAuthorMethod = "add";
         public const string GetAuthorByNameMethod = "getByName";
 
-        //BookRating methods
+        //BookOpinion methods
         public const string AddBookOpinionMethod = "add";
+        public const string AddBookOpinionDislikeMethod = "addDislike";
+        public const string AddBookOpinionLikeMethod = "addLike";
+        public const string RemoveBookOpinionDislikeMethod = "removeDislike";
+        public const string RemoveBookOpinionLikeMethod = "removeLike";
 
         //ActiveBookStatistic methods
         public const string GetActiveBooksStaticMethod = "getActiveBooksStatic";
