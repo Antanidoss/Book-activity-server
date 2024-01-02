@@ -92,6 +92,10 @@ namespace BookActivity.Infrastructure.Data.EF
             modelBuilder.ApplyConfiguration(new BookNoteConfiguration());
             modelBuilder.ApplyConfiguration(new BookOpinionConfiguration());
             modelBuilder.ApplyConfiguration(new NotificationConfiguration());
+            modelBuilder.ApplyConfiguration(new BookOpinionLikeConfiguration());
+            modelBuilder.ApplyConfiguration(new BookOpinionDislikeConfiguration());
+            modelBuilder.ApplyConfiguration(new BookNoteLikeConfiguration());
+            modelBuilder.ApplyConfiguration(new BookNoteDislikeConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

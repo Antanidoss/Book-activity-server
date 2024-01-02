@@ -35,14 +35,14 @@ namespace BookActivity.Infrastructure.Data.Graphql.Extensions
         {
             userId = userId ?? serviceProvider.GetService<CurrentUser>()?.Id;
 
-            return userId.HasValue && context.BookOpinions.Any(o => o.BookId == bookOpinion.BookId && o.Likes.Any(l => l.UserId == userId));
+            return userId.HasValue && context.BookOpinions.Any(o => o.BookId == bookOpinion.BookId && o.Likes.Any(l => l.UserIdWhoLike == userId));
         }
 
         public bool GetHasDislike([Parent] BookOpinion bookOpinion, [Service] BookActivityContext context, [Service] IServiceProvider serviceProvider, Guid? userId)
         {
             userId = userId ?? serviceProvider.GetService<CurrentUser>()?.Id;
 
-            return userId.HasValue && context.BookOpinions.Any(o => o.BookId == bookOpinion.BookId && o.Dislikes.Any(d => d.UserId == userId));
+            return userId.HasValue && context.BookOpinions.Any(o => o.BookId == bookOpinion.BookId && o.Dislikes.Any(d => d.UserIdWhoDislike == userId));
         }
     }
 }

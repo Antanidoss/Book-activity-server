@@ -9,30 +9,34 @@ namespace BookActivity.Infrastructure.Data.EF.Configuration
         public void Configure(EntityTypeBuilder<AppUser> builder)
         {
             builder.HasMany(u => u.Subscriptions)
-                    .WithOne(s => s.UserWhoSubscribed)
-                    .HasForeignKey(s => s.UserIdWhoSubscribed)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-            builder.HasMany(u => u.Subscribers)
-                    .WithOne(s => s.SubscribedUser)
-                    .HasForeignKey(s => s.SubscribedUserId)
-                    .OnDelete(DeleteBehavior.ClientSetNull);
-
-            builder.HasMany(o => o.BookNoteLikes)
-                .WithOne(l => l.User)
+                .WithOne(s => s.UserWhoSubscribed)
+                .HasForeignKey(s => s.UserIdWhoSubscribed)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
+            builder.HasMany(u => u.Subscribers)
+                .WithOne(s => s.SubscribedUser)
+                .HasForeignKey(s => s.SubscribedUserId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.HasMany(o => o.BookNoteLikes)
+                .WithOne(l => l.UserWhoLike)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasForeignKey(l => l.UserIdWhoLike);
+
             builder.HasMany(o => o.BookNoteDislikes)
-               .WithOne(l => l.User)
-               .OnDelete(DeleteBehavior.ClientSetNull);
+               .WithOne(l => l.UserWhoDislike)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasForeignKey(l => l.UserIdWhoDislike);
 
             builder.HasMany(o => o.BookOpinionLikes)
-               .WithOne(l => l.User)
-               .OnDelete(DeleteBehavior.ClientSetNull);
+               .WithOne(l => l.UserWhoLike)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasForeignKey(l => l.UserIdWhoLike);
 
             builder.HasMany(o => o.BookOpinionDislikes)
-               .WithOne(l => l.User)
-               .OnDelete(DeleteBehavior.ClientSetNull);
+               .WithOne(l => l.UserWhoDislike)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasForeignKey(l => l.UserIdWhoDislike);
         }
     }
 }

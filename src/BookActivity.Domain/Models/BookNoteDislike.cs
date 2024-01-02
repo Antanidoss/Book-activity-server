@@ -7,15 +7,15 @@ namespace BookActivity.Domain.Models
     {
         public BookNote BookNote { get; private set; }
         public Guid BookNoteId { get; private set; }
-        public AppUser User { get; private set; }
-        public Guid UserId { get; private set; }
+        public AppUser UserWhoDislike { get; private set; }
+        public Guid UserIdWhoDislike { get; private set; }
 
         public BookNoteDislike() : base() { }
 
-        public BookNoteDislike(Guid bookNoteId, Guid userId)
+        public BookNoteDislike(Guid bookNoteId, Guid userWhoDislikeId)
         {
             BookNoteId = bookNoteId;
-            UserId = userId;
+            UserIdWhoDislike = userWhoDislikeId;
         }
     }
 }

@@ -1,8 +1,13 @@
 ﻿using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Update;
 using BookActivity.Domain.Commands.BookOpinionCommads.AddBookOpinion;
+using BookActivity.Domain.Commands.BookOpinionCommads.AddDislike;
+using BookActivity.Domain.Commands.BookOpinionCommads.AddLike;
+using BookActivity.Domain.Commands.BookOpinionCommads.RemoveDislike;
+using BookActivity.Domain.Commands.BookOpinionCommads.RemoveLike;
 using BookActivity.Domain.Interfaces;
 using FluentValidation.Results;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -31,6 +36,34 @@ namespace BookActivity.Application.Implementation.Services
             };
 
             return await _mediatorHandler.SendCommandAsync(updateBookRatingCommand);
+        }
+
+        public async Task<ValidationResult> AddDislikeAsync(Guid bookId, Guid userWhoDislikeId, Guid userOpinionId)
+        {
+            AddDislikeCommand command = new(userWhoDislikeId, bookId, userOpinionId);
+
+            return await _mediatorHandler.SendCommandAsync(command);
+        }
+
+        public async Task<ValidationResult> AddLikeAsync(Guid bookId, Guid userWhoLikeId, Guid userOpinionId)
+        {
+            AddLikeCommand command = new(userWhoLikeId, bookId, userOpinionId);
+
+            return await _mediatorHandler.SendCommandAsync(command);
+        }
+
+        public async Task<ValidationResult> RemoveDislikeAsync(Guid bookId, Guid userWhoDislikeId, Guid userOpinionId)
+        {
+            RemoveDislikeCommand command = new(userWhoDislikeId, bookId, userOpinionId);
+
+            return await _mediatorHandler.SendCommandAsync(command);
+        }
+
+        public async Task<ValidationResult> RemoveLikeAsync(Guid bookId, Guid userWhoLikeId, Guid userOpinionId)
+        {
+            RemoveLikeCommand command = new(userWhoLikeId, bookId, userOpinionId);
+
+            return await _mediatorHandler.SendCommandAsync(command);
         }
     }
 }
