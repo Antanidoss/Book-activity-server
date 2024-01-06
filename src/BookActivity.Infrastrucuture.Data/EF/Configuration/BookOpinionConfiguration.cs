@@ -20,7 +20,7 @@ namespace BookActivity.Infrastructure.Data.EF.Configuration
             builder.HasMany(o => o.Dislikes)
                 .WithOne(l => l.BookOpinion)
                 .OnDelete(DeleteBehavior.NoAction)
-                .HasForeignKey(o => new { o.BookId, o.UserIdWhoDislike });
+                .HasForeignKey(o => new { o.BookId, o.UserIdOpinion });
         }
     }
 }
