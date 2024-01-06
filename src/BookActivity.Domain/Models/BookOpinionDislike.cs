@@ -7,7 +7,6 @@ namespace BookActivity.Domain.Models
     {
         public BookOpinion BookOpinion { get; private set; }
         public Guid BookId { get; private set; }
-        public AppUser UserOpinion { get; private set; }
         public Guid UserIdOpinion { get; private set; }
         public AppUser UserWhoDislike { get; private set; }
         public Guid UserIdWhoDislike { get; private set; }

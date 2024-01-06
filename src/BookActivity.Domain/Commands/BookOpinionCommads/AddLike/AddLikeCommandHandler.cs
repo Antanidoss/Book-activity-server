@@ -3,7 +3,6 @@ using BookActivity.Domain.Models;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,10 +24,15 @@ namespace BookActivity.Domain.Commands.BookOpinionCommads.AddLike
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            if (await _efContext.BookOpinions.Where(o => o.BookId == request.BookId).SelectMany(o => o.Dislikes).AnyAsync(d => d.UserIdWhoDislike == request.UserIdWhoLike))
-                throw new Exception();
+            var dislike = await _efContext.BookOpinions
+                .Where(o => o.BookId == request.BookId)
+                .SelectMany(o => o.Dislikes)
+                .FirstOrDefaultAsync(d => d.UserIdWhoDislike == request.UserIdWhoLike);
 
-            await _efContext.BookOpinionDislikes.AddAsync(new BookOpinionDislike(request.BookId, request.UserIdOpinion, request.UserIdWhoLike));
+            if (dislike != null)
+                _efContext.BookOpinionDislikes.Remove(dislike);
+
+            await _efContext.BookOpinionLikes.AddAsync(new BookOpinionLike(request.BookId, request.UserIdOpinion, request.UserIdWhoLike));
 
             return await Commit(_efContext);
         }
