@@ -103,9 +103,16 @@ namespace BookActivity.Infrastructure.Data.EF
         //TODO: Logs doesn't work
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder
-                .UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
-                .EnableSensitiveDataLogging(_configuration.GetUseSqlLogs());
+            if (_configuration.GetValue<bool>("UseInMemoryDatabase"))
+            {
+                optionsBuilder.UseInMemoryDatabase("BookActivityDatabase");
+            }
+            else
+            {
+                optionsBuilder
+                    .UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
+                    .EnableSensitiveDataLogging(_configuration.GetUseSqlLogs());
+            }
         }
 
         private void UpdateCreationAndUpdateTime()

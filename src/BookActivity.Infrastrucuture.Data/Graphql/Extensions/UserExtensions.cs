@@ -14,12 +14,12 @@ namespace BookActivity.Infrastructure.Data.Graphql.Extensions
     {
         public int GetSubscribersCount([Parent] AppUser user, [FromServices] BookActivityContext context)
         {
-            return context.Subscribers.Where(s => s.SubscribedUserId == user.Id).Count();
+            return context.Subscribers.Count(s => s.SubscribedUserId == user.Id);
         }
 
         public int GetSubscriptionsCount([Parent] AppUser user, [FromServices] BookActivityContext context)
         {
-            return context.Subscriptions.Where(s => s.UserIdWhoSubscribed == user.Id).Count();
+            return context.Subscriptions.Count(s => s.UserIdWhoSubscribed == user.Id);
         }
 
         public bool GetIsSubscribed([Parent] AppUser user, [FromServices] BookActivityContext context, [FromServices] CurrentUser curUser)
@@ -40,12 +40,12 @@ namespace BookActivity.Infrastructure.Data.Graphql.Extensions
 
         public int GetBookOpinionCount([Parent] AppUser user, [FromServices] BookActivityContext context)
         {
-            return context.BookOpinions.Where(o => o.UserId == user.Id).Count();
+            return context.BookOpinions.Count(o => o.UserId == user.Id);
         }
 
         public int GetActiveBookCount([Parent] AppUser user, [FromServices] BookActivityContext context)
         {
-            return context.ActiveBooks.Where(o => o.UserId == user.Id).Count();
+            return context.ActiveBooks.Count(o => o.UserId == user.Id);
         }
 
         [BindMember(nameof(AppUser.AvatarImage))]

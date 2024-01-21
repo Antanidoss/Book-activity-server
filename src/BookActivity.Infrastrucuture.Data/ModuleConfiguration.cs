@@ -11,7 +11,6 @@ using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver.Linq;
 using BookActivity.Infrastructure.Data.Graphql.Extensions;
@@ -25,7 +24,7 @@ namespace BookActivity.Infrastructure.Data
         public IServiceCollection ConfigureDI(IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<IDbContext, BookActivityContext>();
-            services.AddScoped<BookActivityContext>();
+            services.AddDbContext<BookActivityContext>();
 
             services.AddIdentity<AppUser, AppRole>(option =>
             {
@@ -42,24 +41,21 @@ namespace BookActivity.Infrastructure.Data
             return services;
         }
 
-        public void CreateDatabasesIfNotExist(IServiceScope serviceScope)
+        public void CreateDatabasesIfNotExist(IServiceScope serviceScope, IConfiguration configuration)
         {
-            CreateDatabasesIfNotExist(serviceScope.ServiceProvider.GetRequiredService<IDbContext>() as DbContext, serviceScope.ServiceProvider);
-        }
+            var context = serviceScope.ServiceProvider.GetRequiredService<IDbContext>() as DbContext;
 
-        private void CreateDatabasesIfNotExist(DbContext context, IServiceProvider serviceProvider)
-        {
-            if (context.Database.CanConnect())
+            if (!configuration.GetValue<bool>("UseInMemoryDatabase") && !context.Database.CanConnect())
                 return;
 
             context.Database.EnsureCreated();
 
             if (context is BookActivityContext)
             {
-                var initializer = serviceProvider.GetService<IDbInitializer>();
+                var initializer = serviceScope.ServiceProvider.GetService<IDbInitializer>();
                 if (initializer != null)
                 {
-                    initializer.InitializeAsync(context as BookActivityContext, serviceProvider.GetRequiredService<UserManager<AppUser>>()).GetAwaiter().GetResult();
+                    initializer.InitializeAsync(context as BookActivityContext, serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>()).Wait();
                 }
             }
         }
