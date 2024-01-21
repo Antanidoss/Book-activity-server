@@ -78,7 +78,7 @@ namespace BookActivity.Api
         {
             using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
             Infrastructure.Data.ModuleConfiguration infraModuleConfiguration = new();
-            infraModuleConfiguration.CreateDatabasesIfNotExist(serviceScope);
+            infraModuleConfiguration.CreateDatabasesIfNotExist(serviceScope, Configuration);
         }
     }
 }
