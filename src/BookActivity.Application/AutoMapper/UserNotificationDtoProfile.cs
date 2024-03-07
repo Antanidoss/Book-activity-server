@@ -8,7 +8,7 @@ namespace BookActivity.Application.AutoMapper
     {
         public UserNotificationDtoProfile()
         {
-            CreateMap<UserNotification, UserNotificationDto>();
+            CreateMap<Notification, UserNotificationDto>();
         }
     }
 }

@@ -8,13 +8,16 @@ namespace BookActivity.Domain.Models
         public string Description { get; private set; }
         public AppUser ToUser { get; private set; }
         public Guid ToUserId { get; private set; }
+        public AppUser FromUser { get; private set; }
+        public Guid? FromUserId { get; private set; }
 
-        protected Notification() : base() { }
+        public Notification() : base() { }
 
-        public Notification(string description, Guid toUserId)
+        public Notification(string description, Guid toUserId, Guid? fromUserId = null)
         {
             Description = description;
             ToUserId = toUserId;
+            FromUserId = fromUserId;
         }
     }
 }

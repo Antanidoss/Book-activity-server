@@ -3,7 +3,7 @@ using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Read;
 using BookActivity.Domain.Commands.UserNotificationCommands.RemoveUserNotifications;
 using BookActivity.Domain.Interfaces;
-using BookActivity.Domain.Specifications.UserNotificationSpecs;
+using BookActivity.Domain.Specifications.NotificationSpecs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -27,8 +27,8 @@ namespace BookActivity.Application.Implementation.Services
 
         public async Task<IEnumerable<UserNotificationDto>> GetUserNotificationsAsync(Guid userId)
         {
-            UserNotificationByUserIdSpec specification = new(userId);
-            var notifications = await _efContext.UserNotifications.Where(specification).ToListAsync();
+            NotificationByUserIdSpec specification = new(userId);
+            var notifications = await _efContext.Notifications.Where(specification).ToListAsync();
 
             return _mapper.Map<IEnumerable<UserNotificationDto>>(notifications);
         }
