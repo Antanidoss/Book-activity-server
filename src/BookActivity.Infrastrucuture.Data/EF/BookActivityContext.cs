@@ -24,7 +24,6 @@ namespace BookActivity.Infrastructure.Data.EF
         public DbSet<BookOpinion> BookOpinions { get; set; }
         public DbSet<BookNote> BookNotes { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-        public DbSet<UserNotification> UserNotifications { get; set; }
         public DbSet<Subscriber> Subscribers { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<BookNoteLike> BookNoteLikes { get; set; }

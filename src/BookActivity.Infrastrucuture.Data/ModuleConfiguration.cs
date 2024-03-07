@@ -45,7 +45,7 @@ namespace BookActivity.Infrastructure.Data
         {
             var context = serviceScope.ServiceProvider.GetRequiredService<IDbContext>() as DbContext;
 
-            if (!configuration.GetValue<bool>("UseInMemoryDatabase") && !context.Database.CanConnect())
+            if (!configuration.GetValue<bool>("UseInMemoryDatabase") && context.Database.CanConnect())
                 return;
 
             context.Database.EnsureCreated();
@@ -71,6 +71,7 @@ namespace BookActivity.Infrastructure.Data
                 .AddType<UserQuery>()
                 .AddType<BookOpinionQuery>()
                 .AddType<AuthorQuery>()
+                .AddType<NotificationQuery>()
                 .AddProjections()
                 .AddFiltering()
                 .AddSorting()

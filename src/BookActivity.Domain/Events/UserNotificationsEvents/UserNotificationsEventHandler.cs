@@ -40,8 +40,8 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
 
             foreach (var followedUser in user.Subscribers)
             {
-                UserNotification userNotification = new(notificationMessage, followedUser.UserIdWhoSubscribed, user.Id) { Id = Guid.NewGuid() };
-                await _efContext.UserNotifications.AddAsync(userNotification);
+                Notification userNotification = new(notificationMessage, followedUser.UserIdWhoSubscribed, user.Id) { Id = Guid.NewGuid() };
+                await _efContext.Notifications.AddAsync(userNotification);
 
                 await _userNotificationsHub.SendAsync(new UserNotificationModel(
                         userNotification.Id,
@@ -60,8 +60,8 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
 
             string notificationMessage = $"{notification.UserNameWhoSubscribed} has subscribed to you";
 
-            UserNotification userNotification = new(notificationMessage, notification.SubscribedUserId, notification.UserIdWhoSubscribed) { Id = Guid.NewGuid() };
-            await _efContext.UserNotifications.AddAsync(userNotification);
+            Notification userNotification = new(notificationMessage, notification.SubscribedUserId, notification.UserIdWhoSubscribed) { Id = Guid.NewGuid() };
+            await _efContext.Notifications.AddAsync(userNotification);
 
             AppUserByIdSpec userByIdSpec = new(notification.UserIdWhoSubscribed);
             var avatarImage = await _efContext.Users.Where(userByIdSpec).Select(u => u.AvatarImage).FirstAsync();

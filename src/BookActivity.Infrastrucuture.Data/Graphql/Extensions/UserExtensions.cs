@@ -4,6 +4,7 @@ using BookActivity.Shared.Models;
 using HotChocolate;
 using HotChocolate.Types;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
@@ -22,17 +23,21 @@ namespace BookActivity.Infrastructure.Data.Graphql.Extensions
             return context.Subscriptions.Count(s => s.UserIdWhoSubscribed == user.Id);
         }
 
-        public bool GetIsSubscribed([Parent] AppUser user, [FromServices] BookActivityContext context, [FromServices] CurrentUser curUser)
+        public bool GetIsSubscribed([Parent] AppUser user, [FromServices] BookActivityContext context, [FromServices] IServiceProvider serviceProvider)
         {
-            if (user.Id == curUser.Id)
+            var curUser = serviceProvider.GetService<CurrentUser>();
+
+            if (curUser == null || user.Id == curUser.Id)
                 return false;
 
             return context.Subscriptions.Any(s => s.SubscribedUserId == user.Id && s.UserIdWhoSubscribed == curUser.Id);
         }
 
-        public bool GetIsSubscription([Parent] AppUser user, [FromServices] BookActivityContext context, [FromServices] CurrentUser curUser)
+        public bool GetIsSubscription([Parent] AppUser user, [FromServices] BookActivityContext context, [FromServices] IServiceProvider serviceProvider)
         {
-            if (user.Id == curUser.Id)
+            var curUser = serviceProvider.GetService<CurrentUser>();
+
+            if (curUser == null || user.Id == curUser.Id)
                 return false;
 
             return context.Subscriptions.Any(s => s.SubscribedUserId == user.Id && s.UserIdWhoSubscribed == curUser.Id);
