@@ -23,7 +23,7 @@ using BookActivity.Domain.Events.ActiveBookEvent;
 using BookActivity.Domain.Events.ActiveBookEvents;
 using BookActivity.Domain.Events.ActiveBookStatisticEvents;
 using BookActivity.Domain.Events.AppUserEvents;
-using BookActivity.Domain.Events.UserNotificationsEvents;
+using BookActivity.Domain.Events.NotificationsEvents;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatistic;
 using BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksStatisticByDay;
 using BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser;
@@ -92,8 +92,8 @@ namespace BookActivity.Domain
 
         private void ConfigureEventHandlers(IServiceCollection services)
         {
-            services.AddScoped<INotificationHandler<AddActiveBookAfterOperationEvent>, UserNotificationsEventHandler>();
-            services.AddScoped<INotificationHandler<SubscribeAppUserEvent>, UserNotificationsEventHandler>();
+            services.AddScoped<INotificationHandler<AddActiveBookAfterOperationEvent>, NotificationsEventHandler>();
+            services.AddScoped<INotificationHandler<SubscribeAppUserEvent>, NotificationsEventHandler>();
 
             services.AddScoped<INotificationHandler<AddActiveBookAfterOperationEvent>, ActiveBookStatisticEventHandler>();
             services.AddScoped<INotificationHandler<UpdateActiveBookEvent>, ActiveBookStatisticEventHandler>();

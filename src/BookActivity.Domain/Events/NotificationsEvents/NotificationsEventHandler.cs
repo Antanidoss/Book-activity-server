@@ -3,7 +3,7 @@ using BookActivity.Domain.Events.AppUserEvents;
 using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Interfaces.Hubs;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Models.Notifications;
+using BookActivity.Domain.Models.SendNotificationModels;
 using BookActivity.Domain.Specifications.AppUserSpecs;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,18 +12,18 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BookActivity.Domain.Events.UserNotificationsEvents
+namespace BookActivity.Domain.Events.NotificationsEvents
 {
-    public sealed class UserNotificationsEventHandler :
+    public sealed class NotificationsEventHandler :
         INotificationHandler<AddActiveBookAfterOperationEvent>,
         INotificationHandler<SubscribeAppUserEvent>
     {
-        private readonly IUserNotificationsHub _userNotificationsHub;
+        private readonly INotificationsHub _notificationsHub;
         private readonly IDbContext _efContext;
 
-        public UserNotificationsEventHandler(IUserNotificationsHub userNotificationsHub, IDbContext efContext)
+        public NotificationsEventHandler(INotificationsHub userNotificationsHub, IDbContext efContext)
         {
-            _userNotificationsHub = userNotificationsHub;
+            _notificationsHub = userNotificationsHub;
             _efContext = efContext;
         }
 
@@ -43,10 +43,11 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
                 Notification userNotification = new(notificationMessage, followedUser.UserIdWhoSubscribed, user.Id) { Id = Guid.NewGuid() };
                 await _efContext.Notifications.AddAsync(userNotification);
 
-                await _userNotificationsHub.SendAsync(new UserNotificationModel(
+                await _notificationsHub.SendAsync(new NotificationModel(
                         userNotification.Id,
                         followedUser.UserIdWhoSubscribed,
                         notificationMessage,
+                        followedUser.SubscribedUserId,
                         Convert.ToBase64String(user.AvatarImage)
                     ));
             }
@@ -66,10 +67,11 @@ namespace BookActivity.Domain.Events.UserNotificationsEvents
             AppUserByIdSpec userByIdSpec = new(notification.UserIdWhoSubscribed);
             var avatarImage = await _efContext.Users.Where(userByIdSpec).Select(u => u.AvatarImage).FirstAsync();
 
-            await _userNotificationsHub.SendAsync(new UserNotificationModel(
+            await _notificationsHub.SendAsync(new NotificationModel(
                        userNotification.Id,
                        notification.SubscribedUserId,
                        notificationMessage,
+                       notification.UserIdWhoSubscribed,
                        Convert.ToBase64String(avatarImage)
                    ));
 
