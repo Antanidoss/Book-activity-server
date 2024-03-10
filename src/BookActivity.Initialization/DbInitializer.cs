@@ -85,13 +85,13 @@ namespace BookActivity.Initialization
 
         private void AddBookCategories(BookActivityContext context)
         {
-            context.BookCategories.AddRange(
-                new BookCategory("IT"),
-                new BookCategory("Philosophy"),
-                new BookCategory("Psychology"),
-                new BookCategory("Artistic literature"),
-                new BookCategory("Fantasy"),
-                new BookCategory("Business"));
+            context.Categories.AddRange(
+                new Category("IT"),
+                new Category("Philosophy"),
+                new Category("Psychology"),
+                new Category("Artistic literature"),
+                new Category("Fantasy"),
+                new Category("Business"));
 
             context.SaveChanges();
         }
@@ -107,7 +107,7 @@ namespace BookActivity.Initialization
                 new[] {
                     new BookAuthor { Author = new Author("Jeffrey", "Richter") }
                 },
-                context.BookCategories.First(c => c.Title == "IT")
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "IT").Id }
             ));
 
             context.Books.Add(new Book(
@@ -124,7 +124,7 @@ namespace BookActivity.Initialization
                     new BookAuthor { Author = new Author("Mike", "Lupica") },
                     new BookAuthor { Author = new Author("James", "Patterson") },
                 },
-                context.BookCategories.First(c => c.Title == "Artistic literature")
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
             ));
 
             context.Books.Add(new Book(
@@ -137,7 +137,8 @@ namespace BookActivity.Initialization
                 new[] {
                     new BookAuthor { Author = new Author("Amelia", "Hepworth") }
                 },
-                context.BookCategories.First(c => c.Title == "Psychology"), context.BookCategories.First(c => c.Title == "Philosophy")
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Psychology").Id },
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Philosophy").Id }
             ));
 
             context.Books.Add(new Book(
@@ -149,7 +150,8 @@ namespace BookActivity.Initialization
                 new[] {
                     new BookAuthor { Author = new Author("Henry", "Charles") }
                 },
-                context.BookCategories.First(c => c.Title == "Psychology"), context.BookCategories.First(c => c.Title == "Philosophy")
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Psychology").Id },
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Philosophy").Id }
             ));
 
             context.Books.Add(new Book(
@@ -165,7 +167,7 @@ namespace BookActivity.Initialization
                 new[] {
                     new BookAuthor { Author = new Author("Alex", "Michaelides") }
                 },
-                context.BookCategories.First(c => c.Title == "Artistic literature")
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
             ));
 
             context.Books.Add(new Book(
@@ -175,7 +177,7 @@ namespace BookActivity.Initialization
                 new[] {
                     new BookAuthor { Author = new Author("Mark", "Manson") }
                 },
-                context.BookCategories.First(c => c.Title == "Artistic literature")
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
             ));
 
             context.Books.Add(new Book(
@@ -187,7 +189,7 @@ namespace BookActivity.Initialization
                     new BookAuthor { Author = new Author("Henning", "Koch") },
                     new BookAuthor { Author = new Author("Fredrik", "Backman") }
                 },
-                context.BookCategories.First(c => c.Title == "Artistic literature")
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
             ));
 
             context.Books.Add(new Book(
@@ -198,7 +200,7 @@ namespace BookActivity.Initialization
                 new[] {
                     new BookAuthor { Author = new Author("Jack", "London") }
                 },
-                context.BookCategories.First(c => c.Title == "Artistic literature")
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
             ));
 
             context.Books.Add(new Book(
@@ -210,7 +212,7 @@ namespace BookActivity.Initialization
                 new[] {
                     new BookAuthor { Author = new Author("Lisa", "See") }
                 },
-                context.BookCategories.First(c => c.Title == "Artistic literature")
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
             ));
 
             context.Books.Add(new Book(
@@ -221,7 +223,7 @@ namespace BookActivity.Initialization
                 new[] {
                     new BookAuthor { Author = new Author("Luis", "Alberto") }
                 },
-                context.BookCategories.First(c => c.Title == "Artistic literature")
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
             ));
 
             context.Books.Add(new Book(
@@ -234,7 +236,7 @@ namespace BookActivity.Initialization
                 new[] {
                     new BookAuthor { Author = new Author("David", "Grann") }
                 },
-                context.BookCategories.First(c => c.Title == "Artistic literature")
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
             ));
 
             context.Books.Add(new Book(
@@ -249,7 +251,7 @@ namespace BookActivity.Initialization
                 new[] {
                     new BookAuthor { Author = new Author("Jonathan", "Eig") }
                 },
-                context.BookCategories.First(c => c.Title == "Artistic literature")
+                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
             ));
         }
 

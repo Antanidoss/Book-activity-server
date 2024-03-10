@@ -72,6 +72,7 @@ namespace BookActivity.Infrastructure.Data
                 .AddType<BookOpinionQuery>()
                 .AddType<AuthorQuery>()
                 .AddType<NotificationQuery>()
+                .AddType<BookCategoryQuery>()
                 .AddProjections()
                 .AddFiltering()
                 .AddSorting()

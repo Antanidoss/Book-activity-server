@@ -10,6 +10,7 @@ namespace BookActivity.Domain.Commands.BookCommands
         public string Title { get; set; }
         public string Description { get; set; }
         public IEnumerable<Guid> AuthorIds { get; set; }
+        public IEnumerable<Guid> CategoryIds { get; set; }
         public IEnumerable<BookOpinion> BookOpinions { get; set; }
         public byte[] ImageData { get; set; }
     }

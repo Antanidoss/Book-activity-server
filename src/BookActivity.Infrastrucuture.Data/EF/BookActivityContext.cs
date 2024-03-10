@@ -19,7 +19,7 @@ namespace BookActivity.Infrastructure.Data.EF
     {
         public DbSet<Book> Books { get; set; }
         public DbSet<ActiveBook> ActiveBooks { get; set; }
-        public DbSet<BookCategory> BookCategories { get; set; }
+        public DbSet<Category> Categories { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookOpinion> BookOpinions { get; set; }
         public DbSet<BookNote> BookNotes { get; set; }
@@ -95,7 +95,7 @@ namespace BookActivity.Infrastructure.Data.EF
             modelBuilder.ApplyConfiguration(new BookOpinionDislikeConfiguration());
             modelBuilder.ApplyConfiguration(new BookNoteLikeConfiguration());
             modelBuilder.ApplyConfiguration(new BookNoteDislikeConfiguration());
-            modelBuilder.ApplyConfiguration(new BookCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }
