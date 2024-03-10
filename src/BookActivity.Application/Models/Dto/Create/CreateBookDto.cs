@@ -9,6 +9,7 @@ namespace BookActivity.Application.Models.Dto.Create
         public string Title { get; set; }
         public string Description { get; set; }
         public IEnumerable<Guid> AuthorIds { get; set; }
+        public IEnumerable<Guid> CategoryIds { get; set; }
         public IFormFile Image { get; set; }
 
         public override string Validate()

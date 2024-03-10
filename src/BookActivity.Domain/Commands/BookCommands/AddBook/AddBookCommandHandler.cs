@@ -24,8 +24,9 @@ namespace BookActivity.Domain.Commands.BookCommands.AddBook
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            var bookAuthor = request.AuthorIds.Select(a => new BookAuthor { AuthorId = a });
-            Book newBook = new(request.Title, request.Description, request.ImageData, bookAuthor);
+            var bookAuthors = request.AuthorIds.Select(a => new BookAuthor { AuthorId = a });
+            var bookCategories = request.CategoryIds.Select(c => new BookCategory { CategoryId = c }).ToArray();
+            Book newBook = new(request.Title, request.Description, request.ImageData, bookAuthors, bookCategories);
 
             newBook.AddDomainEvent(new AddBookEvent(newBook.Id, newBook.Title, newBook.Description, request.AuthorIds));
             await _efContext.Books.AddAsync(newBook);
