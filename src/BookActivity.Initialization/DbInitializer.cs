@@ -10,9 +10,10 @@ namespace BookActivity.Initialization
     {
         public async Task InitializeAsync(BookActivityContext context, UserManager<AppUser> userManager)
         {
+            AddBookCategories(context);
             AddBooks(context);
-            await AddUsersAsync(userManager);
 
+            await AddUsersAsync(userManager);
             await context.SaveChangesAsync();
         }
 
@@ -82,6 +83,19 @@ namespace BookActivity.Initialization
             }, "Password123#");
         }
 
+        private void AddBookCategories(BookActivityContext context)
+        {
+            context.BookCategories.AddRange(
+                new BookCategory("IT"),
+                new BookCategory("Philosophy"),
+                new BookCategory("Psychology"),
+                new BookCategory("Artistic literature"),
+                new BookCategory("Fantasy"),
+                new BookCategory("Business"));
+
+            context.SaveChanges();
+        }
+
         private void AddBooks(BookActivityContext context)
         {
             context.Books.Add(new Book(
@@ -92,7 +106,8 @@ namespace BookActivity.Initialization
                 GetImageData("CLR VIA C#.jpg"),
                 new[] {
                     new BookAuthor { Author = new Author("Jeffrey", "Richter") }
-                }
+                },
+                context.BookCategories.First(c => c.Title == "IT")
             ));
 
             context.Books.Add(new Book(
@@ -108,7 +123,8 @@ namespace BookActivity.Initialization
                 new[] {
                     new BookAuthor { Author = new Author("Mike", "Lupica") },
                     new BookAuthor { Author = new Author("James", "Patterson") },
-                }
+                },
+                context.BookCategories.First(c => c.Title == "Artistic literature")
             ));
 
             context.Books.Add(new Book(
@@ -120,7 +136,8 @@ namespace BookActivity.Initialization
                 GetImageData("I Love You to the Moon and Back.jpg"),
                 new[] {
                     new BookAuthor { Author = new Author("Amelia", "Hepworth") }
-                }
+                },
+                context.BookCategories.First(c => c.Title == "Psychology"), context.BookCategories.First(c => c.Title == "Philosophy")
             ));
 
             context.Books.Add(new Book(
@@ -131,7 +148,8 @@ namespace BookActivity.Initialization
                 GetImageData("Spare.jpeg"),
                 new[] {
                     new BookAuthor { Author = new Author("Henry", "Charles") }
-                }
+                },
+                context.BookCategories.First(c => c.Title == "Psychology"), context.BookCategories.First(c => c.Title == "Philosophy")
             ));
 
             context.Books.Add(new Book(
@@ -146,7 +164,8 @@ namespace BookActivity.Initialization
                 GetImageData("The Silent Patient.jpeg"),
                 new[] {
                     new BookAuthor { Author = new Author("Alex", "Michaelides") }
-                }
+                },
+                context.BookCategories.First(c => c.Title == "Artistic literature")
             ));
 
             context.Books.Add(new Book(
@@ -155,7 +174,8 @@ namespace BookActivity.Initialization
                 GetImageData("The Subtle Art of Not Giving.jpeg"),
                 new[] {
                     new BookAuthor { Author = new Author("Mark", "Manson") }
-                }
+                },
+                context.BookCategories.First(c => c.Title == "Artistic literature")
             ));
 
             context.Books.Add(new Book(
@@ -166,7 +186,8 @@ namespace BookActivity.Initialization
                 new[] {
                     new BookAuthor { Author = new Author("Henning", "Koch") },
                     new BookAuthor { Author = new Author("Fredrik", "Backman") }
-                }
+                },
+                context.BookCategories.First(c => c.Title == "Artistic literature")
             ));
 
             context.Books.Add(new Book(
@@ -176,7 +197,8 @@ namespace BookActivity.Initialization
                 GetImageData("The Sea-Wolf.jpg"),
                 new[] {
                     new BookAuthor { Author = new Author("Jack", "London") }
-                }
+                },
+                context.BookCategories.First(c => c.Title == "Artistic literature")
             ));
 
             context.Books.Add(new Book(
@@ -187,7 +209,8 @@ namespace BookActivity.Initialization
                 GetImageData("Lady Tan's Circle of Women.jpg"),
                 new[] {
                     new BookAuthor { Author = new Author("Lisa", "See") }
-                }
+                },
+                context.BookCategories.First(c => c.Title == "Artistic literature")
             ));
 
             context.Books.Add(new Book(
@@ -197,7 +220,8 @@ namespace BookActivity.Initialization
                 GetImageData("Good Night Irene.jpg"),
                 new[] {
                     new BookAuthor { Author = new Author("Luis", "Alberto") }
-                }
+                },
+                context.BookCategories.First(c => c.Title == "Artistic literature")
             ));
 
             context.Books.Add(new Book(
@@ -209,7 +233,8 @@ namespace BookActivity.Initialization
                 GetImageData("The Wager.jpg"),
                 new[] {
                     new BookAuthor { Author = new Author("David", "Grann") }
-                }
+                },
+                context.BookCategories.First(c => c.Title == "Artistic literature")
             ));
 
             context.Books.Add(new Book(
@@ -223,7 +248,8 @@ namespace BookActivity.Initialization
                 GetImageData("King a life.jpg"),
                 new[] {
                     new BookAuthor { Author = new Author("Jonathan", "Eig") }
-                }
+                },
+                context.BookCategories.First(c => c.Title == "Artistic literature")
             ));
         }
 

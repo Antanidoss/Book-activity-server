@@ -12,13 +12,15 @@ namespace BookActivity.Domain.Models
         public byte[] ImageData { get; set; }
         public ICollection<ActiveBook> ActiveBooks { get; private set; }
         public ICollection<BookOpinion> BookOpinions { get; set; }
+        public ICollection<BookCategory> BookCategories { get; set; }
 
         public Book() : base() { }
-        public Book(string title, string description, byte[] imageData, IEnumerable<BookAuthor> bookAuthors)
+        public Book(string title, string description, byte[] imageData, IEnumerable<BookAuthor> bookAuthors, params BookCategory[] bookCategories)
         {
             Title = title;
             Description = description;
             BookAuthors = bookAuthors.ToList();
+            BookCategories = bookCategories.ToList();
             ImageData = imageData;
         }
 
