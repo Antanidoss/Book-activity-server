@@ -17,6 +17,10 @@ namespace BookActivity.Infrastructure.Data.EF
 {
     public sealed class BookActivityContext : IdentityDbContext<AppUser, AppRole, Guid>, IDbContext
     {
+        private const string _postgresSQLProviderName = "PostgresSQL";
+        private const string _mSSQLProviderName = "MSSQL";
+
+        private readonly string[] _supportedDbProviders = new[] { "PostgresSQL", "MSSQL" };
         public DbSet<Book> Books { get; set; }
         public DbSet<ActiveBook> ActiveBooks { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -103,16 +107,15 @@ namespace BookActivity.Infrastructure.Data.EF
         //TODO: Logs doesn't work
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (_configuration.GetValue<bool>("UseInMemoryDatabase"))
-            {
-                optionsBuilder.UseInMemoryDatabase("BookActivityDatabase");
-            }
+            var providerName = _configuration.GetDbProviderName();
+            if (providerName == _postgresSQLProviderName)
+                optionsBuilder.UseNpgsql(_configuration.GetPostgresSqlConnectionString());
+            else if (providerName == _mSSQLProviderName)
+                optionsBuilder.UseSqlServer(_configuration.GetMsSqlConnectionString());
             else
-            {
-                optionsBuilder
-                    .UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
-                    .EnableSensitiveDataLogging(_configuration.GetUseSqlLogs());
-            }
+                throw new NotImplementedException($"SQL provider {providerName} not supported");
+
+            optionsBuilder.EnableSensitiveDataLogging(_configuration.GetUseSqlLogs());
         }
 
         private void UpdateCreationAndUpdateTime()
