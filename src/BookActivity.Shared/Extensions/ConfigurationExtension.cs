@@ -13,5 +13,20 @@ namespace BookActivity.Shared.Extensions
         {
             return bool.Parse(configuration["UseSqlLogs"]);
         }
+
+        public static string GetPostgresSqlConnectionString(this IConfiguration configuration)
+        {
+            return configuration["ConnectionStrings:PostgresSQL"];
+        }
+
+        public static string GetMsSqlConnectionString(this IConfiguration configuration)
+        {
+            return configuration["ConnectionStrings:PostgresSQL"];
+        }
+
+        public static string GetDbProviderName(this IConfiguration configuration)
+        {
+            return configuration["DbProvider"];
+        }
     }
 }
