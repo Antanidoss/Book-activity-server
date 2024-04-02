@@ -1,0 +1,41 @@
+﻿version: "3.9"
+networks:
+  book-activity:
+    driver: bridge
+services:
+   app:
+     container_name: book-activity
+     build:
+       context: .
+       dockerfile: Dockerfile
+     ports:
+         - 80:80
+     networks:
+        - book-activity
+     depends_on:
+        - postgres_db
+        - mongo_db
+   postgres_db:
+      container_name: postgres
+      image: postgres:latest
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: BookActivity
+      networks:
+        - book-activity
+      volumes:
+        - postgres-data:/var/lib/postgressql/data
+   mongo_db:
+      container_name: mongo
+      image: mongo
+      environment:
+        - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+        - MONGO_INITDB_ROOT_PASSWORD=bdung
+      volumes:
+        - mongodbdata:/data/db
+      ports:
+        - "27017:27017"
+volumes:
+   postgres-data:
+   mongodbdata:
