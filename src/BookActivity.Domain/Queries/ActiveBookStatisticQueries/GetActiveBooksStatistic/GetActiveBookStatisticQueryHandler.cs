@@ -35,7 +35,6 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
             var usersReadInfos = _mongoDbContext.GetCollection<UpdateActiveBookEvent>(EventMessageTypeConstants.UpdateActiveBook)
                 .AsQueryable()
                 .Where(specification)
-                .Where(i => i.CountPagesRead > 0)
                 .ToArray();
 
             if (usersReadInfos == null || !usersReadInfos.Any())

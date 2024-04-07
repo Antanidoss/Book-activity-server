@@ -4,13 +4,11 @@ networks:
     driver: bridge
 services:
    backend:
+     image: anton11/book-activity-backend
      environment:
         - ASPNETCORE_ENVIRONMENT=Development
         - "ConnectionStrings:EventStoreConnection=mongodb://mongo_db:27017"
         - "ConnectionStrings:PostgresSQL=Host=postgres;Port=5432;Database=BookActivity;User id=postgres;Password=postgres"
-     build:
-       context: .
-       dockerfile: Dockerfile
      ports:
          - 80:80
      networks:
@@ -39,9 +37,7 @@ services:
       ports:
         - "27017:27017"
    client:
-      build:
-        context: ./Book-activity-client
-        dockerfile: Dockerfile
+      image: anton11/book-activity-client
       ports:
         - 5001:3000
 volumes:
