@@ -16,6 +16,8 @@ using MongoDB.Driver.Linq;
 using BookActivity.Infrastructure.Data.Graphql.Extensions;
 using BookActivity.Infrastructure.Data.Graphql.Queries;
 using BookActivity.Domain.Interfaces;
+using System;
+using Serilog;
 
 namespace BookActivity.Infrastructure.Data
 {
@@ -44,13 +46,9 @@ namespace BookActivity.Infrastructure.Data
         public void CreateDatabasesIfNotExist(IServiceScope serviceScope, IConfiguration configuration)
         {
             var context = serviceScope.ServiceProvider.GetRequiredService<IDbContext>() as DbContext;
+            var dbCreated = context.Database.EnsureCreated();
 
-            if (!configuration.GetValue<bool>("UseInMemoryDatabase") && context.Database.CanConnect())
-                return;
-
-            context.Database.EnsureCreated();
-
-            if (context is BookActivityContext)
+            if (dbCreated && context is BookActivityContext)
             {
                 var initializer = serviceScope.ServiceProvider.GetService<IDbInitializer>();
                 if (initializer != null)
