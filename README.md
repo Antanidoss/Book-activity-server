@@ -34,19 +34,33 @@
 - Unit of Work
 - Repository
 
-# How to start a project
+# How to start a project locally
 
-#### 1.Clone the repository
+#### 1. Clone the repository
 ---
-#### 2. At the root directory, restore required packages by running:
+#### 2. Unit git submodule
+### `git submodule intit`
+---
+#### 3. At the root directory, restore required packages by running:
 ### `dotnet restore`
-
-#### 3. Change connection strings in appsettings.Development.json
 ---
-#### 4. Next, build the solution by running:
+#### 4. Change connection strings in appsettings.Development.json
+---
+#### 5. Next, build the solution by running:
 ### `dotnet build`
 ---
-#### 5. Once the front end has started, within the \src\BookActivity.Api directory, launch the back end by running:
+#### 6. Once the front end has started, within the \src\BookActivity.Api directory, launch the back end by running:
 ### `dotnet run`
 ---
-#### 6. Copy the address and go to the site
+#### 7. Copy the address and go to the site
+
+
+# How to start a project with docker
+
+#### 1. Clone the repository
+---
+#### 2. Run docker-compose file
+### `docker-compose up`
+---
+#### 3. If everything went well, then go to the website at http://localhost:5001/books
+
