@@ -5,10 +5,12 @@ using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Create;
 using Microsoft.AspNetCore.Mvc;
 using BookActivity.Api.Attributes;
+using BookActivity.Shared.Constants;
 
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.AuthorService)]
+    [Authorize(RoleNamesConstants.Admin)]
     public sealed class AuthorController : BaseController
     {
         private readonly IAuthorService _authorService;

@@ -4,12 +4,14 @@ using BookActivity.Api.Common.Extansions;
 using BookActivity.Application.Interfaces.Services;
 using BookActivity.Application.Models.Dto.Create;
 using BookActivity.Application.Models.Dto.Update;
+using BookActivity.Shared.Constants;
 using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.BookService)]
+    [Authorize(RoleNamesConstants.Admin)]
     public sealed class BookController : BaseController
     {
         private readonly IBookService _bookService;

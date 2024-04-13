@@ -7,6 +7,6 @@ namespace BookActivity.Infrastructure.Data.Intefaces
 {
     public interface IDbInitializer
     {
-        Task InitializeAsync(BookActivityContext context, UserManager<AppUser> userManager);
+        Task InitializeAsync(BookActivityContext context, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager);
     }
 }

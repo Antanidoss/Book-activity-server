@@ -9,6 +9,7 @@ services:
         - ASPNETCORE_ENVIRONMENT=Development
         - "ConnectionStrings:EventStoreConnection=mongodb://mongo_db:27017"
         - "ConnectionStrings:PostgresSQL=Host=postgres;Port=5432;Database=BookActivity;User id=postgres;Password=postgres"
+        - "ClientAddress=http://localhost:5001"
      ports:
          - 80:80
      networks:
