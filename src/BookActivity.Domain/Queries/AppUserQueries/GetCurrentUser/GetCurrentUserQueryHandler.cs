@@ -1,9 +1,10 @@
 ﻿using BookActivity.Domain.Cache;
 using BookActivity.Domain.Interfaces;
+using BookActivity.Domain.Models;
 using BookActivity.Domain.Specifications.AppUserSpecs;
-using BookActivity.Domain.Validations;
 using BookActivity.Shared.Models;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading;
@@ -15,26 +16,29 @@ namespace BookActivity.Domain.Queries.AppUserQueries.GetCurrentUser
     {
         private readonly UserCache _userCache;
         private readonly IDbContext _efContext;
+        private readonly UserManager<AppUser> _userManager;
 
-        public GetCurrentUserQueryHandler(UserCache userCache, IDbContext efContext)
+        public GetCurrentUserQueryHandler(UserCache userCache, IDbContext efContext, UserManager<AppUser> userManager)
         {
             _userCache = userCache;
             _efContext = efContext;
+            _userManager = userManager;
         }
 
         public async Task<CurrentUser> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
         {
-            if (_userCache.TryGetCurrentUser(request.UserId, out CurrentUser currentUser))
-                return currentUser;
+            //if (_userCache.TryGetCurrentUser(request.UserId, out CurrentUser currentUser))
+            //    return currentUser;
 
             AppUserByIdSpec specification = new(request.UserId);
-            currentUser = await _efContext.Users
+            var currentUser = await _efContext.Users
                 .Where(specification)
                 .Select(u => new CurrentUser
                 {
                     Id = u.Id,
                     AvatarImage = u.AvatarImage,
                     UserName = u.UserName,
+                    Roles = _userManager.GetRolesAsync(u).GetAwaiter().GetResult().ToArray()
                 })
                 .FirstAsync();
 

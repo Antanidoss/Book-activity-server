@@ -53,7 +53,10 @@ namespace BookActivity.Infrastructure.Data
                 var initializer = serviceScope.ServiceProvider.GetService<IDbInitializer>();
                 if (initializer != null)
                 {
-                    initializer.InitializeAsync(context as BookActivityContext, serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>()).Wait();
+                    var userManger = serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+                    var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<AppRole>>();
+
+                    initializer.InitializeAsync(context as BookActivityContext, userManger, roleManager).Wait();
                 }
             }
         }

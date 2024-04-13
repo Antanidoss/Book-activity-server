@@ -35,6 +35,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.SubscribeAppUserMethod)]
+        [Authorize]
         public async Task<ActionResult> SubscribeAppUserAsync([FromQuery] Guid subscribedUserId)
         {
             return (await _appUserService.SubscribeAsync(_currentUser.Id, subscribedUserId)).ToActionResult();
@@ -54,6 +55,7 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpDelete(ApiConstants.UnsubscribeAppUserMethod)]
+        [Authorize]
         public async Task<ActionResult> UnsubscribeAsync([FromQuery] Guid unsubscribedUserId)
         {
             return (await _appUserService.UnsubscribeAsync(_currentUser.Id, unsubscribedUserId)).ToActionResult();

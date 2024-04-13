@@ -11,6 +11,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading;
@@ -51,8 +52,9 @@ namespace BookActivity.Domain.Queries.AppUserQueries.AuthenticationUser
                 return Result<AuthenticationResult>.Error(ValidationErrorConstants.FailedSign);
 
             string token = GenerateJwtToken(appUser.Id.ToString());
+            var roles = (await _userManager.GetRolesAsync(appUser)).ToArray();
 
-            return new Result<AuthenticationResult>(new AuthenticationResult(appUser.Id, appUser.UserName, appUser.Email, token, appUser.AvatarImage));
+            return new Result<AuthenticationResult>(new AuthenticationResult(appUser.Id, appUser.UserName, appUser.Email, token, appUser.AvatarImage, roles));
         }
 
         private string GenerateJwtToken(string userId)

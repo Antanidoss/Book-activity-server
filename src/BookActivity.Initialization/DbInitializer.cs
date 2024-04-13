@@ -1,6 +1,7 @@
 ﻿using BookActivity.Domain.Models;
 using BookActivity.Infrastructure.Data.EF;
 using BookActivity.Infrastructure.Data.Intefaces;
+using BookActivity.Shared.Constants;
 using BookActivity.Shared.Helpers;
 using Microsoft.AspNetCore.Identity;
 
@@ -8,23 +9,28 @@ namespace BookActivity.Initialization
 {
     internal sealed class DbInitializer : IDbInitializer
     {
-        public async Task InitializeAsync(BookActivityContext context, UserManager<AppUser> userManager)
+        public async Task InitializeAsync(BookActivityContext context, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             AddBookCategories(context);
             AddBooks(context);
 
-            await AddUsersAsync(userManager);
+            await AddUsersAsync(userManager, roleManager);
             await context.SaveChangesAsync();
         }
 
-        private async Task AddUsersAsync(UserManager<AppUser> userManager)
+        private async Task AddUsersAsync(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
-            await userManager.CreateAsync(new AppUser
+            AppUser admin = new()
             {
-                UserName = "Admin book-activity",
+                UserName = "Admin",
                 AvatarImage = GetImageData("Man with beard.jpg"),
                 Email = "adminBookActivity@gmail.com"
-            }, "adminPassword123#");
+            };
+            await userManager.CreateAsync(admin, "adminPassword123#");
+
+            AppRole adminRole = new() { Name = RoleNamesConstants.Admin };
+            await roleManager.CreateAsync(adminRole);
+            await userManager.AddToRoleAsync(admin, RoleNamesConstants.Admin);
 
             await userManager.CreateAsync(new AppUser
             {

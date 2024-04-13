@@ -8,5 +8,6 @@ namespace BookActivity.Shared.Models
         public string UserName { get; set; }
         public byte[] AvatarImage { get; set; }
         public string Token { get; set; }
+        public string[] Roles { get; set; }
     }
 }
