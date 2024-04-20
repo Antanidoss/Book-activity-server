@@ -20,7 +20,7 @@ namespace BookActivity.Api.Attributes
         {
             var user = context.HttpContext.Items["User"] as CurrentUser;
 
-            if (user == null || (user.Roles != null && user.Roles.Any() && !user.Roles.Any(r => _roles.Contains(r))))
+            if (user == null || (_roles != null && _roles.Any() && !user.Roles.Any(r => _roles.Contains(r))))
                 context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
         }
     }
