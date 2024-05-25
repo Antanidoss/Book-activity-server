@@ -27,11 +27,11 @@ namespace BookActivity.Domain.Queries.AppUserQueries.GetCurrentUser
 
         public async Task<CurrentUser> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
         {
-            //if (_userCache.TryGetCurrentUser(request.UserId, out CurrentUser currentUser))
-            //    return currentUser;
+            if (_userCache.TryGetCurrentUser(request.UserId, out CurrentUser currentUser))
+                return currentUser;
 
             AppUserByIdSpec specification = new(request.UserId);
-            var currentUser = await _efContext.Users
+            currentUser = await _efContext.Users
                 .Where(specification)
                 .Select(u => new CurrentUser
                 {

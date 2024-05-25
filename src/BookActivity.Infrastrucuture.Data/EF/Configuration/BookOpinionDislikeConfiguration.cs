@@ -8,7 +8,7 @@ namespace BookActivity.Infrastructure.Data.EF.Configuration
     {
         public void Configure(EntityTypeBuilder<BookOpinionDislike> builder)
         {
-            builder.Ignore(s => s.Id).HasKey(l => new { l.UserIdWhoDislike, l.BookId });
+            builder.Ignore(s => s.Id).HasKey(l => new { l.UserIdWhoDislike, l.BookId, l.UserIdOpinion });
         }
     }
 }
