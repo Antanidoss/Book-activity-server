@@ -37,6 +37,11 @@ namespace BookActivity.Infrastructure.Data.EF.Configuration
                .WithOne(l => l.UserWhoDislike)
                .OnDelete(DeleteBehavior.ClientSetNull)
                .HasForeignKey(l => l.UserIdWhoDislike);
+
+            builder.HasMany(o => o.BookOpinions)
+               .WithOne(l => l.User)
+               .OnDelete(DeleteBehavior.ClientSetNull)
+               .HasForeignKey(l => l.UserId);
         }
     }
 }

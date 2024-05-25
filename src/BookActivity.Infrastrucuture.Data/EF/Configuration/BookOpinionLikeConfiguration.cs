@@ -8,7 +8,7 @@ namespace BookActivity.Infrastructure.Data.EF.Configuration
     {
         public void Configure(EntityTypeBuilder<BookOpinionLike> builder)
         {
-            builder.Ignore(s => s.Id).HasKey(l => new {l.UserIdWhoLike, l.BookId});
+            builder.Ignore(s => s.Id).HasKey(l => new { l.UserIdWhoLike, l.BookId, l.UserIdOpinion });
         }
     }
 }

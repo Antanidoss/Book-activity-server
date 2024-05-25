@@ -47,13 +47,9 @@ namespace BookActivity.Infrastructure.Data.Graphql.Extensions
                 .Any(b => b.Id == book.Id && b.BookOpinions.Any(o => o.UserId == userId.Value));
         }
 
-        [UseOffsetPaging(IncludeTotalCount = true)]
-        [UseProjection]
-        [UseFiltering]
-        [UseSorting]
-        public IQueryable<BookOpinion> GetBookOpinions([Service(ServiceKind.Synchronized)] BookActivityContext context, [Parent] Book book)
+        public int GetBookOpinionsCount([Service] BookActivityContext context, [Parent] Book book)
         {
-            return context.BookOpinions.Where(b => b.BookId == book.Id);
+            return context.BookOpinions.Count(b => b.BookId == book.Id);
         }
     }
 }
