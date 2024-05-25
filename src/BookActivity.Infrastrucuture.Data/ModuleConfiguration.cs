@@ -43,7 +43,7 @@ namespace BookActivity.Infrastructure.Data
             return services;
         }
 
-        public void CreateDatabasesIfNotExist(IServiceScope serviceScope, IConfiguration configuration)
+        public void CreateDatabasesIfNotExist(IServiceScope serviceScope)
         {
             var context = serviceScope.ServiceProvider.GetRequiredService<IDbContext>() as DbContext;
             var dbCreated = context.Database.EnsureCreated();
