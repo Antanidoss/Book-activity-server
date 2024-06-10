@@ -38,17 +38,20 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
             activeBooksStatisticByDay = _mongoDbContext.GetCollection<UpdateActiveBookEvent>(EventMessageTypeConstants.UpdateActiveBook)
                 .AsQueryable()
                 .Where(specification)
-                .GroupBy(@event => @event.AggregateId)
+                .GroupBy(@event => @event.BookId)
                 .ToArray()
                 .Select(async groupping =>
                 {
-                    BookByActiveBookIdSpec bookByActiveBookIdSpec = new(groupping.Key);
-                    var book = await _efDbContext.Books.Where(bookByActiveBookIdSpec).Select(b => new { b.Id, b.Title }).FirstAsync();
+                    BookByIdSpec bookByIdSpec = new(groupping.Key);
+                    var book = await _efDbContext.Books
+                        .Where(bookByIdSpec)
+                        .Select(b => new { b.Id, b.Title })
+                        .FirstOrDefaultAsync();
 
                     return new ActiveBookStatisticByDay
                     {
-                        BookId = book.Id,
-                        BookTitle = book.Title,
+                        BookId = book?.Id,
+                        BookTitle = book?.Title,
                         CountPagesRead = groupping.Sum(i => i.CountPagesRead)
                     };
                 })

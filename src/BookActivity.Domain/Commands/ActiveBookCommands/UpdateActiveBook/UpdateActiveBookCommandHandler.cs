@@ -38,7 +38,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook
             var prevNumberPagesRead = activeBook.NumberPagesRead;
             activeBook.NumberPagesRead = request.NumberPagesRead;
 
-            UpdateActiveBookEvent updateActiveBookEvent = new(activeBook.Id, activeBook.NumberPagesRead, prevNumberPagesRead, request.UserId);
+            UpdateActiveBookEvent updateActiveBookEvent = new(activeBook.Id, activeBook.NumberPagesRead, prevNumberPagesRead, request.UserId, activeBook.BookId);
             activeBook.AddDomainEvent(updateActiveBookEvent);
             await _mongoContext.GetCollection<UpdateActiveBookEvent>(EventMessageTypeConstants.UpdateActiveBook).InsertOneAsync(updateActiveBookEvent);
 

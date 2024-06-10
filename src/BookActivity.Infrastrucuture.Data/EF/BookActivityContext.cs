@@ -115,7 +115,9 @@ namespace BookActivity.Infrastructure.Data.EF
             else
                 throw new NotImplementedException($"SQL provider {providerName} not supported");
 
-            optionsBuilder.EnableSensitiveDataLogging(_configuration.GetUseSqlLogs());
+            optionsBuilder
+                .EnableSensitiveDataLogging(_configuration.GetUseSqlLogs())
+                .EnableDetailedErrors();
         }
 
         private void UpdateCreationAndUpdateTime()
