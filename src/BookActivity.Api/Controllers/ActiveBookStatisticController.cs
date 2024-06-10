@@ -11,12 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookActivity.Api.Controllers
 {
     [Route(ApiConstants.ActiveBookStatisticService)]
-    [Authorize]
     public sealed class ActiveBookStatisticController : BaseController
     {
         private readonly IActiveBookStatisticService _activeBookStatisticService;
 
-        public ActiveBookStatisticController(IActiveBookStatisticService activeBookStatisticService, CurrentUser currentUser) : base(currentUser)
+        public ActiveBookStatisticController(IActiveBookStatisticService activeBookStatisticService, IServiceProvider serviceProvider) : base(serviceProvider.GetService<CurrentUser>())
         {
             _activeBookStatisticService = activeBookStatisticService;
         }

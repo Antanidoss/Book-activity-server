@@ -18,19 +18,14 @@ namespace BookActivity.Domain.Commands
             ValidationResult.Errors.Add(new ValidationFailure(string.Empty, mensagem));
         }
 
-        protected async Task<ValidationResult> Commit(IDbContext dbContext, string message)
+        protected async Task<ValidationResult> Commit(IDbContext dbContext)
         {
             if (!(await dbContext.Commit()))
             {
-                AddError(message);
+                AddError("There was an error saving data");
             }
 
             return ValidationResult;
-        }
-
-        protected async Task<ValidationResult> Commit(IDbContext dbContext)
-        {
-            return await Commit(dbContext, "There was an error saving data").ConfigureAwait(continueOnCapturedContext: false);
         }
     }
 }

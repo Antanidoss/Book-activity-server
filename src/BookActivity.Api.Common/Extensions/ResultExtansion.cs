@@ -23,7 +23,7 @@ namespace BookActivity.Api.Common.Extansions
 
         public static ActionResult ToActionResult(this ValidationResult validationResult)
         {
-            return validationResult.IsValid ? new OkObjectResult(null) : new BadRequestObjectResult(ValidationErrorsToString(validationResult.Errors));
+            return validationResult.IsValid ? new OkResult() : new BadRequestObjectResult(ValidationErrorsToString(validationResult.Errors));
         }
 
         private static string ValidationErrorsToString(List<ValidationFailure> errors)

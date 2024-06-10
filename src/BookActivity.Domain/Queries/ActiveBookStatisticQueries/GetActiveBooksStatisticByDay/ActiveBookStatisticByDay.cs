@@ -4,7 +4,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
 {
     public sealed class ActiveBookStatisticByDay
     {
-        public Guid BookId { get; set; }
+        public Guid? BookId { get; set; }
         public string BookTitle { get; set; }
         public int CountPagesRead { get; set; }
     }
