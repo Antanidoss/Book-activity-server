@@ -30,7 +30,7 @@ namespace BookActivity.Infrastructure.Data.Graphql.Extensions
             if (curUser == null || user.Id == curUser.Id)
                 return false;
 
-            return context.Subscriptions.Any(s => s.SubscribedUserId == user.Id && s.UserIdWhoSubscribed == curUser.Id);
+            return context.Subscribers.Any(s => s.SubscribedUserId == user.Id && s.UserIdWhoSubscribed == curUser.Id);
         }
 
         public bool GetIsSubscription([Parent] AppUser user, [FromServices] BookActivityContext context, [FromServices] IServiceProvider serviceProvider)

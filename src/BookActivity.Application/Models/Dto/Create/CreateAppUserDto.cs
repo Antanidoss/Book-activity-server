@@ -2,7 +2,7 @@
 
 namespace BookActivity.Application.Models.Dto.Create
 {
-    public sealed class CreateAppUserDto : BaseDto
+    public sealed class CreateUserDto : BaseDto
     {
         public string Name { get; set; }
         public string Email { get; set; }

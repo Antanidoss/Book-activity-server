@@ -3,6 +3,7 @@ using BookActivity.Api.Common.Models;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Text;
 
 namespace BookActivity.Api.Common.Extansions
 {
@@ -28,14 +29,12 @@ namespace BookActivity.Api.Common.Extansions
 
         private static string ValidationErrorsToString(List<ValidationFailure> errors)
         {
-            string result = string.Empty;
+            StringBuilder result = new();
 
             foreach (var error in errors)
-            {
-                result += error.ErrorMessage + "\n";
-            }
+                result.AppendLine(error.ErrorMessage);
 
-            return result;
+            return result.ToString();
         }
     }
 }

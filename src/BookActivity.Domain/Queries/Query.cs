@@ -4,7 +4,7 @@ using System;
 
 namespace BookActivity.Domain.Queries
 {
-    public class Query<TResult> : IRequest<TResult>, IBaseRequest
+    public class Query<TResult> : IRequest<TResult>
     {
         public DateTime Timestamp { get; private set; }
 

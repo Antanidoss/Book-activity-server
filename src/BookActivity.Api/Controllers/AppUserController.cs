@@ -23,9 +23,9 @@ namespace BookActivity.Api.Controllers
 
         [HttpPost(ApiConstants.AddUserMethod)]
         [DtoValidator]
-        public async Task<IActionResult> AddAsync([FromForm] CreateAppUserDto appUserCreateDTO)
+        public async Task<IActionResult> AddAsync([FromForm] CreateUserDto createUserModel)
         {
-            return (await _appUserService.AddAsync(appUserCreateDTO)).ToActionResult();
+            return (await _appUserService.AddAsync(createUserModel)).ToActionResult();
         }
 
         [HttpPost(ApiConstants.AuthenticationMethod)]
@@ -36,7 +36,7 @@ namespace BookActivity.Api.Controllers
 
         [HttpPut(ApiConstants.SubscribeAppUserMethod)]
         [Authorize]
-        public async Task<ActionResult> SubscribeAppUserAsync([FromQuery] Guid subscribedUserId)
+        public async Task<ActionResult> SubscribeAsync([FromQuery] Guid subscribedUserId)
         {
             return (await _appUserService.SubscribeAsync(_currentUser.Id, subscribedUserId)).ToActionResult();
         }
@@ -48,10 +48,13 @@ namespace BookActivity.Api.Controllers
         }
 
         [HttpPut(ApiConstants.UpdateUserMethod)]
+        [Authorize]
         [DtoValidator]
-        public async Task<ActionResult> UpdateAsync([FromForm] UpdateAppUserDto updateAppUserModel)
+        public async Task<ActionResult> UpdateAsync([FromForm] UpdateUserDto updateUserModel)
         {
-            return (await _appUserService.UpdateAsync(updateAppUserModel)).ToActionResult();
+            updateUserModel.UserId = _currentUser.Id;
+
+            return (await _appUserService.UpdateAsync(updateUserModel)).ToActionResult();
         }
 
         [HttpDelete(ApiConstants.UnsubscribeAppUserMethod)]

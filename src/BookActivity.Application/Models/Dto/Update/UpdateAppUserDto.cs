@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 
 namespace BookActivity.Application.Models.Dto.Update
 {
-    public class UpdateAppUserDto : BaseDto
+    public class UpdateUserDto : BaseDto
     {
         public Guid UserId { get; set; }
         public string Name { get; set; }
-        public IFormFile AvatarImage { get; set; }
+        public string Description { get; set; }
 
         public override string Validate()
         {

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BookActivity.Domain.Commands
 {
-    public abstract class Command : IRequest<ValidationResult>, IBaseRequest
+    public abstract class Command : IRequest<ValidationResult>
     {
         public ValidationResult ValidationResult { get; set; }
 

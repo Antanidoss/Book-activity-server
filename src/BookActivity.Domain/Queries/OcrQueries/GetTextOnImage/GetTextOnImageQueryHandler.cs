@@ -12,7 +12,7 @@ namespace BookActivity.Domain.Queries.OcrQueries.GetTextOnImage
     {
         public async Task<string> Handle(GetTextOnImageQuery request, CancellationToken cancellationToken)
         {
-            var tempImagePath = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
+            var tempImagePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
             try
             {

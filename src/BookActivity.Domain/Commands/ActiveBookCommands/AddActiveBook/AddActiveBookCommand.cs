@@ -1,4 +1,5 @@
 ﻿using BookActivity.Domain.Commands.ActiveBookCommands.Validations;
+using BookActivity.Domain.Interfaces;
 
 namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
 {
