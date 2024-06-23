@@ -17,6 +17,7 @@ namespace BookActivity.Domain.Models
         public ICollection<BookOpinionLike> BookOpinionLikes { get; set; }
         public ICollection<BookOpinionDislike> BookOpinionDislikes { get; set; }
         public byte[] AvatarImage { get; set; }
+        public string Description { get; set; }
 
         public AppUser() : base()
         {

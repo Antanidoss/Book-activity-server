@@ -18,30 +18,32 @@ namespace BookActivity.Infrastructure.Data.EF.Configuration
                 .HasForeignKey(s => s.SubscribedUserId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.HasMany(o => o.BookNoteLikes)
+            builder.HasMany(u => u.BookNoteLikes)
                 .WithOne(l => l.UserWhoLike)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasForeignKey(l => l.UserIdWhoLike);
 
-            builder.HasMany(o => o.BookNoteDislikes)
+            builder.HasMany(u => u.BookNoteDislikes)
                .WithOne(l => l.UserWhoDislike)
                .OnDelete(DeleteBehavior.ClientSetNull)
                .HasForeignKey(l => l.UserIdWhoDislike);
 
-            builder.HasMany(o => o.BookOpinionLikes)
+            builder.HasMany(u => u.BookOpinionLikes)
                .WithOne(l => l.UserWhoLike)
                .OnDelete(DeleteBehavior.ClientSetNull)
                .HasForeignKey(l => l.UserIdWhoLike);
 
-            builder.HasMany(o => o.BookOpinionDislikes)
+            builder.HasMany(u => u.BookOpinionDislikes)
                .WithOne(l => l.UserWhoDislike)
                .OnDelete(DeleteBehavior.ClientSetNull)
                .HasForeignKey(l => l.UserIdWhoDislike);
 
-            builder.HasMany(o => o.BookOpinions)
+            builder.HasMany(u => u.BookOpinions)
                .WithOne(l => l.User)
                .OnDelete(DeleteBehavior.ClientSetNull)
                .HasForeignKey(l => l.UserId);
+
+            builder.Property(u => u.Description).HasMaxLength(100);
         }
     }
 }

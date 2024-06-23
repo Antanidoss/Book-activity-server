@@ -38,30 +38,30 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendCommandAsync(updateBookRatingCommand);
         }
 
-        public async Task<ValidationResult> AddDislikeAsync(Guid bookId, Guid userWhoDislikeId, Guid userOpinionId)
+        public async Task<ValidationResult> AddDislikeAsync(Guid bookId, Guid userIdWhoDislike, Guid userOpinionId)
         {
-            AddDislikeCommand command = new(userWhoDislikeId, bookId, userOpinionId);
+            AddDislikeCommand command = new(userIdWhoDislike, bookId, userOpinionId);
 
             return await _mediatorHandler.SendCommandAsync(command);
         }
 
-        public async Task<ValidationResult> AddLikeAsync(Guid bookId, Guid userWhoLikeId, Guid userOpinionId)
+        public async Task<ValidationResult> AddLikeAsync(Guid bookId, Guid userIdWhoLike, Guid userOpinionId)
         {
-            AddLikeCommand command = new(userWhoLikeId, bookId, userOpinionId);
+            AddLikeCommand command = new(userIdWhoLike, bookId, userOpinionId);
 
             return await _mediatorHandler.SendCommandAsync(command);
         }
 
-        public async Task<ValidationResult> RemoveDislikeAsync(Guid bookId, Guid userWhoDislikeId, Guid userOpinionId)
+        public async Task<ValidationResult> RemoveDislikeAsync(Guid bookId, Guid userIdWhoDislike, Guid userOpinionId)
         {
-            RemoveDislikeCommand command = new(userWhoDislikeId, bookId, userOpinionId);
+            RemoveDislikeCommand command = new(userIdWhoDislike, bookId, userOpinionId);
 
             return await _mediatorHandler.SendCommandAsync(command);
         }
 
-        public async Task<ValidationResult> RemoveLikeAsync(Guid bookId, Guid userWhoLikeId, Guid userOpinionId)
+        public async Task<ValidationResult> RemoveLikeAsync(Guid bookId, Guid userIdWhoLike, Guid userOpinionId)
         {
-            RemoveLikeCommand command = new(userWhoLikeId, bookId, userOpinionId);
+            RemoveLikeCommand command = new(userIdWhoLike, bookId, userOpinionId);
 
             return await _mediatorHandler.SendCommandAsync(command);
         }

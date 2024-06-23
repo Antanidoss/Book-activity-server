@@ -82,26 +82,26 @@ namespace BookActivity.Infrastructure.Data.EF
             return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            modelBuilder.Ignore<ValidationResult>();
-            modelBuilder.Ignore<Event>();
+            builder.Ignore<ValidationResult>();
+            builder.Ignore<Event>();
 
-            modelBuilder.ApplyConfiguration(new AppUserConfiguration());
-            modelBuilder.ApplyConfiguration(new SubscriberConfiguration());
-            modelBuilder.ApplyConfiguration(new SubscriptionConfiguration());
-            modelBuilder.ApplyConfiguration(new BookConfiguration());
-            modelBuilder.ApplyConfiguration(new AuthorConfiguration());
-            modelBuilder.ApplyConfiguration(new BookNoteConfiguration());
-            modelBuilder.ApplyConfiguration(new BookOpinionConfiguration());
-            modelBuilder.ApplyConfiguration(new NotificationConfiguration());
-            modelBuilder.ApplyConfiguration(new BookOpinionLikeConfiguration());
-            modelBuilder.ApplyConfiguration(new BookOpinionDislikeConfiguration());
-            modelBuilder.ApplyConfiguration(new BookNoteLikeConfiguration());
-            modelBuilder.ApplyConfiguration(new BookNoteDislikeConfiguration());
-            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            builder.ApplyConfiguration(new AppUserConfiguration());
+            builder.ApplyConfiguration(new SubscriberConfiguration());
+            builder.ApplyConfiguration(new SubscriptionConfiguration());
+            builder.ApplyConfiguration(new BookConfiguration());
+            builder.ApplyConfiguration(new AuthorConfiguration());
+            builder.ApplyConfiguration(new BookNoteConfiguration());
+            builder.ApplyConfiguration(new BookOpinionConfiguration());
+            builder.ApplyConfiguration(new NotificationConfiguration());
+            builder.ApplyConfiguration(new BookOpinionLikeConfiguration());
+            builder.ApplyConfiguration(new BookOpinionDislikeConfiguration());
+            builder.ApplyConfiguration(new BookNoteLikeConfiguration());
+            builder.ApplyConfiguration(new BookNoteDislikeConfiguration());
+            builder.ApplyConfiguration(new CategoryConfiguration());
 
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
         }
 
         //TODO: Logs doesn't work

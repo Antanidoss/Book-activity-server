@@ -30,7 +30,7 @@ namespace BookActivity.Application.Implementation.Services
             _mediatorHandler = mediatorHandler;
         }
 
-        public async Task<ValidationResult> AddAsync(CreateAppUserDto appUserCreateDto)
+        public async Task<ValidationResult> AddAsync(CreateUserDto appUserCreateDto)
         {
             appUserCreateDto.Validate();
 
@@ -59,7 +59,7 @@ namespace BookActivity.Application.Implementation.Services
             return await _mediatorHandler.SendCommandAsync(subscribeAppUserCommand);
         }
 
-        public async Task<ValidationResult> UpdateAsync(UpdateAppUserDto updateAppUserModel)
+        public async Task<ValidationResult> UpdateAsync(UpdateUserDto updateAppUserModel)
         {
             CommonValidator.ThrowExceptionIfEmpty(updateAppUserModel.UserId, nameof(updateAppUserModel.UserId));
 

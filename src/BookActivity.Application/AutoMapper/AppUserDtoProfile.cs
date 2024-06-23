@@ -18,11 +18,10 @@ namespace BookActivity.Application.AutoMapper
             CreateMap<AppUser, AppUserDto>();
             CreateMap<AppUserDto, AppUser>();
             CreateMap<AuthenticationModel, AuthenticationUserQuery>();
-            CreateMap<CreateAppUserDto, AddAppUserCommand>()
+            CreateMap<CreateUserDto, AddAppUserCommand>()
                  .ForMember(u => u.AvatarImage, conf => conf.MapFrom(u => u.AvatarImage.ConvertToBuffer()));
 
-            CreateMap<UpdateAppUserDto, UpdateAppUserCommand>()
-                .ForMember(u => u.AvatarImage, conf => conf.MapFrom(u => u.AvatarImage.ConvertToBuffer()))
+            CreateMap<UpdateUserDto, UpdateAppUserCommand>()
                 .ForMember(u => u.AppUserId, conf => conf.MapFrom(u => u.UserId))
                 .ForMember(u => u.Name, conf => conf.MapFrom(u => u.Name))
                 .IgnoreAllPropertiesWithAnInaccessibleSetter();

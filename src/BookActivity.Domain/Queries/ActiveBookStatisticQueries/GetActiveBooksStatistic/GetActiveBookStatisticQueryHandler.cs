@@ -37,7 +37,7 @@ namespace BookActivity.Domain.Queries.ActiveBookStatisticQueries.GetActiveBooksS
                 .Where(specification)
                 .ToArray();
 
-            if (usersReadInfos == null || !usersReadInfos.Any())
+            if (!usersReadInfos.Any())
                 return new();
 
             activeBookStatistics = new()

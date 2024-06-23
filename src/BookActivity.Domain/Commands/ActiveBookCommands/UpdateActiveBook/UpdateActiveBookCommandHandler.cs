@@ -33,7 +33,11 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook
             var activeBook = await _efContext.ActiveBooks.FirstOrDefaultAsync(specification, cancellationToken);
 
             if (activeBook is null)
+            {
                 AddError(ValidationErrorConstants.GetEnitityNotFoundMessage(nameof(ActiveBook)));
+
+                return request.ValidationResult;
+            }
 
             var prevNumberPagesRead = activeBook.NumberPagesRead;
             activeBook.NumberPagesRead = request.NumberPagesRead;
