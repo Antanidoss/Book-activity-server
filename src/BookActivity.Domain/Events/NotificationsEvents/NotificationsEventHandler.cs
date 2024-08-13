@@ -14,23 +14,21 @@ using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Events.NotificationsEvents
 {
-    public sealed class NotificationsEventHandler :
+    public sealed class NotificationsEventHandler : NotificationHandler,
         INotificationHandler<AddActiveBookAfterOperationEvent>,
         INotificationHandler<SubscribeAppUserEvent>
     {
         private readonly INotificationsHub _notificationsHub;
-        private readonly IDbContext _efContext;
 
-        public NotificationsEventHandler(INotificationsHub userNotificationsHub, IDbContext efContext)
+        public NotificationsEventHandler(INotificationsHub userNotificationsHub, IDbContext dbContext) : base(dbContext)
         {
             _notificationsHub = userNotificationsHub;
-            _efContext = efContext;
         }
 
         public async Task Handle(AddActiveBookAfterOperationEvent notification, CancellationToken cancellationToken)
         {
             AppUserByIdSpec userByIdSpec = new(notification.UserId.Value);
-            var user = await _efContext.Users
+            var user = await _dbContext.Users
                 .Where(userByIdSpec)
                 .Include(u => u.Subscribers)
                 .Select(u => new { u.Id, u.AvatarImage, u.Subscribers, u.UserName })
@@ -41,7 +39,7 @@ namespace BookActivity.Domain.Events.NotificationsEvents
             foreach (var followedUser in user.Subscribers)
             {
                 Notification userNotification = new(notificationMessage, followedUser.UserIdWhoSubscribed, user.Id) { Id = Guid.NewGuid() };
-                await _efContext.Notifications.AddAsync(userNotification);
+                await _dbContext.Notifications.AddAsync(userNotification);
 
                 await _notificationsHub.SendAsync(new NotificationModel(
                         userNotification.Id,
@@ -52,7 +50,7 @@ namespace BookActivity.Domain.Events.NotificationsEvents
                     ));
             }
 
-            await _efContext.Commit();
+            await Commit();
         }
 
         public async Task Handle(SubscribeAppUserEvent notification, CancellationToken cancellationToken)
@@ -62,10 +60,10 @@ namespace BookActivity.Domain.Events.NotificationsEvents
             string notificationMessage = $"{notification.UserNameWhoSubscribed} has subscribed to you";
 
             Notification userNotification = new(notificationMessage, notification.SubscribedUserId, notification.UserIdWhoSubscribed) { Id = Guid.NewGuid() };
-            await _efContext.Notifications.AddAsync(userNotification);
+            await _dbContext.Notifications.AddAsync(userNotification);
 
             AppUserByIdSpec userByIdSpec = new(notification.UserIdWhoSubscribed);
-            var avatarImage = await _efContext.Users.Where(userByIdSpec).Select(u => u.AvatarImage).FirstAsync();
+            var avatarImage = await _dbContext.Users.Where(userByIdSpec).Select(u => u.AvatarImage).FirstAsync();
 
             await _notificationsHub.SendAsync(new NotificationModel(
                        userNotification.Id,
@@ -75,7 +73,7 @@ namespace BookActivity.Domain.Events.NotificationsEvents
                        Convert.ToBase64String(avatarImage)
                    ));
 
-            await _efContext.Commit();
+            await Commit();
         }
     }
 }

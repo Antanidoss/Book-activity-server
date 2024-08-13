@@ -20,10 +20,7 @@ namespace BookActivity.Domain.Commands
 
         protected async Task<ValidationResult> Commit(IDbContext dbContext)
         {
-            if (!(await dbContext.Commit()))
-            {
-                AddError("There was an error saving data");
-            }
+            await dbContext.SaveCommandChangesAsync();
 
             return ValidationResult;
         }

@@ -12,6 +12,7 @@ using BookActivity.Domain.Core;
 using FluentValidation.Results;
 using Microsoft.Extensions.Configuration;
 using BookActivity.Shared.Extensions;
+using System.Data;
 
 namespace BookActivity.Infrastructure.Data.EF
 {
@@ -19,8 +20,6 @@ namespace BookActivity.Infrastructure.Data.EF
     {
         private const string _postgresSQLProviderName = "PostgresSQL";
         private const string _mSSQLProviderName = "MSSQL";
-
-        private readonly string[] _supportedDbProviders = new[] { "PostgresSQL", "MSSQL" };
         public DbSet<Book> Books { get; set; }
         public DbSet<ActiveBook> ActiveBooks { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -44,7 +43,7 @@ namespace BookActivity.Infrastructure.Data.EF
             _configuration = configuration;
         }
 
-        public async Task<bool> Commit()
+        public async Task SaveCommandChangesAsync(bool acceptAllChangesOnSuccess = true, CancellationToken cancellationToken = default)
         {
             var domainEntities = ChangeTracker
                 .Entries<BaseEntity>()
@@ -52,20 +51,26 @@ namespace BookActivity.Infrastructure.Data.EF
 
             var domainEvents = domainEntities
                 .SelectMany(x => x.Entity.DomainEvents)
-                .Cast<Event>()
                 .ToList();
 
-            using CancellationTokenSource cancellationTokenSource = new();
-            var cancellationToken = cancellationTokenSource.Token;
+            try
+            {
+                await Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
 
-            await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.BeforeOperation), cancellationToken);
+                await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.BeforeOperation), cancellationToken);
 
-            var success = await SaveChangesAsync() > 0;
+                var success = await SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken) > 0;
 
-            if (success)
-                await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation), cancellationToken);
+                if (success)
+                    await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation), cancellationToken);
 
-            return success;
+                await Database.CommitTransactionAsync(cancellationToken);
+            }
+            catch
+            {
+                await Database.RollbackTransactionAsync(cancellationToken);
+                throw;
+            }
         }
 
         public override int SaveChanges()
@@ -73,6 +78,11 @@ namespace BookActivity.Infrastructure.Data.EF
             UpdateCreationAndUpdateTime();
 
             return base.SaveChanges();
+        }
+
+        public async Task SaveNotificationChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            await SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
