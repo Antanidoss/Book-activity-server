@@ -1,5 +1,6 @@
 ﻿using BookActivity.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BookActivity.Domain.Interfaces
@@ -20,6 +21,7 @@ namespace BookActivity.Domain.Interfaces
         public DbSet<BookNoteDislike> BookNoteDislikes { get; set; }
         public DbSet<BookOpinionLike> BookOpinionLikes { get; set; }
         public DbSet<BookOpinionDislike> BookOpinionDislikes { get; set; }
-        Task<bool> Commit();
+        Task SaveNotificationChangesAsync(bool acceptAllChangesOnSuccess = true, CancellationToken cancellationToken = default);
+        Task SaveCommandChangesAsync(bool acceptAllChangesOnSuccess = true, CancellationToken cancellationToken = default);
     }
 }
