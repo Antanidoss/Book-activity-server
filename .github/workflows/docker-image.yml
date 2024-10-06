@@ -21,14 +21,14 @@ jobs:
 
 
     - name: Login to DockerHub
-    - uses: docker/login-action@v1
+      uses: docker/login-action@v1
       with:
         username: ${{ secrets.anton11 }}
         password: ${{ secrets.antonsad2002 }}
       if: steps.baseupdatecheck.outputs.needs-updating == 'true'
 
     - name: Build and push Docker images
-    - uses: docker/build-push-action@v2.6.1
+      uses: docker/build-push-action@v2.6.1
       with:
         context: "${{ github.workspace }}"
         push: true
