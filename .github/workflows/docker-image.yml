@@ -32,3 +32,4 @@ jobs:
         context: "${{ github.workspace }}"
         push: true
         tags: anton11/book-activity-backend:latest # update for your image
+      if: steps.baseupdatecheck.outputs.needs-updating == 'true'
