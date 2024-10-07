@@ -80,7 +80,7 @@ namespace BookActivity.Infrastructure.Data.EF
             return base.SaveChanges();
         }
 
-        public async Task SaveNotificationChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        public async Task SaveNotificationChangesAsync(bool acceptAllChangesOnSuccess = true, CancellationToken cancellationToken = default)
         {
             await SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
