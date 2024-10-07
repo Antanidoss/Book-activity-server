@@ -1,6 +1,5 @@
 ﻿using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
-using BookActivity.Domain.Specifications.NotificationSpecs;
 using FluentValidation.Results;
 using MediatR;
 using System.Linq;
@@ -21,8 +20,6 @@ namespace BookActivity.Domain.Commands.UserNotificationCommands.RemoveUserNotifi
 
         public async Task<ValidationResult> Handle(RemoveUserNotificationsCommand request, CancellationToken cancellationToken)
         {
-            NotificationByIdsSpec specification = new(request.UserNotificationIds);
-
             var userNotifications = request.UserNotificationIds.Select(n => new Notification { Id = n });
             _efContext.Notifications.RemoveRange(userNotifications);
 
