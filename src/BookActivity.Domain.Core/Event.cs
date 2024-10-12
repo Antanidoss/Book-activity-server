@@ -35,7 +35,7 @@ namespace BookActivity.Domain.Core
 
     public enum WhenCallHandler
     {
-        BeforeOperation,
-        AfterOperation,
+        BeforeSave,
+        AfterSave,
     }
 }
