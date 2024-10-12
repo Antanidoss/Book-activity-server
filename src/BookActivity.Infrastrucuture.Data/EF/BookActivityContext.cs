@@ -13,6 +13,7 @@ using FluentValidation.Results;
 using Microsoft.Extensions.Configuration;
 using BookActivity.Shared.Extensions;
 using System.Data;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace BookActivity.Infrastructure.Data.EF
 {
@@ -43,7 +44,7 @@ namespace BookActivity.Infrastructure.Data.EF
             _configuration = configuration;
         }
 
-        public async Task SaveCommandChangesAsync(bool acceptAllChangesOnSuccess = true, CancellationToken cancellationToken = default)
+        public async Task SaveCommandChangesAsync(string savePoint = null, CancellationToken cancellationToken = default)
         {
             var domainEntities = ChangeTracker
                 .Entries<BaseEntity>()
@@ -53,24 +54,10 @@ namespace BookActivity.Infrastructure.Data.EF
                 .SelectMany(x => x.Entity.DomainEvents)
                 .ToList();
 
-            try
-            {
-                await Database.BeginTransactionAsync(IsolationLevel.Serializable, cancellationToken);
+            var beforeSaveEvents = domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.BeforeSave).ToArray();
+            var afterSaveEvents = domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterSave).ToArray();
 
-                await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.BeforeOperation), cancellationToken);
-
-                var success = await SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken) > 0;
-
-                if (success)
-                    await _mediatorHandler.PublishEventsAsync(domainEvents.Where(e => e.WhenCallHandler == WhenCallHandler.AfterOperation), cancellationToken);
-
-                await Database.CommitTransactionAsync(cancellationToken);
-            }
-            catch
-            {
-                await Database.RollbackTransactionAsync(cancellationToken);
-                throw;
-            }
+            await SaveAsTransactionAsync(beforeSaveEvents, afterSaveEvents, savePoint, cancellationToken);
         }
 
         public override int SaveChanges()
@@ -80,16 +67,16 @@ namespace BookActivity.Infrastructure.Data.EF
             return base.SaveChanges();
         }
 
-        public async Task SaveNotificationChangesAsync(bool acceptAllChangesOnSuccess = true, CancellationToken cancellationToken = default)
+        public async Task SaveNotificationChangesAsync(CancellationToken cancellationToken = default)
         {
-            await SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            await SaveAsTransactionAsync(cancellationToken: cancellationToken);
         }
 
-        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             UpdateCreationAndUpdateTime();
 
-            return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            return await base.SaveChangesAsync(cancellationToken);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -155,6 +142,85 @@ namespace BookActivity.Infrastructure.Data.EF
                 if (timeOfUpdate == null || DateTime.Parse(timeOfUpdate.ToString()).Year < DateTime.UtcNow.Year)
                     entry.Property(nameof(BaseEntity.TimeOfUpdate)).CurrentValue = DateTime.UtcNow;
             }
+        }
+
+        private async Task SaveAsTransactionAsync(Event[] beforeSaveEvents = null, Event[] afterSaveEvents = null, string savePoint = null, CancellationToken cancellationToken = default)
+        {
+            var transaction = Database.CurrentTransaction;
+
+            var publishBeforeSaveEventsAsync = async () =>
+            {
+                if (beforeSaveEvents != null)
+                    await _mediatorHandler.PublishEventsAsync(beforeSaveEvents, cancellationToken);
+            };
+
+            var publishAfterSaveEventsAsync = async () =>
+            {
+                if (afterSaveEvents != null)
+                    await _mediatorHandler.PublishEventsAsync(afterSaveEvents, cancellationToken);
+            };
+
+            if (transaction != null)
+            {
+                if (string.IsNullOrEmpty(savePoint))
+                    await SaveChangesAsync(publishBeforeSaveEventsAsync, publishAfterSaveEventsAsync, cancellationToken);
+                else
+                    await SaveAsSavePointAsync(transaction, publishBeforeSaveEventsAsync, publishAfterSaveEventsAsync, savePoint, cancellationToken);
+            }
+            else
+            {
+                var strategy = Database.CreateExecutionStrategy();
+
+                await strategy.ExecuteAsync(async () =>
+                {
+                    await using (transaction = await Database.BeginTransactionAsync(cancellationToken))
+                    {
+                        await publishBeforeSaveEventsAsync();
+
+                        await SaveChangesAsync(cancellationToken);
+                        await transaction.CommitAsync(cancellationToken);
+
+                        await publishAfterSaveEventsAsync();
+                    }
+                });
+            }
+        }
+
+        private async Task SaveAsSavePointAsync(
+            IDbContextTransaction transaction,
+            Func<Task> publishBeforeSaveEventsAsync,
+            Func<Task> publishAfterSaveEventsAsync,
+            string savePoint,
+            CancellationToken cancellationToken)
+        {
+            if (!transaction.SupportsSavepoints)
+                throw new NotSupportedException();
+
+            await transaction.CreateSavepointAsync(savePoint, cancellationToken);
+
+            try
+            {
+                await publishBeforeSaveEventsAsync();
+
+                await SaveChangesAsync(cancellationToken);
+                await transaction.ReleaseSavepointAsync(savePoint, cancellationToken);
+
+                await publishAfterSaveEventsAsync();
+            }
+            catch
+            {
+                await transaction.RollbackToSavepointAsync(savePoint, cancellationToken);
+                throw;
+            }
+        }
+        private async Task SaveChangesAsync(
+            Func<Task> publishBeforeSaveEventsAsync,
+            Func<Task> publishAfterSaveEventsAsync,
+            CancellationToken cancellationToken)
+        {
+            await publishBeforeSaveEventsAsync();
+            await SaveChangesAsync(cancellationToken);
+            await publishAfterSaveEventsAsync();
         }
     }
 }
