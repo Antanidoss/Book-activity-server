@@ -79,6 +79,11 @@ namespace BookActivity.Infrastructure.Data.EF
             return await base.SaveChangesAsync(cancellationToken);
         }
 
+        public void ClearChangeTracker()
+        {
+            ChangeTracker.Clear();
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Ignore<ValidationResult>();

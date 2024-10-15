@@ -28,6 +28,9 @@ namespace BookActivity.Common.Test
 
             ServiceCollection services = new();
             ServiceProvider = await ConfigureServicesAsync(services);
+
+            var dbContext = ServiceProvider.GetRequiredService<IDbContext>();
+            dbContext.ClearChangeTracker();
         }
 
         public virtual async Task<IServiceProvider> ConfigureServicesAsync(IServiceCollection services)
