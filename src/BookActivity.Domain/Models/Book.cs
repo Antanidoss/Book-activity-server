@@ -8,9 +8,9 @@ namespace BookActivity.Domain.Models
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public IEnumerable<BookAuthor> BookAuthors { get; private set; }
+        public IEnumerable<BookAuthor> BookAuthors { get; init; }
         public byte[] ImageData { get; set; }
-        public ICollection<ActiveBook> ActiveBooks { get; private set; }
+        public ICollection<ActiveBook> ActiveBooks { get; init; }
         public ICollection<BookOpinion> BookOpinions { get; set; }
         public ICollection<BookCategory> BookCategories { get; set; }
 

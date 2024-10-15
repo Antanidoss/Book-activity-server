@@ -20,5 +20,7 @@ namespace BookActivity.Common.Test
             "“Can a Cinderella become a Princess? Or should she have a noble family to be a Princess?”";
 
         public const string CategoryTitle = "Artistic literature";
+
+        public static byte[] ImageData = new byte[] { 1 };
     }
 }

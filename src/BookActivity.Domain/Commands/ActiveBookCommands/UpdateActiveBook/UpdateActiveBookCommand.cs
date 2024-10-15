@@ -1,4 +1,4 @@
-﻿using BookActivity.Domain.Commands.ActiveBookCommands.Validations;
+﻿using BookActivity.Domain.Commands.ActiveBookCommands.UpdateActiveBook;
 
 namespace BookActivity.Domain.Commands.ActiveBookCommands
 {

@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Commands\AppUserCommands\Validations\" />
-    <Folder Include="Commands\BookCommands\Validations\" />
     <Folder Include="Commands\BookNoteCommands\Validations\" />
     <Folder Include="tessdata\" />
   </ItemGroup>
