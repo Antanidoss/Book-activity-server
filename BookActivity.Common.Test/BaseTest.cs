@@ -19,8 +19,8 @@ namespace BookActivity.Common.Test
 
         public IServiceProvider ServiceProvider { get; private set; }
 
-        [OneTimeSetUp]
-        public virtual async Task OneTimeSetUp()
+        [SetUp]
+        public virtual async Task SetUp()
         {
             ConfigurationBuilder configurationBuilder = new();
             configurationBuilder.AddJsonFile("appsettings.json");
@@ -73,7 +73,7 @@ namespace BookActivity.Common.Test
 
                 await strategy.ExecuteAsync(async () =>
                 {
-                    async Task runBodyAsync() => await actionAsync(scope.ServiceProvider, dataContext);
+                    async Task runBodyAsync() => await actionAsync(localServiceProvider, dataContext);
 
                     await using var tran = await dataContext.Database.BeginTransactionAsync();
 
