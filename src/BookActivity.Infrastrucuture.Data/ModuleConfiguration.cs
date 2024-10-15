@@ -91,16 +91,25 @@ namespace BookActivity.Infrastructure.Data
             services.AddSingleton(new MongoClient(settings).GetDatabase("BookActivityEvent"));
 
             ObjectSerializer objectSerializer = new(type => ObjectSerializer.DefaultAllowedTypes(type) || type.FullName.Contains(nameof(BookActivity)));
-            BsonSerializer.RegisterSerializer(objectSerializer);
+            TryRegisterBsonSerializer(objectSerializer);
 
             GuidSerializer guidSerializer = new(BsonType.String);
-            BsonSerializer.RegisterSerializer(guidSerializer);
+            TryRegisterBsonSerializer(guidSerializer);
 
             DateTimeSerializer dateTimeSerializer = new(BsonType.DateTime);
-            BsonSerializer.RegisterSerializer(dateTimeSerializer);
+            TryRegisterBsonSerializer(dateTimeSerializer);
 
             ConventionPack conventionPack = new() { new IgnoreExtraElementsConvention(true) };
             ConventionRegistry.Register("IgnoreExtraElements", conventionPack, type => true);
+        }
+
+        private void TryRegisterBsonSerializer<T>(IBsonSerializer<T> serializer)
+        {
+            try
+            {
+                BsonSerializer.TryRegisterSerializer(serializer);
+            }
+            catch { }
         }
     }
 }
