@@ -13,5 +13,12 @@ namespace BookActivity.Domain.Commands.BookCommands.AddBook
             CategoryIds = categoryIds;
             ImageData = imageData;
         }
+
+        public override bool IsValid()
+        {
+            ValidationResult = new AddBookCommandValidation().Validate(this);
+
+            return ValidationResult.IsValid;
+        }
     }
 }

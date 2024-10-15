@@ -1,6 +1,6 @@
-﻿using BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook;
+﻿using BookActivity.Domain.Commands.ActiveBookCommands.Validations;
 
-namespace BookActivity.Domain.Commands.ActiveBookCommands.Validations
+namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
 {
     public sealed class AddNewActiveBookCommandValidation : ActiveBookValidation<AddActiveBookCommand>
     {
