@@ -26,7 +26,6 @@ namespace BookActivity.Domain.Interfaces
         Task SaveNotificationChangesAsync(CancellationToken cancellationToken = default);
         Task SaveCommandChangesAsync(string savePoint = null, CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-
         void ClearChangeTracker();
     }
 }
