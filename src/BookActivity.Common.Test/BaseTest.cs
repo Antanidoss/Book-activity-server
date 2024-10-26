@@ -1,11 +1,8 @@
 ﻿using BookActivity.Domain.Interfaces;
 using BookActivity.Domain.Models;
-using BookActivity.Shared.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
-using System;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +16,9 @@ namespace BookActivity.Common.Test
 
         public IServiceProvider ServiceProvider { get; private set; }
 
-        [SetUp]
+        protected static bool _initDbData; 
+
+        [OneTimeSetUp]
         public virtual async Task SetUp()
         {
             ConfigurationBuilder configurationBuilder = new();
@@ -29,8 +28,8 @@ namespace BookActivity.Common.Test
             ServiceCollection services = new();
             ServiceProvider = await ConfigureServicesAsync(services);
 
-            var dbContext = ServiceProvider.GetRequiredService<IDbContext>();
-            dbContext.ClearChangeTracker();
+            if (_initDbData)
+                await InitDbDataAsync();
         }
 
         public virtual async Task<IServiceProvider> ConfigureServicesAsync(IServiceCollection services)
@@ -62,7 +61,7 @@ namespace BookActivity.Common.Test
             return serviceProvider;
         }
 
-        protected async Task BeginTransactionAsync(TestAction actionAsync)
+        protected async Task BeginTransactionAsync(TestAction actionAsync, bool withRollback = true)
         {
             using (var scope = ServiceProvider.CreateScope())
             {
@@ -86,12 +85,39 @@ namespace BookActivity.Common.Test
                     }
                     finally
                     {
-                        await tran.RollbackAsync();
+                        if (withRollback)
+                            await tran.RollbackAsync();
                     }
                 });
 
                 await connection.CloseAsync();
             }
+        }
+
+        private async Task InitDbDataAsync()
+        {
+            if (_initDbData)
+                return;
+
+            await BeginTransactionAsync(async (serviceProvider, dbContext) =>
+            {
+                var currentUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == DbConstants.CurrentUser.Id);
+                if (currentUser != null)
+                {
+                    _initDbData = true;
+                    return;
+                }
+
+                var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+                await userManager.CreateAsync(new AppUser
+                {
+                    Id = DbConstants.CurrentUser.Id,
+                    UserName = DbConstants.CurrentUser.UserName,
+                    Email = DbConstants.CurrentUserEmail
+                });
+            }, withRollback: false);
+
+            _initDbData = true;
         }
     }
 }
