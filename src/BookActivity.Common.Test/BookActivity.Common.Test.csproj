@@ -25,10 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\BookActivity.Application\BookActivity.Application.csproj" />
-    <ProjectReference Include="..\src\BookActivity.Domain\BookActivity.Domain.csproj" />
-    <ProjectReference Include="..\src\BookActivity.Infrastructure\BookActivity.Infrastructure.csproj" />
-    <ProjectReference Include="..\src\BookActivity.Infrastrucuture.Data\BookActivity.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\BookActivity.Application\BookActivity.Application.csproj" />
+    <ProjectReference Include="..\BookActivity.Domain\BookActivity.Domain.csproj" />
+    <ProjectReference Include="..\BookActivity.Infrastructure\BookActivity.Infrastructure.csproj" />
+    <ProjectReference Include="..\BookActivity.Infrastrucuture.Data\BookActivity.Infrastructure.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
