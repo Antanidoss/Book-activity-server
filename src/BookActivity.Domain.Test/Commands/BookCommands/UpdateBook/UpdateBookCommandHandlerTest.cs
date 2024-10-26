@@ -1,7 +1,6 @@
 ﻿using BookActivity.Common.Test;
 using BookActivity.Domain.Commands.BookCommands.UpdateBook;
 using BookActivity.Domain.Commands.BookCommands.Validations;
-using BookActivity.Domain.Models;
 using FluentValidation.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +25,7 @@ namespace BookActivity.Domain.Test.Commands.BookCommands.UpdateBook
                 UpdateBookCommand updateBookCommand = new()
                 {
                     BookId = book.Id,
-                    UserId = DbConstants.CurrentUser.Id,
+                    UserId = _currentUser.Id,
                     Title = _newTitle,
                     Description = _newDescription
                 };

@@ -4,12 +4,6 @@ namespace BookActivity.Common.Test
 {
     public static class DbConstants
     {
-        public static CurrentUser CurrentUser = new()
-        {
-            Id = Guid.NewGuid(),
-            UserName = "Anton"
-        };
-
         public const string CurrentUserEmail = "antonBookActivity@gmail.com";
 
         public const string AuthorFirstName = "Jack";
