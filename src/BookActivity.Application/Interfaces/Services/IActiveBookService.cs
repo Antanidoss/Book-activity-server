@@ -10,7 +10,7 @@ namespace BookActivity.Application.Interfaces.Services
     public interface IActiveBookService
     {
         Task<Result<Guid>> AddActiveBookAsync(CreateActiveBookDto createActiveBookModel);
-        Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId);
+        Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId, Guid currentUserId);
         Task<ValidationResult> UpdateActiveBookAsync(UpdateNumberPagesReadDto updateActiveBookModel);
     }
 }
