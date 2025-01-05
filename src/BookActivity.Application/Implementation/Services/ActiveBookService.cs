@@ -38,11 +38,11 @@ namespace BookActivity.Application.Implementation.Services
             return validationResult.ToResult(addActiveBookCommand.Id);
         }
 
-        public async Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId)
+        public async Task<ValidationResult> RemoveActiveBookAsync(Guid activeBookId, Guid currentUserId)
         {
             CommonValidator.ThrowExceptionIfEmpty(activeBookId, nameof(activeBookId));
 
-            RemoveActiveBookCommand removeActiveBookCommand = new() { Id = activeBookId };
+            RemoveActiveBookCommand removeActiveBookCommand = new(activeBookId, currentUserId);
 
             return await _mediatorHandler.SendCommandAsync(removeActiveBookCommand);
         }

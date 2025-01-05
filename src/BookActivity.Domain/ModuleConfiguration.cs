@@ -97,6 +97,7 @@ namespace BookActivity.Domain
 
             services.AddScoped<INotificationHandler<AddActiveBookAfterOperationEvent>, ActiveBookStatisticEventHandler>();
             services.AddScoped<INotificationHandler<UpdateActiveBookEvent>, ActiveBookStatisticEventHandler>();
+            services.AddScoped<INotificationHandler<RemoveActiveBookEvent>, ActiveBookStatisticEventHandler>();
         }
 
         private void ConfigureMemoryCache(IServiceCollection services)

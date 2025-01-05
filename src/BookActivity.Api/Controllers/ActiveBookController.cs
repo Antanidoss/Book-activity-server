@@ -42,7 +42,7 @@ namespace BookActivity.Api.Controllers
         [HttpDelete(ApiConstants.RemoveActiveBookMethod)]
         public async Task<ActionResult> RemoveActiveBookAsync([FromQuery] Guid activeBookId)
         {
-            return (await _activeBookService.RemoveActiveBookAsync(activeBookId)).ToActionResult();
+            return (await _activeBookService.RemoveActiveBookAsync(activeBookId, _currentUser.Id)).ToActionResult();
         }
     }
 }
