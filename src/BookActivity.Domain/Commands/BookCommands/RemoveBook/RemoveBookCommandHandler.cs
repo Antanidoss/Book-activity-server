@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
 {
@@ -23,6 +25,7 @@ namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
                 return request.ValidationResult;
 
             Book book = new() { Id = request.BookId };
+
             _efContext.Books.Attach(book);
             _efContext.Books.Remove(book);
 
