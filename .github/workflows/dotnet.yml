@@ -20,6 +20,13 @@ jobs:
           POSTGRES_DB: BookActivty
         ports:
           - 5432:5432
+      mongodb:
+        image: mongo
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: admin
+        ports:
+          - 27017:27017
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
