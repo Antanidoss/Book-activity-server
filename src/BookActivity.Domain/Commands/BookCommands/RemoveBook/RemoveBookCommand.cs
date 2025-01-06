@@ -10,5 +10,12 @@ namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
             BookId = bookId;
             UserId = userId;
         }
+
+        public override bool IsValid()
+        {
+            ValidationResult = new RemoveBookCommandValidation().Validate(this);
+
+            return ValidationResult.IsValid;
+        }
     }
 }

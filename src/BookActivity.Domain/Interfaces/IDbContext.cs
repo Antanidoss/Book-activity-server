@@ -1,5 +1,6 @@
 ﻿using BookActivity.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,5 +28,6 @@ namespace BookActivity.Domain.Interfaces
         Task SaveCommandChangesAsync(string savePoint = null, CancellationToken cancellationToken = default);
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         void ClearChangeTracker();
+        EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
     }
 }
