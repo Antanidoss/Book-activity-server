@@ -23,12 +23,7 @@ namespace BookActivity.Domain.Commands.AppUserCommands.AddAppUser
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            var createUserResult = await _userManager.CreateAsync(new AppUser()
-            {
-                Email = request.Email,
-                UserName = request.Name,
-                AvatarImage = request.AvatarImage
-            }, request.Password);
+            var createUserResult = await _userManager.CreateAsync(new AppUser(request.Name, request.AvatarImage, request.Email), request.Password);
 
             return createUserResult.ToValidationResult();
         }

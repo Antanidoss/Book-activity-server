@@ -14,7 +14,6 @@ namespace BookActivity.Domain.Models
         public ICollection<BookNoteLike> Likes { get; private set; }
         public ICollection<BookNoteDislike> Dislikes { get; private set; }
 
-        public BookNote() : base() { }
         public BookNote(string note, string noteColor, Guid activeBookId, string noteTextColor)
         {
             Note = note;
@@ -22,5 +21,8 @@ namespace BookActivity.Domain.Models
             ActiveBookId = activeBookId;
             NoteTextColor = noteTextColor;
         }
+
+        //private, parameterless constructor used by EF Core
+        private BookNote() { }
     }
 }

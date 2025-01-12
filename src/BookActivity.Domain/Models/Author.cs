@@ -10,16 +10,16 @@ namespace BookActivity.Domain.Models
         public string Surname { get; set; }
         public ICollection<BookAuthor> BookAuthors { get; set; }
 
-        private Author() : base() { }
-        public Author(Guid authorId) : base()
-        {
-            Id = authorId;
-        }
-        public Author(string firstName, string surname)
+        public Author(Guid authorId) : base(authorId) { }
+
+        public Author(string firstName, string surname) : base()
         {
             FirstName = firstName;
             Surname = surname;
             BookAuthors = new List<BookAuthor>();
         }
+
+        //private, parameterless constructor used by EF Core
+        private Author() { }
     }
 }

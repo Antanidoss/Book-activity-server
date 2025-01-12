@@ -19,9 +19,20 @@ namespace BookActivity.Domain.Models
         public byte[] AvatarImage { get; set; }
         public string Description { get; set; }
 
-        public AppUser() : base()
+        public AppUser(string userName, string email) : base()
         {
-            
+            UserName = userName;
+            Email = email;
         }
+
+        public AppUser(string userName, byte[] avatarImage, string email) : base()
+        {
+            UserName = userName;
+            AvatarImage = avatarImage;
+            Email = email;
+        }
+
+        //private, parameterless constructor used by EF Core
+        private AppUser() { }
     }
 }

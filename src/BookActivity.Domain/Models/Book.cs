@@ -1,4 +1,5 @@
 ﻿using BookActivity.Domain.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,7 +15,6 @@ namespace BookActivity.Domain.Models
         public ICollection<BookOpinion> BookOpinions { get; set; }
         public ICollection<BookCategory> BookCategories { get; set; }
 
-        public Book() : base() { }
         public Book(string title, string description, byte[] imageData, IEnumerable<BookAuthor> bookAuthors, params BookCategory[] bookCategories)
         {
             Title = title;
@@ -23,6 +23,11 @@ namespace BookActivity.Domain.Models
             BookCategories = bookCategories.ToList();
             ImageData = imageData;
         }
+
+        public Book(Guid bookId) : base(bookId) { }
+
+        //private, parameterless constructor used by EF Core
+        private Book() { }
 
         public float GetAverageRating()
         {

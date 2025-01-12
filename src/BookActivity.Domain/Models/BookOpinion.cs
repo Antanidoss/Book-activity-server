@@ -18,7 +18,6 @@ namespace BookActivity.Domain.Models
         public const int GradeMin = 0;
         public const int GradeMax = 5;
 
-        public BookOpinion() : base() { }
         public BookOpinion(float grade, string description, Guid userId, Guid bookId)
         {
             Grade = grade;
@@ -26,5 +25,8 @@ namespace BookActivity.Domain.Models
             UserId = userId;
             BookId = bookId;
         }
+
+        //private, parameterless constructor used by EF Core
+        private BookOpinion() { }
     }
 }

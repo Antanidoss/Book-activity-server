@@ -23,7 +23,7 @@ namespace BookActivity.Domain.Commands.ActiveBookCommands.RemoveActiveBook
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            ActiveBook activeBook = new() { Id = request.Id };
+            ActiveBook activeBook = new(request.Id);
             _efContext.ActiveBooks.Attach(activeBook);
             _efContext.ActiveBooks.Remove(activeBook);
 

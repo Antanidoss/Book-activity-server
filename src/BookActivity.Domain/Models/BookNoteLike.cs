@@ -10,12 +10,13 @@ namespace BookActivity.Domain.Models
         public AppUser UserWhoLike { get; private set; }
         public Guid UserIdWhoLike { get; private set; }
 
-        public BookNoteLike() : base() { }
-
         public BookNoteLike(Guid bookNoteId, Guid userWhoLikeId)
         {
             BookNoteId = bookNoteId;
             UserIdWhoLike = userWhoLikeId;
         }
+
+        //private, parameterless constructor used by EF Core
+        private BookNoteLike() { }
     }
 }

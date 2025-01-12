@@ -8,16 +8,19 @@ namespace BookActivity.Domain.Models
         public string Title { get; set; }
         public ICollection<BookCategory> BookCategories { get; set; }
 
-        public Category() : base() { }
         public Category(string title) : base()
         {
             Title = title;
             BookCategories = new List<BookCategory>();
         }
+
         public Category(string title, params BookCategory[] bookCategories)
         {
             Title = title;
             BookCategories = bookCategories;
         }
+
+        //private, parameterless constructor used by EF Core
+        private Category() { }
     }
 }

@@ -14,13 +14,20 @@ namespace BookActivity.Domain.Models
         public Guid UserId { get; private set; }
         public ICollection<BookNote> BookNotes { get; set; }
 
-        public ActiveBook() : base() { }
         public ActiveBook(int totalNumberPages, int numberPagesRead, Guid bookId, Guid userId)
         {
             TotalNumberPages = totalNumberPages;
             NumberPagesRead = numberPagesRead;
             BookId = bookId;
             UserId = userId;
+        }
+
+        //private, parameterless constructor used by EF Core
+        private ActiveBook() { }
+
+        public ActiveBook(Guid activeBookId)
+        {
+            Id = activeBookId;
         }
     }
 }

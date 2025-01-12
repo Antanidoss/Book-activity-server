@@ -16,6 +16,11 @@ namespace BookActivity.Domain.Core
             Id = Guid.NewGuid();
         }
 
+        protected BaseEntity(Guid id)
+        {
+            Id = id;
+        }
+
         public void AddDomainEvent(Event domainEvent)
         {
             _domainEvents = _domainEvents ?? new List<Event>();
