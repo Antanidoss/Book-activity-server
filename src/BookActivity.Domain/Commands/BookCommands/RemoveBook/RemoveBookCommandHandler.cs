@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Threading;
 using BookActivity.Domain.Models;
 using BookActivity.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
 {

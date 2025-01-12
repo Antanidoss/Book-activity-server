@@ -2,9 +2,9 @@
 
 namespace BookActivity.Domain.Commands.ActiveBookCommands.AddActiveBook
 {
-    public sealed class AddNewActiveBookCommandValidation : ActiveBookValidation<AddActiveBookCommand>
+    public sealed class AddActiveBookCommandValidation : ActiveBookValidation<AddActiveBookCommand>
     {
-        public AddNewActiveBookCommandValidation()
+        public AddActiveBookCommandValidation()
         {
             ValidateNumberPagesRead();
             ValidateTotalNumberPages();

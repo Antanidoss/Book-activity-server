@@ -20,6 +20,10 @@ jobs:
           POSTGRES_DB: BookActivty
         ports:
           - 5432:5432
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
