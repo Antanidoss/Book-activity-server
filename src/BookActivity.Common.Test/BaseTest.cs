@@ -104,11 +104,7 @@ namespace BookActivity.Common.Test
                 }
 
                 var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
-                await userManager.CreateAsync(new AppUser
-                {
-                    UserName = "Anton",
-                    Email = DbConstants.CurrentUserEmail
-                });
+                await userManager.CreateAsync(new AppUser("Anton", DbConstants.CurrentUserEmail));
             }, withRollback: false);
 
             using var scope = ServiceProvider.CreateScope();

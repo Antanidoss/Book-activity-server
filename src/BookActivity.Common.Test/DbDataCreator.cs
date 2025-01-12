@@ -23,7 +23,6 @@ namespace BookActivity.Common.Test
             Category category = new(title ?? DbConstants.CategoryTitle);
 
             await dbContext.Categories.AddAsync(category);
-
             await dbContext.SaveChangesAsync();
 
             return category;
@@ -37,21 +36,19 @@ namespace BookActivity.Common.Test
             Guid[] categoryIds = null,
             byte[] imageData = null)
         {
-            Book book = new()
-            {
-                Title = title ?? DbConstants.BookTitle,
-                Description = description ?? DbConstants.BookDescription,
-                ImageData = imageData ?? DbConstants.ImageData,
-                BookAuthors = authorIds == null
-                    ? new BookAuthor[] { new() { AuthorId = (await CreateAuthorAsync(dbContext)).Id } }
-                    : authorIds.Select(a => new BookAuthor { AuthorId = a }).ToArray(),
-                BookCategories = categoryIds == null
-                    ? new BookCategory[] { new() { CategoryId = (await CreateCategoryAsync(dbContext)).Id } }
-                    : categoryIds.Select(c => new BookCategory { CategoryId = c }).ToArray()
-            };
+            Book book = new(
+                title ?? DbConstants.BookTitle,
+                description ?? DbConstants.BookDescription,
+                imageData ?? DbConstants.ImageData,
+                authorIds == null
+                    ? new BookAuthor[] { new(await CreateAuthorAsync(dbContext)) }
+                    : authorIds.Select(a => new BookAuthor(a)).ToArray(),
+                categoryIds == null
+                    ? new BookCategory[] { new(await CreateCategoryAsync(dbContext)) }
+                    : categoryIds.Select(c => new BookCategory(c)).ToArray()
+                );
 
             await dbContext.Books.AddAsync(book);
-
             await dbContext.SaveChangesAsync();
 
             return book;

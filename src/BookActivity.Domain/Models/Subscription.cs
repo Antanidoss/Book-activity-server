@@ -9,5 +9,14 @@ namespace BookActivity.Domain.Models
         public Guid UserIdWhoSubscribed { get; set; }
         public AppUser SubscribedUser { get; set; }
         public Guid SubscribedUserId { get; set; }
+
+        public Subscription(Guid userIdWhoSubscribed, Guid subscribedUserId)
+        {
+            UserIdWhoSubscribed = userIdWhoSubscribed;
+            SubscribedUserId = subscribedUserId;
+        }
+
+        //private, parameterless constructor used by EF Core
+        private Subscription() { }
     }
 }

@@ -22,17 +22,8 @@ namespace BookActivity.Domain.Commands.AppUserCommands.UnsubscribeAppUser
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            _efContext.Subscribers.Remove(new Subscriber
-            {
-                UserIdWhoSubscribed = request.UserIdWhoUnsubscribed,
-                SubscribedUserId = request.UnsubscribedUserId
-            });
-
-            _efContext.Subscriptions.Remove(new Subscription
-            {
-                UserIdWhoSubscribed = request.UserIdWhoUnsubscribed,
-                SubscribedUserId = request.UnsubscribedUserId
-            });
+            _efContext.Subscribers.Remove(new Subscriber(request.UserIdWhoUnsubscribed, request.UnsubscribedUserId));
+            _efContext.Subscriptions.Remove(new Subscription(request.UserIdWhoUnsubscribed, request.UnsubscribedUserId));
 
             return await Commit(_efContext);
         }

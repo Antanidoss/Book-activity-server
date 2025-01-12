@@ -11,7 +11,10 @@ namespace BookActivity.Domain.Models
         public AppUser FromUser { get; private set; }
         public Guid? FromUserId { get; private set; }
 
-        public Notification() : base() { }
+        public Notification(Guid notificationId)
+        {
+            Id = notificationId;
+        }
 
         public Notification(string description, Guid toUserId, Guid? fromUserId = null)
         {
@@ -19,5 +22,8 @@ namespace BookActivity.Domain.Models
             ToUserId = toUserId;
             FromUserId = fromUserId;
         }
+
+        //private, parameterless constructor used by EF Core
+        private Notification() { }
     }
 }

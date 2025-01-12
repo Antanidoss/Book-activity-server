@@ -20,73 +20,23 @@ namespace BookActivity.Initialization
 
         private async Task AddUsersAsync(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
-            AppUser admin = new()
-            {
-                UserName = "Admin",
-                AvatarImage = GetImageData("Man with beard.jpg"),
-                Email = "adminBookActivity@gmail.com"
-            };
+            AppUser admin = new("Admin", GetImageData("Man with beard.jpg"), "adminBookActivity@gmail.com");
             await userManager.CreateAsync(admin, "adminPassword123#");
 
             AppRole adminRole = new() { Name = RoleNamesConstants.Admin };
             await roleManager.CreateAsync(adminRole);
             await userManager.AddToRoleAsync(admin, RoleNamesConstants.Admin);
 
-            await userManager.CreateAsync(new AppUser
-            {
-                UserName = "Nastya",
-                AvatarImage = GetImageData("Women red.jpg"),
-                Email = "nastyaBookActivity@gmail.com"
-            }, "Password123#");
+            const string password = "Password123#";
 
-            await userManager.CreateAsync(new AppUser
-            {
-                UserName = "Nikita",
-                AvatarImage = GetImageData("Nikita.jpeg"),
-                Email = "nikitaBookActivity@gmail.com"
-            }, "Password123#");
-
-            await userManager.CreateAsync(new AppUser
-            {
-                UserName = "Vlad",
-                AvatarImage = GetImageData("Vlad.jpeg"),
-                Email = "vladBookActivity@gmail.com"
-            }, "Password123#");
-
-            await userManager.CreateAsync(new AppUser
-            {
-                UserName = "Evelina",
-                AvatarImage = GetImageData("Evelina.jpeg"),
-                Email = "evelinaBookActivity@gmail.com"
-            }, "Password123#");
-
-            await userManager.CreateAsync(new AppUser
-            {
-                UserName = "Anton",
-                AvatarImage = GetImageData("Anton.jpeg"),
-                Email = "antonBookActivity@gmail.com"
-            }, "Password123#");
-
-            await userManager.CreateAsync(new AppUser
-            {
-                UserName = "Jeck",
-                AvatarImage = GetImageData("Jeck.jpeg"),
-                Email = "jeckBookActivity@gmail.com"
-            }, "Password123#");
-
-            await userManager.CreateAsync(new AppUser
-            {
-                UserName = "Tony",
-                AvatarImage = GetImageData("Tony.jpeg"),
-                Email = "tonyBookActivity@gmail.com"
-            }, "Password123#");
-
-            await userManager.CreateAsync(new AppUser
-            {
-                UserName = "Andrew",
-                AvatarImage = GetImageData("Andrew.jpeg"),
-                Email = "andrewBookActivity@gmail.com"
-            }, "Password123#");
+            await userManager.CreateAsync(new AppUser("Nastya", GetImageData("Women red.jpg"), "nastyaBookActivity@gmail.com"), password);
+            await userManager.CreateAsync(new AppUser("Nikita", GetImageData("Nikita.jpeg"), "nikitaBookActivity@gmail.com"), password);
+            await userManager.CreateAsync(new AppUser("Vlad", GetImageData("Vlad.jpeg"), "vladBookActivity@gmail.com"), password);
+            await userManager.CreateAsync(new AppUser("Evelina", GetImageData("Evelina.jpeg"), "evelinaBookActivity@gmail.com"), password);
+            await userManager.CreateAsync(new AppUser("Anton", GetImageData("Anton.jpeg"), "antonBookActivity@gmail.com"), password);
+            await userManager.CreateAsync(new AppUser("Jeck", GetImageData("Jeck.jpeg"), "jeckBookActivity@gmail.com"), password);
+            await userManager.CreateAsync(new AppUser("Tony", GetImageData("Tony.jpeg"), "tonyBookActivity@gmail.com"), password);
+            await userManager.CreateAsync(new AppUser("Andrew", GetImageData("Andrew.jpeg"), "andrewBookActivity@gmail.com"), password);
         }
 
         private void AddBookCategories(BookActivityContext context)
@@ -111,9 +61,9 @@ namespace BookActivity.Initialization
                 "insights for building robust, reliable, and responsive apps and components.",
                 GetImageData("CLR VIA C#.jpg"),
                 new[] {
-                    new BookAuthor { Author = new Author("Jeffrey", "Richter") }
+                    new BookAuthor(new Author("Jeffrey", "Richter"))
                 },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "IT").Id }
+                new BookCategory(context.Categories.First(c => c.Title == "IT").Id)
             ));
 
             context.Books.Add(new Book(
@@ -127,10 +77,10 @@ namespace BookActivity.Initialization
                 "\r\n\r\nAn unforgettable family drama by two writers at the top of their craft.",
                 GetImageData("The House of Wolves.jpeg"),
                 new[] {
-                    new BookAuthor { Author = new Author("Mike", "Lupica") },
-                    new BookAuthor { Author = new Author("James", "Patterson") },
+                    new BookAuthor(new Author("Mike", "Lupica")),
+                    new BookAuthor(new Author("James", "Patterson")),
                 },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
+                new BookCategory(context.Categories.First(c => c.Title == "Artistic literature"))
             ));
 
             context.Books.Add(new Book(
@@ -141,10 +91,10 @@ namespace BookActivity.Initialization
                 "From” personalization page in the front of the book, making this heartwarming book an ideal gift.",
                 GetImageData("I Love You to the Moon and Back.jpg"),
                 new[] {
-                    new BookAuthor { Author = new Author("Amelia", "Hepworth") }
+                    new BookAuthor(new Author("Amelia", "Hepworth"))
                 },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Psychology").Id },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Philosophy").Id }
+                new BookCategory(context.Categories.First(c => c.Title == "Psychology")),
+                new BookCategory(context.Categories.First(c => c.Title == "Philosophy"))
             ));
 
             context.Books.Add(new Book(
@@ -154,10 +104,10 @@ namespace BookActivity.Initialization
                 "and Prince Harry must be thinking and feeling—and how their lives would play out from that point on.",
                 GetImageData("Spare.jpeg"),
                 new[] {
-                    new BookAuthor { Author = new Author("Henry", "Charles") }
+                    new BookAuthor(new Author("Henry", "Charles"))
                 },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Psychology").Id },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Philosophy").Id }
+                new BookCategory(context.Categories.First(c => c.Title == "Psychology")),
+                new BookCategory(context.Categories.First(c => c.Title == "Philosophy"))
             ));
 
             context.Books.Add(new Book(
@@ -171,9 +121,9 @@ namespace BookActivity.Initialization
                 "the mystery of why she shot her husband takes him down a twisting path into his own motivations―a search for the truth that threatens to consume him....",
                 GetImageData("The Silent Patient.jpeg"),
                 new[] {
-                    new BookAuthor { Author = new Author("Alex", "Michaelides") }
+                    new BookAuthor(new Author("Alex", "Michaelides"))
                 },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
+                new BookCategory(context.Categories.First(c => c.Title == "Artistic literature"))
             ));
 
             context.Books.Add(new Book(
@@ -181,9 +131,9 @@ namespace BookActivity.Initialization
                 "In this generation-defining self-help guide, a superstar blogger cuts through the crap to show us how to stop trying to be \"positive\" all the time so that we can truly become better, happier people.",
                 GetImageData("The Subtle Art of Not Giving.jpeg"),
                 new[] {
-                    new BookAuthor { Author = new Author("Mark", "Manson") }
+                    new BookAuthor(new Author("Mark", "Manson"))
                 },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
+                new BookCategory(context.Categories.First(c => c.Title == "Artistic literature"))
             ));
 
             context.Books.Add(new Book(
@@ -192,10 +142,10 @@ namespace BookActivity.Initialization
                 "People call him “the bitter neighbor from hell.” But must Ove be bitter just because he doesn’t walk around with a smile plastered to his face all the time?",
                 GetImageData("A Man Called Ove A Novel.jpg"),
                 new[] {
-                    new BookAuthor { Author = new Author("Henning", "Koch") },
-                    new BookAuthor { Author = new Author("Fredrik", "Backman") }
+                    new BookAuthor(new Author("Henning", "Koch")),
+                    new BookAuthor(new Author("Fredrik", "Backman"))
                 },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
+                new BookCategory(context.Categories.First(c => c.Title == "Artistic literature"))
             ));
 
             context.Books.Add(new Book(
@@ -204,9 +154,9 @@ namespace BookActivity.Initialization
                 "the dominance of Wolf Larsen, the powerful and amoral sea captain who rescues him.",
                 GetImageData("The Sea-Wolf.jpg"),
                 new[] {
-                    new BookAuthor { Author = new Author("Jack", "London") }
+                    new BookAuthor(new Author("Jack", "London"))
                 },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
+                new BookCategory(context.Categories.First(c => c.Title == "Artistic literature"))
             ));
 
             context.Books.Add(new Book(
@@ -216,9 +166,9 @@ namespace BookActivity.Initialization
                 "a man can never do with a female patient.",
                 GetImageData("Lady Tan's Circle of Women.jpg"),
                 new[] {
-                    new BookAuthor { Author = new Author("Lisa", "See") }
+                    new BookAuthor(new Author("Lisa", "See"))
                 },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
+                new BookCategory(context.Categories.First(c => c.Title == "Artistic literature"))
             ));
 
             context.Books.Add(new Book(
@@ -227,9 +177,9 @@ namespace BookActivity.Initialization
                 "and “a moving and graceful tribute to heroic women” (Publishers Weekly, starred review), asks the question: What if a friendship forged on the front lines of war defines a life forever?",
                 GetImageData("Good Night Irene.jpg"),
                 new[] {
-                    new BookAuthor { Author = new Author("Luis", "Alberto") }
+                    new BookAuthor(new Author("Luis", "Alberto"))
                 },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
+                new BookCategory(context.Categories.First(c => c.Title == "Artistic literature"))
             ));
 
             context.Books.Add(new Book(
@@ -240,9 +190,9 @@ namespace BookActivity.Initialization
                 "traversing nearly 3,000 miles of storm-wracked seas. They were greeted as heroes.",
                 GetImageData("The Wager.jpg"),
                 new[] {
-                    new BookAuthor { Author = new Author("David", "Grann") }
+                    new BookAuthor(new Author("David", "Grann"))
                 },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
+                new BookCategory(context.Categories.First(c => c.Title == "Artistic literature"))
             ));
 
             context.Books.Add(new Book(
@@ -255,9 +205,9 @@ namespace BookActivity.Initialization
                 "modern-day founding father—as well as the nation’s most mourned martyr.",
                 GetImageData("King a life.jpg"),
                 new[] {
-                    new BookAuthor { Author = new Author("Jonathan", "Eig") }
+                    new BookAuthor(new Author("Jonathan", "Eig"))
                 },
-                new BookCategory { CategoryId = context.Categories.First(c => c.Title == "Artistic literature").Id }
+                new BookCategory(context.Categories.First(c => c.Title == "Artistic literature"))
             ));
         }
 

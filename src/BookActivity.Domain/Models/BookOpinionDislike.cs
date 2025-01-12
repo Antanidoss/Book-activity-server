@@ -11,13 +11,14 @@ namespace BookActivity.Domain.Models
         public AppUser UserWhoDislike { get; private set; }
         public Guid UserIdWhoDislike { get; private set; }
 
-        public BookOpinionDislike() : base() { }
-
         public BookOpinionDislike(Guid bookId, Guid userIdOpinion, Guid userIdWhoDislike)
         {
             BookId = bookId;
             UserIdOpinion = userIdOpinion;
             UserIdWhoDislike = userIdWhoDislike;
         }
+
+        //private, parameterless constructor used by EF Core
+        private BookOpinionDislike() { }
     }
 }

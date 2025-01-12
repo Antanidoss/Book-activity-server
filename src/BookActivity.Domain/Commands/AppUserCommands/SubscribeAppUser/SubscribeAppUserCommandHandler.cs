@@ -26,22 +26,14 @@ namespace BookActivity.Domain.Commands.AppUserCommands.SubscribeAppUser
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            Subscriber subscriber = new()
-            {
-                UserIdWhoSubscribed = request.UserIdWhoSubscribed,
-                SubscribedUserId = request.SubscribedUserId
-            };
+            Subscriber subscriber = new(request.UserIdWhoSubscribed, request.SubscribedUserId);
 
             AppUserByIdSpec specification = new(request.UserIdWhoSubscribed);
             var userName = await _efContext.Users.Where(specification).Select(u => u.UserName).FirstAsync();
             subscriber.AddDomainEvent(new SubscribeAppUserEvent(request.SubscribedUserId, request.UserIdWhoSubscribed, userName));
 
             await _efContext.Subscribers.AddAsync(subscriber, cancellationToken);
-            await _efContext.Subscriptions.AddAsync(new Subscription
-            {
-                UserIdWhoSubscribed = request.UserIdWhoSubscribed,
-                SubscribedUserId = request.SubscribedUserId
-            }, cancellationToken);
+            await _efContext.Subscriptions.AddAsync(new Subscription(request.UserIdWhoSubscribed, request.SubscribedUserId), cancellationToken);
 
             return await Commit(_efContext);
         }

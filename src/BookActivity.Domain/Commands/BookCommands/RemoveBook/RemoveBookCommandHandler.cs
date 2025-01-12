@@ -24,8 +24,7 @@ namespace BookActivity.Domain.Commands.BookCommands.RemoveBook
             if (!request.IsValid())
                 return request.ValidationResult;
 
-            Book book = new() { Id = request.BookId };
-
+            Book book = new(request.BookId);
             _efContext.Books.Attach(book);
             _efContext.Books.Remove(book);
 

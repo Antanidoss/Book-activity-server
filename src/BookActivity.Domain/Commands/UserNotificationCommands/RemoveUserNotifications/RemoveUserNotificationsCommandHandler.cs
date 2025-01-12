@@ -20,7 +20,7 @@ namespace BookActivity.Domain.Commands.UserNotificationCommands.RemoveUserNotifi
 
         public async Task<ValidationResult> Handle(RemoveUserNotificationsCommand request, CancellationToken cancellationToken)
         {
-            var userNotifications = request.UserNotificationIds.Select(n => new Notification { Id = n });
+            var userNotifications = request.UserNotificationIds.Select(n => new Notification(n));
             _efContext.Notifications.RemoveRange(userNotifications);
 
             return await Commit(_efContext);
